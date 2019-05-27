@@ -5,7 +5,6 @@
 #$ -N jobname
 #$ -pe smp 1
 
-module load bio/hisat2/2.1.0
 mkdir aligned
 
 hisat2-build -f /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa Daphnia_pulex.allmasked
