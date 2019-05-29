@@ -5,11 +5,12 @@
 #$ -N seqAlignment_hisat2
 #$ -pe smp 1
 
+cd ..
 mkdir aligned
 
 hisat2-build -f /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa Daphnia_pulex.allmasked
 
-#Use up to 24 separate processes
+#Use up to 24 (256 GB) separate processes
 N=24
 #Loop through all forward and reverse paired reads and run hisat2 on each pair
 (

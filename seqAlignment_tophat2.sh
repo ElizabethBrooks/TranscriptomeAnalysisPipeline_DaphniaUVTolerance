@@ -5,11 +5,12 @@
 #$ -N seqAlignment_tophat2
 #$ -pe smp 1
 
+cd ..
 mkdir aligned
 
 bowtie2-build /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned
 
-#Use up to 24 separate processes
+#Use up to 24 (256 GB) separate processes
 N=24
 #Loop through all forward and reverse paired reads and run tophat2 on each pair
 (

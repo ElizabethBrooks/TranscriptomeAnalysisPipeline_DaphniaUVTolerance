@@ -8,7 +8,7 @@
 cd ..	
 mkdir trimmed
 
-#Use up to 24 separate processes
+#Use up to 24 (256 GB) separate processes
 N=24
 #Loop through all forward and reverse reads and run trimmomatic on each pair
 (
