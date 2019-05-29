@@ -1,9 +1,9 @@
 #!/bin/bash
-#$ -M username@nd.edu
+#$ -M ebrooks5@nd.edu
 #$ -m abe
-#$ -r n
-#$ -N jobname
-#$ -pe smp 1
+#$ -N adapterTrimming_trimmomatic
+#$ -pe smp 24
+#$ -q debug
 	
 mkdir trimmed
 
