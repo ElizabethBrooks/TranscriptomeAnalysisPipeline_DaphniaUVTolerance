@@ -22,12 +22,12 @@ for f1 in *1.fq.gz; do
 		fastqc $f1 --extract
 		#Determine phred score for trimming
 		if grep -iF "Encoding   Illumina 1.5" "${f1:0:${#f1}-7}"1_fastqc/fastqc_data.txt; then
-		        score=64
+			score=64
 		elif grep -iF "Encoding Illumina 1.5" "${f1:0:${#f1}-7}"1_fastqc/fastqc_data.txt; then
-		        score=33
+			score=33
 		else
-		        echo "Illumina encoding not found"
-		        exit 1
+			echo "Illumina encoding not found"
+			exit 1
 		fi
 		#QC the first read file
 		#...in progress...
