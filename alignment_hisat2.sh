@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N seqAlignment_hisat2
+#$ -N alignment_hisat2
 #$ -pe smp 1
 
 cd ..

@@ -1,7 +1,7 @@
 #!/bin/bash
 #$ -M ebrooks5@nd.edu
 #$ -m abe
-#$ -N adapterTrimming_trimmomatic
+#$ -N adapterTrimmingQC_trimmomaticFastqc
 #$ -pe smp 1
 
 #Prepare for adapter trimming and quality control

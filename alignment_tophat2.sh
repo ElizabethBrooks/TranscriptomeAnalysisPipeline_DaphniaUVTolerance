@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N seqAlignment_tophat2
+#$ -N alignment_tophat2
 #$ -pe smp 1
 
 cd ..
