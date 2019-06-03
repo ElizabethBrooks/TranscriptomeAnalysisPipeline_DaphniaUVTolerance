@@ -32,10 +32,10 @@ for f1 in *1.fq.gz; do
 		#QC the first read file
 		#...in progress...
 		if grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt; then
-			grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt >> "${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > "${f1:0:${#f1}-7}"1_fastqc_report.txt
 		fi
 		if grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt; then
-			grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt >> "${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > "${f1:0:${#f1}-7}"1_fastqc_report.txt
 		fi
 		#Only QC one file
 		qcCountStart=1
@@ -48,19 +48,19 @@ for f1 in *1.fq.gz; do
 		#...in progress...
 		fastqc trimmed/"${f1:0:${#f1}-7}"pairedForward.fq.gz --extract
 		if grep -iF "WARN" trimmed/"${f1:0:${#f1}-7}"pairedForward_fastqc/summary.txt; then
-			grep -iF "WARN" trimmed/"${f1:0:${#f1}-7}"pairedForward_fastqc/summary.txt >> "${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "WARN" trimmed/"${f1:0:${#f1}-7}"pairedForward_fastqc/summary.txt > "${f1:0:${#f1}-7}"1_fastqc_report.txt
 		fi
 		if grep -iF "FAIL" trimmed/"${f1:0:${#f1}-7}"pairedForward_fastqc/summary.txt; then
-			grep -iF "FAIL" trimmed/"${f1:0:${#f1}-7}"pairedForward_fastqc/summary.txt >> "${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "FAIL" trimmed/"${f1:0:${#f1}-7}"pairedForward_fastqc/summary.txt > "${f1:0:${#f1}-7}"1_fastqc_report.txt
 		fi
 		#QC paired reverse read
 		#...in progress...
 		fastqc trimmed/"${f1:0:${#f1}-7}"pairedReverse.fq.gz --extract
 		if grep -iF "WARN" trimmed/"${f1:0:${#f1}-7}"pairedReverse_fastqc/summary.txt; then
-			grep -iF "WARN" trimmed/"${f1:0:${#f1}-7}"pairedReverse_fastqc/summary.txt >> "${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "WARN" trimmed/"${f1:0:${#f1}-7}"pairedReverse_fastqc/summary.txt > "${f1:0:${#f1}-7}"1_fastqc_report.txt
 		fi
 		if grep -iF "FAIL" trimmed/"${f1:0:${#f1}-7}"pairedReverse_fastqc/summary.txt; then
-			grep -iF "FAIL" trimmed/"${f1:0:${#f1}-7}"pairedReverse_fastqc/summary.txt >> "${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "FAIL" trimmed/"${f1:0:${#f1}-7}"pairedReverse_fastqc/summary.txt > "${f1:0:${#f1}-7}"1_fastqc_report.txt
 		fi
 		#Only QC one file
 		qcCountEnd=1
