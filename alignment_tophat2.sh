@@ -12,5 +12,5 @@ bowtie2-build /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmaske
 
 #Loop through all forward and reverse paired reads and run tophat2 on each pair
 for f1 in trimmed/*pairedForward.fq.gz; do
-	tophat2 -G /afs/crc.nd.edu/group/hoth/echo_base/genome/dpulex-genepredict-v11.gff -o aligned/"${f1:0:${#f1}-19}" Daphnia_pulex.allmasked $f1 trimmed/"${f1:0:${#f1}-19}"pairedReverse.fq.gz
+	tophat2 -G /afs/crc.nd.edu/group/hoth/echo_base/genome/dpulex-genepredict-v11.gff -o aligned/"${f1:0:${#f1}-19}" Daphnia_pulex.allmasked trimmed/$f1 trimmed/"${f1:0:${#f1}-19}"pairedReverse.fq.gz
 done
