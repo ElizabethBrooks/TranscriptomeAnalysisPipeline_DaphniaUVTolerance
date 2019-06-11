@@ -1,2 +1,2 @@
 #Ignore compiled sources
-*.o
+*.o*
