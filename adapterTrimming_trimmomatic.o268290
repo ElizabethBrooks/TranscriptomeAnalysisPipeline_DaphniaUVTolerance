@@ -1,0 +1,216 @@
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L2_Pool_1_E05_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L2_Pool_1_E05_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_E05_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_E05_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_E05_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_E05_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 10650624 Both Surviving: 9535844 (89.53%) Forward Only Surviving: 919989 (8.64%) Reverse Only Surviving: 106251 (1.00%) Dropped: 88540 (0.83%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L2_Pool_1_E05_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L2_Pool_1_E05_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_E05_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_E05_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_E05_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_E05_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 15465698 Both Surviving: 14061912 (90.92%) Forward Only Surviving: 1118433 (7.23%) Reverse Only Surviving: 160905 (1.04%) Dropped: 124448 (0.80%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L2_Pool_1_PA_UV1_1.fq.gz 140327_I481_FCC3P1PACXX_L2_Pool_1_PA_UV1_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_UV1_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_UV1_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_UV1_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_UV1_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 13952236 Both Surviving: 12780589 (91.60%) Forward Only Surviving: 921207 (6.60%) Reverse Only Surviving: 139296 (1.00%) Dropped: 111144 (0.80%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L2_Pool_1_PA_VIS1_1.fq.gz 140327_I481_FCC3P1PACXX_L2_Pool_1_PA_VIS1_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_VIS1_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_VIS1_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_VIS1_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_VIS1_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 17245721 Both Surviving: 15597401 (90.44%) Forward Only Surviving: 1337355 (7.75%) Reverse Only Surviving: 169884 (0.99%) Dropped: 141081 (0.82%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L2_Pool_1_R2_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L2_Pool_1_R2_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_R2_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_R2_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_R2_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_R2_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 14341743 Both Surviving: 12919202 (90.08%) Forward Only Surviving: 1162495 (8.11%) Reverse Only Surviving: 146682 (1.02%) Dropped: 113364 (0.79%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L2_Pool_1_R2_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L2_Pool_1_R2_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_R2_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_R2_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_R2_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_R2_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 14709193 Both Surviving: 13176163 (89.58%) Forward Only Surviving: 1257309 (8.55%) Reverse Only Surviving: 154790 (1.05%) Dropped: 120931 (0.82%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L2_Pool_1_Sierra_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L2_Pool_1_Sierra_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Sierra_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Sierra_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Sierra_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Sierra_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 14649731 Both Surviving: 13046594 (89.06%) Forward Only Surviving: 1333989 (9.11%) Reverse Only Surviving: 148435 (1.01%) Dropped: 120713 (0.82%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L2_Pool_1_Sierra_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L2_Pool_1_Sierra_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Sierra_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Sierra_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Sierra_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Sierra_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 14706376 Both Surviving: 13582577 (92.36%) Forward Only Surviving: 862871 (5.87%) Reverse Only Surviving: 152048 (1.03%) Dropped: 108880 (0.74%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L2_Pool_1_Y023_5_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L2_Pool_1_Y023_5_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y023_5_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y023_5_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y023_5_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y023_5_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 23433370 Both Surviving: 21217948 (90.55%) Forward Only Surviving: 1800237 (7.68%) Reverse Only Surviving: 229770 (0.98%) Dropped: 185415 (0.79%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L2_Pool_1_Y023_5_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L2_Pool_1_Y023_5_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y023_5_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y023_5_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y023_5_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y023_5_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 19855103 Both Surviving: 18050236 (90.91%) Forward Only Surviving: 1437046 (7.24%) Reverse Only Surviving: 208179 (1.05%) Dropped: 159642 (0.80%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L2_Pool_1_Y05_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L2_Pool_1_Y05_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y05_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y05_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y05_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y05_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 20802138 Both Surviving: 18860361 (90.67%) Forward Only Surviving: 1551432 (7.46%) Reverse Only Surviving: 219190 (1.05%) Dropped: 171155 (0.82%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L2_Pool_1_Y05_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L2_Pool_1_Y05_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y05_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y05_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y05_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L2_Pool_1_Y05_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 24815725 Both Surviving: 22219028 (89.54%) Forward Only Surviving: 2151965 (8.67%) Reverse Only Surviving: 247897 (1.00%) Dropped: 196835 (0.79%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L3_Pool_2_E05_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L3_Pool_2_E05_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_E05_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_E05_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_E05_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_E05_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 23374640 Both Surviving: 21232545 (90.84%) Forward Only Surviving: 1673429 (7.16%) Reverse Only Surviving: 266306 (1.14%) Dropped: 202360 (0.87%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L3_Pool_2_E05_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L3_Pool_2_E05_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_E05_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_E05_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_E05_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_E05_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 18325545 Both Surviving: 16547029 (90.29%) Forward Only Surviving: 1436729 (7.84%) Reverse Only Surviving: 187980 (1.03%) Dropped: 153807 (0.84%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L3_Pool_2_PA_UV2_1.fq.gz 140327_I481_FCC3P1PACXX_L3_Pool_2_PA_UV2_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_UV2_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_UV2_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_UV2_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_UV2_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 12876420 Both Surviving: 11431330 (88.78%) Forward Only Surviving: 1200198 (9.32%) Reverse Only Surviving: 125578 (0.98%) Dropped: 119314 (0.93%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L3_Pool_2_PA_VIS2_1.fq.gz 140327_I481_FCC3P1PACXX_L3_Pool_2_PA_VIS2_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_VIS2_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_VIS2_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_VIS2_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_VIS2_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 14887103 Both Surviving: 13405382 (90.05%) Forward Only Surviving: 1200814 (8.07%) Reverse Only Surviving: 149308 (1.00%) Dropped: 131599 (0.88%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L3_Pool_2_R2_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L3_Pool_2_R2_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_R2_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_R2_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_R2_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_R2_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 13719745 Both Surviving: 12433343 (90.62%) Forward Only Surviving: 1022682 (7.45%) Reverse Only Surviving: 143015 (1.04%) Dropped: 120705 (0.88%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L3_Pool_2_R2_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L3_Pool_2_R2_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_R2_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_R2_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_R2_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_R2_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 12473312 Both Surviving: 11243535 (90.14%) Forward Only Surviving: 987349 (7.92%) Reverse Only Surviving: 133089 (1.07%) Dropped: 109339 (0.88%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L3_Pool_2_Sierra_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L3_Pool_2_Sierra_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Sierra_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Sierra_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Sierra_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Sierra_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 17539499 Both Surviving: 15703735 (89.53%) Forward Only Surviving: 1499272 (8.55%) Reverse Only Surviving: 188299 (1.07%) Dropped: 148193 (0.84%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L3_Pool_2_Sierra_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L3_Pool_2_Sierra_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Sierra_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Sierra_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Sierra_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Sierra_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 16957500 Both Surviving: 14415672 (85.01%) Forward Only Surviving: 2200833 (12.98%) Reverse Only Surviving: 181783 (1.07%) Dropped: 159212 (0.94%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L3_Pool_2_Y023_5_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L3_Pool_2_Y023_5_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y023_5_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y023_5_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y023_5_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y023_5_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 13433259 Both Surviving: 11985546 (89.22%) Forward Only Surviving: 1190311 (8.86%) Reverse Only Surviving: 145660 (1.08%) Dropped: 111742 (0.83%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L3_Pool_2_Y023_5_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L3_Pool_2_Y023_5_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y023_5_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y023_5_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y023_5_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y023_5_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 10257316 Both Surviving: 9133471 (89.04%) Forward Only Surviving: 930543 (9.07%) Reverse Only Surviving: 104099 (1.01%) Dropped: 89203 (0.87%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L3_Pool_2_Y05_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L3_Pool_2_Y05_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y05_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y05_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y05_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y05_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 21014220 Both Surviving: 18594710 (88.49%) Forward Only Surviving: 2022541 (9.62%) Reverse Only Surviving: 215937 (1.03%) Dropped: 181032 (0.86%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L3_Pool_2_Y05_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L3_Pool_2_Y05_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y05_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y05_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y05_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L3_Pool_2_Y05_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 25481535 Both Surviving: 23249613 (91.24%) Forward Only Surviving: 1738970 (6.82%) Reverse Only Surviving: 289808 (1.14%) Dropped: 203144 (0.80%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L4_Pool_3_E05_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L4_Pool_3_E05_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_E05_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_E05_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_E05_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_E05_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 22944752 Both Surviving: 21290250 (92.79%) Forward Only Surviving: 1319519 (5.75%) Reverse Only Surviving: 195306 (0.85%) Dropped: 139677 (0.61%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L4_Pool_3_E05_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L4_Pool_3_E05_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_E05_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_E05_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_E05_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_E05_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 22320782 Both Surviving: 20680963 (92.65%) Forward Only Surviving: 1292377 (5.79%) Reverse Only Surviving: 209199 (0.94%) Dropped: 138243 (0.62%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L4_Pool_3_PA_UV3_1.fq.gz 140327_I481_FCC3P1PACXX_L4_Pool_3_PA_UV3_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_UV3_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_UV3_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_UV3_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_UV3_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 17305118 Both Surviving: 16149084 (93.32%) Forward Only Surviving: 887313 (5.13%) Reverse Only Surviving: 159275 (0.92%) Dropped: 109446 (0.63%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L4_Pool_3_PA_VIS3_1.fq.gz 140327_I481_FCC3P1PACXX_L4_Pool_3_PA_VIS3_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_VIS3_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_VIS3_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_VIS3_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_VIS3_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 16936259 Both Surviving: 15855353 (93.62%) Forward Only Surviving: 834730 (4.93%) Reverse Only Surviving: 146023 (0.86%) Dropped: 100153 (0.59%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L4_Pool_3_R2_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L4_Pool_3_R2_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_R2_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_R2_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_R2_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_R2_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 20195782 Both Surviving: 18724345 (92.71%) Forward Only Surviving: 1168925 (5.79%) Reverse Only Surviving: 178980 (0.89%) Dropped: 123532 (0.61%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L4_Pool_3_R2_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L4_Pool_3_R2_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_R2_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_R2_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_R2_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_R2_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 27645192 Both Surviving: 25978600 (93.97%) Forward Only Surviving: 1257160 (4.55%) Reverse Only Surviving: 250616 (0.91%) Dropped: 158816 (0.57%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L4_Pool_3_Sierra_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L4_Pool_3_Sierra_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Sierra_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Sierra_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Sierra_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Sierra_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 10592790 Both Surviving: 9842687 (92.92%) Forward Only Surviving: 593233 (5.60%) Reverse Only Surviving: 95250 (0.90%) Dropped: 61620 (0.58%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L4_Pool_3_Sierra_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L4_Pool_3_Sierra_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Sierra_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Sierra_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Sierra_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Sierra_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 20678328 Both Surviving: 19214145 (92.92%) Forward Only Surviving: 1156795 (5.59%) Reverse Only Surviving: 183817 (0.89%) Dropped: 123571 (0.60%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L4_Pool_3_Y023_5_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L4_Pool_3_Y023_5_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y023_5_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y023_5_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y023_5_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y023_5_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 14652272 Both Surviving: 13571470 (92.62%) Forward Only Surviving: 864726 (5.90%) Reverse Only Surviving: 126209 (0.86%) Dropped: 89867 (0.61%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L4_Pool_3_Y023_5_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L4_Pool_3_Y023_5_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y023_5_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y023_5_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y023_5_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y023_5_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 9599567 Both Surviving: 8885206 (92.56%) Forward Only Surviving: 568162 (5.92%) Reverse Only Surviving: 85562 (0.89%) Dropped: 60637 (0.63%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV_1.fq.gz 140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 14151149 Both Surviving: 13007575 (91.92%) Forward Only Surviving: 931433 (6.58%) Reverse Only Surviving: 124992 (0.88%) Dropped: 87149 (0.62%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments: -phred64 140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_VIS_1.fq.gz 140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_VIS_2.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_VIS_pairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_VIS_unpairedForward.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_VIS_pairedReverse.fq.gz trimmed/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_VIS_unpairedReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+Multiple cores found: Using 16 threads
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 12717294 Both Surviving: 11889067 (93.49%) Forward Only Surviving: 643440 (5.06%) Reverse Only Surviving: 113079 (0.89%) Dropped: 71708 (0.56%)
+TrimmomaticPE: Completed successfully
