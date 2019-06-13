@@ -18,7 +18,7 @@ These are scripts that perform a single pipeline operation.
 2. alignment_tophat2.sh
 
 # Pipeline Stage Scripts
-These are scripts that perform all operations necessary for an entire stage of the pipeline.
+These are scripts that perform all operations necessary for a stage of the pipeline.
 
 *Adapter Trimming with Quality Control*
 1. trimmingQC_trimmomaticFastqc.sh
