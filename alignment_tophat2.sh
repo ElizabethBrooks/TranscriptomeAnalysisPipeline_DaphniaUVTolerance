@@ -18,4 +18,5 @@ REVERSEARRAY=(trimmed/*pReverse.fq.gz)
 
 #Loop through all forward and reverse paired reads and run tophat2 on each pair
 for f1 in trimmed/*pairedForward.fq.gz; do
-	tophat2 -G /afs/crc.nd.edu/group/hoth/echo_base/genome/dpulex-genepredict-v11.gff -o aligned_tophat2 aligned_tophat2/aligned ${FORWARDARRAY[*]} ${REVERSEARRAY[*]}
+	tophat2 -G /afs/crc.nd.edu/group/hoth/echo_base/genome/dpulex-genepredict-v11.gff -o aligned_tophat2/bam/#sampleName aligned_tophat2/aligned 
+done
