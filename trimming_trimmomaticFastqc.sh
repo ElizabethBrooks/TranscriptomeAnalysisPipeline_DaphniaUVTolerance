@@ -24,15 +24,14 @@ for f1 in *1.fq.gz; do
 		fastqc $f1 --extract
 		#Determine phred score for trimming
 		if grep -iF "Illumina 1.5" "${f1:0:${#f1}-7}"1_fastqc/fastqc_data.txt; then
-			echo "${f1:0:${#f1}-7} phred score is $score"
 			score=64
 		elif grep -iF "Illumina 1.9" "${f1:0:${#f1}-7}"1_fastqc/fastqc_data.txt; then
-			echo "${f1:0:${#f1}-7} phred score is $score"
 			score=33
 		else
 			echo "Illumina encoding not found"
 			exit 1
 		fi
+		echo "${f1:0:${#f1}-7} phred score is $score"
 		#Only QC one file
 		qcCountStart=1
 	fi
