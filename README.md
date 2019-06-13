@@ -8,10 +8,10 @@ Each script is named by the action and the necessary software.
 These are scripts that perform a single pipeline operation.
 
 *Quality Control*
-QC_fastqc.sh
+1. QC_fastqc.sh
 
 *Adapter Trimming*
-trimming_trimmomaticFastqc.sh
+1. trimming_trimmomaticFastqc.sh
 
 *Sequence Alignment*
 1. alignment_hisat2.sh
@@ -22,4 +22,4 @@ trimming_trimmomaticFastqc.sh
 These are scripts that perform all operations necessary for an entire stage of the pipeline.
 
 *Adapter Trimming with Quality Control*
-trimmingQC_trimmomaticFastqc.sh
+1. trimmingQC_trimmomaticFastqc.sh
