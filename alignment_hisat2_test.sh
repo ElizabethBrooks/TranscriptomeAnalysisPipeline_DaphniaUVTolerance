@@ -12,9 +12,7 @@ mkdir aligned_hisat2_test
 module load bio/hisat2/2.1.0
 hisat2-build -f /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_hisat2_test/Daphnia_pulex.allmasked
 
-#Store forward and reverse reads in arrays
-FORWARDARRAY=(trimmed/*pForward.fq.gz)
-REVERSEARRAY=(trimmed/*pReverse.fq.gz)
-
-#Run hisat2 on reads stored in arrays
-hisat2 -q -p 8 -x aligned_hisat2_test/Daphnia_pulex.allmasked -1 "${FORWARDARRAY[*]}" -2 "${REVERSEARRAY[*]}" -S aligned_hisat2_test/output --summary-file alignedSummary_test.txt
+#Loop through all forward and reverse paired reads and run hisat2 on each pair
+for f1 in trimmed/*pForward.fq.gz; do
+	hisat2 -q -p 8 -x aligned_hisat2_test/Daphnia_pulex.allmasked -1 $f1 -2 "${f1:0:${#f1}-14}"pReverse.fq.gz -S aligned_hisat2_test/out/"${f1:0:${#f1}-14}" --summary-file alignedSummary_test.txt
+done
