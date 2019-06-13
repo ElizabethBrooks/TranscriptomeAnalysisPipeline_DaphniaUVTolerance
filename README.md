@@ -15,8 +15,7 @@ These are scripts that perform a single pipeline operation.
 
 *Sequence Alignment*
 1. alignment_hisat2.sh
-2. alignment_hisat2_test.sh
-3. alignment_tophat2.sh
+2. alignment_tophat2.sh
 
 # Pipeline Stage Scripts
 These are scripts that perform all operations necessary for an entire stage of the pipeline.
