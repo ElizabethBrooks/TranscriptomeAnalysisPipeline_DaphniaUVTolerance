@@ -6,7 +6,7 @@ Each script is named by the action and the necessary software.
 
 # Pipeline Component Scripts
 These are scripts that perform a single pipeline operation.
-## Quality Control
+## Quality Control ##
 QC_fastqc.sh
 ## Adapter Trimming
 trimming_trimmomaticFastqc.sh
