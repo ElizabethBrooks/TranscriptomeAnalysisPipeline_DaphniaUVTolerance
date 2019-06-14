@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N alignment_tophat2
+#$ -N alignment_tophat2_jobOutput
 #$ -pe smp 1
 
 #Prepare for alignment

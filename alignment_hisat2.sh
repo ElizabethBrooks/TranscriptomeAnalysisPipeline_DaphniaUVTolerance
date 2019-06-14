@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N alignment_hisat2
+#$ -N alignment_hisat2_jobOutput
 #$ -pe smp 8
 
 #Prepare for mapping
