@@ -4,7 +4,7 @@
 #$ -N optimizedTrimmingQC_trimmomaticFastqc
 #$ -pe smp 1
 #$ -N output
-#$ -t 1-10:3
+#$ -t 1-36:1
 
 #Prepare for adapter trimming and quality control
 #Initialize variables
@@ -32,10 +32,10 @@ for f1 in *1.fq.gz; do
 		elif grep -iF "Illumina 1.9" "${f1:0:${#f1}-7}"1_fastqc/fastqc_data.txt; then
 			score=33
 		else
-			echo "Illumina encoding not found"
+			echo "Illumina encoding not found!"
 			exit 1
 		fi
-		echo "${f1:0:${#f1}-7} phred score is $score"
+		echo "${f1:0:${#f1}-7} phred score is $score."
 		#QC the first read file
 		#...in progress...
 		if grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt; then
@@ -63,4 +63,6 @@ for f1 in *1.fq.gz; do
 		#Only QC one file
 		qcCountEnd=1
 	fi
+	#Report the task number as it is completed
+	echo "Task ${SGE_TASK_ID} has completed!"
 done
