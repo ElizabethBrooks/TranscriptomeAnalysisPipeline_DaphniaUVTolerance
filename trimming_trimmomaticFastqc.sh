@@ -8,15 +8,12 @@
 #Initialize variables
 qcCountStart=0
 score=0
-
 #Load necessary modules for ND CRC servers
 module load bio
 module load bio/trimmomatic/0.32
-
 #Move to folder with .fq.gz read files
 cd ..	
 mkdir trimmed
-
 #Loop through all forward and reverse reads and run trimmomatic on each pair
 for f1 in *1.fq.gz; do
 	#Quality control using fastqc on the first read file
