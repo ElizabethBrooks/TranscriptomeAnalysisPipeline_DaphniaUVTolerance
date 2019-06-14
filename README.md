@@ -1,6 +1,7 @@
 # TranscriptomeAnalysisPipeline_DaphniaUVTolerance
 Bash shell scripts for analyzing short RNA sequence reads for Daphnia UV tolerance treatments.
 
+## RNA-seq Analysis Pipeline
 ![RNA-seq Analysis Pipeline](RNASeq_Workflow_DmelUV.png)
 
 ## Naming
