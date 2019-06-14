@@ -1,6 +1,8 @@
 # TranscriptomeAnalysisPipeline_DaphniaUVTolerance
 Bash shell scripts for analyzing short RNA sequence reads for Daphnia UV tolerance treatments.
 
+These scripts are designed to be run from within a script folder, which should be placed in the directory with the .fq.gz files to be processed.
+
 ## RNA-seq Analysis Pipeline
 ![RNA-seq Analysis Pipeline](RNASeq_Workflow_DmelUV.png)
 
