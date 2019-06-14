@@ -11,6 +11,9 @@
 score=0
 fileIndex=1
 taskFileIndex=0
+#Set the file index to be read by the current task
+taskFileIndex=$((2*SGE_TASK_ID-1))
+echo "Task ${SGE_TASK_ID} will trim starting at file index $taskFileIndex."
 #Load necessary modules for ND CRC servers
 module load bio
 module load bio/trimmomatic/0.32
@@ -20,9 +23,6 @@ cd ..
 mkdir optimizedTrimmed
 #Loop through all forward and reverse reads and run trimmomatic on each pair
 for f1 in *1.fq.gz; do
-	#Set the file index to be read by the current task
-	taskFileIndex=$((2*SGE_TASK_ID-1))
-	echo "Task ${SGE_TASK_ID} will trim starting at file index $taskFileIndex."
 	#Find phred score from first task
 	if [ "${SGE_TASK_ID}" -eq 1 ] && [ "$taskFileIndex" -eq "$fileIndex" ]; then
 		fastqc $f1 --extract
