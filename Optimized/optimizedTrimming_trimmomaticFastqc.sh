@@ -1,7 +1,4 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -N optimizedTrimming_trimmomaticFastqc
 #$ -pe smp 1
 #$ -N optimizedTrimmingQC_trimmomaticFastqc_jobOutput
 #$ -t 1-36:1
