@@ -1,8 +1,10 @@
 #!/bin/bash
 #$ -M ebrooks5@nd.edu
 #$ -m abe
-#$ -N trimmingQC_trimmomaticFastqc
+#$ -N optimizedTrimmingQC_trimmomaticFastqc
 #$ -pe smp 1
+#$ -N output
+#$ -t 1-10:3
 
 #Prepare for adapter trimming and quality control
 #Initialize variables
