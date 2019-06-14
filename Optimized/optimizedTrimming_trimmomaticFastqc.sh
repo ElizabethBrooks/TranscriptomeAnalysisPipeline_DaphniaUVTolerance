@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -N optimizedTrimming_trimmomaticFastqc
 #$ -pe smp 1
-#$ -N output
+#$ -N optimizedTrimmingQC_output
 #$ -t 1-36:1
 
 #Prepare for adapter trimming and quality control
