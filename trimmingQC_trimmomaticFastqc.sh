@@ -29,17 +29,17 @@ for f1 in *1.fq.gz; do
 		elif grep -iF "Illumina 1.9" "${f1:0:${#f1}-7}"1_fastqc/fastqc_data.txt; then
 			score=33
 		else
-			echo "Illumina encoding not found"
+			echo "Illumina encoding not found!"
 			exit 1
 		fi
-		echo "${f1:0:${#f1}-7} phred score is $score"
+		echo "${f1:0:${#f1}-7} phred score is $score."
 		#QC the first read file
 		#...in progress...
 		if grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt; then
-			grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > "${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > trimmed/"${f1:0:${#f1}-7}"1_fastqc_report.txt
 		fi
 		if grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt; then
-			grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > "${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > trimmed/"${f1:0:${#f1}-7}"1_fastqc_report.txt
 		fi
 		#Only QC one file
 		qcCountStart=1
@@ -52,10 +52,10 @@ for f1 in *1.fq.gz; do
 		#...in progress...
 		fastqc trimmed/"${f1:0:${#f1}-7}"pForward.fq.gz --extract
 		if grep -iF "WARN" trimmed/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt; then
-			grep -iF "WARN" trimmed/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt > "${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "WARN" trimmed/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt > trimmed/"${f1:0:${#f1}-7}"1_fastqc_report.txt
 		fi
 		if grep -iF "FAIL" trimmed/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt; then
-			grep -iF "FAIL" trimmed/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt > "${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "FAIL" trimmed/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt > trimmed/"${f1:0:${#f1}-7}"1_fastqc_report.txt
 		fi
 		#Only QC one file
 		qcCountEnd=1
