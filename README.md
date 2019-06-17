@@ -27,3 +27,6 @@ These are scripts that perform all operations necessary for a stage of the pipel
 
 *Adapter Trimming with Quality Control*
 - trimmingQC_trimmomaticFastqc.sh
+
+## Optimized Scripts
+These are scripts that have been optimized for running on ND CRC servers using distributed resources.
