@@ -8,10 +8,13 @@ These scripts are designed to be run from within a script folder, which should b
 
 ## Running Scripts
 - To submit a job to the queue:
+
 $ qsub SCRIPTNAME.sh
 - To view the jobs you have submitted and corresponding task ID numbers:
+
 $ qstat -u USERNAME
 - To delete a job from the queue:
+
 $ qdel TASKIDNUMBER
 
 ## Naming
