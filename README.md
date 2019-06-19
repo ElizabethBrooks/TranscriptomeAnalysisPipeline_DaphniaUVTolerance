@@ -6,13 +6,19 @@ These scripts are designed to be run from within a script folder, which should b
 ## RNA-seq Analysis Pipeline
 ![RNA-seq Analysis Pipeline](RNASeq_Workflow_DmelUV.png)
 
-## Running Scripts
+## Running Scripts on Servers
 - To submit a job to the queue:
 *$ qsub SCRIPTNAME.sh*
 - To view the jobs you have submitted and corresponding task ID numbers:
 *$ qstat -u USERNAME*
 - To delete a job from the queue:
 *$ qdel TASKIDNUMBER*
+
+## Running Scripts Locally
+- To compile the script before running:
+*$ chmod +X SCRIPTNAME.sh*
+- To run a compiled script:
+*$ ./SCRIPTNAME.sh*
 
 ## Naming
 Each script is named by the action and the necessary software.
