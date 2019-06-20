@@ -27,20 +27,20 @@ Each script is named by the action and the necessary software.
 These are scripts that perform a single pipeline operation.
 
 *Quality Control*
-- QC_fastqc.sh
+- **QC_fastqc.sh**
 
 *Adapter Trimming*
-- trimming_trimmomaticFastqc.sh
+- **trimming_trimmomaticFastqc.sh**
 
 *Sequence Alignment*
-- alignment_hisat2.sh
-- alignment_tophat2.sh
+- **alignment_hisat2.sh**
+- **alignment_tophat2.sh**
 
 ## Pipeline Stage Scripts
 These are scripts that perform all operations necessary for a stage of the pipeline.
 
 *Adapter Trimming with Quality Control*
-- trimmingQC_trimmomaticFastqc.sh
+- **trimmingQC_trimmomaticFastqc.sh**
 
 ## Optimized Scripts
 These are scripts that have been optimized for running on ND CRC servers using distributed resources.
