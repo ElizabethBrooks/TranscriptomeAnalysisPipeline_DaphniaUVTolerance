@@ -16,7 +16,7 @@ These scripts are designed to be run from within a script folder, which should b
 
 ## Running Scripts Locally
 - To compile the script before running:
-*$* **chmod +X *SCRIPTNAME*.sh**
+*$* **chmod +x *SCRIPTNAME*.sh**
 - To run a compiled script:
 *$* **./*SCRIPTNAME*.sh**
 
