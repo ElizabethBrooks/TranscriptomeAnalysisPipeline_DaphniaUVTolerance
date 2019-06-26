@@ -10,7 +10,7 @@ cd ..
 mkdir aligned_tophat2
 mkdir aligned_tophat2/out
 module load bio
-genomeFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff"
+genomeFile=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff
 #Build reference genome
 bowtie2-build /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_tophat2/Daphnia_pulex.allmasked
 #Loop through all forward and reverse paired reads and run tophat2 on each pair

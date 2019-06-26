@@ -13,7 +13,7 @@ module load bio
 module load bio/hisat2/2.1.0
 #Build reference genome
 #... add check ...
-hisat1-build -f /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_hisat2/Daphnia_pulex.allmasked
+hisat2-build -f /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_hisat2/Daphnia_pulex.allmasked
 #Loop through all forward and reverse paired reads and run hisat2 on each pair
 # using 8 threads
 for f1 in trimmed/*pForward.fq.gz; do
