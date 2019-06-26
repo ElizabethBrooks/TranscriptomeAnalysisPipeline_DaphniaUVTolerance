@@ -9,6 +9,7 @@
 cd ..
 mkdir aligned_hisat2
 mkdir aligned_hisat2/out
+module load bio
 module load bio/hisat2/2.1.0
 #Build reference genome
 #... add check ...
@@ -16,5 +17,10 @@ hisat1-build -f /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmas
 #Loop through all forward and reverse paired reads and run hisat2 on each pair
 # using 8 threads
 for f1 in trimmed/*pForward.fq.gz; do
-	hisat2 -q -p 8 -x aligned_hisat2/Daphnia_pulex.allmasked -1 $f1 -2 "${f1:0:${#f1}-14}"pReverse.fq.gz -S aligned_hisat2/out/"${f1:8:${#f1}-23}" --summary-file aligned_hisat2/alignedSummary.txt
+	echo "Sample ${f1:8:${#f1}-23} is being aligned..."
+	hisat2 -q -p 8 -x aligned_hisat2/Daphnia_pulex.allmasked -1 $f1 -2 "${f1:0:${#f1}-14}"pReverse.fq.gz -S aligned_hisat2/out/"${f1:8:${#f1}-23}".sam --summary-file aligned_hisat2/alignedSummary.txt
+	#Convert output sam files to bam format for downstream analysis
+	echo "Sample ${f1:8:${#f1}-23} is being converted..."
+	samtools view -bS aligned_hisat2/out/"${f1:8:${#f1}-23}".sam > aligned_hisat2/out/"${f1:8:${#f1}-23}".bam
+	echo "Sample ${f1:8:${#f1}-23} has been aligned and converted!"
 done
