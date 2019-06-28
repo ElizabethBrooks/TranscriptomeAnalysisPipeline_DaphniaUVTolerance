@@ -21,7 +21,7 @@ These scripts are designed to be run from within a script folder, which should b
 **./*SCRIPTNAME*.sh**
 
 ## Naming
-Each script is named by the action and the necessary software.
+Each script is named by the action and the primary software needed to perform the action.
 
 ## Pipeline Component Scripts
 These are scripts that perform a single pipeline operation.
