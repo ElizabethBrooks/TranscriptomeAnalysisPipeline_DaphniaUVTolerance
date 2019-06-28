@@ -56,7 +56,7 @@ These are scripts that have been optimized for running on ND CRC servers using d
     4. Scanning of reads with a 4-base wide sliding window and cutting when the average quality per base drops below 12: *SLIDINGWINDOW:4:15*
     5. Dropping of reads below 36 bases long: *MINLEN:36*
     6. Cutting of specified number of bases from the start of the read: *HEADCROP:13*
- 3. Quality control check the trimmed paired reads with [Samtools][4] to determine if “reads are good enough” to proceed.
+ 3. Quality control check the trimmed paired reads to determine if “reads are good enough” to proceed.
  4. Map trimmed reads using a reference genome to perform sequence alignment with the [HISAT2][5] or [Tophat2][6] packages to
     1. Check the mapping efficiency of each job: *align_summary.txt*
     2. Prepare reads for sorting and counting
