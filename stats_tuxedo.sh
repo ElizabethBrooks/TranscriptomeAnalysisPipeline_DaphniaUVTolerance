@@ -13,7 +13,7 @@ runNum=0
 while [ $dirFlag -eq 0 ]; do
 	mkdir stats_tuxedo_run"$runNum"
 	#Check if the folder already exists
-	if [ $? -ne 0 ] ; then
+	if [ $? -ne 0 ]; then
 		#Increment the folder name
 		let runNum+=1
 	else
