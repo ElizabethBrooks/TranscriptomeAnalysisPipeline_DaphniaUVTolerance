@@ -11,8 +11,6 @@ Sequence Length Distribution: For some sequencing platforms it is entirely norma
 - **Adapter Content:** This can find a number of different sources of bias in the library which can include the presence of read-through adapter sequences building up on the end of your sequences. However, finding the presence of any overrepresented sequences in your library will cause the Kmer plot to be dominated by the Kmers these sequences contain.
 - **Kmer Content:** The Kmer module starts from the assumption that any small fragment of sequence should not have a positional bias in its appearance within a diverse library, and any Kmers with positionally biased enrichment are reported.
 
-----------
-
 ## Manual ##
 - [About][2]
 - [Opening a Sequence File][3]
@@ -31,8 +29,6 @@ Sequence Length Distribution: For some sequencing platforms it is entirely norma
 - [Kmer Content][16]
 - [Per Tile Sequence Quality][17]
 
-----------
-
 ## Example Reports ##
 - [Good Illumina data][18]
 - [Bad Illumina data][19]
@@ -41,7 +37,6 @@ Sequence Length Distribution: For some sequencing platforms it is entirely norma
 - [Reduced Representation BS-Seq][22]
 - [PacBio][23]
 - [454][24]
-
 
   [1]: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
   [2]: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/1%20Introduction/1.1%20What%20is%20FastQC.html
