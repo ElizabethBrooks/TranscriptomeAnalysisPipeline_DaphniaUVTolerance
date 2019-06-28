@@ -1,7 +1,3 @@
-@[toc](RNA-seq Analysis)
-
-----------
-
 ## FastQC Notes ##
 - **Base Sequence Quality:** The majority of the read should be green, and trail off into the yellow quality score range at the end.
 - **Per Tile Sequence Quality:** This allows you to identify machine issues since it allows you to look at the quality scores from each tile across all of your bases to see if there was a loss in quality.
