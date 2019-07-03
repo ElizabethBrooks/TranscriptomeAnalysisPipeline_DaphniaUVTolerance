@@ -29,7 +29,7 @@ done
 for f1 in "$@"; do
 	if [[ $f1 == *"hisat2"* ]]; then
 		#Loop through all forward and reverse paired reads and store the file locations in an array
-		for f2 in "$f1"/out/*; do
+		for f2 in "$f1"/out/*.bam; do
 	    	READARRAY[COUNTER]="$f2.bam, "
 			let COUNTER+=1
 		done
