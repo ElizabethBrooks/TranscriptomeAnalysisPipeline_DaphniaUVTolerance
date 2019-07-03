@@ -2,7 +2,9 @@
 #$ -pe smp 1
 #$ -N optimizedTrimmingQC_trimmomaticFastqc_jobOutput
 #$ -t 1-36:1
-
+#Required modules for ND CRC servers
+module load bio
+module load bio/trimmomatic/0.32
 #Prepare for adapter trimming and quality control
 #Initialize variables
 score=0
@@ -11,9 +13,6 @@ taskFileIndex=0
 #Set the file index to be read by the current task
 taskFileIndex=$((2*SGE_TASK_ID-1))
 echo "Task ${SGE_TASK_ID} will trim starting at file index $taskFileIndex."
-#Load necessary modules for ND CRC servers
-module load bio
-module load bio/trimmomatic/0.32
 #Move to folder with .fq.gz read files
 cd ..	
 cd ..

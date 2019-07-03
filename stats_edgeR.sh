@@ -4,12 +4,14 @@
 #$ -r n
 #$ -N stats_edgeR_jobOutput
 #$ -pe smp 8
-
-#Prepare for alignment
+#Required modules for ND CRC servers
+#module load bio/python/2.7.14
+#module load bio/htseq/0.11.2
+#Prepare for analysis
 cd ..
 dirFlag=0
 runNum=0
-#Make a new directory for each alignment run
+#Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
 	mkdir stats_edgeR_run"$runNum"
 	#Check if the folder already exists
@@ -23,8 +25,6 @@ while [ $dirFlag -eq 0 ]; do
 	fi
 done
 mkdir stats_edgeR_run"$runNum"/sorted
-#module load bio/python/2.7.14
-#module load bio/htseq/0.11.2
 genomeFile=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff
 #Loop through all forward and reverse paired reads and store the file locations in arrays
 for f1 in aligned_tophat2/out/*; do

@@ -3,14 +3,13 @@
 #$ -m abe
 #$ -N QC_fastqc_jobOutput
 #$ -pe smp 1
-
+#Required modules for ND CRC servers
+module load bio
+module load bio/trimmomatic/0.32
 #Prepare for adapter trimming and quality control
 #Initialize variables
 qcCountStart=0
 score=0
-#Load necessary modules for ND CRC servers
-module load bio
-module load bio/trimmomatic/0.32
 #Move to folder with .fq.gz read files
 cd ..
 dirFlag=0

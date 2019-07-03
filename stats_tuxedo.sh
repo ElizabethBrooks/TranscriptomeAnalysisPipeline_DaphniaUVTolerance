@@ -4,12 +4,13 @@
 #$ -r n
 #$ -N stats_tuxedo_jobOutput
 #$ -pe smp 8
-
-#Prepare for alignment
+#Required modules for ND CRC servers
+module load bio/cufflinks/2.2.1
+#Prepare for analysis
 cd ..
 dirFlag=0
 runNum=0
-#Make a new directory for each alignment run
+#Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
 	mkdir stats_tuxedo_run"$runNum"
 	#Check if the folder already exists
@@ -22,9 +23,8 @@ while [ $dirFlag -eq 0 ]; do
 		echo "Creating folder for $runNum run of tuxedo stats analysis..."
 	fi
 done
-module load bio/cufflinks/2.2.1
 COUNTER=0
-#Loop through all forward and reverse paired reads and store the file locations in arrays
+#Loop through all forward and reverse paired reads and store the file locations in an array
 for f1 in aligned_tophat2/out/*; do
         READARRAY[COUNTER]="$f1/accepted_hits.bam, "
         let COUNTER+=1

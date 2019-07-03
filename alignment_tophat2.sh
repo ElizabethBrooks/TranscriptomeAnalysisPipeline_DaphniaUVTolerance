@@ -4,7 +4,8 @@
 #$ -r n
 #$ -N alignment_tophat2_jobOutput
 #$ -pe smp 8
-
+#Required modules for ND CRC servers
+module load bio
 #Prepare for alignment
 cd ..
 dirFlag=0
@@ -23,7 +24,6 @@ while [ $dirFlag -eq 0 ]; do
 	fi
 done
 mkdir aligned_tophat2_run"$runNum"/out
-module load bio
 genomeFile=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff
 #Build reference genome
 bowtie2-build /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_tophat2_run"$runNum"/Daphnia_pulex.allmasked

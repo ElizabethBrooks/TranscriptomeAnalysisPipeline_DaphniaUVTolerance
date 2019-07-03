@@ -4,7 +4,9 @@
 #$ -r n
 #$ -N alignment_hisat2_jobOutput
 #$ -pe smp 8
-
+#Required modules for ND CRC servers
+module load bio
+module load bio/hisat2/2.1.0
 #Prepare for mapping
 cd ..
 dirFlag=0
@@ -23,8 +25,6 @@ while [ $dirFlag -eq 0 ]; do
 	fi
 done
 mkdir aligned_hisat2_run"$runNum"/out
-module load bio
-module load bio/hisat2/2.1.0
 #Build reference genome
 hisat2-build -f /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_hisat2_run"$runNum"/Daphnia_pulex.allmasked
 #Loop through all forward and reverse paired reads and run hisat2 on each pair
