@@ -50,7 +50,7 @@ for f1 in "$@"; do
 	else
 		echo "The $f1 folder or bam files were not found... exiting"
 		exit 1
-	done
+	fi
 	echo "READARRAY[@]"
 	#Run cuffdiff on the aligned reads stored in the file array using 8 threads
 	#cuffdiff -p 8 -o stats_tuxedo_run"$runNum" "$genomeFile" "${READARRAY[@]}"
