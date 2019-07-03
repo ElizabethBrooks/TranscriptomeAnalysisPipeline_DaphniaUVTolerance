@@ -38,7 +38,7 @@ for f1 in *1.fq.gz; do
 		elif grep -iF "Encoding Illumina 1.9" "${f1:0:${#f1}-7}"1_fastqc/fastqc_data.txt; then
 			score=33
 		else
-			echo "Illumina encoding not found"
+			echo "Illumina encoding not found... exiting"
 			exit 1
 		fi
 		#QC the first read file

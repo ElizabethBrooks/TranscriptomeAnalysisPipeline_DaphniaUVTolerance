@@ -10,6 +10,7 @@ module load bio/cufflinks/2.2.1
 cd ..
 dirFlag=0
 runNum=0
+COUNTER=0
 #Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
 	mkdir stats_tuxedo_run"$runNum"
@@ -23,16 +24,25 @@ while [ $dirFlag -eq 0 ]; do
 		echo "Creating folder for $runNum run of tuxedo stats analysis..."
 	fi
 done
-COUNTER=0
-#Loop through all forward and reverse paired reads and store the file locations in an array
-for f1 in aligned_tophat2/out/*; do
-        READARRAY[COUNTER]="$f1/accepted_hits.bam, "
-        let COUNTER+=1
+#Retrieve folders to analyze from the input arguments
+for f1 in "$@"; do
+	if [[ $f1 == *"hisat2"* ]]; then
+
+	elif [[ $f1 == *"tophat2"* ]]; then	
+		#Loop through all forward and reverse paired reads and store the file locations in an array
+		for f2 in aligned_tophat2/out/*; do
+		        READARRAY[COUNTER]="$f2/*.bam, "
+		        let COUNTER+=1
+		done
+	else
+		echo "The $f1 folder or bam files were not found... exiting"
+		exit 1
+	done
+	#Re set the last array element to rmove the last two characters
+	# (extra comma and white space) from the last element of the read file array
+	unset 'READARRAY[${#READARRAY[@]}-1]'
+	READARRAY[COUNTER]="$f2/accepted_hits.bam"
+	genomeFile=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff
+	#Run cuffdiff on the aligned reads stored in the file array using 8 threads
+	cuffdiff -p 8 -o stats_tuxedo_run"$runNum" "$genomeFile" "${READARRAY[@]}"
 done
-#Re set the last array element to rmove the last two characters
-# (extra comma and white space) from the last element of the read file array
-unset 'READARRAY[${#READARRAY[@]}-1]'
-READARRAY[COUNTER]="$f1/accepted_hits.bam"
-genomeFile=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff
-#Run cuffdiff on the aligned reads stored in the file array using 8 threads
-cuffdiff -p 8 -o stats_tuxedo_run"$runNum" "$genomeFile" "${READARRAY[@]}"
