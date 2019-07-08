@@ -5,7 +5,7 @@
 #$ -N stats_tuxedo_jobOutput
 #$ -pe smp 8
 #Required modules for ND CRC servers
-#module load bio/cufflinks/2.2.1
+module load bio/cufflinks/2.2.1
 #Prepare for analysis
 cd ..
 dirFlag=0
@@ -25,19 +25,19 @@ for f1 in "$@"; do
 		analysisMethod=hisat2
 		#Loop through all forward and reverse paired reads and store the file locations in an array
 		for f2 in "$f1"/out/*.bam; do
-	    	READARRAY[COUNTER]="$f2.bam, "
+	    	READARRAY[COUNTER]="$f2, "
 			let COUNTER+=1
 		done
 		#Re set the last array element to rmove the last two characters
 		# (extra comma and white space) from the last element of the read file array
 		unset 'READARRAY[${#READARRAY[@]}-1]'
-		READARRAY[COUNTER]="$f2.bam"
+		READARRAY[COUNTER]="$f2"
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod=tophat2	
 		#Loop through all forward and reverse paired reads and store the file locations in an array
 		for f2 in "$f1"/out/*; do
-	    	READARRAY[COUNTER]="$f2/*.bam, "
+	    	READARRAY[COUNTER]="$f2/accepted_hits.bam, "
 			let COUNTER+=1
 		done
 		#Re set the last array element to rmove the last two characters
@@ -48,7 +48,6 @@ for f1 in "$@"; do
 		echo "The $f1 folder or bam files were not found... exiting"
 		exit 1
 	fi
-	echo ${READARRAY[@]}
 	#Make a new directory for each analysis run
 	while [ $dirFlag -eq 0 ]; do
 		mkdir stats_"$analysisMethod"Tuxedo_run"$runNum"
@@ -65,5 +64,5 @@ for f1 in "$@"; do
 		fi
 	done
 	#Run cuffdiff on the aligned reads stored in the file array using 8 threads
-	#cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" "${READARRAY[@]}"
+	cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" "${READARRAY[@]}"
 done
