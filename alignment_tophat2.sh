@@ -18,7 +18,6 @@ if [ $# -eq 0 ]; then
 fi
 #Build reference genome
 bowtie2-build /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_tophat2_build/Daphnia_pulex.allmasked
-#Loop through all forward and reverse paired reads and run tophat2 on each pair
 #Retrieve folders to analyze from the input arguments
 for f1 in "$@"; do
 	#Make a new directory for each alignment run
@@ -34,6 +33,7 @@ for f1 in "$@"; do
 			echo "Creating folder for $runNum run of tophat2 alignment on $f1 data..."
 		fi
 	done
+	#Loop through all forward and reverse paired reads and run tophat2 on each pair
 	# using 8 threads
 	for f2 in "$f1"/*pForward.fq.gz; do
 		echo "Sample ${f2:8:${#f2}-23} is being aligned..."

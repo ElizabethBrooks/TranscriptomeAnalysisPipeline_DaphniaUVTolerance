@@ -34,13 +34,14 @@ for f1 in "$@"; do
 		fi
 	done
 	#Loop through all forward and reverse paired reads and run hisat2 on each pair
-	# using 8 threads
+	# using 8 threads and samtools to convert output sam files to bam
 	for f2 in "$f1"/*pForward.fq.gz; do
 		echo "Sample ${f2:8:${#f2}-23} is being aligned..."
-		hisat2 -q -p 8 -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:0:${#f2}-14}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:8:${#f2}-23}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt
+		hisat2 -q -p 8 -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:0:${#f2}-14}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:8:${#f2}-23}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt | samtools view -bS aligned_hisat2_run"$runNum"/out/"${f2:8:${#f2}-23}".sam > aligned_hisat2_run"$runNum"/out/"${f2:8:${#f2}-23}".bam
+		#hisat2 -q -p 8 -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:0:${#f2}-14}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:8:${#f2}-23}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt
 		#Convert output sam files to bam format for downstream analysis
-		echo "Sample ${f2:8:${#f2}-23} is being converted..."
-		samtools view -bS aligned_hisat2_run"$runNum"/out/"${f2:8:${#f2}-23}".sam > aligned_hisat2_run"$runNum"/out/"${f2:8:${#f2}-23}".bam
+		#echo "Sample ${f2:8:${#f2}-23} is being converted..."
+		#samtools view -bS aligned_hisat2_run"$runNum"/out/"${f2:8:${#f2}-23}".sam > aligned_hisat2_run"$runNum"/out/"${f2:8:${#f2}-23}".bam
 		echo "Sample ${f2:8:${#f2}-23} has been aligned and converted!"
 	done
 done
