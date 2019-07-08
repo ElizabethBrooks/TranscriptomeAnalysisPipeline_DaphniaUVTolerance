@@ -28,8 +28,7 @@ for f1 in "$@"; do
 	    	READARRAY[COUNTER]="$f2, "
 			let COUNTER+=1
 		done
-		#Re set the last array element to rmove the last two characters
-		# (extra comma and white space) from the last element of the read file array
+		#Re set the last array element to remove the last two characters
 		unset 'READARRAY[${#READARRAY[@]}-1]'
 		READARRAY[COUNTER]="$f2"
 	elif [[ $f1 == *"tophat2"* ]]; then
@@ -40,8 +39,7 @@ for f1 in "$@"; do
 	    	READARRAY[COUNTER]="$f2/accepted_hits.bam, "
 			let COUNTER+=1
 		done
-		#Re set the last array element to rmove the last two characters
-		# (extra comma and white space) from the last element of the read file array
+		#Re set the last array element to remove the last two characters
 		unset 'READARRAY[${#READARRAY[@]}-1]'
 		READARRAY[COUNTER]="$f2/accepted_hits.bam"
 	else
@@ -58,7 +56,7 @@ for f1 in "$@"; do
 		else
 			#Indicate that the folder was successfully made
 			dirFlag=1
-			echo "Creating folder for $runNum run of tuxedo stats analysis of $analysisMethod data..."
+			echo "Creating folder for $runNum run of tuxedo stats analysis of $f1 data..."
 			#Reset the folder name flag for different analysis methods
 			let runNum=0
 		fi
