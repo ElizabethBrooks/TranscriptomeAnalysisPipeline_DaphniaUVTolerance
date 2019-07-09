@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N stats_tuxedo_jobOutput
-#$ -pe smp 8
+#$ -pe smp 8 
 #Required modules for ND CRC servers
 module load bio/cufflinks/2.2.1
 #Prepare for analysis
