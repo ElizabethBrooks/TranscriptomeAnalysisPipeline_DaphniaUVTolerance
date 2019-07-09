@@ -8,7 +8,8 @@ These scripts are designed to be run from within a script folder, which should b
 
 ## Running Scripts on Servers
 - To submit a job to the queue:
-**qsub *SCRIPTNAME*.sh**
+- **qsub *SCRIPTNAME*.sh**
+- **qsub *SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***
 - To view the jobs you have submitted and corresponding task ID numbers:
 **qstat -u *USERNAME***
 - To delete a job from the queue:
@@ -18,7 +19,7 @@ These scripts are designed to be run from within a script folder, which should b
 - To compile the script before running:
 **chmod +x *SCRIPTNAME*.sh**
 - To run a compiled script:
-**./*SCRIPTNAME*.sh**
+**./*SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***
 
 ## Naming
 Each script is named by the action and the primary software needed to perform the action.
@@ -28,19 +29,36 @@ These are scripts that perform a single pipeline operation.
 
 *Quality Control*
 - QC_fastqc.sh
+-- Output: **trimmed_run#/SAMPLENAME_fastqc_report.txt**
 
 *Adapter Trimming*
 - trimming_trimmomaticFastqc.sh
+-- Output: **trimmed_run#**
 
 *Sequence Alignment*
+These scripts will accept any number of folders with reads trimmed using Trimmomatic. A minimum of one folder is expected as input.
 - alignment_hisat2.sh
+-- Input(s): ***trimmed_run0* ... *trimmed_runN***
+-- Output: **aligned_hisat2_run#**
 - alignment_tophat2.sh
+-- Input(s): ***trimmed_run0* ... *trimmed_runN***
+-- Output: **aligned_tophat2_run#**
+
+*Statistical Analysis*
+These scripts will accept a mix of folders with reads aligned using either HISAT2 or Tophat2. A minimum of one folder is expected as input.
+- stats_tuxedo.sh
+-- Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***
+-- Output: **stats_tuxedo_run#**
+- stats_edgeR.sh
+-- Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***
+-- Output: **stats_edgeR_run#**
 
 ## Pipeline Stage Scripts
 These are scripts that perform all operations necessary for a stage of the pipeline.
 
 *Adapter Trimming with Quality Control*
 - trimmingQC_trimmomaticFastqc.sh
+-- Output: **trimmed_run#**
 
 ## Optimized Scripts
 These are scripts that have been optimized for running on ND CRC servers using distributed resources.

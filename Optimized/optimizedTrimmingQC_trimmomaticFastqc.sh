@@ -35,10 +35,10 @@ for f1 in *1.fq.gz; do
 		#QC the first read file
 		#...in progress...
 		if grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt; then
-			grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > optimizedTrimmed/"${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > optimizedTrimmed/"${f1:0:${#f1}-7}"_fastqc_report.txt
 		fi
 		if grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt; then
-			grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > optimizedTrimmed/"${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > optimizedTrimmed/"${f1:0:${#f1}-7}"_fastqc_report.txt
 		fi
 		#Report the task number as QC is completed
 		echo "Task ${SGE_TASK_ID} has completed QC!"
@@ -48,10 +48,10 @@ for f1 in *1.fq.gz; do
 		#...in progress...
 		fastqc optimizedTrimmed/"${f1:0:${#f1}-7}"pForward.fq.gz --extract
 		if grep -iF "WARN" optimizedTrimmed/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt; then
-			grep -iF "WARN" optimizedTrimmed/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt > optimizedTrimmed/"${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "WARN" optimizedTrimmed/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt > optimizedTrimmed/"${f1:0:${#f1}-7}"_fastqc_report.txt
 		fi
 		if grep -iF "FAIL" trimmed/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt; then
-			grep -iF "FAIL" optimizedTrimmed/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt > optimizedTrimmed/"${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "FAIL" optimizedTrimmed/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt > optimizedTrimmed/"${f1:0:${#f1}-7}"_fastqc_report.txt
 		fi
 		#Report the task number as trimming is completed
 		echo "Task ${SGE_TASK_ID} has completed trimming!"

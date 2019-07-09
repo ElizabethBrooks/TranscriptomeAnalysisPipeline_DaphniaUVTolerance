@@ -46,10 +46,10 @@ for f1 in *1.fq.gz; do
 		#QC the first read file
 		#...in progress...
 		if grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt; then
-			grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:0:${#f1}-7}"_fastqc_report.txt
 		fi
 		if grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt; then
-			grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:0:${#f1}-7}"_fastqc_report.txt
 		fi
 		#Only QC one file
 		qcCountStart=1
@@ -62,10 +62,10 @@ for f1 in *1.fq.gz; do
 		#...in progress...
 		fastqc trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pForward.fq.gz --extract
 		if grep -iF "WARN" trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt; then
-			grep -iF "WARN" trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "WARN" trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:0:${#f1}-7}"_fastqc_report.txt
 		fi
 		if grep -iF "FAIL" trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt; then
-			grep -iF "FAIL" trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:0:${#f1}-7}"1_fastqc_report.txt
+			grep -iF "FAIL" trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pForward_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:0:${#f1}-7}"_fastqc_report.txt
 		fi
 		#Only QC one file
 		qcCountEnd=1
