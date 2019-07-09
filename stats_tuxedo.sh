@@ -14,7 +14,7 @@ COUNTER=0
 genomeFile=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
-   	echo "No folder names supplied... exiting"
+   	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
 #Retrieve folders to analyze from the input arguments

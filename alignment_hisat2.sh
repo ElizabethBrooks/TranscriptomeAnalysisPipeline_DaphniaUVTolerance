@@ -13,7 +13,7 @@ dirFlag=0
 runNum=0
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
-   	echo "No folder names supplied... exiting"
+   	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
 #Build reference genome
@@ -37,11 +37,11 @@ for f1 in "$@"; do
 	# using 8 threads and samtools to convert output sam files to bam
 	for f2 in "$f1"/*pForward.fq.gz; do
 		echo "Sample ${f2:13:${#f2}-28} is being aligned..."
-		hisat2 -q -p 8 -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:13:${#f2}-28}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt | samtools view -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".bam
+		hisat2 -q -p 8 -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:13:${#f2}-28}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt | samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".bam
 		#hisat2 -q -p 8 -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:13:${#f2}-28}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt
 		#Convert output sam files to bam format for downstream analysis
 		#echo "Sample ${f2:13:${#f2}-28} is being converted..."
-		#samtools view -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".bam
+		#samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".bam
 		echo "Sample ${f2:13:${#f2}-28} has been aligned and converted!"
 	done
 done
