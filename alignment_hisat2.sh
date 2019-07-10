@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N alignment_hisat2_jobOutput
-#$ -pe smp 1
+#$ -pe smp 8
 #Required modules for ND CRC servers
 module load bio
 module load bio/hisat2/2.1.0
@@ -37,7 +37,7 @@ for f1 in "$@"; do
 	# using 8 threads and samtools to convert output sam files to bam
 	for f2 in "$f1"/*pForward.fq.gz; do
 		echo "Samples $f2 and ${f2:13:${#f2}-28} are being aligned and converted..."
-		hisat2 -q -x aligned_hisat2_run"$runNum"/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:13:${#f2}-28}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt | samtools view -@ 4 -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".bam
+		hisat2 -p 8 -q -x aligned_hisat2_run"$runNum"/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:13:${#f2}-28}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt | samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".bam
 		#hisat2 -p 8 -q -x aligned_hisat2_run"$runNum"/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:13:${#f2}-28}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt
 		#Convert output sam files to bam format for downstream analysis
 		#echo "Samples $f2 and ${f2:13:${#f2}-28} are being converted..."
