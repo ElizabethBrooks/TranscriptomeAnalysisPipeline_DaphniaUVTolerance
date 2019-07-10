@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N alignment_hisat2_jobOutput
-#$ -pe smp 8
+#$ -pe smp 1
 #Required modules for ND CRC servers
 module load bio
 module load bio/hisat2/2.1.0
@@ -16,8 +16,6 @@ if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Build reference genome
-hisat2-build -f /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_hisat2_build/Daphnia_pulex.allmasked
 #Retrieve folders to analyze from the input arguments
 for f1 in "$@"; do
 	#Make a new directory for each alignment run
@@ -33,15 +31,17 @@ for f1 in "$@"; do
 			echo "Creating folder for $runNum run of hisat2 alignment on $f1 data..."
 		fi
 	done
+	#Build reference genome
+	hisat2-build -f /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_hisat2_run"$runNum"/Daphnia_pulex.allmasked
 	#Loop through all forward and reverse paired reads and run hisat2 on each pair
 	# using 8 threads and samtools to convert output sam files to bam
 	for f2 in "$f1"/*pForward.fq.gz; do
-		echo "Sample ${f2:13:${#f2}-28} is being aligned..."
-		hisat2 -q -p 8 -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:13:${#f2}-28}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt | samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".bam
-		#hisat2 -q -p 8 -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:13:${#f2}-28}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt
+		echo "Samples $f2 and ${f2:13:${#f2}-28} are being aligned and converted..."
+		hisat2 -q -x aligned_hisat2_run"$runNum"/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:13:${#f2}-28}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt | samtools view -@ 4 -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".bam
+		#hisat2 -p 8 -q -x aligned_hisat2_run"$runNum"/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:13:${#f2}-28}"pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt
 		#Convert output sam files to bam format for downstream analysis
-		#echo "Sample ${f2:13:${#f2}-28} is being converted..."
+		#echo "Samples $f2 and ${f2:13:${#f2}-28} are being converted..."
 		#samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".bam
-		echo "Sample ${f2:13:${#f2}-28} has been aligned and converted!"
+		echo "Samples $f2 and ${f2:13:${#f2}-28} have been aligned and converted!"
 	done
 done

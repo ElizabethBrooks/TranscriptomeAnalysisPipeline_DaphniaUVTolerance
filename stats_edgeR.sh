@@ -74,14 +74,12 @@ for f1 in "$@"; do
 			echo "Creating folder for $runNum run of edgeR stats analysis..."
 		fi
 	done
-	#Make a folder for the samtools sorted data
-	mkdir stats_edgeR_run"$runNum"/sorted
 	#Loop through all forward and reverse paired reads and store the file locations in arrays
 	for f2 in "$f1"/*pForward.fq.gz; do
 		echo "Sample ${f2:13:${#f2}-28} is being sorted and counted..."
 		#Run samtools to prepare mapped reads for counting
 		# using 8 threads
-		samtools sort -@ 8 -o stats_edgeR_run"$runNum"/sorted/"${f2:13:${#f2}-28}"/accepted_hits.sorted.bam -T /tmp/"${f2:13:${#f2}-28}"/accepted_hits.sorted.bam $f1/accepted_hits.bam
+		samtools sort -@ 8 -o stats_edgeR_run"$runNum"/"${f2:13:${#f2}-28}"/accepted_hits.sorted.bam -T /tmp/"${f2:13:${#f2}-28}"/accepted_hits.sorted.bam $f1/accepted_hits.bam
 		#Run htseq-count to prepare sorted reads for stats analysis in edgeR
 		htseq-count -s no -m union -t gene -i trID $f1/accepted_hits.sorted.bam -i "$genomeFile" > stats_edgeR_run"$runNum"/"${f2:13:${#f2}-28}".counts
 		echo "Sample ${f2:13:${#f2}-28} has been counted!"
