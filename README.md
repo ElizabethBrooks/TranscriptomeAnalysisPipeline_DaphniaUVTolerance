@@ -72,13 +72,13 @@ These are scripts that have been optimized for running on ND CRC servers using d
    6. Cutting of specified number of bases from the start of the read: *HEADCROP:13*
 3. Quality control check the trimmed paired reads to determine if “reads are good enough” to proceed.
 4. Map trimmed reads using a reference genome to perform sequence alignment with the [HISAT2][5] or [Tophat2][6] packages to
-   1. Check the mapping efficiency of each job: *align_summary.txt*
+   1. Check the mapping efficiency of each job
    2. Prepare reads for sorting and counting
 5. Assemble transcripts and quantify samples for differential expression analysis using [Cufflinks][7] or [HTSeq-count][8], depending on chosen statistical analysis package.
 6. Perform statistical analysis by generating read counts with the Tuxedo or [EdgeR][9] pipelines to
    1. Statistically find differences in expression levels
    2. Generate an annotation based on the mapped reads
-   3. Perform differential gene expression analysis on the mapped reads: *accepted_hits.bam*
+   3. Perform differential gene expression analysis on the mapped reads
 
 ## Required Software ##
 * [FastQC][10]: A quality control tool for high throughput raw sequence data. It generates quality reports for NGS data and gives pass/fail results for the following checks: Per base sequence quality, Per sequence quality scores, Per base sequence content, Per base GC content, Per sequence GC content, Per base N content, Sequence length distribution, Sequence duplication levels, Overrepresented sequences, Kmer content. It also has a Graphic User Interface.
