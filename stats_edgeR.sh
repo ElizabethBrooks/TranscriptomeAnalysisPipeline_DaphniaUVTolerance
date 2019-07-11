@@ -79,7 +79,7 @@ for f1 in "$@"; do
 		echo "Sample ${f2:13:${#f2}-28} is being sorted and counted..."
 		#Run samtools to prepare mapped reads for counting
 		# using 8 threads
-		samtools sort -@ 8 -o stats_edgeR_run"$runNum"/"${f2:13:${#f2}-28}"/accepted_hits.sorted.bam -T /tmp/"${f2:13:${#f2}-28}"/accepted_hits.sorted.bam $f1/accepted_hits.bam
+		samtools sort -@ 8 -o stats_edgeR_run"$runNum"/"${f2:13:${#f2}-28}"/accepted_hits.sorted.bam -T /tmp/"${f2:13:${#f2}-28}"/accepted_hits.sorted.bam $f2/accepted_hits.bam
 		#Run htseq-count to prepare sorted reads for stats analysis in edgeR
 		htseq-count -s no -m union -t gene -i trID $f1/accepted_hits.sorted.bam -i "$genomeFile" > stats_edgeR_run"$runNum"/"${f2:13:${#f2}-28}".counts
 		echo "Sample ${f2:13:${#f2}-28} has been counted!"
