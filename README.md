@@ -61,24 +61,24 @@ These are scripts that have been optimized for running on ND CRC servers using d
 
 ## Workflow Summary ##
 1. Quality control check a sample with [FastQC][2] to identify the correct adapter library encoding of illumina pipeline used and corresponding phred.
-  * If *Encoding = Illumina 1.5*, then the phred score is 64  
-  * If *Encoding = Illumina 1.9*, then the phred score is 33  
+   * If *Encoding = Illumina 1.5*, then the phred score is 64  
+   * If *Encoding = Illumina 1.9*, then the phred score is 33  
 2. Perform adapter trimming with [Trimmomatic][3] for paired-end data with two specified input files, and resulting in 4 output files. Output files consist of 2 files for the paired output where both reads survived the processing, and 2 for corresponding unpaired output where a read survived, but the partner read did not. Adapter trimming is achieved by the
-  1. Removal of adapters: *ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10*
-  2. Removal of leading low quality bases with a score below 3: *LEADING:3*
-  3. Removal of trailing low quality bases with a score below 3: *TRAILING:3*
-  4. Scanning of reads with a 4-base wide sliding window and cutting when the average quality per base drops below 12: *SLIDINGWINDOW:4:15*
-  5. Dropping of reads below 36 bases long: *MINLEN:36*
-  6. Cutting of specified number of bases from the start of the read: *HEADCROP:13*
+   1. Removal of adapters: *ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10*
+   2. Removal of leading low quality bases with a score below 3: *LEADING:3*
+   3. Removal of trailing low quality bases with a score below 3: *TRAILING:3*
+   4. Scanning of reads with a 4-base wide sliding window and cutting when the average quality per base drops below 12: *SLIDINGWINDOW:4:15*
+   5. Dropping of reads below 36 bases long: *MINLEN:36*
+   6. Cutting of specified number of bases from the start of the read: *HEADCROP:13*
 3. Quality control check the trimmed paired reads to determine if “reads are good enough” to proceed.
 4. Map trimmed reads using a reference genome to perform sequence alignment with the [HISAT2][5] or [Tophat2][6] packages to
-  1. Check the mapping efficiency of each job: *align_summary.txt*
-  2. Prepare reads for sorting and counting
+   1. Check the mapping efficiency of each job: *align_summary.txt*
+   2. Prepare reads for sorting and counting
 5. Assemble transcripts and quantify samples for differential expression analysis using [Cufflinks][7] or [HTSeq-count][8], depending on chosen statistical analysis package.
 6. Perform statistical analysis by generating read counts with the Tuxedo or [EdgeR][9] pipelines to
-  1. Statistically find differences in expression levels
-  2. Generate an annotation based on the mapped reads
-  3. Perform differential gene expression analysis on the mapped reads: *accepted_hits.bam*
+   1. Statistically find differences in expression levels
+   2. Generate an annotation based on the mapped reads
+   3. Perform differential gene expression analysis on the mapped reads: *accepted_hits.bam*
 
 ## Required Software ##
 * [FastQC][10]: A quality control tool for high throughput raw sequence data. It generates quality reports for NGS data and gives pass/fail results for the following checks: Per base sequence quality, Per sequence quality scores, Per base sequence content, Per base GC content, Per sequence GC content, Per base N content, Sequence length distribution, Sequence duplication levels, Overrepresented sequences, Kmer content. It also has a Graphic User Interface.
