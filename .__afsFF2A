@@ -5,7 +5,7 @@
 #$ -N stats_tuxedo_jobOutput
 #$ -pe smp 8 
 #Required modules for ND CRC servers
-module load bio/cufflinks/2.2.1
+#module load bio/cufflinks/2.2.1
 #Prepare for analysis
 cd ..
 dirFlag=0
@@ -15,7 +15,6 @@ genomeFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.
 repCount=0
 treCount=0
 genCount=0
-readFlag=0
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -42,13 +41,14 @@ while IFS= read -r line; do
 	    	echo "Incorrect number of lines in statsInputs_tuxedo... exiting"
 	    	#exit 1
 	    fi
-	done	
+	done
+	echo "Input file has been read!"
 	let COUNTER+=1
 done < "$inputsFile"
 #Retrieve the number of replicates, genotypes, and samples
-repMax=${#REPARRAY[@]}-1
-treMax=${#TREARRAY[@]}-1
-genMax=${#GENARRAY[@]}-1
+repMax=${#REPARRAY[@]}
+treMax=${#TREARRAY[@]}
+genMax=${#GENARRAY[@]}
 #Retrieve folders to analyze from the input arguments to the script
 COUNTER=0
 for f1 in "$@"; do
@@ -56,11 +56,12 @@ for f1 in "$@"; do
 	if [[ $f1 == *"hisat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod=hisat2
+		echo "Analysis method is $analysisMethod..."
 		#Loop through all forward and reverse paired reads and store the file locations in an array
 		while [ $COUNTER -lt $readMax ]; do
 			for f2 in "$f1"/out/*.bam; do
 				#Determine which read to add next to the set of replicates/samples
-				if [[ $f2 == *${REPARRAY[repCounter]}"_"${GENARRAY[genCounter]}"_"${TREARRAY[treCounter]}* ]]; then
+				if [[ $f2 == *"${REPARRAY[repCounter]}_${TREARRAY[genCounter]}_${GENARRAY[treCounter]}"* ]]; then
 					if [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -ne $genMax ]]; then
 						#Add the last sample to the end of the set of replicates/samples
 						READARRAY[COUNTER]="$f2"
@@ -83,7 +84,8 @@ for f1 in "$@"; do
 						READARRAY[COUNTER]="$f2, "
 						let COUNTER+=1
 						let repCounter+=1
-					fi	
+					fi
+					echo "Read ${READARRAY[COUNTER]} has been added!"
 				fi
 			done
 		done
@@ -91,10 +93,10 @@ for f1 in "$@"; do
 		#Set analysis method for folder naming
 		analysisMethod=tophat2	
 		#Loop through all forward and reverse paired reads and store the file locations in an array
-		while [ $COUNTER -lt $readMax ]; do
-			for f2 in "$f1"/out/*.bam; do
+		for f2 in "$f1"/out/*.bam; do
+			while [ $COUNTER -lt $readMax ]; do
 				#Determine which read to add next to the set of replicates/samples
-				if [[ $f2 == *"${REPARRAY[repCounter]}_${GENARRAY[genCounter]}_${TREARRAY[treCounter]}"* ]]; then
+				if [[ $f2 == *"${REPARRAY[repCounter]}_${TREARRAY[genCounter]}_${GENARRAY[treCounter]}"* ]]; then
 					if [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -ne $genMax ]]; then
 						#Add the last sample to the end of the set of replicates/samples
 						READARRAY[COUNTER]="$f2/accepted_hits.bam"
@@ -145,7 +147,8 @@ for f1 in "$@"; do
 			#Reset the folder name flag for different analysis methods
 			let runNum=0
 		fi
-	done	
+	done
+	echo ${READARRAY[@]}
 	#Run cuffdiff on the aligned reads stored in the file array using 8 threads
-	cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" "${READARRAY[@]}"
+	#cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" "${READARRAY[@]}"
 done

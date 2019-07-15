@@ -5,7 +5,7 @@
 #$ -N stats_tuxedo_jobOutput
 #$ -pe smp 8 
 #Required modules for ND CRC servers
-module load bio/cufflinks/2.2.1
+#module load bio/cufflinks/2.2.1
 #Prepare for analysis
 cd ..
 dirFlag=0
@@ -46,9 +46,9 @@ while IFS= read -r line; do
 	let COUNTER+=1
 done < "$inputsFile"
 #Retrieve the number of replicates, genotypes, and samples
-repMax=${#REPARRAY[@]}-1
-treMax=${#TREARRAY[@]}-1
-genMax=${#GENARRAY[@]}-1
+repMax=${#REPARRAY[@]}
+treMax=${#TREARRAY[@]}
+genMax=${#GENARRAY[@]}
 #Retrieve folders to analyze from the input arguments to the script
 COUNTER=0
 for f1 in "$@"; do
@@ -59,9 +59,21 @@ for f1 in "$@"; do
 		#Loop through all forward and reverse paired reads and store the file locations in an array
 		while [ $COUNTER -lt $readMax ]; do
 			for f2 in "$f1"/out/*.bam; do
-				#Determine which read to add next to the set of replicates/samples
+				#Check if a the current read is already in the array
+				for i in ${READARRAY[*]}; do
+					if [[ $i == $f2 ]]; then
+						#Skip the current read as it was already accounted for
+						readFlag=1
+						#echo $f2
+					fi
+					#echo $i
+				done				
 				if [[ $f2 == *${REPARRAY[repCounter]}"_"${GENARRAY[genCounter]}"_"${TREARRAY[treCounter]}* ]]; then
-					if [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -ne $genMax ]]; then
+					if [[ $readFlag -eq 1 ]]; then
+                                        	#Skip the current read as it was already accounted for
+                                       		#and reset the readFlag
+                                        	readFlag=0			
+					elif [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -ne $genMax ]]; then
 						#Add the last sample to the end of the set of replicates/samples
 						READARRAY[COUNTER]="$f2"
 						let COUNTER+=1
@@ -83,7 +95,8 @@ for f1 in "$@"; do
 						READARRAY[COUNTER]="$f2, "
 						let COUNTER+=1
 						let repCounter+=1
-					fi	
+					fi
+					echo ${READARRAY[COUNTER]}
 				fi
 			done
 		done
@@ -131,6 +144,7 @@ for f1 in "$@"; do
 		echo "The number of reads identified for analysis does not match statsInputs_tuxedo... exiting"
 		exit 1
 	fi
+	echo ${READARRAY[@]}
 	#Make a new directory for each analysis run
 	while [ $dirFlag -eq 0 ]; do
 		mkdir stats_"$analysisMethod"Tuxedo_run"$runNum"
@@ -147,5 +161,5 @@ for f1 in "$@"; do
 		fi
 	done	
 	#Run cuffdiff on the aligned reads stored in the file array using 8 threads
-	cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" "${READARRAY[@]}"
+	#cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" "${READARRAY[@]}"
 done
