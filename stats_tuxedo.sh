@@ -11,7 +11,7 @@ cd ..
 dirFlag=0
 runNum=0
 COUNTER=0
-genomeFile=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff
+genomeFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff"
 repCount=0
 treCount=0
 genCount=0
@@ -21,11 +21,41 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve inputs for number of reads, replicates, genotypes, and treatments
-readMax=${#READARRAY[@]}-1
-repMax=${#REPARRAY[@]}-1
-treMax=${#TREARRAY[@]}-1
-genMax=${#GENARRAY[@]}-1
-#Retrieve folders to analyze from the input arguments
+inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/statsInputs.txt"
+while -r line; do
+	for word in $line; do
+		#Each line contains the tags for the replicates, genotypes, or treatments
+		#with each tag for the category separated by spaces
+	    if [[ COUNTER -eq 0 ]]; then
+	    	readMax=$word
+	    elif [[ COUNTER -eq 1 ]]; then
+	    	REPARRAY[repCount]="$word"
+	    	let repCount+=1
+	    elif [[ COUNTER -eq 2 ]]; then
+	    	TREARRAY[treCount]="$word"
+	    	let treCount+=1
+	    elif [[ COUNTER -eq 3 ]]; then
+	    	GENARRAY[genCount]="$word"
+	    	let genCount+=1
+	    else
+	    	echo "Incorrect number of lines in inputsFile... exiting"
+	    	exit 1
+	    fi
+	    let COUNTER+=1
+	done
+done < "$inputsFile"
+echo ${REPARRAY[@]}
+echo ${TREARRAY[@]}
+echo ${GENARRAY[@]}
+#Retrieve the number of replicates, genotypes, and samples
+repMax=${#REPARRAY[@]}
+treMax=${#TREARRAY[@]}
+genMax=${#GENARRAY[@]}
+echo $repMax
+echo $treMax
+echo $genMax
+#Retrieve folders to analyze from the input arguments to the script
+COUNTER=0
 for f1 in "$@"; do
 	#Determine what analysis method was used for the input folder of data
 	if [[ $f1 == *"hisat2"* ]]; then
@@ -98,6 +128,12 @@ for f1 in "$@"; do
 		done
 	else
 		echo "The $f1 folder or bam files were not found... exiting"
+		exit 1
+	fi
+	#Double check that all input files were found
+	#based on the number of reads specified in the inputsFile
+	if [[ ${#READARRAY[@]} -ne $readMax ]]; then
+		echo "The number of reads identified for analysis does not match the inputsFile... exiting"
 		exit 1
 	fi
 	#Make a new directory for each analysis run
