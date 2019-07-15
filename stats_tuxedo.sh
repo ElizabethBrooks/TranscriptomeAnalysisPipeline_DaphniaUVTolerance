@@ -21,7 +21,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve inputs for number of reads, replicates, genotypes, and treatments
-inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/statsInputs.txt"
+inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/statsInputs_tuxedo.txt"
 while -r line; do
 	for word in $line; do
 		#Each line contains the tags for the replicates, genotypes, or treatments
@@ -38,7 +38,7 @@ while -r line; do
 	    	GENARRAY[genCount]="$word"
 	    	let genCount+=1
 	    else
-	    	echo "Incorrect number of lines in inputsFile... exiting"
+	    	echo "Incorrect number of lines in statsInputs_tuxedo... exiting"
 	    	exit 1
 	    fi
 	    let COUNTER+=1
@@ -133,7 +133,7 @@ for f1 in "$@"; do
 	#Double check that all input files were found
 	#based on the number of reads specified in the inputsFile
 	if [[ ${#READARRAY[@]} -ne $readMax ]]; then
-		echo "The number of reads identified for analysis does not match the inputsFile... exiting"
+		echo "The number of reads identified for analysis does not match statsInputs_tuxedo... exiting"
 		exit 1
 	fi
 	#Make a new directory for each analysis run
