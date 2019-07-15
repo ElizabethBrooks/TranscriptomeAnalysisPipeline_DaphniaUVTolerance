@@ -147,5 +147,5 @@ for f1 in "$@"; do
 		fi
 	done	
 	#Run cuffdiff on the aligned reads stored in the file array using 8 threads
-	cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" "${READARRAY[@]}"
+	cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
 done
