@@ -22,7 +22,7 @@ if [ $# -eq 0 ]; then
 fi
 #Retrieve inputs for number of reads, replicates, genotypes, and treatments
 inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/statsInputs_tuxedo.txt"
-while -r line; do
+while IFS= read -r line; do
 	for word in $line; do
 		#Each line contains the tags for the replicates, genotypes, or treatments
 		#with each tag for the category separated by spaces
@@ -39,21 +39,15 @@ while -r line; do
 	    	let genCount+=1
 	    else
 	    	echo "Incorrect number of lines in statsInputs_tuxedo... exiting"
-	    	exit 1
+	    	#exit 1
 	    fi
-	    let COUNTER+=1
 	done
+	let COUNTER+=1
 done < "$inputsFile"
-echo ${REPARRAY[@]}
-echo ${TREARRAY[@]}
-echo ${GENARRAY[@]}
 #Retrieve the number of replicates, genotypes, and samples
 repMax=${#REPARRAY[@]}
 treMax=${#TREARRAY[@]}
 genMax=${#GENARRAY[@]}
-echo $repMax
-echo $treMax
-echo $genMax
 #Retrieve folders to analyze from the input arguments to the script
 COUNTER=0
 for f1 in "$@"; do
