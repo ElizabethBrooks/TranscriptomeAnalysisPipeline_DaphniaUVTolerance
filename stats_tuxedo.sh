@@ -62,7 +62,7 @@ for f1 in "$@"; do
 	if [[ $f1 == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod=hisat2
-		analysisTag=
+		analysisTag=""
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod=tophat2	
