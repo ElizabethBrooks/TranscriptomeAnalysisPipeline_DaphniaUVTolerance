@@ -5,7 +5,7 @@
 #$ -N stats_tuxedo_jobOutput
 #$ -pe smp 8 
 #Required modules for ND CRC servers
-#module load bio/cufflinks/2.2.1
+module load bio/cufflinks/2.2.1
 #Prepare for analysis
 cd ..
 dirFlag=0
@@ -53,8 +53,8 @@ genMax=${#GENARRAY[@]}-1
 COUNTER=0
 for f1 in "$@"; do
 	#Determine if the folder name was input in the correct format
-	if [[ $f2 == *"/" ]]; then
-		echo "Please enter folder names without a following forward slash (/)... exiting"
+	if [[ $f1 == *\/* ]] || [[ $f1 == *\\* ]]; then
+		echo "Please enter folder names without a trailing forward slash (/)... exiting"
 		exit 1
 	fi	
 	#Determine what analysis method was used for the input folder of data
@@ -128,5 +128,5 @@ for f1 in "$@"; do
 	done
 	echo ${READARRAY[@]}	
 	#Run cuffdiff on the aligned reads stored in the file array using 8 threads
-	#cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
+	cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
 done
