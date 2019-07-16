@@ -7,15 +7,15 @@ These scripts are designed to be run from within a script folder, which should b
 ![RNA-seq Analysis Pipeline](RNASeq_Workflow_DmelUV.png)
 
 ## Running Scripts on Servers
-* To submit a job to the queue:
-  * **qsub *SCRIPTNAME*.sh**  
-  * **qsub *SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***  
+* To submit a trimming job to the queue: **qsub *SCRIPTNAME*.sh** 
+* To submit an alignment or stats job to the queue: **qsub *SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***  
 * To view the jobs you have submitted and corresponding task ID numbers: **qstat -u *USERNAME***
 * To delete a job from the queue: **qdel *TASKIDNUMBER***
 
 ## Running Scripts Locally
 * To compile the script before running: **chmod +x *SCRIPTNAME*.sh**
-* To run a compiled script: **./*SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***
+* To run a compiled trimming script: **./*SCRIPTNAME*.sh
+* To run a compiled alignment or stats script: **./*SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***
 
 ## Naming
 Each script is named by the action and the primary software needed to perform the action.
