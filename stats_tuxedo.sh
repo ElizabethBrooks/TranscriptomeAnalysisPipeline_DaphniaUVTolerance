@@ -139,5 +139,5 @@ for f1 in "$@"; do
 	echo "Beginning statistical analysis of the following data set: "
 	echo ${READARRAY[@]}
 	cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
-	echo "Statistical analysis complete!
+	echo "Statistical analysis complete!"
 done
