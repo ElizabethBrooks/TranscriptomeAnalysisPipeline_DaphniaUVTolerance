@@ -126,7 +126,7 @@ for f1 in "$@"; do
 			let runNum=0
 		fi
 	done
-	echo ${READARRAY[@]}	
+	#echo ${READARRAY[@]}	
 	#Run cuffdiff on the aligned reads stored in the file array using 8 threads
 	cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
 done

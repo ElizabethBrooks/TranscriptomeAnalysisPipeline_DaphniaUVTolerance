@@ -11,44 +11,110 @@ module load bio/htseq/0.11.2
 cd ..
 dirFlag=0
 runNum=0
-genomeFile=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff
+COUNTER=0
+genomeFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff"
+repCount=0
+treCount=0
+genCount=0
+readFlag=0
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve folders to analyze from the input arguments
+#Retrieve inputs for number of reads, replicates, genotypes, and treatments
+inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/statsInputs_edgeR.txt"
+while IFS= read -r line; do
+	for word in $line; do
+		#Each line contains the tags for the replicates, genotypes, or treatments
+		#with each tag for the category separated by spaces
+	    if [[ COUNTER -eq 0 ]]; then
+	    	readMax=$word
+	    elif [[ COUNTER -eq 1 ]]; then
+	    	REPARRAY[repCount]="$word"
+	    	let repCount+=1
+	    elif [[ COUNTER -eq 2 ]]; then
+	    	TREARRAY[treCount]="$word"
+	    	let treCount+=1
+	    elif [[ COUNTER -eq 3 ]]; then
+	    	GENARRAY[genCount]="$word"
+	    	let genCount+=1
+	    else
+	    	echo "Incorrect number of lines in statsInputs_edgeR... exiting"
+	    	#exit 1
+	    fi
+	done	
+	let COUNTER+=1
+done < "$inputsFile"
+#Retrieve the number of replicates, genotypes, and samples
+repMax=${#REPARRAY[@]}-1
+treMax=${#TREARRAY[@]}-1
+genMax=${#GENARRAY[@]}-1
+#Retrieve folders to analyze from the input arguments to the script
+COUNTER=0
 for f1 in "$@"; do
+	#Determine if the folder name was input in the correct format
+	if [[ $f1 == *\/* ]] || [[ $f1 == *\\* ]]; then
+		echo "Please enter folder names without a trailing forward slash (/)... exiting"
+		exit 1
+	fi	
 	#Determine what analysis method was used for the input folder of data
-	if [[ $f1 == *"hisat2"* ]]; then
+	if [[ $f1 == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod=hisat2
-		#Loop through all forward and reverse paired reads and store the file locations in an array
-		for f2 in "$f1"/out/*.bam; do
-	    	READARRAY[COUNTER]="$f2, "
-			let COUNTER+=1
-		done
-		#Re set the last array element to remove the last two characters
-		unset 'READARRAY[${#READARRAY[@]}-1]'
-		READARRAY[COUNTER]="$f2"
+		analysisTag=
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod=tophat2	
-		#Loop through all forward and reverse paired reads and store the file locations in an array
-		for f2 in "$f1"/out/*; do
-	    	READARRAY[COUNTER]="$f2/accepted_hits.bam, "
-			let COUNTER+=1
-		done
-		#Re set the last array element to remove the last two characters
-		unset 'READARRAY[${#READARRAY[@]}-1]'
-		READARRAY[COUNTER]="$f2/accepted_hits.bam"
+		analysisTag="/accepted_hits.bam"
 	else
 		echo "The $f1 folder or bam files were not found... exiting"
 		exit 1
 	fi
+	#Loop through all forward and reverse paired reads and store the file locations in an array
+	while [ $COUNTER -lt $readMax ]; do
+		for f2 in "$f1"/out/*; do
+			#Determine which read to add next to the set of replicates/samples
+			if [[ $f2 == *${REPARRAY[repCounter]}"_"${GENARRAY[genCounter]}"_"${TREARRAY[treCounter]}* ]]; then
+				if [[ $COUNTER -eq $readMax-1 ]]; then
+					#Add the last sample to the end of the set of replicates/samples
+					READARRAY[COUNTER]="$f2$analysisTag"
+					let COUNTER+=1					
+				elif [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -ne $genMax ]]; then
+					#Add the last sample to the end of the set of replicates/samples
+					READARRAY[COUNTER]="$f2$analysisTag"
+					let COUNTER+=1
+					repCounter=0
+					let treCounter+=1
+				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -ne $genMax ]]; then
+					#Add the last sample to the end of the set of replicates/samples
+					READARRAY[COUNTER]="$f2$analysisTag"
+					let COUNTER+=1
+					repCounter=0
+					treCounter=0
+					let genCounter+=1
+				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -eq $genMax ]]; then
+					#Add the last sample to the end of the set of replicates/samples
+					READARRAY[COUNTER]="$f2$analysisTag"
+					let COUNTER+=1
+				else
+					#Add the next sample to the read array for input to cuffdiff
+					READARRAY[COUNTER]="$f2$analysisTag, "
+					let COUNTER+=1
+					let repCounter+=1
+				fi	
+			fi
+		done
+	done
+	#Double check that all input files were found
+	#based on the number of reads specified in the inputsFile
+	if [[ ${#READARRAY[@]} -ne $readMax ]]; then
+		echo "The number of reads identified for analysis does not match statsInputs_edgeR... exiting"
+		exit 1
+	fi
 	#Make a new directory for each analysis run
 	while [ $dirFlag -eq 0 ]; do
-		mkdir stats_"$analysisMethod"Tuxedo_run"$runNum"
+		mkdir stats_"$analysisMethod"EdgeR_run"$runNum"
 		#Check if the folder already exists
 		if [ $? -ne 0 ]; then
 			#Increment the folder name
@@ -56,32 +122,19 @@ for f1 in "$@"; do
 		else
 			#Indicate that the folder was successfully made
 			dirFlag=1
-			echo "Creating folder for $runNum run of tuxedo stats analysis of $f1 data..."
+			echo "Creating folder for $runNum run of edgeR stats analysis of $f1 data..."
 			#Reset the folder name flag for different analysis methods
 			let runNum=0
 		fi
 	done
-	#Make a new directory for each analysis run
-	while [ $dirFlag -eq 0 ]; do
-		mkdir stats_edgeR_run"$runNum"
-		#Check if the folder already exists
-		if [ $? -ne 0 ]; then
-			#Increment the folder name
-			let runNum+=1
-		else
-			#Indicate that the folder was successfully made
-			dirFlag=1
-			echo "Creating folder for $runNum run of edgeR stats analysis..."
-		fi
-	done
-	#Loop through all forward and reverse paired reads and store the file locations in arrays
-	for f2 in "$f1"/*pForward.fq.gz; do
-		echo "Sample ${f2:13:${#f2}-28} is being sorted and counted..."
+	#Loop through all reads and run edgeR analysis
+	for f2 in ${#READARRAY[@]}; do
+		echo "Sample $f2 is being sorted and counted..."
 		#Run samtools to prepare mapped reads for counting
 		# using 8 threads
-		samtools sort -@ 8 -o stats_edgeR_run"$runNum"/"${f2:13:${#f2}-28}"/accepted_hits.sorted.bam -T /tmp/"${f2:13:${#f2}-28}"/accepted_hits.sorted.bam $f2/accepted_hits.bam
+		samtools sort -@ 8 -o stats_edgeR_run"$runNum"/$f2 -T /tmp/$f2 $f2
 		#Run htseq-count to prepare sorted reads for stats analysis in edgeR
-		htseq-count -s no -m union -t gene -i trID $f1/accepted_hits.sorted.bam -i "$genomeFile" > stats_edgeR_run"$runNum"/"${f2:13:${#f2}-28}".counts
-		echo "Sample ${f2:13:${#f2}-28} has been counted!"
+		htseq-count -s no -m union -t gene -i trID $f2 -i "$genomeFile" > stats_edgeR_run"$runNum"/$f2.counts
+		echo "Sample $f2 has been counted!"
 	done
 done
