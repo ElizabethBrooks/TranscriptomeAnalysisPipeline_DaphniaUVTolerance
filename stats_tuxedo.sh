@@ -129,12 +129,12 @@ for f1 in "$@"; do
 	done
 	#echo ${READARRAY[@]}
 	#Loop through all reads and sort bam files for input to cuffdiff
-	for f3 in ${READARRAY[@]}; do
-		echo "Sample ${f3:0:${#f3}-5} is being sorted..."
+	for f3 in "$f1"/out/*; do
+		echo "Sample ${f3:0:${#f3}-4} is being sorted..."
 		#Run samtools to prepare mapped reads for sorting
 		#using 8 threads
-		#samtools sort -@ 8 -o stats_tuxedo_run"$runNum"/${f3:0:${#f3}-3}.sorted.bam -T /tmp/${f3:0:${#f3}-3}.sorted $f3
-		#echo "Sample ${f3:0:${#f3}-5} has been sorted!"
+		#samtools sort -@ 8 -o stats_tuxedo_run"$runNum"/${f3:0:${#f3}-4}.sorted.bam -T /tmp/${f3:0:${#f3}-4}.sorted $f3
+		#echo "Sample ${f3:0:${#f3}-4} has been sorted!"
 	done
 	#Run cuffdiff on the aligned reads stored in the file array using 8 threads
 	#cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
