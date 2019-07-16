@@ -5,6 +5,7 @@
 #$ -N stats_edgeR_jobOutput
 #$ -pe smp 8
 #Required modules for ND CRC servers
+module load bio
 module load bio/python/2.7.14
 module load bio/htseq/0.11.2
 #Prepare for analysis

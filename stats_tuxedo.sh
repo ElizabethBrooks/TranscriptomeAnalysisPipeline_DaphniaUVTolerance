@@ -5,7 +5,8 @@
 #$ -N stats_tuxedo_jobOutput
 #$ -pe smp 8 
 #Required modules for ND CRC servers
-module load bio/cufflinks/2.2.1
+#module laod bio
+#module load bio/cufflinks/2.2.1
 #Prepare for analysis
 cd ..
 dirFlag=0
@@ -126,15 +127,15 @@ for f1 in "$@"; do
 			let runNum=0
 		fi
 	done
-	#echo ${READARRAY[@]}
+	echo ${READARRAY[@]}
 	#Loop through all reads and sort bam files for input to cuffdiff
-	for f2 in ${#READARRAY[@]}; do
-		echo "Sample ${f2:13:${#f2}-3} is being sorted..."
+	for f3 in ${#READARRAY[@]}; do
+		echo "Sample ${f3:13:${#f3}-3} is being sorted..."
 		#Run samtools to prepare mapped reads for sorting
 		#using 8 threads
-		samtools sort -@ 8 -o stats_tuxedo_run"$runNum"/${f2:13:${#f2}-3}.sorted.bam -T /tmp/${f2:13:${#f2}-3}.sorted $f2
-		echo "Sample ${f2:13:${#f2}-3} has been sorted!"
+		#samtools sort -@ 8 -o stats_tuxedo_run"$runNum"/${f3:13:${#f3}-3}.sorted.bam -T /tmp/${f3:13:${#f3}-3}.sorted $f3
+		echo "Sample ${f3:13:${#f3}-3} has been sorted!"
 	done
 	#Run cuffdiff on the aligned reads stored in the file array using 8 threads
-	cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
+	#cuffdiff -p 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
 done
