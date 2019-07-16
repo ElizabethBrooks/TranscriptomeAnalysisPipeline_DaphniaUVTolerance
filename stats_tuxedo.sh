@@ -71,35 +71,44 @@ for f1 in "$@"; do
 		echo "The $f1 folder or bam files were not found... exiting"
 		exit 1
 	fi
+	echo "The number of letters in tag is: ${#analysisTag}"
+	#Loop through all reads and sort bam files for input to cuffdiff
+	for f3 in "$f1"/out/*; do
+		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
+		#Run samtools to prepare mapped reads for sorting
+		#using 8 threads
+		samtools sort -@ 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum"/${f3:24:${#f3}-(28+${#analysisTag})}.sorted.bam -T /tmp/${f3:24:${#f3}-(28+${#analysisTag})}.sorted $f3
+		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} has been sorted!"
+	done
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	while [ $COUNTER -lt $readMax ]; do
-		for f2 in "$f1"/out/*; do
+		for f2 in stats_"$analysisMethod"Tuxedo_run"$runNum"/*.sorted.bam; do
 			#Determine which read to add next to the set of replicates/samples
 			if [[ $f2 == *${REPARRAY[repCounter]}"_"${GENARRAY[genCounter]}"_"${TREARRAY[treCounter]}* ]]; then
 				if [[ $COUNTER -eq $readMax-1 ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2$analysisTag"
+					READARRAY[COUNTER]="$f2"
 					let COUNTER+=1					
 				elif [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -ne $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2$analysisTag"
+					READARRAY[COUNTER]="$f2"
 					let COUNTER+=1
 					repCounter=0
 					let treCounter+=1
 				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -ne $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2$analysisTag"
+					READARRAY[COUNTER]="$f2"
 					let COUNTER+=1
 					repCounter=0
 					treCounter=0
 					let genCounter+=1
 				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -eq $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2$analysisTag"
+					READARRAY[COUNTER]="$f2"
 					let COUNTER+=1
 				else
 					#Add the next sample to the read array for input to cuffdiff
-					READARRAY[COUNTER]="$f2$analysisTag, "
+					READARRAY[COUNTER]="$f2, "
 					let COUNTER+=1
 					let repCounter+=1
 				fi	
@@ -126,14 +135,6 @@ for f1 in "$@"; do
 			#Reset the folder name flag for different analysis methods
 			let runNum=0
 		fi
-	done
-	#Loop through all reads and sort bam files for input to cuffdiff
-	for f3 in "$f1"/out/*; do
-		echo "Sample ${f3:24:${#f3}-28} is being sorted..."
-		#Run samtools to prepare mapped reads for sorting
-		#using 8 threads
-		samtools sort -@ 8 -o stats_tuxedo_run"$runNum"/${f3:24:${#f3}-28}.sorted.bam -T /tmp/${f3:24:${#f3}-28}.sorted $f3
-		echo "Sample ${f3:24:${#f3}-28} has been sorted!"
 	done
 	#Run cuffdiff on the aligned reads stored in the file array using 8 threads
 	echo "Beginning statistical analysis of the following data set: "
