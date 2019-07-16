@@ -71,7 +71,6 @@ for f1 in "$@"; do
 		echo "The $f1 folder or bam files were not found... exiting"
 		exit 1
 	fi
-	echo "The number of letters in tag is: ${#analysisTag}"
 	#Loop through all reads and sort bam files for input to cuffdiff
 	for f3 in "$f1"/out/*; do
 		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
