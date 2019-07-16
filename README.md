@@ -14,7 +14,7 @@ These scripts are designed to be run from within a script folder, which should b
 
 ## Running Scripts Locally
 * To compile the script before running: **chmod +x *SCRIPTNAME*.sh**
-* To run a compiled trimming script: **./*SCRIPTNAME*.sh
+* To run a compiled trimming script: **./*SCRIPTNAME*.sh**
 * To run a compiled alignment or stats script: **./*SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***
 
 ## Naming
@@ -48,6 +48,19 @@ These scripts will accept a mix of folders with reads aligned using either HISAT
 * stats_edgeR.sh
   * Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***  
   * Output: **stats_edgeR_run#**  
+There is a text file with information about the inputs in the **InputData** folder that needs to contain the following information:
+* statsInputs_tuxedo.sh
+  * Line 1: A single number indicating the number of bam files to be analyzed.  
+  * Line 2: A space separated list (sentence) with the tags for the **replicates**, as specified in the sample names. 
+  * Line 3: A space separated list (sentence) with the tags for the **treatments**, as specified in the sample names. 
+  * Line 4: A space separated list (sentence) with the tags for the **genotypes**, as specified in the sample names. 
+  * Line 5: A blank line, necessary for proper reading of the input file by the tuxedo stats script. 
+* statsInputs_edgeR.sh
+  * Line 1: A single number indicating the number of bam files to be analyzed.  
+  * Line 2: A space separated list (sentence) with the tags for the **replicates**, as specified in the sample names. 
+  * Line 3: A space separated list (sentence) with the tags for the **treatments**, as specified in the sample names. 
+  * Line 4: A space separated list (sentence) with the tags for the **genotypes**, as specified in the sample names. 
+  * Line 5: A blank line, necessary for proper reading of the input file by the edgeR stats script. 
 
 ## Pipeline Stage Scripts
 These are scripts that perform all operations necessary for a stage of the pipeline.
