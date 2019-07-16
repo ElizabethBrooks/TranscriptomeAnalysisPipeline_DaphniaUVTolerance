@@ -52,11 +52,16 @@ genMax=${#GENARRAY[@]}-1
 #Retrieve folders to analyze from the input arguments to the script
 COUNTER=0
 for f1 in "$@"; do
+	#Determine if the folder name was input in the correct format
+	if [[ $f2 == *"/" ]]; then
+		echo "Please enter folder names without a following forward slash (/)... exiting"
+		exit 1
+	fi	
 	#Determine what analysis method was used for the input folder of data
-	if [[ $f1 == *"hisat2"* ]]; then
+	if [[ $f1 == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod=hisat2
-		analysisTag=""
+		analysisTag=
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod=tophat2	
@@ -66,36 +71,40 @@ for f1 in "$@"; do
 		exit 1
 	fi
 	#Loop through all forward and reverse paired reads and store the file locations in an array
-		while [ $COUNTER -lt $readMax ]; do
-			for f2 in "$f1"/out/*; do
-				#Determine which read to add next to the set of replicates/samples
-				if [[ $f2 == *${REPARRAY[repCounter]}"_"${GENARRAY[genCounter]}"_"${TREARRAY[treCounter]}* ]]; then
-					if [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -ne $genMax ]]; then
-						#Add the last sample to the end of the set of replicates/samples
-						READARRAY[COUNTER]="$f2$analysisTag"
-						let COUNTER+=1
-						repCounter=0
-						let treCounter+=1
-					elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -ne $genMax ]]; then
-						#Add the last sample to the end of the set of replicates/samples
-						READARRAY[COUNTER]="$f2$analysisTag"
-						let COUNTER+=1
-						repCounter=0
-						treCounter=0
-						let genCounter+=1
-					elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -eq $genMax ]]; then
-						#Add the last sample to the end of the set of replicates/samples
-						READARRAY[COUNTER]="$f2$analysisTag"
-						let COUNTER+=1
-					else
-						#Add the next sample to the read array for input to cuffdiff
-						READARRAY[COUNTER]="$f2$analysisTag, "
-						let COUNTER+=1
-						let repCounter+=1
-					fi	
-				fi
-			done
+	while [ $COUNTER -lt $readMax ]; do
+		for f2 in "$f1"/out/*; do
+			#Determine which read to add next to the set of replicates/samples
+			if [[ $f2 == *${REPARRAY[repCounter]}"_"${GENARRAY[genCounter]}"_"${TREARRAY[treCounter]}* ]]; then
+				if [[ $COUNTER -eq $readMax-1 ]]; then
+					#Add the last sample to the end of the set of replicates/samples
+					READARRAY[COUNTER]="$f2$analysisTag"
+					let COUNTER+=1					
+				elif [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -ne $genMax ]]; then
+					#Add the last sample to the end of the set of replicates/samples
+					READARRAY[COUNTER]="$f2$analysisTag"
+					let COUNTER+=1
+					repCounter=0
+					let treCounter+=1
+				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -ne $genMax ]]; then
+					#Add the last sample to the end of the set of replicates/samples
+					READARRAY[COUNTER]="$f2$analysisTag"
+					let COUNTER+=1
+					repCounter=0
+					treCounter=0
+					let genCounter+=1
+				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -eq $genMax ]]; then
+					#Add the last sample to the end of the set of replicates/samples
+					READARRAY[COUNTER]="$f2$analysisTag"
+					let COUNTER+=1
+				else
+					#Add the next sample to the read array for input to cuffdiff
+					READARRAY[COUNTER]="$f2$analysisTag, "
+					let COUNTER+=1
+					let repCounter+=1
+				fi	
+			fi
 		done
+	done
 	#Double check that all input files were found
 	#based on the number of reads specified in the inputsFile
 	if [[ ${#READARRAY[@]} -ne $readMax ]]; then
