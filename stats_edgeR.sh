@@ -129,12 +129,12 @@ for f1 in "$@"; do
 	done
 	#Loop through all reads and run edgeR analysis
 	for f2 in ${#READARRAY[@]}; do
-		echo "Sample $f2 is being sorted and counted..."
-		#Run samtools to prepare mapped reads for counting
+		echo "Sample ${f2:13:${#f2}-3} is being sorted and counted..."
+		#Run samtools to prepare mapped reads for sorting
 		# using 8 threads
-		samtools sort -@ 8 -o stats_edgeR_run"$runNum"/$f2 -T /tmp/$f2 $f2
+		samtools sort -@ 8 -o stats_tuxedo_run"$runNum"/${f2:13:${#f2}-3}.sorted.bam -T /tmp/${f2:13:${#f2}-3}.sorted $f2
 		#Run htseq-count to prepare sorted reads for stats analysis in edgeR
 		htseq-count -s no -m union -t gene -i trID $f2 -i "$genomeFile" > stats_edgeR_run"$runNum"/$f2.counts
-		echo "Sample $f2 has been counted!"
+		echo "Sample ${f2:13:${#f2}-3} has been counted!"
 	done
 done
