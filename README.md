@@ -23,15 +23,15 @@ Each script is named by the action and the primary software needed to perform th
 ## Pipeline Component Scripts
 These are scripts that perform a single pipeline operation.
 
-*Quality Control*
+### Quality Control
 * QC_fastqc.sh
   * Output: **trimmed_run#/SAMPLENAME_fastqc_report.txt**  
 
-*Adapter Trimming*
+### Adapter Trimming
 * trimming_trimmomaticFastqc.sh
   * Output: **trimmed_run#**  
 
-*Sequence Alignment*
+### Sequence Alignment
 These scripts will accept any number of folders with reads trimmed using Trimmomatic. A minimum of one folder is expected as input.
 * alignment_hisat2.sh
   * Input(s): ***trimmed_run0* ... *trimmed_runN***  
@@ -40,7 +40,7 @@ These scripts will accept any number of folders with reads trimmed using Trimmom
   * Input(s): ***trimmed_run0* ... *trimmed_runN***  
   * Output: **aligned_tophat2_run#**  
 
-*Statistical Analysis*
+### Statistical Analysis
 These scripts will accept a mix of folders with reads aligned using either HISAT2 or Tophat2. A minimum of one folder is expected as input.
 * stats_tuxedo.sh
   * Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***  
@@ -66,7 +66,7 @@ There is a text file with information about the inputs in the **InputData** fold
 ## Pipeline Stage Scripts
 These are scripts that perform all operations necessary for a stage of the pipeline.
 
-*Adapter Trimming with Quality Control*
+### Adapter Trimming with Quality Control
 * trimmingQC_trimmomaticFastqc.sh
   * Output: **trimmed_run#**  
 
