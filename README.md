@@ -48,6 +48,7 @@ These scripts will accept a mix of folders with reads aligned using either HISAT
 * stats_edgeR.sh
   * Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***  
   * Output: **stats_edgeR_run#**  
+
 There is a text file with information about the inputs in the **InputData** folder that needs to contain the following information:
 * statsInputs_tuxedo.sh
   * Line 1: A single number indicating the number of bam files to be analyzed.  
