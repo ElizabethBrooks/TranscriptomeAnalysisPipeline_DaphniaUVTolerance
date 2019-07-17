@@ -76,7 +76,7 @@ for f1 in "$@"; do
 		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
 		#Run samtools to prepare mapped reads for sorting
 		#using 8 threads
-		samtools sort -@ 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum"/${f3:24:${#f3}-(28+${#analysisTag})}.sorted.bam -T /tmp/${f3:24:${#f3}-(28+${#analysisTag})}.sorted $f3
+		samtools sort -@ 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum"/${f3:24:${#f3}-(28+${#analysisTag})}.sorted.bam -T /tmp/"$analysisMethod"Tuxedo/${f3:24:${#f3}-(28+${#analysisTag})}.sorted $f3
 		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} has been sorted!"
 	done
 	#Loop through all forward and reverse paired reads and store the file locations in an array

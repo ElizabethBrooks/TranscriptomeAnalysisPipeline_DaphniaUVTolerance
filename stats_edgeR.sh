@@ -77,47 +77,19 @@ for f1 in "$@"; do
 		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
 		#Run samtools to prepare mapped reads for sorting
 		#using 8 threads
-		samtools sort -@ 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum"/${f3:24:${#f3}-(28+${#analysisTag})}.sorted.bam -T /tmp/${f3:24:${#f3}-(28+${#analysisTag})}.sorted $f3
+		samtools sort -@ 8 -o stats_"$analysisMethod"EdgeR_run"$runNum"/${f3:24:${#f3}-(28+${#analysisTag})}.sorted.bam -T /tmp/"$analysisMethod"EdgeR/${f3:24:${#f3}-(28+${#analysisTag})}.sorted $f3
 		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} has been sorted!"
 	done
 	#Loop through all forward and reverse paired reads and store the file locations in an array
-	while [ $COUNTER -lt $readMax ]; do
-		for f2 in stats_"$analysisMethod"Tuxedo_run"$runNum"/*.sorted.bam; do
-			#Determine which read to add next to the set of replicates/samples
-			if [[ $f2 == *${REPARRAY[repCounter]}"_"${GENARRAY[genCounter]}"_"${TREARRAY[treCounter]}* ]]; then
-				if [[ $COUNTER -eq $readMax-1 ]]; then
-					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2"
-					let COUNTER+=1					
-				elif [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -ne $genMax ]]; then
-					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2"
-					let COUNTER+=1
-					repCounter=0
-					let treCounter+=1
-				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -ne $genMax ]]; then
-					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2"
-					let COUNTER+=1
-					repCounter=0
-					treCounter=0
-					let genCounter+=1
-				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -eq $genMax ]]; then
-					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2"
-					let COUNTER+=1
-				else
-					#Add the next sample to the read array for input to cuffdiff
-					READARRAY[COUNTER]="$f2, "
-					let COUNTER+=1
-					let repCounter+=1
-				fi	
-			fi
-		done
+	for f2 in stats_"$analysisMethod"EdgeR_run"$runNum"/*.sorted.bam; do
+		READARRAY[COUNTER]="$f2, "
+		let COUNTER+=1					
 	done
+	unset 'READARRAY[COUNTER-1]'
+	READARRAY[COUNTER-1]="$f2"
 	#Run htseq-count to prepare sorted reads for stats analysis in edgeR
 	echo "Beginning statistical analysis of the following data set: "
 	echo ${READARRAY[@]}
-	htseq-count -s no -m union -t gene -i trID -o stats_"$analysisMethod"Tuxedo_run"$runNum"/out.counted.sam ${READARRAY[@]} -i "$genomeFile"
-	echo "Sample ${f2:13:${#f2}-3} has been counted!"
+	htseq-count -s no -m union -t gene -i trID -o stats_"$analysisMethod"EdgeR_run"$runNum"/out.counted.sam ${READARRAY[@]} -i "$genomeFile"
+	echo "Reads have been counted!"
 done
