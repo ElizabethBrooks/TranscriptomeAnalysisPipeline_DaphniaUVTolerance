@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N alignment_tophat2_jobOutput
-#$ -pe smp 8
+#$ -pe smp 4
 #Required modules for ND CRC servers
 module load bio
 #Prepare for alignment
@@ -38,7 +38,7 @@ for f1 in "$@"; do
 	# using 8 threads
 	for f2 in "$f1"/*pForward.fq.gz; do
 		echo "Sample ${f2:13:${#f2}-28} is being aligned..."
-		tophat2 -p 8 -G "$genomeFile" -o aligned_tophat2_run"$runNum"/out/"${f2:13:${#f2}-28}" aligned_tophat2_build/Daphnia_pulex.allmasked $f2 "${f2:0:${#f2}-15}"_pReverse.fq.gz
+		tophat2 -p 4 -G "$genomeFile" -o aligned_tophat2_run"$runNum"/out/"${f2:13:${#f2}-28}" aligned_tophat2_build/Daphnia_pulex.allmasked $f2 "${f2:0:${#f2}-15}"_pReverse.fq.gz
 		echo "Sample ${f2:13:${#f2}-28} has been aligned!"
 	done
 done

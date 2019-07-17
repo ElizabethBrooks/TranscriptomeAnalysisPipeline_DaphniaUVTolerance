@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N stats_edgeR_jobOutput
-#$ -pe smp 8
+#$ -pe smp 4
 #Required modules for ND CRC servers
 module load bio
 module load bio/python/2.7.14
@@ -62,11 +62,11 @@ for f1 in "$@"; do
 	#Determine what analysis method was used for the input folder of data
 	if [[ $f1 == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
-		analysisMethod=hisat2
-		analysisTag=
+		analysisMethod="hisat2"
+		analysisTag=""
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
-		analysisMethod=tophat2	
+		analysisMethod="tophat2"	
 		analysisTag="/accepted_hits.bam"
 	else
 		echo "The $f1 folder or bam files were not found... exiting"
@@ -87,12 +87,13 @@ for f1 in "$@"; do
 			let runNum=0
 		fi
 	done
+	#IF
 	#Loop through all reads and sort bam files for input to cuffdiff
 	for f3 in "$f1"/out/*; do
 		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
 		#Run samtools to prepare mapped reads for sorting
-		#using 8 threads
-		samtools sort -@ 8 -o stats_"$analysisMethod"EdgeR_run"$runNum"/${f3:24:${#f3}-(28+${#analysisTag})}.sorted.bam -T /tmp/"$analysisMethod"EdgeR/${f3:24:${#f3}-(28+${#analysisTag})}.sorted $f3
+		#using 4 threads
+		samtools sort -@ 4 -o stats_"$analysisMethod"EdgeR_run"$runNum"/${f3:24:${#f3}-(28+${#analysisTag})}.sorted.bam -T /tmp/"$analysisMethod"EdgeR/${f3:24:${#f3}-(28+${#analysisTag})}.sorted $f3
 		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} has been sorted!"
 	done
 	#Loop through all forward and reverse paired reads and store the file locations in an array
@@ -105,6 +106,7 @@ for f1 in "$@"; do
 	#Run htseq-count to prepare sorted reads for stats analysis in edgeR
 	echo "Beginning statistical analysis of the following data set: "
 	echo ${READARRAY[@]}
+	#ORDER
 	htseq-count -s no -m union -t gene -i trID -o stats_"$analysisMethod"EdgeR_run"$runNum"/out.counted.sam ${READARRAY[@]} -i "$genomeFile"
 	echo "Reads have been counted!"
 done
