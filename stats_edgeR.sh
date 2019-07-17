@@ -72,70 +72,50 @@ for f1 in "$@"; do
 		echo "The $f1 folder or bam files were not found... exiting"
 		exit 1
 	fi
+	#Loop through all reads and sort bam files for input to cuffdiff
+	for f3 in "$f1"/out/*; do
+		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
+		#Run samtools to prepare mapped reads for sorting
+		#using 8 threads
+		samtools sort -@ 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum"/${f3:24:${#f3}-(28+${#analysisTag})}.sorted.bam -T /tmp/${f3:24:${#f3}-(28+${#analysisTag})}.sorted $f3
+		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} has been sorted!"
+	done
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	while [ $COUNTER -lt $readMax ]; do
-		for f2 in "$f1"/out/*; do
+		for f2 in stats_"$analysisMethod"Tuxedo_run"$runNum"/*.sorted.bam; do
 			#Determine which read to add next to the set of replicates/samples
 			if [[ $f2 == *${REPARRAY[repCounter]}"_"${GENARRAY[genCounter]}"_"${TREARRAY[treCounter]}* ]]; then
 				if [[ $COUNTER -eq $readMax-1 ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2$analysisTag"
+					READARRAY[COUNTER]="$f2"
 					let COUNTER+=1					
 				elif [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -ne $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2$analysisTag"
+					READARRAY[COUNTER]="$f2"
 					let COUNTER+=1
 					repCounter=0
 					let treCounter+=1
 				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -ne $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2$analysisTag"
+					READARRAY[COUNTER]="$f2"
 					let COUNTER+=1
 					repCounter=0
 					treCounter=0
 					let genCounter+=1
 				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -eq $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2$analysisTag"
+					READARRAY[COUNTER]="$f2"
 					let COUNTER+=1
 				else
 					#Add the next sample to the read array for input to cuffdiff
-					READARRAY[COUNTER]="$f2$analysisTag, "
+					READARRAY[COUNTER]="$f2, "
 					let COUNTER+=1
 					let repCounter+=1
 				fi	
 			fi
 		done
 	done
-	#Double check that all input files were found
-	#based on the number of reads specified in the inputsFile
-	if [[ ${#READARRAY[@]} -ne $readMax ]]; then
-		echo "The number of reads identified for analysis does not match statsInputs_edgeR... exiting"
-		exit 1
-	fi
-	#Make a new directory for each analysis run
-	while [ $dirFlag -eq 0 ]; do
-		mkdir stats_"$analysisMethod"EdgeR_run"$runNum"
-		#Check if the folder already exists
-		if [ $? -ne 0 ]; then
-			#Increment the folder name
-			let runNum+=1
-		else
-			#Indicate that the folder was successfully made
-			dirFlag=1
-			echo "Creating folder for $runNum run of edgeR stats analysis of $f1 data..."
-			#Reset the folder name flag for different analysis methods
-			let runNum=0
-		fi
-	done
-	#Loop through all reads and run edgeR analysis
-	for f2 in ${#READARRAY[@]}; do
-		echo "Sample ${f2:13:${#f2}-3} is being sorted and counted..."
-		#Run samtools to prepare mapped reads for sorting
-		# using 8 threads
-		samtools sort -@ 8 -o stats_tuxedo_run"$runNum"/${f2:13:${#f2}-3}.sorted.bam -T /tmp/${f2:13:${#f2}-3}.sorted $f2
-		#Run htseq-count to prepare sorted reads for stats analysis in edgeR
-		htseq-count -s no -m union -t gene -i trID $f2 -i "$genomeFile" > stats_edgeR_run"$runNum"/$f2.counts
-		echo "Sample ${f2:13:${#f2}-3} has been counted!"
-	done
+	#Run htseq-count to prepare sorted reads for stats analysis in edgeR
+	htseq-count -s no -m union -t gene -i trID -o stats_"$analysisMethod"Tuxedo_run"$runNum"/out.counted.sam ${READARRAY[@]} -i "$genomeFile"
+	echo "Sample ${f2:13:${#f2}-3} has been counted!"
 done
