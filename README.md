@@ -7,15 +7,15 @@ These scripts are designed to be run from within a script folder, which should b
 ![RNA-seq Analysis Pipeline](RNASeq_Workflow_DmelUV.png)
 
 ## Running Scripts on Servers
-* To submit a job to the queue:
-  * **qsub *SCRIPTNAME*.sh**  
-  * **qsub *SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***  
+* To submit a trimming job to the queue: **qsub *SCRIPTNAME*.sh** 
+* To submit an alignment or stats job to the queue: **qsub *SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***  
 * To view the jobs you have submitted and corresponding task ID numbers: **qstat -u *USERNAME***
 * To delete a job from the queue: **qdel *TASKIDNUMBER***
 
 ## Running Scripts Locally
 * To compile the script before running: **chmod +x *SCRIPTNAME*.sh**
-* To run a compiled script: **./*SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***
+* To run a compiled trimming script: **./*SCRIPTNAME*.sh**
+* To run a compiled alignment or stats script: **./*SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***
 
 ## Naming
 Each script is named by the action and the primary software needed to perform the action.
@@ -23,15 +23,15 @@ Each script is named by the action and the primary software needed to perform th
 ## Pipeline Component Scripts
 These are scripts that perform a single pipeline operation.
 
-*Quality Control*
+### Quality Control
 * QC_fastqc.sh
   * Output: **trimmed_run#/SAMPLENAME_fastqc_report.txt**  
 
-*Adapter Trimming*
+### Adapter Trimming
 * trimming_trimmomaticFastqc.sh
   * Output: **trimmed_run#**  
 
-*Sequence Alignment*
+### Sequence Alignment
 These scripts will accept any number of folders with reads trimmed using Trimmomatic. A minimum of one folder is expected as input.
 * alignment_hisat2.sh
   * Input(s): ***trimmed_run0* ... *trimmed_runN***  
@@ -40,7 +40,7 @@ These scripts will accept any number of folders with reads trimmed using Trimmom
   * Input(s): ***trimmed_run0* ... *trimmed_runN***  
   * Output: **aligned_tophat2_run#**  
 
-*Statistical Analysis*
+### Statistical Analysis
 These scripts will accept a mix of folders with reads aligned using either HISAT2 or Tophat2. A minimum of one folder is expected as input.
 * stats_tuxedo.sh
   * Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***  
@@ -49,10 +49,24 @@ These scripts will accept a mix of folders with reads aligned using either HISAT
   * Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***  
   * Output: **stats_edgeR_run#**  
 
+There is a text file with information about the inputs in the **InputData** folder that needs to contain the following information:
+* statsInputs_tuxedo.sh
+  * Line 1: A single number indicating the number of bam files to be analyzed.  
+  * Line 2: A space separated list (sentence) with the tags for the **replicates**, as specified in the sample names. 
+  * Line 3: A space separated list (sentence) with the tags for the **treatments**, as specified in the sample names. 
+  * Line 4: A space separated list (sentence) with the tags for the **genotypes**, as specified in the sample names. 
+  * Line 5: A blank line, necessary for proper reading of the input file by the tuxedo stats script. 
+* statsInputs_edgeR.sh
+  * Line 1: A single number indicating the number of bam files to be analyzed.  
+  * Line 2: A space separated list (sentence) with the tags for the **replicates**, as specified in the sample names. 
+  * Line 3: A space separated list (sentence) with the tags for the **treatments**, as specified in the sample names. 
+  * Line 4: A space separated list (sentence) with the tags for the **genotypes**, as specified in the sample names. 
+  * Line 5: A blank line, necessary for proper reading of the input file by the edgeR stats script. 
+
 ## Pipeline Stage Scripts
 These are scripts that perform all operations necessary for a stage of the pipeline.
 
-*Adapter Trimming with Quality Control*
+### Adapter Trimming with Quality Control
 * trimmingQC_trimmomaticFastqc.sh
   * Output: **trimmed_run#**  
 
