@@ -72,6 +72,21 @@ for f1 in "$@"; do
 		echo "The $f1 folder or bam files were not found... exiting"
 		exit 1
 	fi
+	#Make a new directory for each analysis run
+	while [ $dirFlag -eq 0 ]; do
+		mkdir stats_"$analysisMethod"EdgeR_run"$runNum"
+		#Check if the folder already exists
+		if [ $? -ne 0 ]; then
+			#Increment the folder name
+			let runNum+=1
+		else
+			#Indicate that the folder was successfully made
+			dirFlag=1
+			echo "Creating folder for $runNum run of edgeR stats analysis of $f1 data..."
+			#Reset the folder name flag for different analysis methods
+			let runNum=0
+		fi
+	done
 	#Loop through all reads and sort bam files for input to cuffdiff
 	for f3 in "$f1"/out/*; do
 		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
