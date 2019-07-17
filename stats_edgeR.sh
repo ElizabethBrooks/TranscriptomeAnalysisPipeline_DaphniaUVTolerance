@@ -116,6 +116,8 @@ for f1 in "$@"; do
 		done
 	done
 	#Run htseq-count to prepare sorted reads for stats analysis in edgeR
+	echo "Beginning statistical analysis of the following data set: "
+	echo ${READARRAY[@]}
 	htseq-count -s no -m union -t gene -i trID -o stats_"$analysisMethod"Tuxedo_run"$runNum"/out.counted.sam ${READARRAY[@]} -i "$genomeFile"
 	echo "Sample ${f2:13:${#f2}-3} has been counted!"
 done
