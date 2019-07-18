@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N stats_tuxedo_jobOutput
-#$ -pe smp 4 
+#$ -pe smp 8
 #Required modules for ND CRC servers
 module load bio
 module load bio/cufflinks/2.2.1
@@ -92,7 +92,7 @@ for f1 in "$@"; do
 		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
 		#Run samtools to prepare mapped reads for sorting
 		#using 4 threads
-		samtools sort -@ 4 -o stats_"$analysisMethod"Tuxedo_run"$runNum"/${f3:24:${#f3}-(28+${#analysisTag})}.sorted.bam -T /tmp/"$analysisMethod"Tuxedo/${f3:24:${#f3}-(28+${#analysisTag})}.sorted $f3
+		samtools sort -@ 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum"/"${f3:24:${#f3}-(28+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"Tuxedo_run"$runNum"_"${f3:24:${#f3}-(28+${#analysisTag})}".sorted $f3
 		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} has been sorted!"
 	done
 	#Loop through all forward and reverse paired reads and store the file locations in an array
@@ -140,11 +140,11 @@ for f1 in "$@"; do
 		echo "The number of reads identified for analysis does not match statsInputs_tuxedo... exiting"
 		exit 1
 	fi
-	#Run cuffdiff on the aligned reads stored in the file array using 4 threads
+	#Run cuffdiff on the aligned reads stored in the file array using 8 threads
 	echo "Beginning statistical analysis of the following data set: "
 	echo ${READARRAY[@]}
 	echo "The following labels will be used to identify samples: "
 	echo ${LABELARRAY[@]}
-	cuffdiff -p 4 -L ${LABELARRAY[@]} -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
+	cuffdiff -p 8 -L ${LABELARRAY[@]} -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
 	echo "Statistical analysis complete!"
 done

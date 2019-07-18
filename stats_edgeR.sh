@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N stats_edgeR_jobOutput
-#$ -pe smp 4
+#$ -pe smp 8
 #Required modules for ND CRC servers
 module load bio
 module load bio/python/2.7.14
@@ -93,7 +93,7 @@ for f1 in "$@"; do
 		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
 		#Run samtools to prepare mapped reads for sorting
 		#using 4 threads
-		samtools sort -@ 4 -o stats_"$analysisMethod"EdgeR_run"$runNum"/${f3:24:${#f3}-(28+${#analysisTag})}.sorted.bam -T /tmp/"$analysisMethod"EdgeR/${f3:24:${#f3}-(28+${#analysisTag})}.sorted $f3
+		samtools sort -@ 8 -o stats_"$analysisMethod"EdgeR_run"$runNum"/"${f3:24:${#f3}-(28+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_run"$runNum"_"${f3:24:${#f3}-(28+${#analysisTag})}".sorted $f3
 		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} has been sorted!"
 	done
 	#Loop through all forward and reverse paired reads and store the file locations in an array
