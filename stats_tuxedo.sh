@@ -107,14 +107,21 @@ for f1 in "$@"; do
 					let COUNTER+=1					
 				elif [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -ne $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2"
+					READARRAY[COUNTER]="$f2 "
+					LABELARRAY[COUNTER]="${GENARRAY[genCounter]}_${TREARRAY[treCounter]}, "
+					let COUNTER+=1
+					repCounter=0
+					let treCounter+=1
+				elif [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -eq $genMax ]]; then
+					#Add the last sample to the end of the set of replicates/samples
+					READARRAY[COUNTER]="$f2 "
 					LABELARRAY[COUNTER]="${GENARRAY[genCounter]}_${TREARRAY[treCounter]}, "
 					let COUNTER+=1
 					repCounter=0
 					let treCounter+=1
 				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -ne $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2"
+					READARRAY[COUNTER]="$f2 "
 					LABELARRAY[COUNTER]="${GENARRAY[genCounter]}_${TREARRAY[treCounter]}, "
 					let COUNTER+=1
 					repCounter=0
@@ -122,7 +129,7 @@ for f1 in "$@"; do
 					let genCounter+=1
 				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -eq $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY[COUNTER]="$f2"
+					READARRAY[COUNTER]="$f2 "
 					LABELARRAY[COUNTER]="${GENARRAY[genCounter]}_${TREARRAY[treCounter]}, "
 					let COUNTER+=1
 				else
@@ -145,6 +152,6 @@ for f1 in "$@"; do
 	echo ${READARRAY[@]}
 	echo "The following labels will be used to identify samples: "
 	echo ${LABELARRAY[@]}
-	cuffdiff -p 8 -L ${LABELARRAY[@]} -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
+	cuffdiff -p 8 -L ${LABELARRAY[@]} -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" "${READARRAY[@]}"
 	echo "Statistical analysis complete!"
 done
