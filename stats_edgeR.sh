@@ -107,6 +107,6 @@ for f1 in "$@"; do
 	echo "Beginning statistical analysis of the following data set: "
 	echo ${READARRAY[@]}
 	#ORDER
-	htseq-count -s no -m union -t gene -i trID -o stats_"$analysisMethod"EdgeR_run"$runNum"/out.counted.sam ${READARRAY[@]} -i "$genomeFile"
+	htseq-count -f bam -s no -m union -t gene -i trID -o stats_"$analysisMethod"EdgeR_run"$runNum"/out.counted.sam ${READARRAY[@]} -i "$genomeFile"
 	echo "Reads have been counted!"
 done
