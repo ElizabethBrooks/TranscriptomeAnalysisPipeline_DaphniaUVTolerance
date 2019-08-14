@@ -16,9 +16,11 @@ if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Build reference genome
+#Build reference genome if folder does not exist
 mkdir aligned_tophat2_build
-bowtie2-build /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_tophat2_build/Daphnia_pulex.allmasked
+if [ $? -eq 0 ]; then
+	bowtie2-build /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_tophat2_build/Daphnia_pulex.allmasked
+fi
 #Retrieve folders to analyze from the input arguments
 for f1 in "$@"; do
 	#Make a new directory for each alignment run
