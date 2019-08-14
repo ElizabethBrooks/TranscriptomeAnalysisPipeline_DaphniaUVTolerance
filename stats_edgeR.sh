@@ -63,7 +63,7 @@ for f1 in "$@"; do
 	if [[ $f1 == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
-		analysisTag=""
+		analysisTag=".bam"
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"	
@@ -90,23 +90,27 @@ for f1 in "$@"; do
 	#IF
 	#Loop through all reads and sort bam files for input to cuffdiff
 	for f3 in "$f1"/out/*; do
-		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
+		echo "Sample ${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})} is being sorted..."
 		#Run samtools to prepare mapped reads for sorting
 		#using 4 threads
-		samtools sort -@ 8 -o stats_"$analysisMethod"EdgeR_run"$runNum"/"${f3:24:${#f3}-(28+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_run"$runNum"_"${f3:24:${#f3}-(28+${#analysisTag})}".sorted $f3
-		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} has been sorted!"
+		samtools sort -@ 8 -o stats_"$analysisMethod"EdgeR_sorted/"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_run"$runNum"_"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})}".sorted $f3
+		echo "Sample ${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})} has been sorted!"
 	done
 	#Loop through all forward and reverse paired reads and store the file locations in an array
-	for f2 in stats_"$analysisMethod"EdgeR_run"$runNum"/*.sorted.bam; do
+	for f2 in stats_"$analysisMethod"EdgeR_sorted/*.sorted.bam; do
 		READARRAY[COUNTER]="$f2, "
-		let COUNTER+=1					
+		OUTARRAY[COUTNER]="stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:(19+${#analysisMethod}):${#f2}-30}.out.counted.sam, "
+		let COUNTER+=1
 	done
 	unset 'READARRAY[COUNTER-1]'
 	READARRAY[COUNTER-1]="$f2"
+	unset 'OUTARRAY[COUNTER-1]'
+	OUTARRAY[COUNTER-1]="stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:(19+${#analysisMethod}):${#f2}-30}.out.counted.sam"
+	echo ${OUTARRAY[@]}
 	#Run htseq-count to prepare sorted reads for stats analysis in edgeR
 	echo "Beginning statistical analysis of the following data set: "
 	echo ${READARRAY[@]}
 	#ORDER
-	htseq-count -f bam -s no -m union -t gene -i trID -o stats_"$analysisMethod"EdgeR_run"$runNum"/out.counted.sam ${READARRAY[@]} -i "$genomeFile"
+	htseq-count -f bam -s no -m union -t gene -i trID -o ${OUTARRAY[@]} ${READARRAY[@]} -i "$genomeFile"
 	echo "Reads have been counted!"
 done
