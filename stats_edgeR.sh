@@ -95,9 +95,11 @@ for f1 in "$@"; do
 			echo "Sample ${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})} is being sorted..."
 			#Run samtools to prepare mapped reads for sorting
 			#using 4 threads
-			samtools sort -@ 8 -o stats_"$analysisMethod"EdgeR_sorted/"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_run"$runNum"_"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})}".sorted $f3
+			samtools sort -@ 8 -o stats_"$analysisMethod"EdgeR_sorted/"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})}".sorted $f3
 			echo "Sample ${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})} has been sorted!"
 		done
+	else
+		echo "Folder of sorted files already exists, skipping sorting..."
 	fi
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	for f2 in stats_"$analysisMethod"EdgeR_sorted/*.sorted.bam; do

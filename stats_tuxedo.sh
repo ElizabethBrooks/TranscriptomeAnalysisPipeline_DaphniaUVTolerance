@@ -86,18 +86,23 @@ for f1 in "$@"; do
 			let runNum=0
 		fi
 	done
-	#IF
-	#Loop through all reads and sort bam files for input to cuffdiff
-	for f3 in "$f1"/out/*; do
-		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
-		#Run samtools to prepare mapped reads for sorting
-		#using 4 threads
-		samtools sort -@ 8 -o stats_"$analysisMethod"Tuxedo_run"$runNum"/"${f3:24:${#f3}-(28+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"Tuxedo_run"$runNum"_"${f3:24:${#f3}-(28+${#analysisTag})}".sorted $f3
-		echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} has been sorted!"
-	done
+	#Sort input bam files if folder does not already exist
+	mkdir stats_"$analysisMethod"Tuxedo_sorted
+	if [ $? -eq 0 ]; then
+		#Loop through all reads and sort bam files for input to cuffdiff
+		for f3 in "$f1"/out/*; do
+			echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
+			#Run samtools to prepare mapped reads for sorting
+			#using 4 threads
+			samtools sort -@ 8 -o stats_"$analysisMethod"Tuxedo_sorted/"${f3:24:${#f3}-(28+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"Tuxedo_sorted_"${f3:24:${#f3}-(28+${#analysisTag})}".sorted $f3
+			echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} has been sorted!"
+		done
+	else
+		echo "Folder of sorted files already exists, skipping sorting..."
+	fi
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	while [ $COUNTER -lt $readMax ]; do
-		for f2 in stats_"$analysisMethod"Tuxedo_run"$runNum"/*.sorted.bam; do
+		for f2 in stats_"$analysisMethod"Tuxedo_sorted/*.sorted.bam; do
 			#Determine which read to add next to the set of replicates/samples
 			if [[ $f2 == *${REPARRAY[repCounter]}"_"${GENARRAY[genCounter]}"_"${TREARRAY[treCounter]}* ]]; then
 				if [[ $COUNTER -eq $readMax-1 ]]; then

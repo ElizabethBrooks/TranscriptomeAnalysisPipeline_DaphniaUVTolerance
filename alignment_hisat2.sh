@@ -19,7 +19,11 @@ fi
 #Build reference genome if folder does not exist
 mkdir aligned_hisat2_build
 if [ $? -eq 0 ]; then
+	echo "Beginning hisat2 build... "
 	hisat2-build -f /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_hisat2_build/Daphnia_pulex.allmasked
+	echo "Hisat2 build complete!"
+else
+	echo "Build already exists, skipping building..."
 fi
 #Retrieve folders to analyze from the input arguments
 for f1 in "$@"; do
