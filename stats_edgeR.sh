@@ -5,9 +5,9 @@
 #$ -N stats_edgeR_jobOutput
 #$ -pe smp 8
 #Required modules for ND CRC servers
-#module load bio
-#module load bio/python/2.7.14
-#module load bio/htseq/0.11.2
+module load bio
+module load bio/python/2.7.14
+module load bio/htseq/0.11.2
 #Prepare for analysis
 cd ..
 dirFlag=0
@@ -64,10 +64,14 @@ for f1 in "$@"; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		analysisTag=".bam"
+		analysisFiles="stats_"$analysisMethod"Tuxedo_sorted/"
+		analysisExtension=""
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"	
 		analysisTag="/accepted_hits.bam"
+		analysisFiles="$f1/out/"
+		analysisExtension="/accepted_hits.bam"
 	else
 		echo "The $f1 folder or bam files were not found... exiting"
 		exit 1
@@ -88,29 +92,31 @@ for f1 in "$@"; do
 		fi
 	done
 	#Sort input bam files if folder does not already exist
-	mkdir stats_"$analysisMethod"EdgeR_sorted
-	if [[ $? -eq 0 && "$analysisMethod" == "hisat2" ]]; then
-		#Loop through all reads and sort bam files for input to cuffdiff
-		for f3 in "$f1"/out/*; do
-			echo "Sample ${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisMethod}+${#analysisTag})} is being sorted..."
-			#Run samtools to prepare mapped reads for sorting
-			#using 4 threads
-			samtools sort -@ 8 -o stats_"$analysisMethod"EdgeR_sorted/"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisMethod}+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisMethod}+${#analysisTag})}".sorted $f3
-			echo "Sample ${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisMethod}+${#analysisTag})} has been sorted!"
-		done
-	else
-		echo "Sorted files already exists, skipping sorting..."
+	if [ "$analysisMethod" == "hisat2" ]; then
+		mkdir stats_"$analysisMethod"EdgeR_sorted
+		if [ $? -eq 0 ]; then
+			#Loop through all reads and sort bam files for input to cuffdiff
+			for f3 in "$f1"/out/*; do
+				echo "Sample ${f3:${#analysisFiles}:${#f3}-(${#analysisFiles}+${#analysisTag})} is being sorted..."
+				#Run samtools to prepare mapped reads for sorting
+				#using 4 threads
+				#samtools sort -@ 8 -o "$analysisFiles/${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisMethod}+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisMethod}+${#analysisTag})}".sorted $f3
+				echo "Sample ${f3:${#analysisFiles}:${#f3}-(${#analysisFiles}+${#analysisTag})} has been sorted!"
+			done
+		else
+			echo "Sorted files already exists, skipping sorting..."
+		fi
 	fi
 	#Loop through all forward and reverse paired reads and store the file locations in an array
-	for f2 in stats_"$analysisMethod"EdgeR_sorted/*.sorted.bam; do
-		READARRAY[COUNTER]="$f2, "
-		OUTARRAY[COUNTER]="stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:(19+${#analysisMethod}):${#f2}-(30+${#analysisMethod})}.out.counted.sam, "
+	for f2 in $analysisFiles*; do
+		READARRAY[COUNTER]="$f2$analysisExtension, "
+		OUTARRAY[COUNTER]="stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:${#f2}-(${#analysisFiles}+${#analysisTag})}.out.counted.sam, "
 		let COUNTER+=1
 	done
 	unset 'READARRAY[COUNTER-1]'
-	READARRAY[COUNTER-1]="$f2"
+	READARRAY[COUNTER-1]="$f2$analysisExtension"
 	unset 'OUTARRAY[COUNTER-1]'
-	OUTARRAY[COUNTER-1]="stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:(19+${#analysisMethod}):${#f2}-(30+${#analysisMethod})}.out.counted.sam"
+	OUTARRAY[COUNTER-1]="stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:${#f2}-(${#analysisFiles}+${#analysisTag})}.out.counted.sam"
 	#Run htseq-count to prepare sorted reads for stats analysis in edgeR
 	echo "Beginning statistical analysis of the following data set: "
 	echo ${READARRAY[@]}

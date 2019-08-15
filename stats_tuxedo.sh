@@ -5,8 +5,8 @@
 #$ -N stats_tuxedo_jobOutput
 #$ -pe smp 8
 #Required modules for ND CRC servers
-module load bio
-module load bio/cufflinks/2.2.1
+#module load bio
+#module load bio/cufflinks/2.2.1
 #Prepare for analysis
 cd ..
 dirFlag=0
@@ -63,10 +63,14 @@ for f1 in "$@"; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		analysisTag=".bam"
+		analysisFiles="stats_"$analysisMethod"Tuxedo_sorted/"
+		analysisExtension=""
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"	
 		analysisTag="/accepted_hits.bam"
+		analysisFiles="$f1/out/"
+		analysisExtension="/accepted_hits.bam"
 	else
 		echo "The $f1 folder or bam files were not found... exiting"
 		exit 1
@@ -87,46 +91,48 @@ for f1 in "$@"; do
 		fi
 	done
 	#Sort input bam files if folder does not already exist
-	mkdir stats_"$analysisMethod"Tuxedo_sorted
-	if [[ $? -eq 0 && "$analysisMethod" == "hisat2" ]]; then
-		#Loop through all reads and sort bam files for input to cuffdiff
-		for f3 in "$f1"/out/*; do
-			echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
-			#Run samtools to prepare mapped reads for sorting
-			#using 4 threads
-			samtools sort -@ 8 -o stats_"$analysisMethod"Tuxedo_sorted/"${f3:24:${#f3}-(28+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"Tuxedo_sorted_"${f3:24:${#f3}-(28+${#analysisTag})}".sorted $f3
-			echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} has been sorted!"
-		done
-	else
-		echo "Sorted files already exists, skipping sorting..."
+	if [ "$analysisMethod" == "hisat2" ]; then
+		mkdir stats_"$analysisMethod"Tuxedo_sorted
+		if [ $? -eq 0 ]; then
+			#Loop through all reads and sort bam files for input to cuffdiff
+			for f3 in "$f1"/out/*; do
+				echo "Sample ${f3:${#analysisFiles}:${#f3}-(${#analysisFiles}+${#analysisTag})} is being sorted..."
+				#Run samtools to prepare mapped reads for sorting
+				#using 4 threads
+				#samtools sort -@ 8 -o "$analysisFiles/${f3:${#analysisFiles}:${#f3}-(${#analysisFiles}+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"Tuxedo_sorted_"${f3:${#analysisFiles}:${#f3}-(${#analysisFiles}+${#analysisTag})}".sorted $f3
+				echo "Sample ${f3:${#analysisFiles}:${#f3}-(${#analysisFiles}+${#analysisTag})} has been sorted!"
+			done
+		else
+			echo "Sorted files already exists, skipping sorting..."
+		fi
 	fi
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	while [ $COUNTER -lt $readMax ]; do
-		for f2 in stats_"$analysisMethod"Tuxedo_sorted/*.sorted.bam; do
+		for f2 in $analysisFiles*; do
 			#Determine which read to add next to the set of replicates/samples
 			if [[ $f2 == *${REPARRAY[repCounter]}"_"${GENARRAY[genCounter]}"_"${TREARRAY[treCounter]}* ]]; then
 				if [[ $COUNTER -eq $readMax-1 ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY+="$f2"
+					READARRAY+="$f2$analysisExtension"
 					LABELARRAY+="${GENARRAY[genCounter]}_${TREARRAY[treCounter]}"
 					let COUNTER+=1					
 				elif [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -ne $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY+="$f2 "
+					READARRAY+="$f2$analysisExtension "
 					LABELARRAY+="${GENARRAY[genCounter]}_${TREARRAY[treCounter]},"
 					let COUNTER+=1
 					repCounter=0
 					let treCounter+=1
 				elif [[ $repCounter -eq $repMax && $treCounter -ne $treMax && $genCounter -eq $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY+="$f2 "
+					READARRAY+="$f2$analysisExtension "
 					LABELARRAY+="${GENARRAY[genCounter]}_${TREARRAY[treCounter]},"
 					let COUNTER+=1
 					repCounter=0
 					let treCounter+=1
 				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -ne $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY+="$f2 "
+					READARRAY+="$f2$analysisExtension "
 					LABELARRAY+="${GENARRAY[genCounter]}_${TREARRAY[treCounter]},"
 					let COUNTER+=1
 					repCounter=0
@@ -134,12 +140,12 @@ for f1 in "$@"; do
 					let genCounter+=1
 				elif [[ $repCounter -eq $repMax && $treCounter -eq $treMax && $genCounter -eq $genMax ]]; then
 					#Add the last sample to the end of the set of replicates/samples
-					READARRAY+="$f2 "
+					READARRAY+="$f2$analysisExtension "
 					LABELARRAY+="${GENARRAY[genCounter]}_${TREARRAY[treCounter]},"
 					let COUNTER+=1
 				else
 					#Add the next sample to the read array for input to cuffdiff
-					READARRAY+="$f2,"
+					READARRAY+="$f2$analysisExtension,"
 					let COUNTER+=1
 					let repCounter+=1
 				fi	
@@ -157,6 +163,6 @@ for f1 in "$@"; do
 	echo ${READARRAY[@]}
 	echo "The following labels will be used to identify samples: "
 	echo ${LABELARRAY[@]}
-	cuffdiff -p 8 -L ${LABELARRAY[@]} -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
+	#cuffdiff -p 8 -L ${LABELARRAY[@]} -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
 	echo "Statistical analysis complete!"
 done
