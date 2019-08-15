@@ -46,12 +46,12 @@ while IFS= read -r line; do
 	done	
 	let COUNTER+=1
 done < "$inputsFile"
+COUNTER=0
 #Retrieve the number of replicates, genotypes, and samples
 repMax=${#REPARRAY[@]}-1
 treMax=${#TREARRAY[@]}-1
 genMax=${#GENARRAY[@]}-1
 #Retrieve folders to analyze from the input arguments to the script
-COUNTER=0
 for f1 in "$@"; do
 	#Determine if the folder name was input in the correct format
 	if [[ $f1 == *\/* ]] || [[ $f1 == *\\* ]]; then
@@ -62,7 +62,8 @@ for f1 in "$@"; do
 	if [[ $f1 == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
-		analysisTag=""
+		analysisTag=".bam"
+		mkdir stats_"$analysisMethod"Tuxedo_sorted
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"	
@@ -87,8 +88,7 @@ for f1 in "$@"; do
 		fi
 	done
 	#Sort input bam files if folder does not already exist
-	mkdir stats_"$analysisMethod"Tuxedo_sorted
-	if [ $? -eq 0 ]; then
+	if [[ $? -eq 0 && "$analysisMethod" == "hisat2" ]]; then
 		#Loop through all reads and sort bam files for input to cuffdiff
 		for f3 in "$f1"/out/*; do
 			echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} is being sorted..."
@@ -98,7 +98,7 @@ for f1 in "$@"; do
 			echo "Sample ${f3:24:${#f3}-(28+${#analysisTag})} has been sorted!"
 		done
 	else
-		echo "Folder of sorted files already exists, skipping sorting..."
+		echo "Sorted files already exists, skipping sorting..."
 	fi
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	while [ $COUNTER -lt $readMax ]; do

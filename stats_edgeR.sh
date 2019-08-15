@@ -47,12 +47,12 @@ while IFS= read -r line; do
 	done	
 	let COUNTER+=1
 done < "$inputsFile"
+COUNTER=0
 #Retrieve the number of replicates, genotypes, and samples
 repMax=${#REPARRAY[@]}-1
 treMax=${#TREARRAY[@]}-1
 genMax=${#GENARRAY[@]}-1
 #Retrieve folders to analyze from the input arguments to the script
-COUNTER=0
 for f1 in "$@"; do
 	#Determine if the folder name was input in the correct format
 	if [[ $f1 == *\/* ]] || [[ $f1 == *\\* ]]; then
@@ -64,6 +64,7 @@ for f1 in "$@"; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		analysisTag=".bam"
+		mkdir stats_"$analysisMethod"EdgeR_sorted
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"	
@@ -88,34 +89,33 @@ for f1 in "$@"; do
 		fi
 	done
 	#Sort input bam files if folder does not already exist
-	mkdir stats_"$analysisMethod"EdgeR_sorted
-	if [ $? -eq 0 ]; then
+	if [[ $? -eq 0 && "$analysisMethod" == "hisat2" ]]; then
 		#Loop through all reads and sort bam files for input to cuffdiff
 		for f3 in "$f1"/out/*; do
-			echo "Sample ${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})} is being sorted..."
+			echo "Sample ${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisMethod}+${#analysisTag})} is being sorted..."
 			#Run samtools to prepare mapped reads for sorting
 			#using 4 threads
-			samtools sort -@ 8 -o stats_"$analysisMethod"EdgeR_sorted/"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})}".sorted $f3
-			echo "Sample ${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisTag})} has been sorted!"
+			samtools sort -@ 8 -o stats_"$analysisMethod"EdgeR_sorted/"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisMethod}+${#analysisTag})}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisMethod}+${#analysisTag})}".sorted $f3
+			echo "Sample ${f3:(18+${#analysisMethod}):${#f3}-(24+${#analysisMethod}+${#analysisTag})} has been sorted!"
 		done
 	else
-		echo "Folder of sorted files already exists, skipping sorting..."
+		echo "Sorted files already exists, skipping sorting..."
 	fi
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	for f2 in stats_"$analysisMethod"EdgeR_sorted/*.sorted.bam; do
 		READARRAY[COUNTER]="$f2, "
-		OUTARRAY[COUTNER]="stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:(19+${#analysisMethod}):${#f2}-30}.out.counted.sam, "
+		OUTARRAY[COUNTER]="stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:(19+${#analysisMethod}):${#f2}-(30+${#analysisMethod})}.out.counted.sam, "
 		let COUNTER+=1
 	done
 	unset 'READARRAY[COUNTER-1]'
 	READARRAY[COUNTER-1]="$f2"
 	unset 'OUTARRAY[COUNTER-1]'
-	OUTARRAY[COUNTER-1]="stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:(19+${#analysisMethod}):${#f2}-30}.out.counted.sam"
-	echo ${OUTARRAY[@]}
+	OUTARRAY[COUNTER-1]="stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:(19+${#analysisMethod}):${#f2}-(30+${#analysisMethod})}.out.counted.sam"
 	#Run htseq-count to prepare sorted reads for stats analysis in edgeR
 	echo "Beginning statistical analysis of the following data set: "
 	echo ${READARRAY[@]}
-	#ORDER
+	echo "Outputs will be written to the following data set: "
+	echo ${OUTARRAY[@]}
 	htseq-count -f bam -s no -m union -t gene -i trID -o ${OUTARRAY[@]} ${READARRAY[@]} -i "$genomeFile"
 	echo "Reads have been counted!"
 done
