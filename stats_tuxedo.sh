@@ -63,7 +63,6 @@ for f1 in "$@"; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		analysisTag=".bam"
-		mkdir stats_"$analysisMethod"Tuxedo_sorted
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"	
@@ -88,6 +87,7 @@ for f1 in "$@"; do
 		fi
 	done
 	#Sort input bam files if folder does not already exist
+	mkdir stats_"$analysisMethod"Tuxedo_sorted
 	if [[ $? -eq 0 && "$analysisMethod" == "hisat2" ]]; then
 		#Loop through all reads and sort bam files for input to cuffdiff
 		for f3 in "$f1"/out/*; do

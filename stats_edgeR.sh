@@ -5,9 +5,9 @@
 #$ -N stats_edgeR_jobOutput
 #$ -pe smp 8
 #Required modules for ND CRC servers
-module load bio
-module load bio/python/2.7.14
-module load bio/htseq/0.11.2
+#module load bio
+#module load bio/python/2.7.14
+#module load bio/htseq/0.11.2
 #Prepare for analysis
 cd ..
 dirFlag=0
@@ -64,7 +64,6 @@ for f1 in "$@"; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		analysisTag=".bam"
-		mkdir stats_"$analysisMethod"EdgeR_sorted
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"	
@@ -89,6 +88,7 @@ for f1 in "$@"; do
 		fi
 	done
 	#Sort input bam files if folder does not already exist
+	mkdir stats_"$analysisMethod"EdgeR_sorted
 	if [[ $? -eq 0 && "$analysisMethod" == "hisat2" ]]; then
 		#Loop through all reads and sort bam files for input to cuffdiff
 		for f3 in "$f1"/out/*; do
@@ -116,6 +116,6 @@ for f1 in "$@"; do
 	echo ${READARRAY[@]}
 	echo "Outputs will be written to the following data set: "
 	echo ${OUTARRAY[@]}
-	htseq-count -f bam -s no -m union -t gene -i trID -o ${OUTARRAY[@]} ${READARRAY[@]} -i "$genomeFile"
+	#htseq-count -f bam -s no -m union -t gene -i trID -o ${OUTARRAY[@]} ${READARRAY[@]} -i "$genomeFile"
 	echo "Reads have been counted!"
 done
