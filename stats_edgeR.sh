@@ -109,8 +109,8 @@ for f1 in "$@"; do
 	fi
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	for f2 in $analysisFiles*; do
-		echo "Beginning statistical analysis of sample $f2$analysisExtension"
-		#htseq-count -f bam -s no -m union -t gene -i trID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}-2)}.out.counted.sam" "$f2$analysisExtension" -i "$genomeFile"
-		echo "Beginning statistical analysis of sample $f2$analysisExtension"
+		echo "Sample ${f2:(${#analysisFiles}-2):(${#f2}-${#analysisFiles}-2)} is being counted..."
+		#htseq-count -f bam -s no -m union -t gene -i trID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}-2)}.out.counted.sam" "${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}-2)}" -i "$genomeFile"
+		echo "Sample ${f2:(${#analysisFiles}-2):(${#f2}-${#analysisFiles}-2)} has been counted!"
 	done
 done
