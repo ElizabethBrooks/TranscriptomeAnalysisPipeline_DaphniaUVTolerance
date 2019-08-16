@@ -91,6 +91,9 @@ for f1 in "$@"; do
 			let runNum=0
 		fi
 	done
+	for f3 in "$f1"/out/*; do
+		echo "Sample ${f3:(${#f1}+0):(${#f3}-0)} is being sorted..."
+	done
 	#Sort input bam files if folder does not already exist
 	if [ "$analysisMethod" == "hisat2" ]; then
 		mkdir "$analysisFiles"
