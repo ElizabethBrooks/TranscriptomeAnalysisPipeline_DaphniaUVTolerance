@@ -100,7 +100,7 @@ for f1 in "$@"; do
 				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#f1}+5)} is being sorted..."
 				#Run samtools to prepare mapped reads for sorting
 				#using 8 threads
-				samtools sort -@ 8 -o "$analysisFiles/${f3:(${#f1}+5):(${#f3}-${#f1}+5)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#f1}+5):(${#f3}-${#f1}+5)}".sorted $f3
+				samtools sort -@ 8 -o "$analysisFiles/${f3:(${#f1}+5):(${#f3}-${#f1}+1)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#f1}+5):(${#f3}-${#f1}+5)}".sorted $f3
 				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#f1}+5)} has been sorted!"
 			done
 		else
@@ -110,7 +110,7 @@ for f1 in "$@"; do
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	for f2 in $analysisFiles*; do
 		echo "Sample $f2$analysisExtension is being counted..."
-		htseq-count -f bam -s no -m union -t gene -i trID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}-2)}.out.counted.sam" "$f2$analysisExtension" -i "$genomeFile"
+		htseq-count -f bam -s no -m union -t gene -i trID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}-2)}.out.counted.sam" "$f2$analysisExtension" "$genomeFile"
 		echo "Sample $f2$analysisExtension has been counted!"
 	done
 done
