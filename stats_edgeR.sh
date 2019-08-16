@@ -5,9 +5,9 @@
 #$ -N stats_edgeR_jobOutput
 #$ -pe smp 8
 #Required modules for ND CRC servers
-#module load bio
-#module load bio/python/2.7.14
-#module load bio/htseq/0.11.2
+module load bio
+module load bio/python/2.7.14
+module load bio/htseq/0.11.2
 #Prepare for analysis
 cd ..
 dirFlag=0
@@ -64,7 +64,7 @@ for f1 in "$@"; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		analysisTag=".bam"
-		analysisFiles="stats_"$analysisMethod"Tuxedo_sorted/"
+		analysisFiles="stats_"$analysisMethod"EdgeR_sorted/"
 		analysisExtension=""
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
@@ -93,13 +93,14 @@ for f1 in "$@"; do
 	done
 	#Sort input bam files if folder does not already exist
 	if [ "$analysisMethod" == "hisat2" ]; then
-		mkdir stats_"$analysisMethod"EdgeR_sorted
+		mkdir "$analysisFiles"
 		if [ $? -eq 0 ]; then
 			#Loop through all reads and sort bam files for input to cuffdiff
 			for f3 in "$f1"/out/*; do
+				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#f1}+5)} is being sorted..."
 				#Run samtools to prepare mapped reads for sorting
 				#using 8 threads
-				#samtools sort -@ 8 -o "$analysisFiles/${f3:(${#f1}+5):(${#f3}-${#f1}+5)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#f1}+5):(${#f3}-${#f1}+5)}".sorted $f3
+				samtools sort -@ 8 -o "$analysisFiles/${f3:(${#f1}+5):(${#f3}-${#f1}+5)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#f1}+5):(${#f3}-${#f1}+5)}".sorted $f3
 				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#f1}+5)} has been sorted!"
 			done
 		else
@@ -108,7 +109,8 @@ for f1 in "$@"; do
 	fi
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	for f2 in $analysisFiles*; do
-		#htseq-count -f bam -s no -m union -t gene -i trID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}-2)}.out.counted.sam" "$f2$analysisExtension" -i "$genomeFile"
+		echo "Sample $f2$analysisExtension is being counted..."
+		htseq-count -f bam -s no -m union -t gene -i trID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}-2)}.out.counted.sam" "$f2$analysisExtension" -i "$genomeFile"
 		echo "Sample $f2$analysisExtension has been counted!"
 	done
 done
