@@ -5,9 +5,9 @@
 #$ -N stats_edgeR_jobOutput
 #$ -pe smp 8
 #Required modules for ND CRC servers
-#module load bio
-#module load bio/python/2.7.14
-#module load bio/htseq/0.11.2
+module load bio
+module load bio/python/2.7.14
+module load bio/htseq/0.11.2
 #Prepare for analysis
 cd ..
 dirFlag=0
@@ -91,20 +91,17 @@ for f1 in "$@"; do
 			let runNum=0
 		fi
 	done
-	for f3 in "$f1"/out/*; do
-		echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)} is being sorted..."
-	done
 	#Sort input bam files if folder does not already exist
 	if [ "$analysisMethod" == "hisat2" ]; then
 		mkdir "$analysisFiles"
 		if [ $? -eq 0 ]; then
 			#Loop through all reads and sort bam files for input to cuffdiff
 			for f3 in "$f1"/out/*; do
-				echo "Sample ${f3:(${#f1}+5):(${#f1}+${#analysisTag}+${#analysisFiles}+5)} is being sorted..."
+				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)} is being sorted..."
 				#Run samtools to prepare mapped reads for sorting
 				#using 8 threads
-				samtools sort -@ 8 -o "$analysisFiles/${f3:(${#f1}+5):(${#f3}-${#f1}+1)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#f1}+5):(${#f3}-${#f1}+5)}".sorted $f3
-				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#f1}+5)} has been sorted!"
+				samtools sort -@ 8 -o "$analysisFiles/${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)}".sorted $f3
+				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)} has been sorted!"
 			done
 		else
 			echo "Sorted files already exists, skipping sorting..."
