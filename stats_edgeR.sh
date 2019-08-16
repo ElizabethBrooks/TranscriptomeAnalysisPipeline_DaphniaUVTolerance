@@ -97,11 +97,11 @@ for f1 in "$@"; do
 		if [ $? -eq 0 ]; then
 			#Loop through all reads and sort bam files for input to cuffdiff
 			for f3 in "$f1"/out/*; do
-				echo "Sample ${f3:(${#analysisFiles}-2):${#f3}-${#analysisFiles}} is being sorted..."
+				echo "Sample ${f3:(${#analysisFiles}-2):(${#f3}-${#analysisFiles}-2)} is being sorted..."
 				#Run samtools to prepare mapped reads for sorting
-				#using 4 threads
-				#samtools sort -@ 8 -o "$analysisFiles/${f3:(${#analysisFiles}-2):${#f3}-${#analysisFiles}}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#analysisFiles}-2):${#f3}-${#analysisFiles}}".sorted $f3
-				echo "Sample ${f3:(${#analysisFiles}-2):${#f3}-${#analysisFiles}} has been sorted!"
+				#using 8 threads
+				#samtools sort -@ 8 -o "$analysisFiles/${f3:(${#analysisFiles}-2):(${#f3}-${#analysisFiles}-2)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#analysisFiles}-2):(${#f3}-${#analysisFiles}-2)}".sorted $f3
+				echo "Sample ${f3:(${#analysisFiles}-2):(${#f3}-${#analysisFiles}-2)} has been sorted!"
 			done
 		else
 			echo "Sorted files already exists, skipping sorting..."
@@ -109,19 +109,8 @@ for f1 in "$@"; do
 	fi
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	for f2 in $analysisFiles*; do
-		READARRAY[COUNTER]="$f2$analysisExtension, "
-		OUTARRAY[COUNTER]="stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:${#f2}-(${#analysisFiles}+${#analysisTag})}.out.counted.sam, "
-		let COUNTER+=1
+		echo "Beginning statistical analysis of sample $f2$analysisExtension"
+		#htseq-count -f bam -s no -m union -t gene -i trID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}-2)}.out.counted.sam" "$f2$analysisExtension" -i "$genomeFile"
+		echo "Beginning statistical analysis of sample $f2$analysisExtension"
 	done
-	unset 'READARRAY[COUNTER-1]'
-	READARRAY[COUNTER-1]="$f2$analysisExtension"
-	unset 'OUTARRAY[COUNTER-1]'
-	OUTARRAY[COUNTER-1]="stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:${#f2}-(${#analysisFiles}+${#analysisTag})}.out.counted.sam"
-	#Run htseq-count to prepare sorted reads for stats analysis in edgeR
-	echo "Beginning statistical analysis of the following data set: "
-	echo ${READARRAY[@]}
-	echo "Outputs will be written to the following data set: "
-	echo ${OUTARRAY[@]}
-	#htseq-count -f bam -s no -m union -t gene -i trID -o ${OUTARRAY[@]} ${READARRAY[@]} -i "$genomeFile"
-	echo "Reads have been counted!"
 done
