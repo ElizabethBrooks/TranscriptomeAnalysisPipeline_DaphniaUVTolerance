@@ -5,9 +5,9 @@
 #$ -N stats_edgeR_jobOutput
 #$ -pe smp 8
 #Required modules for ND CRC servers
-module load bio
-module load bio/python/2.7.14
-module load bio/htseq/0.11.2
+#module load bio
+#module load bio/python/2.7.14
+#module load bio/htseq/0.11.2
 #Prepare for analysis
 cd ..
 dirFlag=0
@@ -92,7 +92,7 @@ for f1 in "$@"; do
 		fi
 	done
 	for f3 in "$f1"/out/*; do
-		echo "Sample ${f3:(${#f1}+0):(${#f3}-0)} is being sorted..."
+		echo "Sample ${f3:(${#f1}+5):(${#f3}+4)} is being sorted..."
 	done
 	#Sort input bam files if folder does not already exist
 	if [ "$analysisMethod" == "hisat2" ]; then
