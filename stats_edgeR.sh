@@ -97,11 +97,10 @@ for f1 in "$@"; do
 		if [ $? -eq 0 ]; then
 			#Loop through all reads and sort bam files for input to cuffdiff
 			for f3 in "$f1"/out/*; do
-				echo "Sample ${f3:(${#analysisFiles}-2):(${#f3}-${#analysisFiles}-2)} is being sorted..."
 				#Run samtools to prepare mapped reads for sorting
 				#using 8 threads
-				#samtools sort -@ 8 -o "$analysisFiles/${f3:(${#analysisFiles}-2):(${#f3}-${#analysisFiles}-2)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#analysisFiles}-2):(${#f3}-${#analysisFiles}-2)}".sorted $f3
-				echo "Sample ${f3:(${#analysisFiles}-2):(${#f3}-${#analysisFiles}-2)} has been sorted!"
+				#samtools sort -@ 8 -o "$analysisFiles/${f3:(${#f1}+5):(${#f3}-${#f1}+5)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#f1}+5):(${#f3}-${#f1}+5)}".sorted $f3
+				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#f1}+5)} has been sorted!"
 			done
 		else
 			echo "Sorted files already exists, skipping sorting..."
@@ -109,8 +108,7 @@ for f1 in "$@"; do
 	fi
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	for f2 in $analysisFiles*; do
-		echo "Sample ${f2:(${#analysisFiles}-2):(${#f2}-${#analysisFiles}-2)} is being counted..."
-		#htseq-count -f bam -s no -m union -t gene -i trID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}-2)}.out.counted.sam" "${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}-2)}" -i "$genomeFile"
-		echo "Sample ${f2:(${#analysisFiles}-2):(${#f2}-${#analysisFiles}-2)} has been counted!"
+		#htseq-count -f bam -s no -m union -t gene -i trID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}-2)}.out.counted.sam" "$f2$analysisExtension" -i "$genomeFile"
+		echo "Sample $f2$analysisExtension has been counted!"
 	done
 done
