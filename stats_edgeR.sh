@@ -5,9 +5,9 @@
 #$ -N stats_edgeR_jobOutput
 #$ -pe smp 8
 #Required modules for ND CRC servers
-module load bio
-module load bio/python/2.7.14
-module load bio/htseq/0.11.2
+#module load bio
+#module load bio/python/2.7.14
+#module load bio/htseq/0.11.2
 #Prepare for analysis
 cd ..
 dirFlag=0
@@ -97,11 +97,11 @@ for f1 in "$@"; do
 		if [ $? -eq 0 ]; then
 			#Loop through all reads and sort bam files for input to cuffdiff
 			for f3 in "$f1"/out/*; do
-				echo "Sample ${f3:(${#analysisFiles}-2):${#f3}-(${#analysisFiles}+${#analysisTag}+2)} is being sorted..."
+				echo "Sample ${f3:(${#analysisFiles}-2):${#f3}-${#analysisFiles}} is being sorted..."
 				#Run samtools to prepare mapped reads for sorting
 				#using 4 threads
-				samtools sort -@ 8 -o "$analysisFiles/${f3:(${#analysisFiles}-2):${#f3}-(${#analysisFiles}+${#analysisTag}+2)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#analysisFiles}-2):${#f3}-(${#analysisFiles}+${#analysisTag}+2)}".sorted $f3
-				echo "Sample ${f3:(${#analysisFiles}-2):${#f3}-(${#analysisFiles}+${#analysisTag}+2)} has been sorted!"
+				#samtools sort -@ 8 -o "$analysisFiles/${f3:(${#analysisFiles}-2):${#f3}-${#analysisFiles}}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#analysisFiles}-2):${#f3}-${#analysisFiles}}".sorted $f3
+				echo "Sample ${f3:(${#analysisFiles}-2):${#f3}-${#analysisFiles}} has been sorted!"
 			done
 		else
 			echo "Sorted files already exists, skipping sorting..."
@@ -122,6 +122,6 @@ for f1 in "$@"; do
 	echo ${READARRAY[@]}
 	echo "Outputs will be written to the following data set: "
 	echo ${OUTARRAY[@]}
-	htseq-count -f bam -s no -m union -t gene -i trID -o ${OUTARRAY[@]} ${READARRAY[@]} -i "$genomeFile"
+	#htseq-count -f bam -s no -m union -t gene -i trID -o ${OUTARRAY[@]} ${READARRAY[@]} -i "$genomeFile"
 	echo "Reads have been counted!"
 done
