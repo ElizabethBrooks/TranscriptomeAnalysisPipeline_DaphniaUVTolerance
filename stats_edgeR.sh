@@ -98,9 +98,9 @@ for f1 in "$@"; do
 			#Loop through all reads and sort bam files for input to cuffdiff
 			for f3 in "$f1"/out/*; do
 				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)} is being sorted..."
-				#Run samtools to prepare mapped reads for sorting
+				#Run samtools to prepare mapped reads for sorting by name
 				#using 8 threads
-				samtools sort -@ 8 -o "$analysisFiles/${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)}".sorted $f3
+				samtools sort -@ 8 -n -o "$analysisFiles/${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)}".sorted $f3
 				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)} has been sorted!"
 			done
 		else
