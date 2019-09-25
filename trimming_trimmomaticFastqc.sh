@@ -1,8 +1,9 @@
 #!/bin/bash
 #$ -M ebrooks5@nd.edu
 #$ -m abe
+#$ -r n
 #$ -N trimming_trimmomaticFastqc_jobOutput
-#$ -pe smp 1
+#$ -pe smp 8
 #Required modules for ND CRC servers
 module load bio
 module load bio/trimmomatic/0.32
@@ -46,5 +47,6 @@ for f1 in *1.fq.gz; do
 		qcCountStart=1
 	fi
 	#Perform adapter trimming on paired reads
-	trimmomatic PE -phred"$score" $f1 "${f1:0:${#f1}-7}"2.fq.gz trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pForward.fq.gz trimmed_run"$runNum"/"${f1:0:${#f1}-7}"uForward.fq.gz trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pReverse.fq.gz trimmed_run"$runNum"/"${f1:0:${#f1}-7}"uReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+	#using 8 threads
+	trimmomatic PE -threads 8 -phred"$score" $f1 "${f1:0:${#f1}-7}"2.fq.gz trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pForward.fq.gz trimmed_run"$runNum"/"${f1:0:${#f1}-7}"uForward.fq.gz trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pReverse.fq.gz trimmed_run"$runNum"/"${f1:0:${#f1}-7}"uReverse.fq.gz ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
 done
