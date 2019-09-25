@@ -12,10 +12,9 @@ module load bio/trimmomatic/0.32
 qcCountStart=0
 qcCountEnd=0
 score=0
-#Move to folder with .fq.gz read files
-cd ..	
 dirFlag=0
 runNum=0
+readFiles="/afs/crc.nd.edu/group/pfrenderlab/devries/melanica/rnaseq/dmelUV"
 #Make a new directory for each alignment run
 while [ $dirFlag -eq 0 ]; do
 	mkdir trimmed_run"$runNum"
@@ -30,7 +29,7 @@ while [ $dirFlag -eq 0 ]; do
 	fi
 done
 #Loop through all forward and reverse reads and run trimmomatic on each pair
-for f1 in *1.fq.gz; do
+for f1 in "$readFiles"/*1.fq.gz; do
 	#Quality control using fastqc on the first read file
 	if [ "$qcCountStart" -eq 0 ]; then
 		fastqc $f1 --extract
