@@ -95,6 +95,7 @@ for f1 in "$@"; do
 	if [ "$analysisMethod" == "hisat2" ]; then
 		mkdir "$analysisFiles"
 		if [ $? -eq 0 ]; then
+			echo "Creating folder for sorted bam files..."
 			#Loop through all reads and sort bam files for input to cuffdiff
 			for f3 in "$f1"/out/*; do
 				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)} is being sorted..."
