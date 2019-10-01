@@ -17,6 +17,7 @@ runNum=0
 #Retrieve input read file absolute path
 inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/trimmingInput_readPath.txt"
 readFiles=$( cat $inputsFile )
+echo $readFiles
 cd ..
 #Make a new directory for each alignment run
 while [ $dirFlag -eq 0 ]; do
