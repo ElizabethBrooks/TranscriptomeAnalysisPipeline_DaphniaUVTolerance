@@ -13,7 +13,9 @@ qcCountStart=0
 score=0
 dirFlag=0
 runNum=0
-readFiles="/afs/crc.nd.edu/group/pfrenderlab/devries/melanica/rnaseq/dmelUV"
+#Retrieve input read file absolute path
+inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/trimmingInput_readPath.txt"
+readFiles=$( cat $inputsFile )
 cd ..
 #Make a new directory for each alignment run
 while [ $dirFlag -eq 0 ]; do
