@@ -32,7 +32,7 @@ while [ $dirFlag -eq 0 ]; do
 	fi
 done
 #Loop through all forward and reverse reads and run trimmomatic on each pair
-for f1 in "$readFiles"/*1.fq.gz; do
+for f1 in "$readFiles/*1.fq.gz"; do
 	#Quality control using fastqc on the first read file
 	if [ "$qcCountStart" -eq 0 ]; then
 		fastqc $f1 --extract
