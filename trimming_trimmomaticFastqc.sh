@@ -8,6 +8,7 @@
 module load bio
 module load bio/trimmomatic/0.32
 #Prepare for adapter trimming and quality control
+cd ..
 #Initialize variables
 qcCountStart=0
 score=0
@@ -16,7 +17,6 @@ runNum=0
 #Retrieve input read file absolute path
 inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/trimmingInput_readPath.txt"
 readFiles=$( cat $inputsFile )
-cd ..
 #Make a new directory for each alignment run
 while [ $dirFlag -eq 0 ]; do
 	mkdir trimmed_run"$runNum"
