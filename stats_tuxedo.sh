@@ -12,7 +12,6 @@ cd ..
 dirFlag=0
 runNum=0
 COUNTER=0
-genomeFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff"
 repCount=0
 treCount=0
 genCount=0
@@ -39,6 +38,8 @@ while IFS= read -r line; do
 	    elif [[ COUNTER -eq 3 ]]; then
 	    	GENARRAY[genCount]="$word"
 	    	let genCount+=1
+	    elif [[ COUNTER -eq 4 ]]; then
+	    	genomeFile="$word"
 	    else
 	    	echo "Incorrect number of lines in statsInputs_tuxedo... exiting"
 	    	#exit 1

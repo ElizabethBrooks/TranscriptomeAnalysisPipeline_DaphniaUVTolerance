@@ -2,3 +2,4 @@
 Pool_1 Pool_2 Pool_3
 UV VIS
 E05 PA R2 Sierra Y023_5 Y05
+TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/PA42.3.0.annotation.18440.gff

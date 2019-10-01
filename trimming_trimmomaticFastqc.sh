@@ -14,6 +14,7 @@ score=0
 dirFlag=0
 runNum=0
 readFiles="/afs/crc.nd.edu/group/pfrenderlab/devries/melanica/rnaseq/dmelUV"
+cd ..
 #Make a new directory for each alignment run
 while [ $dirFlag -eq 0 ]; do
 	mkdir trimmed_run"$runNum"
