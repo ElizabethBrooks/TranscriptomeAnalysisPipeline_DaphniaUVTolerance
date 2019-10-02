@@ -65,7 +65,7 @@ for f1 in "$@"; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		analysisTag=".bam"
-		analysisFiles="stats_"$analysisMethod"EdgeR_sorted/"
+		analysisFiles="stats_"$analysisMethod"EdgeR_sorted"
 		analysisExtension=""
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
