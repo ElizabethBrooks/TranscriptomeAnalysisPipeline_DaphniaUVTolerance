@@ -25,28 +25,28 @@ fi
 #Retrieve inputs for number of reads, replicates, genotypes, and treatments
 inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/statsInputs_edgeR.txt"
 while IFS= read -r line; do
-	for word in $line; do
-		#Each line contains the tags for the replicates, genotypes, or treatments
-		#with each tag for the category separated by spaces
-	    if [[ COUNTER -eq 0 ]]; then
-	    	readMax=$word
-	    elif [[ COUNTER -eq 1 ]]; then
-	    	REPARRAY[repCount]="$word"
-	    	let repCount+=1
-	    elif [[ COUNTER -eq 2 ]]; then
-	    	TREARRAY[treCount]="$word"
-	    	let treCount+=1
-	    elif [[ COUNTER -eq 3 ]]; then
-	    	GENARRAY[genCount]="$word"
-	    	let genCount+=1
-	    elif [[ COUNTER -eq 4 ]]; then
-	    	genomeFile="$word"
-	    	echo "GENOME FILE: $genomeFile"
-	    else
-	    	echo "Incorrect number of lines in statsInputs_edgeR... exiting"
-	    	exit 1
-	    fi
-	done	
+	#for word in $line; do
+	#Each line contains the tags for the replicates, genotypes, or treatments
+	#with each tag for the category separated by spaces
+	if [[ COUNTER -eq 0 ]]; then
+		readMax=$line
+	elif [[ COUNTER -eq 1 ]]; then
+		REPARRAY[repCount]="$line"
+	   	let repCount+=1
+	elif [[ COUNTER -eq 2 ]]; then
+	   	TREARRAY[treCount]="$line"
+	   	let treCount+=1
+	elif [[ COUNTER -eq 3 ]]; then
+	   	GENARRAY[genCount]="$line"
+	   	let genCount+=1
+	elif [[ COUNTER -eq 4 ]]; then
+	   	genomeFile="$line"
+	   	echo "GENOME FILE: $genomeFile"
+	else
+	   	echo "Incorrect number of lines in statsInputs_edgeR... exiting"
+	   	exit 1
+	fi
+	#done	
 	let COUNTER+=1
 done < "$inputsFile"
 COUNTER=0
