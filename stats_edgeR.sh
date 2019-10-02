@@ -41,6 +41,7 @@ while IFS= read -r line; do
 	    	let genCount+=1
 	    elif [[ COUNTER -eq 4 ]]; then
 	    	genomeFile="$word"
+	    	echo "GENOME FILE: $genomeFile"
 	    else
 	    	echo "Incorrect number of lines in statsInputs_edgeR... exiting"
 	    	exit 1
@@ -109,6 +110,7 @@ for f1 in "$@"; do
 			echo "Sorted files already exists, skipping sorting..."
 		fi
 	fi
+	echo "GENOME FILE: $genomeFile"
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	for f2 in "$analysisFiles"/*; do
 		echo "Sample $f2$analysisExtension is being counted..."

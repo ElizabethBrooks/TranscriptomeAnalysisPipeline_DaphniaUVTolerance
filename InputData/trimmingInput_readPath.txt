@@ -1,1 +1,2 @@
 /afs/crc.nd.edu/group/pfrenderlab/devries/melanica/rnaseq/dmelUV
+/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10
