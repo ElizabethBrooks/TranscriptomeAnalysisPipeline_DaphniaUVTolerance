@@ -18,7 +18,6 @@ runNum=0
 inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/trimmingInput_readPath.txt"
 COUNTER=0
 while IFS= read -r line; do
-	#for word in $line; do
 	#Each line contains the tags for the replicates, genotypes, or treatments
 	#with each tag for the category separated by spaces
 	if [[ COUNTER -eq 0 ]]; then

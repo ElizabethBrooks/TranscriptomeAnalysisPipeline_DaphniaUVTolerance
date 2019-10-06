@@ -13,47 +13,19 @@ cd ..
 dirFlag=0
 runNum=0
 COUNTER=0
-repCount=0
-treCount=0
-genCount=0
-readFlag=0
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve inputs for number of reads, replicates, genotypes, and treatments
+#Retrieve inputs for gff absolute path
 inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/statsInputs_edgeR.txt"
-while IFS= read -r line; do
-	#for word in $line; do
-	#Each line contains the tags for the replicates, genotypes, or treatments
-	#with each tag for the category separated by spaces
-	if [[ COUNTER -eq 0 ]]; then
-		readMax=$line
-	elif [[ COUNTER -eq 1 ]]; then
-		REPARRAY[repCount]="$line"
-	   	let repCount+=1
-	elif [[ COUNTER -eq 2 ]]; then
-	   	TREARRAY[treCount]="$line"
-	   	let treCount+=1
-	elif [[ COUNTER -eq 3 ]]; then
-	   	GENARRAY[genCount]="$line"
-	   	let genCount+=1
-	elif [[ COUNTER -eq 4 ]]; then
-	   	genomeFile="$line"
-	   	echo "GENOME FILE: $genomeFile"
-	else
-	   	echo "Incorrect number of lines in statsInputs_edgeR... exiting"
-	   	exit 1
-	fi
-	#done	
-	let COUNTER+=1
-done < "$inputsFile"
-COUNTER=0
-#Retrieve the number of replicates, genotypes, and samples
-repMax=${#REPARRAY[@]}-1
-treMax=${#TREARRAY[@]}-1
-genMax=${#GENARRAY[@]}-1
+genomeFile=$(head -n 1 $inputsFile)
+#Determine if the folder name was input in the correct format
+if [[ $genomeFile == *\/* ]] || [[ $genomeFile == *\\* ]]; then
+	echo "Please enter folder names without a trailing forward slash (/)... exiting"
+	exit 1
+fi	
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in "$@"; do
 	#Determine if the folder name was input in the correct format
@@ -110,7 +82,6 @@ for f1 in "$@"; do
 			echo "Sorted files already exists, skipping sorting..."
 		fi
 	fi
-	echo "GENOME FILE: $genomeFile"
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	for f2 in "$analysisFiles"/*; do
 		echo "Sample $f2$analysisExtension is being counted..."
