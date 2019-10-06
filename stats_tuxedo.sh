@@ -98,11 +98,11 @@ for f1 in "$@"; do
 		if [ $? -eq 0 ]; then
 			#Loop through all reads and sort bam files for input to cuffdiff
 			for f3 in "$f1"/out/*; do
-				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)} is being sorted..."
+				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles})} is being sorted..."
 				#Run samtools to prepare mapped reads for sorting by name
 				#using 8 threads
-				samtools sort -@ 8 -n -o "$analysisFiles/${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles})}".sorted $f3
-				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles}+1)} has been sorted!"
+				samtools sort -@ 8 -n -o "$analysisFiles/${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles})}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles})}".sorted $f3
+				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles})} has been sorted!"
 			done
 		else
 			echo "Sorted files already exists, skipping sorting..."
