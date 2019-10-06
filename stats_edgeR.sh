@@ -21,11 +21,6 @@ fi
 #Retrieve inputs for gff absolute path
 inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/statsInputs_edgeR.txt"
 genomeFile=$(head -n 1 $inputsFile)
-#Determine if the folder name was input in the correct format
-if [[ $genomeFile == *\/* ]] || [[ $genomeFile == *\\* ]]; then
-	echo "Please enter folder names without a trailing forward slash (/)... exiting"
-	exit 1
-fi	
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in "$@"; do
 	#Determine if the folder name was input in the correct format
