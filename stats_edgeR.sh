@@ -19,7 +19,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve inputs for gff absolute path
-inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/statsInputs_edgeR.txt"
+inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePath.txt"
 genomeFile=$(head -n 1 $inputsFile)
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in "$@"; do

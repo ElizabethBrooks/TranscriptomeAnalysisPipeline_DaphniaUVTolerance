@@ -15,24 +15,11 @@ qcCountEnd=0
 score=0
 dirFlag=0
 runNum=0
-#Retrieve input read file absolute path
-inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/trimmingInput_readPath.txt"
-COUNTER=0
-while IFS= read -r line; do
-	#for word in $line; do
-	#Each line contains the tags for the replicates, genotypes, or treatments
-	#with each tag for the category separated by spaces
-	if [[ COUNTER -eq 0 ]]; then
-	   	readFiles=$line
-	elif [[ COUNTER -eq 1 ]]; then
-	   	adapterPath="$line"
-	else
-		echo "Incorrect number of lines in statsInputs_edgeR... exiting"
-	   	exit 1
-	fi
-	#done	
-	let COUNTER+=1
-done < "$inputsFile"
+#Retrieve input paired reads path and adapter path
+readPath="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/pairedReadsPath.txt"
+adapterPath="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/adapterPath.txt"
+readFiles=$(head -n 1 $readPath)
+adapterFile=$(head -n 1 $adapterPath)
 #Make a new directory for each alignment run
 while [ $dirFlag -eq 0 ]; do
 	mkdir trimmed_run"$runNum"
@@ -74,7 +61,7 @@ for f1 in "$readFiles"/*1.fq.gz; do
 	fi
 	#Perform adapter trimming on paired reads
 	#using 8 threads
-	trimmomatic PE -threads 8 -phred"$score" $f1 "${f1:0:${#f1}-7}"2.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"pForward.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"uForward.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"pReverse.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"uReverse.fq.gz ILLUMINACLIP:"$adapterPath" LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+	trimmomatic PE -threads 8 -phred"$score" $f1 "${f1:0:${#f1}-7}"2.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"pForward.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"uForward.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"pReverse.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"uReverse.fq.gz ILLUMINACLIP:"$adapterFile" LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
 	#Final quality control check using fastqc on the first trimmed paired read file
 	if [ qcCountEnd = 0 ]; then
 		#QC paired forward read

@@ -21,11 +21,14 @@ if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve inputs for number of reads, replicates, genotypes, treatments, and gff file path
+#Retrieve input genome file path
+inputGenomeFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePath.txt"
+genomeFile=$(head -n 1 $inputGenomeFile)
+#Retrieve inputs for number of reads, replicates, genotypes, and treatments
 inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/statsInputs_tuxedo.txt"
 while IFS= read -r line; do
 	#for word in $line; do
-	#Each line contains the tags for the replicates, genotypes, treatments, or gff file path
+	#Each line contains the tags for the replicates, genotypes, or treatments
 	#with each tag for the category separated by spaces
 	for word in $line; do
 		if [[ COUNTER -eq 0 ]]; then
@@ -39,10 +42,6 @@ while IFS= read -r line; do
 		elif [[ COUNTER -eq 3 ]]; then
 		   	GENARRAY[genCount]="$word"
 		   	let genCount+=1
-		elif [[ COUNTER -eq 4 ]]; then
-			echo "$word"
-		   	genomeFile="$word"
-		   	echo "GENOME FILE: $genomeFile"
 		else
 		   	echo "Incorrect number of lines in statsInputs_edgeR... exiting"
 		   	exit 1
