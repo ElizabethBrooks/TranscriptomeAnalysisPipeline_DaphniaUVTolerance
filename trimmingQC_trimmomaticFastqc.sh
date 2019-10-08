@@ -61,17 +61,17 @@ for f1 in "$readFiles"/*1.fq.gz; do
 	fi
 	#Perform adapter trimming on paired reads
 	#using 8 threads
-	trimmomatic PE -threads 8 -phred"$score" $f1 "${f1:0:${#f1}-7}"2.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"pForward.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"uForward.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"pReverse.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"uReverse.fq.gz ILLUMINACLIP:"$adapterFile" LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+	trimmomatic PE -threads 8 -phred"$score" $f1 "${f1:0:${#f1}-7}"2.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-21}"pForward.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-21}"uForward.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-21}"pReverse.fq.gz trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-21}"uReverse.fq.gz ILLUMINACLIP:"$adapterFile" LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
 	#Final quality control check using fastqc on the first trimmed paired read file
 	if [ qcCountEnd = 0 ]; then
 		#QC paired forward read
 		#...in progress...
 		fastqc trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pForward.fq.gz --extract
-		if grep -iF "WARN" trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"pForward_fastqc/summary.txt; then
-			grep -iF "WARN" trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"pForward_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"_fastqc_report.txt
+		if grep -iF "WARN" trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-21}"pForward_fastqc/summary.txt; then
+			grep -iF "WARN" trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-21}"pForward_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-21}"_fastqc_report.txt
 		fi
-		if grep -iF "FAIL" trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"pForward_fastqc/summary.txt; then
-			grep -iF "FAIL" trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"pForward_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-14}"_fastqc_report.txt
+		if grep -iF "FAIL" trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-21}"pForward_fastqc/summary.txt; then
+			grep -iF "FAIL" trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-21}"pForward_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:${#readFiles}+1:${#f1}-21}"_fastqc_report.txt
 		fi
 		#Only QC one file
 		qcCountEnd=1
