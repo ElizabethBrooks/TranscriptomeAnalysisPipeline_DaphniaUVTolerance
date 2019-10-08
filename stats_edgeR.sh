@@ -80,7 +80,7 @@ for f1 in "$@"; do
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	for f2 in "$analysisFiles"/*; do
 		echo "Sample $f2$analysisExtension is being counted..."
-		htseq-count -f bam -s no -m union -t gene -i ID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}+${#analysisExtension}+${#analysisTag})}.counted.sam" "$f2$analysisExtension" "$genomeFile"
+		htseq-count -f bam -s no -m union -t gene -i ID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}+${#analysisExtension}+${#analysisTag}-11)}.counted.sam" "$f2$analysisExtension" "$genomeFile" > $f2"_counts.txt"
 		echo "Sample $f2$analysisExtension has been counted!"
 	done
 done
