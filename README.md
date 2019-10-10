@@ -38,19 +38,22 @@ These scripts will accept any number of folders with reads trimmed using Trimmom
   * Output: **aligned_hisat2_run#**   
 
 ### Statistical Analysis
-These scripts will accept a mix of folders with reads aligned using either HISAT2 or Tophat2. A minimum of one folder is expected as input. 
-* stats_edgeR.sh
+These scripts will accept a mix of folders with reads aligned using either HISAT2 or Tophat2. A minimum of one folder is expected as input.
+* sorting_samtools.sh
   * Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***  
-  * Output: **stats_edgeR_run#** 
+  * Output: **sorted_samtools_run#** 
+* counting_htseq.sh
+  * Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***  
+  * Output: **counted_htseq_run#** 
   
 ### Legacy Pipelines
 These are scripts for software that is no longer being updated.
 * alignment_tophat2.sh
   * Input(s): ***trimmed_run0* ... *trimmed_runN***  
   * Output: **aligned_tophat2_run#**
-* stats_tuxedo.sh
+* counting_cuffdiff.sh
   * Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***  
-  * Output: **stats_tuxedo_run#** 
+  * Output: **counted_cuffdiff_run#** 
 
 There is a text file with information about the inputs in the **InputData** folder that needs to contain the following information:
 * statsInputs_tuxedo.sh
