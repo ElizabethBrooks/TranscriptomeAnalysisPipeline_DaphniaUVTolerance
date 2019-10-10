@@ -43,7 +43,7 @@ These scripts will accept a mix of folders with reads aligned using either HISAT
   * Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***  
   * Output: **sorted_samtools_run#** 
 * counting_htseq.sh
-  * Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***  
+  * Input(s): ***sorted_SOFTWARE_run0* ... *sorted_SOFTWARE_runN***  
   * Output: **counted_htseq_run#** 
   
 ### Legacy Pipelines
@@ -52,7 +52,7 @@ These are scripts for software that is no longer being updated.
   * Input(s): ***trimmed_run0* ... *trimmed_runN***  
   * Output: **aligned_tophat2_run#**
 * counting_cuffdiff.sh
-  * Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***  
+  * Input(s): ***sorted_SOFTWARE_run0* ... *sorted_SOFTWARE_runN***  
   * Output: **counted_cuffdiff_run#** 
 
 There is a text file with information about the inputs in the **InputData** folder that needs to contain the following information:
