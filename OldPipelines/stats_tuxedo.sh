@@ -90,8 +90,6 @@ for f1 in "$@"; do
 			#Indicate that the folder was successfully made
 			dirFlag=1
 			echo "Creating folder for $runNum run of tuxedo stats analysis of $f1 data..."
-			#Reset the folder name flag for different analysis methods
-			let runNum=0
 		fi
 	done
 	#Sort input bam files if folder does not already exist

@@ -56,8 +56,6 @@ for f1 in "$@"; do
 			#Indicate that the folder was successfully made
 			dirFlag=1
 			echo "Creating folder for $runNum run of edgeR stats analysis of $f1 data..."
-			#Reset the folder name flag for different analysis methods
-			let runNum=0
 		fi
 	done
 	#Sort input bam files if folder does not already exist
@@ -80,7 +78,7 @@ for f1 in "$@"; do
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	for f2 in "$analysisFiles"/*; do
 		echo "Sample $f2$analysisExtension is being counted..."
-		htseq-count -f bam -s no -m union -t gene -i ID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}+${#analysisExtension}+${#analysisTag}-11)}.counted.sam" "$f2$analysisExtension" "$genomeFile" > $f2"_counts.txt"
+		htseq-count -f bam -s no -m union -t gene -i ID -o "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}+${#analysisExtension}+${#analysisTag}-15)}.counted.sam" "$f2$analysisExtension" "$genomeFile" > "stats_"$analysisMethod"EdgeR_run"$runNum"/${f2:${#analysisFiles}:(${#f2}-${#analysisFiles}+${#analysisExtension}+${#analysisTag}-15)}_counts.txt"
 		echo "Sample $f2$analysisExtension has been counted!"
 	done
 done
