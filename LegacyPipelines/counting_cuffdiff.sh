@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N stats_tuxedo_jobOutput
+#$ -N counting_cuffdiff_jobOutput
 #$ -pe smp 8
 #Required modules for ND CRC servers
 module load bio
@@ -16,6 +16,7 @@ repCount=0
 treCount=0
 genCount=0
 readFlag=0
+analysisTag=".sorted.bam"
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -66,22 +67,17 @@ for f1 in "$@"; do
 	if [[ $f1 == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
-		analysisTag=".bam"
-		analysisFiles="stats_"$analysisMethod"Tuxedo_sorted/"
-		analysisExtension=""
 	elif [[ $f1 == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"	
-		analysisTag="/accepted_hits.bam"
-		analysisFiles="$f1/out/"
-		analysisExtension="/accepted_hits.bam"
 	else
 		echo "The $f1 folder or bam files were not found... exiting"
 		exit 1
 	fi
 	#Make a new directory for each analysis run
 	while [ $dirFlag -eq 0 ]; do
-		mkdir stats_"$analysisMethod"Tuxedo_run"$runNum"
+		outputFolder=counts_cuffdiff_run"$runNum"
+		mkdir "$outputFolder"
 		#Check if the folder already exists
 		if [ $? -ne 0 ]; then
 			#Increment the folder name
@@ -89,28 +85,12 @@ for f1 in "$@"; do
 		else
 			#Indicate that the folder was successfully made
 			dirFlag=1
-			echo "Creating folder for $runNum run of tuxedo stats analysis of $f1 data..."
+			echo "Creating folder for $runNum run of Cuffdiff counting of $f1 data..."
 		fi
 	done
-	#Sort input bam files if folder does not already exist
-	if [ "$analysisMethod" == "hisat2" ]; then
-		mkdir "$analysisFiles"
-		if [ $? -eq 0 ]; then
-			#Loop through all reads and sort bam files for input to cuffdiff
-			for f3 in "$f1"/out/*; do
-				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles})} is being sorted..."
-				#Run samtools to prepare mapped reads for sorting by name
-				#using 8 threads
-				samtools sort -@ 8 -n -o "$analysisFiles/${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles})}".sorted.bam -T /tmp/"$analysisMethod"EdgeR_sorted_"${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles})}".sorted $f3
-				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#analysisFiles})} has been sorted!"
-			done
-		else
-			echo "Sorted files already exists, skipping sorting..."
-		fi
-	fi
 	#Loop through all forward and reverse paired reads and store the file locations in an array
 	while [ $COUNTER -lt $readMax ]; do
-		for f2 in $analysisFiles*; do
+		for f2 in "$f1"/*; do
 			#Determine which read to add next to the set of replicates/samples
 			if [[ $f2 == *${REPARRAY[repCounter]}"_"${GENARRAY[genCounter]}"_"${TREARRAY[treCounter]}* ]]; then
 				if [[ $COUNTER -eq $readMax-1 ]]; then
@@ -165,6 +145,6 @@ for f1 in "$@"; do
 	echo ${READARRAY[@]}
 	echo "The following labels will be used to identify samples: "
 	echo ${LABELARRAY[@]}
-	cuffdiff -p 8 -L ${LABELARRAY[@]} -o stats_"$analysisMethod"Tuxedo_run"$runNum" "$genomeFile" ${READARRAY[@]}
+	cuffdiff -p 8 -L ${LABELARRAY[@]} -o "$outputFolder" "$genomeFile" ${READARRAY[@]}
 	echo "Statistical analysis complete!"
 done
