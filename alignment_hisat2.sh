@@ -5,7 +5,6 @@
 #$ -N alignment_hisat2_jobOutput
 #$ -pe smp 8
 #Required modules for ND CRC servers
-#TEST
 module load bio
 module load bio/hisat2/2.1.0
 #Prepare for mapping
@@ -30,7 +29,8 @@ fi
 for f1 in "$@"; do
 	#Make a new directory for each alignment run
 	while [ $dirFlag -eq 0 ]; do
-		mkdir aligned_hisat2_run"$runNum"
+		outputFolder=aligned_hisat2_run"$runNum"
+		mkdir "$outputFolder"
 		#Check if the folder already exists
 		if [ $? -ne 0 ]; then
 			#Increment the folder name
@@ -46,13 +46,13 @@ for f1 in "$@"; do
 	mkdir aligned_hisat2_run"$runNum"/out
 	for f2 in "$f1"/*pForward.fq.gz; do
 		echo "Sample ${f2:13:${#f2}-28} is being aligned..."
-		#hisat2 -p 4 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:0:${#f2}-15}"_pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt | samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".bam
-		hisat2 -p 8 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:0:${#f2}-15}"_pReverse.fq.gz -S aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam --summary-file aligned_hisat2_run"$runNum"/alignedSummary.txt
+		#hisat2 -p 4 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:0:${#f2}-15}"_pReverse.fq.gz -S "$outputFolder"/out/"${f2:13:${#f2}-28}".sam --summary-file "$outputFolder"/alignedSummary.txt | samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > "$outputFolder"/out/"${f2:13:${#f2}-28}".bam
+		hisat2 -p 8 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:0:${#f2}-15}"_pReverse.fq.gz -S "$outputFolder"/out/"${f2:13:${#f2}-28}".sam --summary-file "$outputFolder"/alignedSummary.txt
 		#Convert output sam files to bam format for downstream analysis
 		echo "Sample ${f2:13:${#f2}-28} is being converted..."
-		samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".bam
+		samtools view -@ 8 -bS "$outputFolder"/out/"${f2:13:${#f2}-28}".sam > "$outputFolder"/out/"${f2:13:${#f2}-28}".bam
 		echo "Sample ${f2:13:${#f2}-28} has been aligned and converted!"
 		#Remove the now converted .sam file
-		rm aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam
+		rm "$outputFolder"/out/"${f2:13:${#f2}-28}".sam
 	done
 done
