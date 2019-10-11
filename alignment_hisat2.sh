@@ -5,6 +5,7 @@
 #$ -N alignment_hisat2_jobOutput
 #$ -pe smp 8
 #Required modules for ND CRC servers
+#TEST
 module load bio
 module load bio/hisat2/2.1.0
 #Prepare for mapping
