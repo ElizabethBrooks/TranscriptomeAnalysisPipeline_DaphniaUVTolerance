@@ -13,7 +13,7 @@ dirFlag=0
 runNum=0
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
-   	echo "No folder name(s) supplied... exiting"
+   	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
 #Build reference genome if folder does not exist

@@ -16,7 +16,7 @@ COUNTER=0
 analysisTag=".sorted.bam"
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
-   	echo "No folder name(s) supplied... exiting"
+   	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
 #Retrieve inputs for gff absolute path
@@ -26,7 +26,7 @@ genomeFile=$(head -n 1 $inputsFile)
 for f1 in "$@"; do
 	#Determine if the folder name was input in the correct format
 	if [[ $f1 == *\/* ]] || [[ $f1 == *\\* ]]; then
-		echo "Please enter folder names without a trailing forward slash (/)... exiting"
+		echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
 		exit 1
 	fi
 	#Determine what analysis method was used for the input folder of data
@@ -37,7 +37,7 @@ for f1 in "$@"; do
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"	
 	else
-		echo "The $f1 folder or bam files were not found... exiting"
+		echo "ERROR: The $f1 folder or bam files were not found... exiting"
 		exit 1
 	fi	
 	#Make a new directory for each analysis run

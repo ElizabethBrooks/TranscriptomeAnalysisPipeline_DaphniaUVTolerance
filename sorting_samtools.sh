@@ -22,7 +22,7 @@ fi
 for f1 in "$@"; do
 	#Determine if the folder name was input in the correct format
 	if [[ $f1 == *\/* ]] || [[ $f1 == *\\* ]]; then
-		echo "Please enter folder names without a trailing forward slash (/)... exiting"
+		echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
 		exit 1
 	fi	
 	#Determine what analysis method was used for the input folder of data
@@ -39,7 +39,7 @@ for f1 in "$@"; do
 		#analysisFiles="$f1/out/"
 		analysisExtension="/accepted_hits.bam"
 	else
-		echo "The $f1 folder or bam files were not found... exiting"
+		echo "ERROR: The $f1 folder or bam files were not found... exiting"
 		exit 1
 	fi
 	#Make a new directory for each analysis run
