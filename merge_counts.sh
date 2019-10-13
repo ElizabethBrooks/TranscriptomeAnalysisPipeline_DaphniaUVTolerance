@@ -27,7 +27,8 @@ while IFS= read -r line; do
 		if [ $fileFlag -eq 0 ]; then #Output the first column with gene IDs
 			cp "$geneCounts"/*"$replicationTag"_"$genotypeTag"_"$treatmentTag"* geneCounts_merged.txt
 		else
-			paste -d" " geneCounts_merged.txt "$geneCounts"/*"$replicationTag"_"$genotypeTag"_"$treatmentTag"*
+			cut -d' ' -f1 "$geneCounts"/*"$replicationTag"_"$genotypeTag"_"$treatmentTag"*
+			paste -d' ' geneCounts_merged.txt "$geneCounts"/*"$replicationTag"_"$genotypeTag"_"$treatmentTag"*
 		else
 			echo "ERROR: Please check that mereOrder.txt input tags are in the same order found in gene count file names... exiting!"
 		fi
