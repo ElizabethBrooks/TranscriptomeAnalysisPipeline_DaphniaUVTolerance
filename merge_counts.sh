@@ -70,12 +70,12 @@ for currentFile in ${TAGARRAY[@]}; do
 		cp "$geneCounts"/*"$currentFile"* "$outputFolder"/"$mergedCounts"
 		#Insert header line
 		sed -i.bak 1i"gene0" "$outputFolder"/"$mergedCounts"
-	elif [ $wordCOUNTER -eq ${#TAGARRAY[@]} ]; then
+	elif [ $wordCOUNTER -eq ${#TAGARRAY[@]}-1 ]; then
 		echo "Last sample $currentFile is being merged..."
 		$(paste -d' ' "$geneCounts"/*"$currentFile"* "$outputFolder"/"$mergedCounts") >> "$outputFolder"/"$mergedCounts"
 	else #Add the gene counts from the next file
 		echo "Next sample $currentFile is being merged..."
-		$(paste -d' ' "$geneCounts"/*"$currentFile"* "$outputFolder"/"$mergedCounts" | cut -d' ' -f1) >> "$outputFolder"/"$mergedCounts"
+		cut -d' ' -f1 $(paste -d' ' "$geneCounts"/*"$currentFile"* "$outputFolder"/"$mergedCounts") >> "$outputFolder"/"$mergedCounts"
 		#cut -d' ' -f1 "$geneCounts"/*"$currentFile"* | paste -d' ' "$outputFolder"/"$mergedCounts" -
 		#cat $(paste -d' ' "$outputFolder"/"$mergedCounts" <(cut -d' ' -f1 "$geneCounts"/*"$currentFile"*)) >> "$outputFolder"/"$mergedCounts"
 	fi
