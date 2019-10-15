@@ -12,6 +12,7 @@ fileFlag=0
 geneCounts=$1
 #Set name for merge gene counts file
 mergedCounts="geneCounts_merged.txt"
+mkdir "$mergedCounts"
 #Retrieve merge order list from file
 #UPDATE: similarly to statsInputs_tuxedo.txt for counting_cuffdiff.sh
 inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/mergeInputs.txt"
