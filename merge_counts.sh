@@ -36,11 +36,12 @@ done
 #Retrieve merge order list from file
 #UPDATE: similarly to statsInputs_tuxedo.txt for counting_cuffdiff.sh
 inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/mergeInputs.txt"
+echo "$inputsFile"
 #Merge gene counts from file based on order in mergeOrder.txt
 while IFS= read -r line; do
 	#Determine tags for current file in list
 	for word in $line; do
-		elif [[ COUNTER -eq 0 ]]; then
+		if [[ COUNTER -eq 0 ]]; then
 			REPARRAY[repCount]="$word"
 		   	let repCount+=1
 		elif [[ COUNTER -eq 1 ]]; then
@@ -56,6 +57,7 @@ while IFS= read -r line; do
 		let wordCOUNTER+=1
 	done
 done < "$inputsFile"
+echo ${REPARRAY[@]}
 wordCOUNTER=0
 #Create array of sorted tags for search files
 for genTag in ${GENARRAY[@]}; do
