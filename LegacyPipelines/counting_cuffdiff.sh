@@ -31,6 +31,7 @@ while IFS= read -r line; do
 	#for word in $line; do
 	#Each line contains the tags for the replicates, genotypes, or treatments
 	#with each tag for the category separated by spaces
+	#UPDATE: add line tags to identify fields
 	for word in $line; do
 		if [[ COUNTER -eq 0 ]]; then
 			readMax=$word
