@@ -42,8 +42,8 @@ while IFS= read -r line; do
 	else #Add the gene counts from the next file
 		cut -d' ' -f1 "$geneCounts"/*"$currentFile"*
 		paste -d' ' "$mergedCounts" "$geneCounts"/*"$currentFile"*
-	else
-		echo "ERROR: Please check that mereOrder.txt input tags are in the same order found in gene count file names... exiting!"
+	#else
+		#echo "ERROR: Please check that mereOrder.txt input tags are in the same order found in gene count file names... exiting!"
 	fi
 	#Insert current file tags to header line
 	sed -i.bak "1 s/$/ $currentFile/" "$mergedCounts"
