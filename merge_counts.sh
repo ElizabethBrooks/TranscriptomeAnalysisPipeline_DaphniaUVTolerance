@@ -63,7 +63,9 @@ for genTag in ${GENARRAY[@]}; do
 	done
 done
 wordCOUNTER=0
-tagMax=${#TAGARRAY[@]}-1
+tagMax=${#TAGARRAY[@]}
+echo $tagMax
+let tagMax=$(($tagMax-1))
 echo $tagMax
 #Merge files based on tag order
 for currentFile in ${TAGARRAY[@]}; do
