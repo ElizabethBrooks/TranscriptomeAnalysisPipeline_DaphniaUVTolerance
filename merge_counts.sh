@@ -40,13 +40,13 @@ inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/mergeInpu
 while IFS= read -r line; do
 	#Determine tags for current file in list
 	for word in $line; do
-		if [[ COUNTER -eq 0 ]]; then
+		if [[ wordCOUNTER -eq 0 ]]; then
 			REPARRAY[repCount]="$word"
 		   	let repCount+=1
-		elif [[ COUNTER -eq 1 ]]; then
+		elif [[ wordCOUNTER -eq 1 ]]; then
 		   	TREARRAY[treCount]="$word"
 		   	let treCount+=1
-		elif [[ COUNTER -eq 2 ]]; then
+		elif [[ wordCOUNTER -eq 2 ]]; then
 		   	GENARRAY[genCount]="$word"
 		   	let genCount+=1
 		else
