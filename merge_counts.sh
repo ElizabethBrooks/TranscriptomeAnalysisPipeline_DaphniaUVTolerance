@@ -63,20 +63,21 @@ for genTag in ${GENARRAY[@]}; do
 		done
 	done
 done
-echo ${TAGARRAY[@]}
+wordCOUNTER=0
 #Merge files based on tag order
-#	currentFile="$replicationTag"_"$genotypeTag"_"$treatmentTag"
-#	echo "File $currentFile is being merged..."
-#	if [ $fileFlag -eq 0 ]; then #Output the first column with gene IDs
-#		cp "$geneCounts"/*"$currentFile"* "$mergedCounts"
+for currentFile in ${TAGARRAY[@]}; do
+	echo "Sample $currentFile is being merged..."
+	if [ $fileFlag -eq 0 ]; then #Output the first column with gene IDs
+		cp "$geneCounts"/*"$currentFile"* "$outputFolder"/"$mergedCounts"
 		#Insert header line
-#		sed -i.bak 1i"gene0" "$mergedCounts"
-#	else #Add the gene counts from the next file
-#		cut -d' ' -f1 "$geneCounts"/*"$currentFile"*
-#		paste -d' ' "$mergedCounts" "$geneCounts"/*"$currentFile"*
-	#else
-		#echo "ERROR: Please check that mereOrder.txt input tags are in the same order found in gene count file names... exiting!"
-#	fi
+		sed -i.bak 1i"gene0" "$mergedCounts"
+	else #Add the gene counts from the next file
+		cut -d' ' -f1 "$geneCounts"/*"$currentFile"* > "$outputFolder"/*"$currentFile"*
+		paste -d' ' "$outputFolder"/"$mergedCounts" "$outputFolder"/*"$currentFile"*
+		#Clean up
+		rm "$outputFolder"/*"$currentFile"*
+	fi
 	#Insert current file tags to header line
-#	sed -i.bak "1 s/$/ $currentFile/" "$mergedCounts"
-#	let wordCOUNTER=0
+	sed -i.bak "1 s/$/ $currentFile/" "$outputFolder"/"$mergedCounts"
+	let wordCOUNTER=0
+done
