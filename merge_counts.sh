@@ -49,9 +49,6 @@ while IFS= read -r line; do
 		elif [[ wordCOUNTER -eq 2 ]]; then
 		   	GENARRAY[genCount]="$word"
 		   	let genCount+=1
-		else
-		   	echo "ERROR: Incorrect number of lines in mergeInputs.txt... exiting"
-		   	exit 1
 		fi
 		let wordCOUNTER+=1
 	done
