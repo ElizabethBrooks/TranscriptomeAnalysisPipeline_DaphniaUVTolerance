@@ -1,6 +1,8 @@
 #!/bin/bash
 #Move out of script repository folder
 cd ..
+dirFlag=0
+runNum=0
 #Initializing file tag variables
 genotypeTag=""
 treatmentTag=""
@@ -28,7 +30,7 @@ while [ $dirFlag -eq 0 ]; do
 	else
 		#Indicate that the folder was successfully made
 		dirFlag=1
-		echo "Creating folder for $runNum run of merging counts of $f1 data..."
+		echo "Creating folder for $runNum run of merging counts of $1 data..."
 	fi
 done
 #Retrieve merge order list from file
