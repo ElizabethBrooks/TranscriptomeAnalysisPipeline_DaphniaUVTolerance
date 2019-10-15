@@ -66,13 +66,14 @@ done
 wordCOUNTER=0
 #Merge files based on tag order
 for currentFile in ${TAGARRAY[@]}; do
-	echo "Sample $currentFile is being merged..."
 	if [ $fileFlag -eq 0 ]; then #Output the first column with gene IDs
+		echo "Sample $currentFile is being merged..."
 		cp "$geneCounts"/*"$currentFile"* "$outputFolder"/"$mergedCounts"
 		#Insert header line
 		sed -i.bak 1i"gene0" "$outputFolder"/"$mergedCounts"
 		fileFlag=1
 	else #Add the gene counts from the next file
+		echo "Sample $currentFile is being merged..."
 		cut -d' ' -f1 "$geneCounts"/*"$currentFile"* | paste -d' ' "$outputFolder"/"$mergedCounts" -
 		#echo $(paste -d' ' "$outputFolder"/"$mergedCounts" <(cut -d' ' -f1 "$geneCounts"/*"$currentFile"*)) >> "$outputFolder"/"$mergedCounts"
 	fi
