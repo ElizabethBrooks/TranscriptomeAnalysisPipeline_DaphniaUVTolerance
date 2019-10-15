@@ -74,8 +74,8 @@ for currentFile in ${TAGARRAY[@]}; do
 		fileFlag=1
 	else #Add the gene counts from the next file
 		echo "Sample $currentFile is being merged..."
-		cut -d' ' -f1 "$geneCounts"/*"$currentFile"* | paste -d' ' "$outputFolder"/"$mergedCounts" -
-		#echo $(paste -d' ' "$outputFolder"/"$mergedCounts" <(cut -d' ' -f1 "$geneCounts"/*"$currentFile"*)) >> "$outputFolder"/"$mergedCounts"
+		#cut -d' ' -f1 "$geneCounts"/*"$currentFile"* | paste -d' ' "$outputFolder"/"$mergedCounts" -
+		cat $(paste -d' ' "$outputFolder"/"$mergedCounts" <(cut -d' ' -f1 "$geneCounts"/*"$currentFile"*)) >> "$outputFolder"/"$mergedCounts"
 	fi
 	#Insert current file tags to header line
 	sed -i.bak "1 s/$/ $currentFile/" "$outputFolder"/"$mergedCounts"
