@@ -70,14 +70,14 @@ for currentFile in ${TAGARRAY[@]}; do
 	if [ $fileFlag -eq 0 ]; then #Output the first column with gene IDs
 		cp "$geneCounts"/*"$currentFile"* "$outputFolder"/"$mergedCounts".tmp
 		#Insert header line
-		sed -i.bak 1i"gene0" "$outputFolder"/"$mergedCounts"
+		sed -i.bak 1i"gene0" "$outputFolder"/"$mergedCounts".tmp
 		fileFlag=1
 	else #Add the gene counts from the next file
 		paste -d' ' "$outputFolder"/"$mergedCounts".tmp <(cut -d' ' -f1 "$geneCounts"/*"$currentFile"*) >> "$outputFolder"/"$mergedCounts"
-		#Clean up
-		#rm "$outputFolder"/"$mergedCounts".tmp
 	fi
 	#Insert current file tags to header line
 	sed -i.bak "1 s/$/ $currentFile/" "$outputFolder"/"$mergedCounts"
 	let wordCOUNTER=0
+	#Clean up
+	#rm "$outputFolder"/"$mergedCounts".tmp
 done
