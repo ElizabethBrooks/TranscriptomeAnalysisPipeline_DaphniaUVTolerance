@@ -53,15 +53,12 @@ while IFS= read -r line; do
 	done
 	let wordCOUNTER+=1
 done < "$inputsFile"
-echo "REPARRAY: ${REPARRAY[@]}"
-echo "TREARRAY: ${TREARRAY[@]}"
-echo "GENARRAY: ${GENARRAY[@]}"
 wordCOUNTER=0
 #Create array of sorted tags for search files
 for genTag in ${GENARRAY[@]}; do
 	for treTag in ${TREARRAY[@]}; do
 		for repTag in ${REPARRAY[@]}; do
-			TAGARRAY[wordCOUNTER]="$repTag"_"genTag"_"treTag"
+			TAGARRAY[wordCOUNTER]="$repTag"_"$genTag"_"$treTag"
 			let wordCOUNTER+=1
 		done
 	done
