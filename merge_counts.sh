@@ -50,8 +50,8 @@ while IFS= read -r line; do
 		   	GENARRAY[genCount]="$word"
 		   	let genCount+=1
 		fi
-		let wordCOUNTER+=1
 	done
+	let wordCOUNTER+=1
 done < "$inputsFile"
 echo "REPARRAY: ${REPARRAY[@]}"
 echo "TREARRAY: ${TREARRAY[@]}"
