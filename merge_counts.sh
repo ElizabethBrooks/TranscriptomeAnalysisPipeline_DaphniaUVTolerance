@@ -1,4 +1,6 @@
 #!/bin/bash
+#Move out of script repository folder
+cd ..
 #Initializing file tag variables
 genotypeTag=""
 treatmentTag=""
