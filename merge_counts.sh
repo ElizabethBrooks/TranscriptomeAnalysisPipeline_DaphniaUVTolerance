@@ -7,12 +7,12 @@ replicationTag=""
 wordCOUNTER=0
 fileFlag=0
 #Retrieve location of gene count files to be merged
-geneCounts=$(head -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/geneCountsPath.txt")
+geneCounts=$1
 #Set name for merge gene counts file
 mergedCounts="geneCounts_merged.txt"
 #Retrieve merge order list from file
 #UPDATE: similarly to statsInputs_tuxedo.txt for counting_cuffdiff.sh
-inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/mergeOrder.txt"
+inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/mergeInputs.txt"
 #Merge gene counts from file based on order in mergeOrder.txt
 while IFS= read -r line; do
 	#Determine tags for current file in list
@@ -25,14 +25,14 @@ while IFS= read -r line; do
 		elif [[ COUNTER -eq 2 ]]; then
 		   	treatmentTag="$word"
 		else
-		   	echo "ERROR: Incorrect number of tags in a line for mergeOrder.txt... exiting"
+		   	echo "ERROR: Incorrect number of lines in mergeInputs.txt... exiting"
 		   	exit 1
 		fi
 		let wordCOUNTER+=1
 	done
 	#Merge files based on tag order
+	echo "File $currentFile is being merged..."
 	currentFile="$replicationTag"_"$genotypeTag"_"$treatmentTag"
-	echo "sample $currentFile is being merged..."
 	if [ $fileFlag -eq 0 ]; then #Output the first column with gene IDs
 		cp "$geneCounts"/*"$currentFile"* "$mergedCounts"
 		#Insert header line
