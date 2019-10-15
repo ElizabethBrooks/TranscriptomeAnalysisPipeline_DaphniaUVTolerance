@@ -73,7 +73,8 @@ for currentFile in ${TAGARRAY[@]}; do
 		sed -i.bak 1i"gene0" "$outputFolder"/"$mergedCounts"
 		fileFlag=1
 	else #Add the gene counts from the next file
-		echo $(paste -d' ' "$outputFolder"/"$mergedCounts" <(cut -d' ' -f1 "$geneCounts"/*"$currentFile"*)) >> "$outputFolder"/"$mergedCounts"
+		cut -d' ' -f1 "$geneCounts"/*"$currentFile"* | paste -d' ' "$outputFolder"/"$mergedCounts" -
+		#echo $(paste -d' ' "$outputFolder"/"$mergedCounts" <(cut -d' ' -f1 "$geneCounts"/*"$currentFile"*)) >> "$outputFolder"/"$mergedCounts"
 	fi
 	#Insert current file tags to header line
 	sed -i.bak "1 s/$/ $currentFile/" "$outputFolder"/"$mergedCounts"
