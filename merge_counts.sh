@@ -73,15 +73,15 @@ for currentFile in ${TAGARRAY[@]}; do
 		sed -i.bak 1i"gene0" "$outputFolder"/"$mergedCounts"
 	elif [ $wordCOUNTER -eq $tagMax ]; then
 		echo "Last sample $currentFile is being merged..."
-		cut -d' ' -f1 "$geneCounts"/*"$currentFile"* > tmp"$currentFile"
-		paste -d' ' "$outputFolder"/"$mergedCounts" tmp"$currentFile"
-		#rm tmp"$currentFile"
+		cut -d' ' -f1 "$geneCounts"/*"$currentFile"* > "$outputFolder"/tmp"$currentFile"
+		paste -d' ' "$outputFolder"/"$mergedCounts" "$outputFolder"/tmp"$currentFile"
+		#rm "$outputFolder"/tmp"$currentFile"
 		#paste -d' ' "$outputFolder"/"$mergedCounts" <(cut -d' ' -f1 "$geneCounts"/*"$currentFile"*) >> "$outputFolder"/"$mergedCounts"
 	else #Add the gene counts from the next file
 		echo "Next sample $currentFile is being merged..."
-		cut -d' ' -f1 "$geneCounts"/*"$currentFile"* > tmp"$currentFile"
-		paste -d' ' "$outputFolder"/"$mergedCounts" tmp"$currentFile"
-		#rm tmp"$currentFile"
+		cut -d' ' -f1 "$geneCounts"/*"$currentFile"* > "$outputFolder"/tmp"$currentFile"
+		paste -d' ' "$outputFolder"/"$mergedCounts" "$outputFolder"/tmp"$currentFile"
+		#rm tmp""$outputFolder"/$currentFile"
 		#paste -d' ' "$outputFolder"/"$mergedCounts" <(cut -d' ' -f1 "$geneCounts"/*"$currentFile"*) >> "$outputFolder"/"$mergedCounts"
 	fi
 	#Insert current file tags to header line
