@@ -17,7 +17,7 @@ geneCounts=$1
 	#exit 1
 #fi	
 #Set name for merge gene counts file
-mergedCounts="geneCounts_merged.txt"
+mergedCounts="geneCounts_merged.csv"
 #Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
 	outputFolder=counts_merged_run"$runNum"
@@ -73,18 +73,17 @@ for currentFile in ${TAGARRAY[@]}; do
 		sed -i.bak 1i"gene0" "$outputFolder"/"$mergedCounts"
 	elif [ $wordCOUNTER -eq $tagMax ]; then
 		echo "Last sample $currentFile is being merged..."
-		cut -d' ' -f1 "$geneCounts"/*"$currentFile"* > "$outputFolder"/tmp"$currentFile"
-		paste -d' ' "$outputFolder"/"$mergedCounts" "$outputFolder"/tmp"$currentFile"
+		awk '{print $2}' "$geneCounts"/*"$currentFile"* > "$outputFolder"/"$currentFile".tmp.csv
+		paste -d' ' "$outputFolder"/"$mergedCounts" "$outputFolder"/"$currentFile".tmp.csv
 		#rm "$outputFolder"/tmp"$currentFile"
-		#paste -d' ' "$outputFolder"/"$mergedCounts" <(cut -d' ' -f1 "$geneCounts"/*"$currentFile"*) >> "$outputFolder"/"$mergedCounts"
 	else #Add the gene counts from the next file
 		echo "Next sample $currentFile is being merged..."
-		cut -d' ' -f1 "$geneCounts"/*"$currentFile"* > "$outputFolder"/tmp"$currentFile"
-		paste -d' ' "$outputFolder"/"$mergedCounts" "$outputFolder"/tmp"$currentFile"
+		awk '{print $2}' "$geneCounts"/*"$currentFile"* > "$outputFolder"/"$currentFile".tmp.csv
+		paste -d' ' "$outputFolder"/"$mergedCounts" "$outputFolder"/"$currentFile".tmp.csv
 		#rm tmp""$outputFolder"/$currentFile"
-		#paste -d' ' "$outputFolder"/"$mergedCounts" <(cut -d' ' -f1 "$geneCounts"/*"$currentFile"*) >> "$outputFolder"/"$mergedCounts"
 	fi
 	#Insert current file tags to header line
 	sed -i.bak "1 s/$/ $currentFile/" "$outputFolder"/"$mergedCounts"
+	rm "$outputFolder"/"$mergedCounts".bak
 	let wordCOUNTER+=1
 done
