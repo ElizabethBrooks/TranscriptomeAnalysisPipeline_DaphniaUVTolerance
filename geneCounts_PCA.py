@@ -6,10 +6,12 @@ import pandas as pd
 from sklearn.decomposition import PCA as sklearnPCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 #Retrieve track features and popularities and store in data frame
-cols =  ['TrackID', 'Popularity', 'FeatureID', 'Danceability', 'Energy', 'Key', 'Loudness', 'Mode', 
-         'Speechiness', 'Acousticness', 'Instrumentalness', 'Livenss', 
-         'Valence', 'Tempo', 'TimeSignature', 'Duration', 'Bin']
-data = pd.read_csv('trackFeatures_totalTrackFeaturesMapped_shuffled_binned.csv', names=cols)
+cols =  ['Y05_VIS_Pool1', 'Y05_VIS_Pool2', 'Y05_VIS_Pool3', 'Y05_UV_Pool1', 
+'Y05_UV_Pool2', 'Y05_UV_Pool3', 'Y023_5_VIS_Pool1', 'Y023_5_VIS_Pool2', 'Y023_5_VIS_Pool3', 
+'Y023_5_UV_Pool1', 'Y023_5_UV_Pool2', 'Y023_5_UV_Pool3', 'E05_VIS_Pool1', 'E05_VIS_Pool2', 
+'E05_VIS_Pool3', 'E05_UV_Pool1', 'E05_UV_Pool2', 'E05_UV_Pool3', 'R2_VIS_Pool1', 
+'R2_VIS_Pool2', 'R2_VIS_Pool3', 'R2_UV_Pool1', 'R2_UV_Pool2', 'R2_UV_Pool3']
+data = pd.read_csv('geneCounts.txt', names=cols)
 y = data['Bin']          # Split off classifications
 X = data.ix[:, 'Danceability':'Duration'] # Split off features
 ####
