@@ -74,13 +74,13 @@ for currentFile in ${TAGARRAY[@]}; do
 	elif [ $wordCOUNTER -eq $tagMax ]; then
 		echo "Last sample $currentFile is being merged..."
 		awk '{print $2}' "$geneCounts"/*"$currentFile"* > "$outputFolder"/"$currentFile".tmp.csv
-		awk '{print $0, "$outputFolder/$currentFile.tmp.csv"}' "$outputFolder"/"$mergedCounts"
-		rm "$outputFolder"/"$currentFile".tmp.csv
+		awk 'BEGIN{getline to_add < "$outputFolder/$currentFile.tmp.csv"}{print $0,to_add}' "$outputFolder"/"$mergedCounts"
+		rm "$outputFolder"/tmp"$currentFile".tmp.csv
 	else #Add the gene counts from the next file
 		echo "Next sample $currentFile is being merged..."
 		awk '{print $2}' "$geneCounts"/*"$currentFile"* > "$outputFolder"/"$currentFile".tmp.csv
-		awk '{print $0, "$outputFolder/$currentFile.tmp.csv"}' "$outputFolder"/"$mergedCounts"
-		rm "$outputFolder"/"$currentFile".tmp.csv
+		awk 'BEGIN{getline to_add < "$outputFolder/$currentFile.tmp.csv"}{print $0,to_add}' "$outputFolder"/"$mergedCounts"
+		rm tmp""$outputFolder"/$currentFile".tmp.csv
 	fi
 	#Insert current file tags to header line
 	sed -i.bak "1 s/$/ $currentFile/" "$outputFolder"/"$mergedCounts"
