@@ -29,7 +29,7 @@ while [ $dirFlag -eq 0 ]; do
 	else
 		#Indicate that the folder was successfully made
 		dirFlag=1
-		echo "Creating folder for $runNum run of merging counts of $1 data..."
+		echo "Creating folder for run $runNum of merging counts of $1 data..."
 	fi
 done
 #Retrieve merge order list from file
@@ -74,13 +74,13 @@ for currentFile in ${TAGARRAY[@]}; do
 	elif [ $wordCOUNTER -eq $tagMax ]; then
 		echo "Last sample $currentFile is being merged..."
 		awk '{print $2}' "$geneCounts"/*"$currentFile"* > "$outputFolder"/"$currentFile".tmp.csv
-		awk 'NR==FNR{a[NR]=$0;next}{print a[FNR],$0}' "$outputFolder"/"$mergedCounts" "$outputFolder"/"$currentFile".tmp.csv
-		#rm "$outputFolder"/tmp"$currentFile"
+		awk '{print $0, "$outputFolder/$currentFile.tmp.csv"}' "$outputFolder"/"$mergedCounts"
+		rm "$outputFolder"/"$currentFile".tmp.csv
 	else #Add the gene counts from the next file
 		echo "Next sample $currentFile is being merged..."
 		awk '{print $2}' "$geneCounts"/*"$currentFile"* > "$outputFolder"/"$currentFile".tmp.csv
-		awk 'NR==FNR{a[NR]=$0;next}{print a[FNR],$0}' "$outputFolder"/"$mergedCounts" "$outputFolder"/"$currentFile".tmp.csv
-		#rm tmp""$outputFolder"/$currentFile"
+		awk '{print $0, "$outputFolder/$currentFile.tmp.csv"}' "$outputFolder"/"$mergedCounts"
+		rm "$outputFolder"/"$currentFile".tmp.csv
 	fi
 	#Insert current file tags to header line
 	sed -i.bak "1 s/$/ $currentFile/" "$outputFolder"/"$mergedCounts"
