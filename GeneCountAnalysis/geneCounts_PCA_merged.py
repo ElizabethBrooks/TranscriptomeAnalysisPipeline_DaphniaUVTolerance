@@ -4,8 +4,9 @@ mpl.use('agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.decomposition import PCA as sklearnPCA
+from sklearn.preprocessing import StandardScaler
 #Specify header tags for csv file of gene counts
-cols =  ['gene', 'Y05_VIS_Pool1_T', 'Y05_VIS_Pool2_T', 'Y05_VIS_Pool3_T', 'Y05_UV_Pool1_T', 
+cols =  ['Y05_VIS_Pool1_T', 'Y05_VIS_Pool2_T', 'Y05_VIS_Pool3_T', 'Y05_UV_Pool1_T', 
 'Y05_UV_Pool2_T', 'Y05_UV_Pool3_T', 'Y023_5_VIS_Pool1_T', 'Y023_5_VIS_Pool2_T', 'Y023_5_VIS_Pool3_T', 
 'Y023_5_UV_Pool1_T', 'Y023_5_UV_Pool2_T', 'Y023_5_UV_Pool3_T', 'E05_VIS_Pool1_T', 'E05_VIS_Pool2_T', 
 'E05_VIS_Pool3_T', 'E05_UV_Pool1_T', 'E05_UV_Pool2_T', 'E05_UV_Pool3_T', 'R2_VIS_Pool1_T', 
@@ -16,22 +17,11 @@ cols =  ['gene', 'Y05_VIS_Pool1_T', 'Y05_VIS_Pool2_T', 'Y05_VIS_Pool3_T', 'Y05_U
 'E05_VIS_Pool3_H', 'E05_UV_Pool1_H', 'E05_UV_Pool2_H', 'E05_UV_Pool3_H', 'R2_VIS_Pool1_H', 
 'R2_VIS_Pool2_H', 'R2_VIS_Pool3_H', 'R2_UV_Pool1_H', 'R2_UV_Pool2_H', 'R2_UV_Pool3_H']
 #Retrieve gene counts and store in data frame
-data = pd.read_csv('../../final_merged_counts.csv', names=cols)
-#Specify target sample tags
-samples =  ['Y05_VIS_Pool1_T', 'Y05_VIS_Pool2_T', 'Y05_VIS_Pool3_T', 'Y05_UV_Pool1_T', 
-'Y05_UV_Pool2_T', 'Y05_UV_Pool3_T', 'Y023_5_VIS_Pool1_T', 'Y023_5_VIS_Pool2_T', 'Y023_5_VIS_Pool3_T', 
-'Y023_5_UV_Pool1_T', 'Y023_5_UV_Pool2_T', 'Y023_5_UV_Pool3_T', 'E05_VIS_Pool1_T', 'E05_VIS_Pool2_T', 
-'E05_VIS_Pool3_T', 'E05_UV_Pool1_T', 'E05_UV_Pool2_T', 'E05_UV_Pool3_T', 'R2_VIS_Pool1_T', 
-'R2_VIS_Pool2_T', 'R2_VIS_Pool3_T', 'R2_UV_Pool1_T', 'R2_UV_Pool2_T', 'R2_UV_Pool3_T', 
-'Y05_VIS_Pool1_H', 'Y05_VIS_Pool2_H', 'Y05_VIS_Pool3_H', 'Y05_UV_Pool1_H', 'Y05_UV_Pool2_H', 
-'Y05_UV_Pool3_H', 'Y023_5_VIS_Pool1_H', 'Y023_5_VIS_Pool2_H', 'Y023_5_VIS_Pool3_H', 
-'Y023_5_UV_Pool1_H', 'Y023_5_UV_Pool2_H', 'Y023_5_UV_Pool3_H', 'E05_VIS_Pool1_H', 'E05_VIS_Pool2_H', 
-'E05_VIS_Pool3_H', 'E05_UV_Pool1_H', 'E05_UV_Pool2_H', 'E05_UV_Pool3_H', 'R2_VIS_Pool1_H', 
-'R2_VIS_Pool2_H', 'R2_VIS_Pool3_H', 'R2_UV_Pool1_H', 'R2_UV_Pool2_H', 'R2_UV_Pool3_H']
+data = pd.read_csv('../../GeneCounts_Merged/final_merged_counts_trimmed.csv', names=cols)
 #Split off targets
-y = data.loc[;, samples]
+Y = data.loc[:, cols].values
 #Split off features
-X = data.loc[;, ['gene']]
+X = data.loc[:, ['gene']].values
 ####
 #Standardizing the features
 X_stand = StandardScaler().fit_transform(X)
@@ -41,9 +31,9 @@ X_stand = StandardScaler().fit_transform(X)
 #Principle component analysis
 pca = sklearnPCA(n_components=2) #2-dimensional PCA
 #transformed = pd.DataFrame(pca.fit_transform(X_norm))
-principalComponents = pca.fit_transform(x)
+principalComponents = pca.fit_transform(X)
 principalDf = pd.DataFrame(data=principalComponents, columns=['PC 1', 'PC 2'])
-finalDf = pd.concat([principalDf, df[samples]], axis=1)
+finalDf = pd.concat([principalDf, df[cols]], axis=1)
 #Plot data
 fig = plt.figure(figsize=(8,8))
 ax = fig.add_subplot(1,1,1) 
