@@ -1,7 +1,7 @@
 #R script to compare two gene count matrices
 #Retrieve gene count tables
-gCount1 = read.csv("../../GeneCounts_Merged/merged_counts_legacy_cleaned.csv", sep=",", row.names=1)
-gCount2 = read.csv("../../GeneCounts_Merged/merged_counts_subset_cleaned.csv", sep=",", row.names=1)
+gCount1 = read.csv("../../GeneCounts_Merged/merged_counts_legacy_tagged.csv", sep=",", row.names=1)
+gCount2 = read.csv("../../GeneCounts_Merged/merged_counts_subset_tagged.csv", sep=",", row.names=1)
 #Convert gene count tables to matrices
 gCount1M <- as.matrix(gCount1)
 gCount2M <- as.matrix(gCount2)
