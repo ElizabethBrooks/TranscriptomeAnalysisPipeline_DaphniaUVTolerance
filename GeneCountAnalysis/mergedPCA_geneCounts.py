@@ -4,7 +4,7 @@ mpl.use('agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.decomposition import PCA as sklearnPCA
-#Retrieve track features and popularities and store in data frame
+#Specify header tags for csv file of gene counts
 cols =  ['gene', 'Y05_VIS_Pool1_T', 'Y05_VIS_Pool2_T', 'Y05_VIS_Pool3_T', 'Y05_UV_Pool1_T', 
 'Y05_UV_Pool2_T', 'Y05_UV_Pool3_T', 'Y023_5_VIS_Pool1_T', 'Y023_5_VIS_Pool2_T', 'Y023_5_VIS_Pool3_T', 
 'Y023_5_UV_Pool1_T', 'Y023_5_UV_Pool2_T', 'Y023_5_UV_Pool3_T', 'E05_VIS_Pool1_T', 'E05_VIS_Pool2_T', 
@@ -15,7 +15,9 @@ cols =  ['gene', 'Y05_VIS_Pool1_T', 'Y05_VIS_Pool2_T', 'Y05_VIS_Pool3_T', 'Y05_U
 'Y023_5_UV_Pool1_H', 'Y023_5_UV_Pool2_H', 'Y023_5_UV_Pool3_H', 'E05_VIS_Pool1_H', 'E05_VIS_Pool2_H', 
 'E05_VIS_Pool3_H', 'E05_UV_Pool1_H', 'E05_UV_Pool2_H', 'E05_UV_Pool3_H', 'R2_VIS_Pool1_H', 
 'R2_VIS_Pool2_H', 'R2_VIS_Pool3_H', 'R2_UV_Pool1_H', 'R2_UV_Pool2_H', 'R2_UV_Pool3_H']
-data = pd.read_csv('final_merged_counts.csv', names=cols)
+#Retrieve gene counts and store in data frame
+data = pd.read_csv('../../final_merged_counts.csv', names=cols)
+#Specify target sample tags
 samples =  ['Y05_VIS_Pool1_T', 'Y05_VIS_Pool2_T', 'Y05_VIS_Pool3_T', 'Y05_UV_Pool1_T', 
 'Y05_UV_Pool2_T', 'Y05_UV_Pool3_T', 'Y023_5_VIS_Pool1_T', 'Y023_5_VIS_Pool2_T', 'Y023_5_VIS_Pool3_T', 
 'Y023_5_UV_Pool1_T', 'Y023_5_UV_Pool2_T', 'Y023_5_UV_Pool3_T', 'E05_VIS_Pool1_T', 'E05_VIS_Pool2_T', 
@@ -26,8 +28,10 @@ samples =  ['Y05_VIS_Pool1_T', 'Y05_VIS_Pool2_T', 'Y05_VIS_Pool3_T', 'Y05_UV_Poo
 'Y023_5_UV_Pool1_H', 'Y023_5_UV_Pool2_H', 'Y023_5_UV_Pool3_H', 'E05_VIS_Pool1_H', 'E05_VIS_Pool2_H', 
 'E05_VIS_Pool3_H', 'E05_UV_Pool1_H', 'E05_UV_Pool2_H', 'E05_UV_Pool3_H', 'R2_VIS_Pool1_H', 
 'R2_VIS_Pool2_H', 'R2_VIS_Pool3_H', 'R2_UV_Pool1_H', 'R2_UV_Pool2_H', 'R2_UV_Pool3_H']
-y = data.loc[;, samples] # Split off targets
-X = data.loc[;, ['gene']] # Split off features
+#Split off targets
+y = data.loc[;, samples]
+#Split off features
+X = data.loc[;, ['gene']]
 ####
 #Standardizing the features
 X_stand = StandardScaler().fit_transform(X)
