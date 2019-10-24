@@ -49,14 +49,12 @@ rm "$prefixOutputs"merged_counts_subset_cleaned.csv
 
 #Add postfix tags to each sample name in each file indicating
 # the alignment method used (T for tophat and H for hisat2)
-sed 's/Pool1/Pool1_H/g' "$prefixOutputs"merged_counts_fullset_rowCleaned.csv |sed 's/Pool2/Pool2_H/g' | sed 's/Pool3/Pool3_H/g' > "$prefixOutputs"merged_counts_fullset_tagged.csv
 sed 's/Pool1/Pool1_H/g' "$prefixOutputs"merged_counts_subset_rowCleaned.csv |sed 's/Pool2/Pool2_H/g' | sed 's/Pool3/Pool3_H/g' > "$prefixOutputs"merged_counts_subset_tagged.csv
 sed 's/Pool1/Pool1_T/g' "$prefixOutputs"merged_counts_legacy_cleaned.csv |sed 's/Pool2/Pool2_T/g' | sed 's/Pool3/Pool3_T/g' > "$prefixOutputs"merged_counts_legacy_tagged.csv
 
 #Transpose gene count tables for PCA and fix headers
 #Fullset
 csvtool transpose "$prefixOutputs"merged_counts_fullset_rowCleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_fullset_transposed.csv
-csvtool transpose "$prefixOutputs"merged_counts_fullset_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_fullset_tagged_transposed.csv
 #Subset
 csvtool transpose "$prefixOutputs"merged_counts_subset_rowCleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_subset_transposed.csv
 csvtool transpose "$prefixOutputs"merged_counts_subset_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_subset_tagged_transposed.csv
@@ -67,46 +65,47 @@ csvtool transpose "$prefixOutputs"merged_counts_legacy_tagged.csv | sed 's/\<gen
 rm "$prefixOutputs"merged_counts_fullset_rowCleaned.csv
 rm "$prefixOutputs"merged_counts_subset_rowCleaned.csv
 rm "$prefixOutputs"merged_counts_legacy_cleaned.csv
-rm "$prefixOutputs"merged_counts_fullset_tagged.csv
 
 #Add column to transposed tables with alignment method
-#Fullset
-sed -e '1 s/$/,method/' "$prefixOutputs"merged_counts_fullset_tagged_transposed.csv > "$prefixOutputs"merged_counts_fullset_annotated_transposed.csv
-sed -ie 's/$/,hisat2/' "$prefixOutputs"merged_counts_fullset_annotated_transposed.csv
-sed -i 's/\<method,hisat2\>/method/g' "$prefixOutputs"merged_counts_fullset_annotated_transposed.csv
 #Subset
-sed -e '1 s/$/,method/' "$prefixOutputs"merged_counts_subset_tagged_transposed.csv > "$prefixOutputs"merged_counts_subset_annotated_transposed.csv
-sed -ie 's/$/,hisat2/' "$prefixOutputs"merged_counts_subset_annotated_transposed.csv
+sed '1 s/$/,method/' "$prefixOutputs"merged_counts_subset_tagged_transposed.csv > "$prefixOutputs"merged_counts_subset_annotated_transposed.csv
+sed -i 's/$/,hisat2/' "$prefixOutputs"merged_counts_subset_annotated_transposed.csv
 sed -i 's/\<method,hisat2\>/method/g' "$prefixOutputs"merged_counts_subset_annotated_transposed.csv
 #Legacy
-sed -e '1 s/$/,method/' "$prefixOutputs"merged_counts_legacy_tagged_transposed.csv > "$prefixOutputs"merged_counts_legacy_annotated_transposed.csv
-sed -ie 's/$/,tophat/' "$prefixOutputs"merged_counts_legacy_annotated_transposed.csv
+sed '1 s/$/,method/' "$prefixOutputs"merged_counts_legacy_tagged_transposed.csv > "$prefixOutputs"merged_counts_legacy_annotated_transposed.csv
+sed -i 's/$/,tophat/' "$prefixOutputs"merged_counts_legacy_annotated_transposed.csv
 sed -i 's/\<method,tophat\>/method/g' "$prefixOutputs"merged_counts_legacy_annotated_transposed.csv
+#Clean up
+rm "$prefixOutputs"merged_counts_subset_tagged_transposed.csv
+rm "$prefixOutputs"merged_counts_legacy_tagged_transposed.csv
 
 #Create merged count tables
 #Transpose the annotated tables before merging
 csvtool transpose "$prefixOutputs"merged_counts_subset_annotated_transposed.csv > "$prefixOutputs"merged_counts_subset_annotated.csv
 csvtool transpose "$prefixOutputs"merged_counts_legacy_annotated_transposed.csv > "$prefixOutputs"merged_counts_legacy_annotated.csv
+#Clean up
+rm "$prefixOutputs"merged_counts_subset_annotated_transposed.csv
+rm "$prefixOutputs"merged_counts_legacy_annotated_transposed.csv
 
 #Remove the row tags with gene IDs from subset tables before merging
-sed 's/\([^,]*\),\(.*\)/\2/' "$prefixOutputs"merged_counts_subset_tagged.csv > "$prefixOutputs"merged_counts_subset_tagged_trimmed.csv
+#sed 's/\([^,]*\),\(.*\)/\2/' "$prefixOutputs"merged_counts_subset_tagged.csv > "$prefixOutputs"merged_counts_subset_tagged_trimmed.csv
 sed 's/\([^,]*\),\(.*\)/\2/' "$prefixOutputs"merged_counts_subset_annotated.csv > "$prefixOutputs"merged_counts_subset_annotated_trimmed.csv
 #Clean up temporary files
 rm "$prefixOutputs"merged_counts_subset_tagged.csv
 rm "$prefixOutputs"merged_counts_subset_annotated.csv
 
 #Merge both the subset and legacy gene count tables for further comparison
-paste -d , "$prefixOutputs"merged_counts_legacy_tagged.csv "$prefixOutputs"merged_counts_subset_tagged_trimmed.csv > "$prefixOutputs"final_merged_counts_tagged.csv
+#paste -d , "$prefixOutputs"merged_counts_legacy_tagged.csv "$prefixOutputs"merged_counts_subset_tagged_trimmed.csv > "$prefixOutputs"final_merged_counts_tagged.csv
 paste -d , "$prefixOutputs"merged_counts_legacy_annotated.csv "$prefixOutputs"merged_counts_subset_annotated_trimmed.csv > "$prefixOutputs"final_merged_counts_annotated.csv
 #Clean up temporary files
 rm "$prefixOutputs"merged_counts_legacy_tagged.csv
 rm "$prefixOutputs"merged_counts_legacy_annotated.csv
-rm "$prefixOutputs"merged_counts_subset_tagged_trimmed.csv
+#rm "$prefixOutputs"merged_counts_subset_tagged_trimmed.csv
 rm "$prefixOutputs"merged_counts_subset_annotated_trimmed.csv
 
 #Transpose merged count tables and fix headers
-csvtool transpose "$prefixOutputs"final_merged_counts_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"final_merged_counts_tagged_transposed.csv
+#csvtool transpose "$prefixOutputs"final_merged_counts_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"final_merged_counts_tagged_transposed.csv
 csvtool transpose "$prefixOutputs"final_merged_counts_annotated.csv | sed 's/\<gene\>/sample/g'> "$prefixOutputs"final_merged_counts_annotated_transposed.csv
 #Clean up temporary files
-rm "$prefixOutputs"final_merged_counts_tagged.csv
+#rm "$prefixOutputs"final_merged_counts_tagged.csv
 rm "$prefixOutputs"final_merged_counts_annotated.csv
