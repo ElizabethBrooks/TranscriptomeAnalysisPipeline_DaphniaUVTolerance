@@ -52,16 +52,21 @@ rm "$prefixOutputs"merged_counts_subset_cleaned.csv
 sed 's/Pool1/Pool1_H/g' "$prefixOutputs"merged_counts_fullset_rowCleaned.csv |sed 's/Pool2/Pool2_H/g' | sed 's/Pool3/Pool3_H/g' > "$prefixOutputs"merged_counts_fullset_tagged.csv
 sed 's/Pool1/Pool1_H/g' "$prefixOutputs"merged_counts_subset_rowCleaned.csv |sed 's/Pool2/Pool2_H/g' | sed 's/Pool3/Pool3_H/g' > "$prefixOutputs"merged_counts_subset_tagged.csv
 sed 's/Pool1/Pool1_T/g' "$prefixOutputs"merged_counts_legacy_cleaned.csv |sed 's/Pool2/Pool2_T/g' | sed 's/Pool3/Pool3_T/g' > "$prefixOutputs"merged_counts_legacy_tagged.csv
+
+#Transpose gene count tables for PCA and fix headers
+#Fullset
+csvtool transpose "$prefixOutputs"merged_counts_fullset_rowCleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_fullset_transposed.csv
+csvtool transpose "$prefixOutputs"merged_counts_fullset_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_fullset_tagged_transposed.csv
+#Subset
+csvtool transpose "$prefixOutputs"merged_counts_subset_rowCleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_subset_transposed.csv
+csvtool transpose "$prefixOutputs"merged_counts_subset_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_subset_tagged_transposed.csv
+#Legacy
+csvtool transpose "$prefixOutputs"merged_counts_legacy_cleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_legacy_transposed.csv
+csvtool transpose "$prefixOutputs"merged_counts_legacy_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_legacy_tagged_transposed.csv
 #Clean up temporary files
 rm "$prefixOutputs"merged_counts_fullset_rowCleaned.csv
 rm "$prefixOutputs"merged_counts_subset_rowCleaned.csv
 rm "$prefixOutputs"merged_counts_legacy_cleaned.csv
-
-#Transpose gene count tables for PCA and fix headers
-csvtool transpose "$prefixOutputs"merged_counts_fullset_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_fullset_tagged_transposed.csv
-csvtool transpose "$prefixOutputs"merged_counts_subset_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_subset_tagged_transposed.csv
-csvtool transpose "$prefixOutputs"merged_counts_legacy_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_legacy_tagged_transposed.csv
-#Clean up temporary files
 rm "$prefixOutputs"merged_counts_fullset_tagged.csv
 
 #Add column to transposed tables with alignment method
