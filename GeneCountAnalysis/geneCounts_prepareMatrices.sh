@@ -26,45 +26,45 @@ prefixOutputs="../../GeneCounts_Merged/"
 #Prepare new gene count tables for comparison
 #Remove excess white space in gene count tables,
 # particularly a sample name in the header
-cat "$prefixInputs"merged_counts_fullset.txt | tr -s '[:blank:]' ',' > "$prefixOutputs"merged_counts_fullset_cleaned.csv
-cat "$prefixInputs"merged_counts_subset.txt | tr -s '[:blank:]' ',' > "$prefixOutputs"merged_counts_subset_cleaned.csv
+cat "$prefixInputs"merged_counts_fullset.txt | tr -s '[:blank:]' ',' > "$prefixOutputs"merged_counts_fullset_blankCleaned.csv
+cat "$prefixInputs"merged_counts_subset.txt | tr -s '[:blank:]' ',' > "$prefixOutputs"merged_counts_subset_blankCleaned.csv
 cat "$prefixInputs"merged_counts_legacy.txt | tr -s '[:blank:]' ',' > "$prefixOutputs"merged_counts_legacy_cleaned.csv
 #Remove extra lines from the new gene count tables
-egrep -v "unique|ambiguous|feature|aligned|aQual" "$prefixOutputs"merged_counts_fullset_cleaned.csv > "$prefixOutputs"merged_counts_fullset_rowCleaned.csv
-egrep -v "unique|ambiguous|feature|aligned|aQual" "$prefixOutputs"merged_counts_subset_cleaned.csv > "$prefixOutputs"merged_counts_subset_rowCleaned.csv
+egrep -v "unique|ambiguous|feature|aligned|aQual" "$prefixOutputs"merged_counts_fullset_blankCleaned.csv > "$prefixOutputs"merged_counts_fullset_cleaned.csv
+egrep -v "unique|ambiguous|feature|aligned|aQual" "$prefixOutputs"merged_counts_subset_blankCleaned.csv > "$prefixOutputs"merged_counts_subset_cleaned.csv
 #Clean up temporary files
-rm "$prefixOutputs"merged_counts_fullset_cleaned.csv
-rm "$prefixOutputs"merged_counts_subset_cleaned.csv
+rm "$prefixOutputs"merged_counts_fullset_blankCleaned.csv
+rm "$prefixOutputs"merged_counts_subset_blankCleaned.csv
 
 #Compare row tags to identify lines unique to either file,
 # in order to ensure matching gene IDs before merging
 #Retrieve the sorted row tags of gene IDs for each file
-#cat "$prefixOutputs"merged_counts_subset_rowCleaned.csv | cut -d, -f1 | sort -d > "$prefixOutputs"merged_counts_subset_rowCleanedTags.csv
+#cat "$prefixOutputs"merged_counts_subset_cleaned.csv | cut -d, -f1 | sort -d > "$prefixOutputs"merged_counts_subset_rowTags.csv
 #cat "$prefixOutputs"merged_counts_legacy_cleaned.csv | cut -d, -f1 | sort -d > "$prefixOutputs"merged_counts_legacy_rowTags.csv
 #Compare and supress output of row tags found in both files using the -3 flag
-#comm -3 "$prefixOutputs"merged_counts_subset_rowCleanedTags.csv "$prefixOutputs"merged_counts_legacy_rowTags.csv > "$prefixOutputs"merged_counts_uniqueRowTags.csv
+#comm -3 "$prefixOutputs"merged_counts_subset_rowTags.csv "$prefixOutputs"merged_counts_legacy_rowTags.csv > "$prefixOutputs"merged_counts_uniqueRowTags.csv
 #Clean up temporary files
-#rm "$prefixOutputs"merged_counts_subset_rowCleanedTags.csv
+#rm "$prefixOutputs"merged_counts_subset_rowTags.csv
 #rm "$prefixOutputs"merged_counts_legacy_rowTags.csv
 
 #Add postfix tags to each sample name in each file indicating
 # the alignment method used (T for tophat and H for hisat2)
-sed 's/Pool1/Pool1_H/g' "$prefixOutputs"merged_counts_subset_rowCleaned.csv |sed 's/Pool2/Pool2_H/g' | sed 's/Pool3/Pool3_H/g' > "$prefixOutputs"merged_counts_subset_tagged.csv
+sed 's/Pool1/Pool1_H/g' "$prefixOutputs"merged_counts_subset_cleaned.csv |sed 's/Pool2/Pool2_H/g' | sed 's/Pool3/Pool3_H/g' > "$prefixOutputs"merged_counts_subset_tagged.csv
 sed 's/Pool1/Pool1_T/g' "$prefixOutputs"merged_counts_legacy_cleaned.csv |sed 's/Pool2/Pool2_T/g' | sed 's/Pool3/Pool3_T/g' > "$prefixOutputs"merged_counts_legacy_tagged.csv
 
 #Transpose gene count tables for PCA and fix headers
 #Fullset
-csvtool transpose "$prefixOutputs"merged_counts_fullset_rowCleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_fullset_transposed.csv
+csvtool transpose "$prefixOutputs"merged_counts_fullset_cleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_fullset_transposed.csv
 #Subset
-csvtool transpose "$prefixOutputs"merged_counts_subset_rowCleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_subset_transposed.csv
+csvtool transpose "$prefixOutputs"merged_counts_subset_cleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_subset_transposed.csv
 csvtool transpose "$prefixOutputs"merged_counts_subset_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_subset_tagged_transposed.csv
 #Legacy
 csvtool transpose "$prefixOutputs"merged_counts_legacy_cleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_legacy_transposed.csv
 csvtool transpose "$prefixOutputs"merged_counts_legacy_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"merged_counts_legacy_tagged_transposed.csv
 #Clean up temporary files
-rm "$prefixOutputs"merged_counts_fullset_rowCleaned.csv
-rm "$prefixOutputs"merged_counts_subset_rowCleaned.csv
-rm "$prefixOutputs"merged_counts_legacy_cleaned.csv
+#rm "$prefixOutputs"merged_counts_fullset_cleaned.csv
+#rm "$prefixOutputs"merged_counts_subset_cleaned.csv
+#rm "$prefixOutputs"merged_counts_legacy_cleaned.csv
 
 #Add column to transposed tables with alignment method
 #Subset
