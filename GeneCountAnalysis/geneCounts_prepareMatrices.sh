@@ -66,46 +66,69 @@ csvtool transpose "$prefixOutputs"merged_counts_legacy_tagged.csv | sed 's/\<gen
 #rm "$prefixOutputs"merged_counts_subset_cleaned.csv
 #rm "$prefixOutputs"merged_counts_legacy_cleaned.csv
 
-#Add column to transposed tables with alignment method
+#Add column to transposed tables with treatment and alignment method
+#Fullset
+sed '1 s/$/,treatment/' "$prefixOutputs"merged_counts_fullset_transposed.csv > "$prefixOutputs"merged_counts_fullset_annotatedTreatment_transposed.csv
+sed -i '/UV/ s/$/,UV/' "$prefixOutputs"merged_counts_fullset_annotatedTreatment_transposed.csv
+sed -i '/VIS/ s/$/,VIS/' "$prefixOutputs"merged_counts_fullset_annotatedTreatment_transposed.csv
 #Subset
-sed '1 s/$/,method/' "$prefixOutputs"merged_counts_subset_tagged_transposed.csv > "$prefixOutputs"merged_counts_subset_annotated_transposed.csv
-sed -i 's/$/,hisat2/' "$prefixOutputs"merged_counts_subset_annotated_transposed.csv
-sed -i 's/\<method,hisat2\>/method/g' "$prefixOutputs"merged_counts_subset_annotated_transposed.csv
+sed '1 s/$/,treatment/' "$prefixOutputs"merged_counts_subset_tagged_transposed.csv > "$prefixOutputs"merged_counts_subset_annotatedTreatment_transposed.csv
+sed -i '/UV/ s/$/,UV/' "$prefixOutputs"merged_counts_subset_annotatedTreatment_transposed.csv
+sed -i '/VIS/ s/$/,VIS/' "$prefixOutputs"merged_counts_subset_annotatedTreatment_transposed.csv
+sed '1 s/$/,method/' "$prefixOutputs"merged_counts_subset_tagged_transposed.csv > "$prefixOutputs"merged_counts_subset_annotatedMethod_transposed.csv
+sed -i 's/$/,hisat2/' "$prefixOutputs"merged_counts_subset_annotatedMethod_transposed.csv
+sed -i 's/\<method,hisat2\>/method/g' "$prefixOutputs"merged_counts_subset_annotatedMethod_transposed.csv
 #Legacy
-sed '1 s/$/,method/' "$prefixOutputs"merged_counts_legacy_tagged_transposed.csv > "$prefixOutputs"merged_counts_legacy_annotated_transposed.csv
-sed -i 's/$/,tophat/' "$prefixOutputs"merged_counts_legacy_annotated_transposed.csv
-sed -i 's/\<method,tophat\>/method/g' "$prefixOutputs"merged_counts_legacy_annotated_transposed.csv
+sed '1 s/$/,treatment/' "$prefixOutputs"merged_counts_legacy_tagged_transposed.csv > "$prefixOutputs"merged_counts_legacy_annotatedTreatment_transposed.csv
+sed -i '/UV/ s/$/,UV/' "$prefixOutputs"merged_counts_legacy_annotatedTreatment_transposed.csv
+sed -i '/VIS/ s/$/,VIS/' "$prefixOutputs"merged_counts_legacy_annotatedTreatment_transposed.csv
+sed '1 s/$/,method/' "$prefixOutputs"merged_counts_legacy_tagged_transposed.csv > "$prefixOutputs"merged_counts_legacy_annotatedMethod_transposed.csv
+sed -i 's/$/,tophat/' "$prefixOutputs"merged_counts_legacy_annotatedMethod_transposed.csv
+sed -i 's/\<method,tophat\>/method/g' "$prefixOutputs"merged_counts_legacy_annotatedMethod_transposed.csv
 #Clean up
 rm "$prefixOutputs"merged_counts_subset_tagged_transposed.csv
 rm "$prefixOutputs"merged_counts_legacy_tagged_transposed.csv
 
 #Create merged count tables
-#Transpose the annotated tables before merging
-csvtool transpose "$prefixOutputs"merged_counts_subset_annotated_transposed.csv > "$prefixOutputs"merged_counts_subset_annotated.csv
-csvtool transpose "$prefixOutputs"merged_counts_legacy_annotated_transposed.csv > "$prefixOutputs"merged_counts_legacy_annotated.csv
+#Transpose the annotated tables
+#Fullset
+csvtool transpose "$prefixOutputs"merged_counts_fullset_annotatedTreatment_transposed.csv > "$prefixOutputs"merged_counts_fullset_annotatedTreatment.csv
+#Subset
+csvtool transpose "$prefixOutputs"merged_counts_subset_annotatedTreatment_transposed.csv > "$prefixOutputs"merged_counts_subset_annotatedTreatment.csv
+csvtool transpose "$prefixOutputs"merged_counts_subset_annotatedMethod_transposed.csv > "$prefixOutputs"merged_counts_subset_annotatedMethod.csv
+#Legacy
+csvtool transpose "$prefixOutputs"merged_counts_legacy_annotatedTreatment_transposed.csv > "$prefixOutputs"merged_counts_legacy_annotatedTreatment.csv
+csvtool transpose "$prefixOutputs"merged_counts_legacy_annotatedMethod_transposed.csv > "$prefixOutputs"merged_counts_legacy_annotatedMethod.csv
 #Clean up
-rm "$prefixOutputs"merged_counts_subset_annotated_transposed.csv
-rm "$prefixOutputs"merged_counts_legacy_annotated_transposed.csv
+rm "$prefixOutputs"merged_counts_subset_annotatedMethod_transposed.csv
+rm "$prefixOutputs"merged_counts_legacy_annotatedMethod_transposed.csv
 
 #Remove the row tags with gene IDs from subset tables before merging
 #sed 's/\([^,]*\),\(.*\)/\2/' "$prefixOutputs"merged_counts_subset_tagged.csv > "$prefixOutputs"merged_counts_subset_tagged_trimmed.csv
-sed 's/\([^,]*\),\(.*\)/\2/' "$prefixOutputs"merged_counts_subset_annotated.csv > "$prefixOutputs"merged_counts_subset_annotated_trimmed.csv
+sed 's/\([^,]*\),\(.*\)/\2/' "$prefixOutputs"merged_counts_subset_annotatedTreatment.csv > "$prefixOutputs"merged_counts_subset_annotatedTreatment_trimmed.csv
+sed 's/\([^,]*\),\(.*\)/\2/' "$prefixOutputs"merged_counts_subset_annotatedMethod.csv > "$prefixOutputs"merged_counts_subset_annotatedMethod_trimmed.csv
 #Clean up temporary files
 rm "$prefixOutputs"merged_counts_subset_tagged.csv
-rm "$prefixOutputs"merged_counts_subset_annotated.csv
+rm "$prefixOutputs"merged_counts_subset_annotatedTreatment.csv
+rm "$prefixOutputs"merged_counts_subset_annotatedMethod.csv
 
 #Merge both the subset and legacy gene count tables for further comparison
 #paste -d , "$prefixOutputs"merged_counts_legacy_tagged.csv "$prefixOutputs"merged_counts_subset_tagged_trimmed.csv > "$prefixOutputs"final_merged_counts_tagged.csv
-paste -d , "$prefixOutputs"merged_counts_legacy_annotated.csv "$prefixOutputs"merged_counts_subset_annotated_trimmed.csv > "$prefixOutputs"final_merged_counts_annotated.csv
+paste -d , "$prefixOutputs"merged_counts_legacy_annotatedTreatment.csv "$prefixOutputs"merged_counts_subset_annotatedTreatment_trimmed.csv > "$prefixOutputs"final_merged_counts_annotatedTreatment.csv
+paste -d , "$prefixOutputs"merged_counts_legacy_annotatedMethod.csv "$prefixOutputs"merged_counts_subset_annotatedMethod_trimmed.csv > "$prefixOutputs"final_merged_counts_annotatedMethod.csv
 #Clean up temporary files
 rm "$prefixOutputs"merged_counts_legacy_tagged.csv
-rm "$prefixOutputs"merged_counts_legacy_annotated.csv
+rm "$prefixOutputs"merged_counts_legacy_annotatedTreatment.csv
+rm "$prefixOutputs"merged_counts_legacy_annotatedMethod.csv
 #rm "$prefixOutputs"merged_counts_subset_tagged_trimmed.csv
-rm "$prefixOutputs"merged_counts_subset_annotated_trimmed.csv
+rm "$prefixOutputs"merged_counts_subset_annotatedTreatment_trimmed.csv
+rm "$prefixOutputs"merged_counts_subset_annotatedMethod_trimmed.csv
 
 #Transpose merged count tables and fix headers
 #csvtool transpose "$prefixOutputs"final_merged_counts_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"final_merged_counts_tagged_transposed.csv
-csvtool transpose "$prefixOutputs"final_merged_counts_annotated.csv | sed 's/\<gene\>/sample/g'> "$prefixOutputs"final_merged_counts_annotated_transposed.csv
+csvtool transpose "$prefixOutputs"final_merged_counts_annotatedTreatment.csv | sed 's/\<gene\>/sample/g'> "$prefixOutputs"final_merged_counts_annotatedTreatment_transposed.csv
+csvtool transpose "$prefixOutputs"final_merged_counts_annotatedMethod.csv | sed 's/\<gene\>/sample/g'> "$prefixOutputs"final_merged_counts_annotatedMethod_transposed.csv
 #Clean up temporary files
 #rm "$prefixOutputs"final_merged_counts_tagged.csv
-rm "$prefixOutputs"final_merged_counts_annotated.csv
+rm "$prefixOutputs"final_merged_counts_annotatedTreatment.csv
+rm "$prefixOutputs"final_merged_counts_annotatedMethod.csv
