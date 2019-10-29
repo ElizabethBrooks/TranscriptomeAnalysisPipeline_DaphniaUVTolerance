@@ -12,16 +12,16 @@ if (length(args)!=1) {
   stop("One file name must be supplied.n", call.=FALSE)
 }
 #Read input gene count table
-countsTable <- read.delim( file=arg[1], row.names="gene" ) head(countsTable)
+countsTable <- read.delim(file=arg[1], row.names="gene") head(countsTable)
 #Set control and treatment order
-conds <- factor( c("ctrl","ctrl","ctrl","treat","treat","treat"  ) )
+conds <- factor(c("ctrl","ctrl","ctrl","treat","treat","treat"))
 #Generate list of DE genes
-cds<- DGEList( counts=countsTable, group=conds )
-d <- calcNormFactors( cds )
-d <- estimateCommonDisp( d )
-d <- estimateTagwiseDisp( d)
-de<- exactTest( d , pair = c( "ctrl" , "treat" ) )
+cds<- DGEList(counts=countsTable, group=conds)
+d <- calcNormFactors(cds)
+d <- estimateCommonDisp(d)
+d <- estimateTagwiseDisp(d)
+de<- exactTest(d, pair=c("ctrl", "treat"))
 #Create results table of DE genes
-resultsTbl <- topTags( de, n = nrow( de$table ) )$table
+resultsTbl <- topTags(de, n=nrow(de$table))$table
 #Output resulting table
 write.table(resultsTbl, file=arg[1]".out.csv", sep=",", row.names=TRUE)

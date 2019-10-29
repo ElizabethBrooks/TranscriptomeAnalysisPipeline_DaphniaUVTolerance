@@ -1,7 +1,7 @@
 #!/bin/bash
-#Script to run Rscripts that generate kmeans PCA plots
+#Script to run Rscripts that generate kMeans plots
 
-#Plot merged data kmeans PCA
+#Plot merged data kMeans clustering
 Rscript geneCounts_kMeans.r $1
 #Rename produced plot
 outFile=$(echo $1 | sed 's/\.csv/\.pdf/')

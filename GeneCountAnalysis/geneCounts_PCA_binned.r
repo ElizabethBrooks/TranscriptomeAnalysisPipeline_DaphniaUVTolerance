@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
-#R script to compare two gene count matrices
+#R script to generate binned PCA of gene count matrices
 #{ggfortify} lets {ggplot2} know how to interpret PCA objects
 library(ggfortify)
-#Retrieve input file names of gene counts
+#Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 #Test if there is one input argument
 if (length(args)!=1) {
