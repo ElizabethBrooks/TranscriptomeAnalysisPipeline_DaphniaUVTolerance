@@ -100,6 +100,7 @@ csvtool transpose "$prefixOutputs"merged_counts_subset_annotatedMethod_transpose
 csvtool transpose "$prefixOutputs"merged_counts_legacy_annotatedTreatment_transposed.csv > "$prefixOutputs"merged_counts_legacy_annotatedTreatment.csv
 csvtool transpose "$prefixOutputs"merged_counts_legacy_annotatedMethod_transposed.csv > "$prefixOutputs"merged_counts_legacy_annotatedMethod.csv
 #Clean up
+rm "$prefixOutputs"merged_counts_fullset_annotatedMethod_transposed.csv
 rm "$prefixOutputs"merged_counts_subset_annotatedMethod_transposed.csv
 rm "$prefixOutputs"merged_counts_legacy_annotatedMethod_transposed.csv
 
