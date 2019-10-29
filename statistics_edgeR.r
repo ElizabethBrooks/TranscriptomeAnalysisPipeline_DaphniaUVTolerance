@@ -12,7 +12,8 @@ if (length(args)!=1) {
   stop("One file name must be supplied.n", call.=FALSE)
 }
 #Read input gene count table
-countsTable <- read.delim(file=arg[1], row.names="gene") head(countsTable)
+countsTable <- read.delim(file=args[1], row.names="gene")
+head(countsTable)
 #Set control and treatment order
 conds <- factor(c("ctrl","ctrl","ctrl","treat","treat","treat"))
 #Generate list of DE genes
