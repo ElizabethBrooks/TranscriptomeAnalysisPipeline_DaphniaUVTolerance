@@ -11,8 +11,12 @@ if (length(args)!=1) {
 #Retrieve gene count tables with gene IDs from input file
 gCount0 = read.csv(args[1], sep=",", row.names=1)
 #Generate principal componants of PCA performed with prcomp
-gpca <- prcomp(gCount0)
-#Create percentage contributions of components for scree plot
-data.frame(sd = gpca$sdev) %>% 
-  mutate(pct = 100 * (sd/sum(sd))) %>% 
-  ggplot(aes(1:4, pct)) + geom_col()
+gene.pca <- prcomp(gCount0)
+# Extract eigenvalues/variances
+get_eig(gene.pca)
+#Default plot
+#fviz_eig(gene.pca, addlabels = TRUE, ylim = c(0, 85))
+#Scree plot - Eigenvalues
+fviz_eig(gene.pca, choice = "eigenvalue", addlabels=TRUE)
+#Use only bar or line plot: geom = "bar" or geom = "line"
+#fviz_eig(gene.pca, geom="line")
