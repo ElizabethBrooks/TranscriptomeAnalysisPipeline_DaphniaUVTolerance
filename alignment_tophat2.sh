@@ -45,9 +45,12 @@ for f1 in "$@"; do
 	mkdir aligned_tophat2_run"$runNum"/out
 	for f2 in "$f1"/*pForward.fq.gz; do
 		#Trim extension from current file name
-		curSample=$(echo $f1 | sed 's/pForward\.fq\.gz//')
-		echo "Sample ${f2:13:${#f2}-28} is being aligned..."
+		curFile=$(echo $f2 | sed 's/pForward\.fq\.gz//')
+		#Trim file path from current file name
+		curFileNoPath=$(basename $f2)
+		curFileNoPath=$(echo $curFileNoPath | sed 's/pForward\.fq\.gz//')
+		echo "Sample $curFileNoPath is being aligned..."
 		tophat2 -p 8 -G "$genomeFile" -o aligned_tophat2_run"$runNum"/out aligned_tophat2_build/Daphnia_pulex.allmasked "$f2" "$curSample"pReverse.fq.gz
-		echo "Sample ${f2:13:${#f2}-28} has been aligned!"
+		echo "Sample $curFileNoPath has been aligned!"
 	done
 done

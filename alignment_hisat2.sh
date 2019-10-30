@@ -45,14 +45,19 @@ for f1 in "$@"; do
 	# using 8 threads and samtools to convert output sam files to bam
 	mkdir aligned_hisat2_run"$runNum"/out
 	for f2 in "$f1"/*pForward.fq.gz; do
-		echo "Sample ${f2:13:${#f2}-28} is being aligned..."
-		#hisat2 -p 4 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:0:${#f2}-15}"_pReverse.fq.gz -S "$outputFolder"/out/"${f2:13:${#f2}-28}".sam --summary-file "$outputFolder"/alignedSummary.txt | samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"${f2:13:${#f2}-28}".sam > "$outputFolder"/out/"${f2:13:${#f2}-28}".bam
-		hisat2 -p 8 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "${f2:0:${#f2}-15}"_pReverse.fq.gz -S "$outputFolder"/out/"${f2:13:${#f2}-28}".sam --summary-file "$outputFolder"/alignedSummary.txt
+		#Trim extension from current file name
+		curFile=$(echo $f2 | sed 's/pForward\.fq\.gz//')
+		#Trim file path from current file name
+		curFileNoPath=$(basename $f2)
+		curFileNoPath=$(echo $curFileNoPath | sed 's/pForward\.fq\.gz//')
+		echo "Sample $curFileNoPath is being aligned..."
+		#hisat2 -p 4 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "$curFile"pReverse.fq.gz -S "$outputFolder"/out/"$curFileNoPath".sam --summary-file "$outputFolder"/alignedSummary.txt | samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"$curFileNoPath".sam > "$outputFolder"/out/"$curFileNoPath".bam
+		hisat2 -p 8 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "$curFile"pReverse.fq.gz -S "$outputFolder"/out/"$curFileNoPath".sam --summary-file "$outputFolder"/alignedSummary.txt
 		#Convert output sam files to bam format for downstream analysis
-		echo "Sample ${f2:13:${#f2}-28} is being converted..."
-		samtools view -@ 8 -bS "$outputFolder"/out/"${f2:13:${#f2}-28}".sam > "$outputFolder"/out/"${f2:13:${#f2}-28}".bam
-		echo "Sample ${f2:13:${#f2}-28} has been aligned and converted!"
+		echo "Sample $curFileNoPath is being converted..."
+		samtools view -@ 8 -bS "$outputFolder"/out/"$curFileNoPath".sam > "$outputFolder"/out/"$curFileNoPath".bam
+		echo "Sample $curFileNoPath has been aligned and converted!"
 		#Remove the now converted .sam file
-		rm "$outputFolder"/out/"${f2:13:${#f2}-28}".sam
+		rm "$outputFolder"/out/"$curFileNoPath".sam
 	done
 done

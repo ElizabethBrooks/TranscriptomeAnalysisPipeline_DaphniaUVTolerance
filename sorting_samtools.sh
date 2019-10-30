@@ -29,15 +29,9 @@ for f1 in "$@"; do
 	if [[ $f1 == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
-		analysisTag=".bam"
-		#analysisFiles="stats_"$analysisMethod"EdgeR_sorted"
-		analysisExtension=""
 	elif [[ $f1 == *"tophat2"* ]]; then
-		#Set analysis method for folder naming
-		analysisMethod="tophat2"	
-		analysisTag="/accepted_hits.bam"
-		#analysisFiles="$f1/out/"
-		analysisExtension="/accepted_hits.bam"
+		echo "ERROR: Tophat aligned files do not need to be sorted... exiting"
+		exit 1
 	else
 		echo "ERROR: The $f1 folder or bam files were not found... exiting"
 		exit 1
@@ -57,20 +51,22 @@ for f1 in "$@"; do
 		fi
 	done
 	#Sort input bam files if folder does not already exist
-	if [ "$analysisMethod" == "hisat2" ]; then
-		if [ $? -eq 0 ]; then
-			echo "Creating folder for sorted bam files..."
-			#Loop through all reads and sort bam files for input to samtools
-			for f3 in "$f1"/out/*; do
-				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#outputFolder})} is being sorted..."
-				#Run samtools to prepare mapped reads for sorting by name
-				#using 8 threads
-				samtools sort -@ 8 -n -o "$outputFolder/${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#outputFolder})}".sorted.bam -T /tmp/"$analysisMethod"_sorted_"$f3".sorted "$f3"
-				echo "Sample ${f3:(${#f1}+5):(${#f3}-${#analysisTag}-${#outputFolder})} has been sorted!"
-			done
-		else
-			echo "Sorted files already exists, skipping sorting..."
-		fi
+	if [ $? -eq 0 ]; then
+		echo "Creating folder for sorted bam files..."
+		#Loop through all reads and sort bam files for input to samtools
+		for f3 in "$f1"/out/*; do
+			#Trim extension from current file name
+			curFile=$(echo $f3 | sed 's/\.bam//')
+			#Trim file path from current file name
+			curFileNoPath=$(basename $f3)
+			curFileNoPath=$(echo $curFileNoPath | sed 's/\.bam//')
+			echo "Sample $curFile is being sorted..."
+			#Run samtools to prepare mapped reads for sorting by name
+			#using 8 threads
+			samtools sort -@ 8 -n -o "$outputFolder/$curFileNoPath".sorted.bam -T /tmp/"$analysisMethod"_sorted_"$f3".sorted "$f3"
+			echo "Sample $curFile has been sorted!"
+		done
 	else
-		echo "Sorted files already exists for Tophat2 outputs, skipping sorting..."
+		echo "Sorted files already exists, skipping sorting..."
+	fi
 done
