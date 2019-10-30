@@ -44,8 +44,10 @@ for f1 in "$@"; do
 	# using 8 threads
 	mkdir aligned_tophat2_run"$runNum"/out
 	for f2 in "$f1"/*pForward.fq.gz; do
+		#Trim extension from current file name
+		curSample=$(echo $f1 | sed 's/pForward\.fq\.gz//')
 		echo "Sample ${f2:13:${#f2}-28} is being aligned..."
-		tophat2 -p 8 -G "$genomeFile" -o aligned_tophat2_run"$runNum"/out aligned_tophat2_build/Daphnia_pulex.allmasked "$f2" "${f2:0:${#f2}-15}"_pReverse.fq.gz
+		tophat2 -p 8 -G "$genomeFile" -o aligned_tophat2_run"$runNum"/out aligned_tophat2_build/Daphnia_pulex.allmasked "$f2" "$curSample"pReverse.fq.gz
 		echo "Sample ${f2:13:${#f2}-28} has been aligned!"
 	done
 done

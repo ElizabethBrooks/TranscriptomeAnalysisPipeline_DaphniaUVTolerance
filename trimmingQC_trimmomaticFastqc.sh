@@ -36,7 +36,8 @@ for f1 in "$readPath"/*1.fq.gz; do
 	#Trim extension from current file name
 	curFile=$(echo $f1 | sed 's/.\.fq\.gz//')
 	#Trim file path from current file name
-	curFileNoPath=$(basename $curFile)
+	curFileNoPath=$(basename $f1)
+	curFileNoPath=$(echo $curFileNoPath | sed 's/.\.fq\.gz//')
 	#Quality control using fastqc on the first read file
 	if [ "$qcCountStart" -eq 0 ]; then
 		fastqc $f1 --extract
