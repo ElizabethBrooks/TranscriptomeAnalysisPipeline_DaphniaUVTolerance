@@ -33,13 +33,17 @@ while [ $dirFlag -eq 0 ]; do
 done
 #Loop through all forward and reverse reads and run trimmomatic on each pair
 for f1 in "$readPath"/*1.fq.gz; do
+	#Trim extension from current file name
+	curFile=$(echo $f1 | sed 's/.\.fq\.gz//')
+	#Trim file path from current file name
+	curFileNoPath=$(basename $curFile)
 	#Quality control using fastqc on the first read file
 	if [ "$qcCountStart" -eq 0 ]; then
 		fastqc $f1 --extract
 		#Determine phred score for trimming
-		if grep -iF "Illumina 1.5" "${f1:0:${#f1}-7}"1_fastqc/fastqc_data.txt; then
+		if grep -iF "Illumina 1.5" "$curFile"1_fastqc/fastqc_data.txt; then
 			score=64
-		elif grep -iF "Illumina 1.9" "${f1:0:${#f1}-7}"1_fastqc/fastqc_data.txt; then
+		elif grep -iF "Illumina 1.9" "$curFile"1_fastqc/fastqc_data.txt; then
 			score=33
 		else
 			echo "ERROR: Illumina encoding not found... exiting"
@@ -48,28 +52,28 @@ for f1 in "$readPath"/*1.fq.gz; do
 		echo "${f1:0:${#f1}-7} phred score is $score."
 		#QC the first read file
 		#...in progress...
-		if grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt; then
-			grep -iF "WARN" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:0:${#f1}-7}"_fastqc_report.txt
+		if grep -iF "WARN" "$curFile"1_fastqc/summary.txt; then
+			grep -iF "WARN" "$curFile"1_fastqc/summary.txt > trimmed_run"$runNum"/"$curFileNoPath"_fastqc_report.txt
 		fi
-		if grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt; then
-			grep -iF "FAIL" "${f1:0:${#f1}-7}"1_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:0:${#f1}-7}"_fastqc_report.txt
+		if grep -iF "FAIL" "$curFile"1_fastqc/summary.txt; then
+			grep -iF "FAIL" "$curFile"1_fastqc/summary.txt > trimmed_run"$runNum"/"$curFileNoPath"_fastqc_report.txt
 		fi
 		#Only QC one file
 		qcCountStart=1
 	fi
 	#Perform adapter trimming on paired reads
 	#using 8 threads
-	trimmomatic PE -threads 8 -phred"$score" $f1 "${f1:0:${#f1}-7}"2.fq.gz trimmed_run"$runNum"/"${f1:${#readPath}+1:${#f1}-21}"pForward.fq.gz trimmed_run"$runNum"/"${f1:${#readPath}+1:${#f1}-21}"uForward.fq.gz trimmed_run"$runNum"/"${f1:${#readPath}+1:${#f1}-21}"pReverse.fq.gz trimmed_run"$runNum"/"${f1:${#readPath}+1:${#f1}-21}"uReverse.fq.gz ILLUMINACLIP:"$adapterPath" LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
+	trimmomatic PE -threads 8 -phred"$score" $f1 "$curFile"2.fq.gz trimmed_run"$runNum"/"$curFileNoPath"pForward.fq.gz trimmed_run"$runNum"/"$curFileNoPath"uForward.fq.gz trimmed_run"$runNum"/"$curFileNoPath"pReverse.fq.gz trimmed_run"$runNum"/"$curFileNoPath"uReverse.fq.gz ILLUMINACLIP:"$adapterPath" LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:13
 	#Final quality control check using fastqc on the first trimmed paired read file
 	if [ qcCountEnd = 0 ]; then
 		#QC paired forward read
 		#...in progress...
-		fastqc trimmed_run"$runNum"/"${f1:0:${#f1}-7}"pForward.fq.gz --extract
-		if grep -iF "WARN" trimmed_run"$runNum"/"${f1:${#readPath}+1:${#f1}-21}"pForward_fastqc/summary.txt; then
-			grep -iF "WARN" trimmed_run"$runNum"/"${f1:${#readPath}+1:${#f1}-21}"pForward_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:${#readPath}+1:${#f1}-21}"_fastqc_report.txt
+		fastqc trimmed_run"$runNum"/"$curFileNoPath"pForward.fq.gz --extract
+		if grep -iF "WARN" trimmed_run"$runNum"/"$curFileNoPath"pForward_fastqc/summary.txt; then
+			grep -iF "WARN" trimmed_run"$runNum"/"$curFileNoPath"pForward_fastqc/summary.txt > trimmed_run"$runNum"/"$curFileNoPath"_fastqc_report.txt
 		fi
-		if grep -iF "FAIL" trimmed_run"$runNum"/"${f1:${#readPath}+1:${#f1}-21}"pForward_fastqc/summary.txt; then
-			grep -iF "FAIL" trimmed_run"$runNum"/"${f1:${#readPath}+1:${#f1}-21}"pForward_fastqc/summary.txt > trimmed_run"$runNum"/"${f1:${#readPath}+1:${#f1}-21}"_fastqc_report.txt
+		if grep -iF "FAIL" trimmed_run"$runNum"/"$curFileNoPath"pForward_fastqc/summary.txt; then
+			grep -iF "FAIL" trimmed_run"$runNum"/"$curFileNoPath"pForward_fastqc/summary.txt > trimmed_run"$runNum"/"$curFileNoPath"_fastqc_report.txt
 		fi
 		#Only QC one file
 		qcCountEnd=1
