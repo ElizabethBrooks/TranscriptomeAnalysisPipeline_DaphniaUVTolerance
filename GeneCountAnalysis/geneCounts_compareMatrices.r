@@ -7,8 +7,8 @@ if (length(args)!=2) {
 }
 #R script to compare two gene count matrices
 #Retrieve gene count tables with gene IDs
-gCount1 = read.csv(arg[1], sep=",", row.names=1)
-gCount2 = read.csv(arg[2], sep=",", row.names=1)
+gCount1 = read.csv(args[1], sep=",", row.names=1)
+gCount2 = read.csv(args[2], sep=",", row.names=1)
 #Convert gene count tables to matrices
 gCount1M <- as.matrix(gCount1)
 gCount2M <- as.matrix(gCount2)

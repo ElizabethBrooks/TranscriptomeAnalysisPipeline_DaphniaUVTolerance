@@ -15,13 +15,13 @@ if (length(args)!=1) {
 countsTable <- read.delim(file=args[1], row.names="gene")
 head(countsTable)
 #Set control and treatment order
-conds <- factor(c("ctrl","ctrl","ctrl","treat","treat","treat"))
+conds <- c(rep((rep("ctrl",3),rep("treat",3)),4))
 #Generate list of DE genes
-cds<- DGEList(counts=countsTable, group=conds)
+cds <- DGEList(counts=countsTable, group=conds)
 d <- calcNormFactors(cds)
 d <- estimateCommonDisp(d)
 d <- estimateTagwiseDisp(d)
-de<- exactTest(d, pair=c("ctrl", "treat"))
+de <- exactTest(d, pair=c("ctrl", "treat"))
 #Create results table of DE genes
 resultsTbl <- topTags(de, n=nrow(de$table))$table
 #Output resulting table
