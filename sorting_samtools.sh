@@ -60,11 +60,11 @@ for f1 in "$@"; do
 			#Trim file path from current file name
 			curFileNoPath=$(basename $f3)
 			curFileNoPath=$(echo $curFileNoPath | sed 's/\.bam//')
-			echo "Sample $curFile is being sorted..."
+			echo "Sample $curFileNoPath is being sorted..."
 			#Run samtools to prepare mapped reads for sorting by name
 			#using 8 threads
 			samtools sort -@ 8 -n -o "$outputFolder/$curFileNoPath".sorted.bam -T /tmp/"$analysisMethod"_sorted_"$f3".sorted "$f3"
-			echo "Sample $curFile has been sorted!"
+			echo "Sample $curFileNoPath has been sorted!"
 		done
 	else
 		echo "Sorted files already exists, skipping sorting..."

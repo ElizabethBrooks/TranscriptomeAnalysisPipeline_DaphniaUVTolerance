@@ -56,8 +56,21 @@ for f1 in "$@"; do
 	done
 	#Loop through all sorted forward and reverse paired reads and store the file locations in an array
 	for f2 in "$f1"/*; do
-		echo "Sample $f2 is being counted..."
-		htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"${f2:${#f2}:(${#f2}-${#outputFolder}-${#analysisTag})}".counted.sam "$f2$analysisExtension" "$genomeFile" > "$outputFolder"/counts/"${f2:${#f2}:(${#f2}-${#outputFolder}-${#analysisTag})}"_counts.txt
-		echo "Sample $f2 has been counted!"
+		if [[ analysisMethod=="hisat2" ]]; then #Hisat2
+			#Trim extension from current file name
+			curFile=$(echo $f2 | sed 's/\.sorted\.sam//')
+			#Trim file path from current file name
+			curFileNoPath=$(basename $f2)
+			curFileNoPath=$(echo $curFileNoPath | sed 's/\.sorted\.sam//')
+		else #Tophat
+			#Trim extension from current file name
+			curFile=$(echo $f2 | sed 's/\.bam//')
+			#Trim file path from current file name
+			curFileNoPath=$(basename $f2)
+			curFileNoPath=$(echo $curFileNoPath | sed 's/\.bam//')
+		fi
+		echo "Sample $curFileNoPath is being counted..."
+		htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"curFileNoPath".counted.sam "$curFile" "$genomeFile" > "$outputFolder"/counts/"$curFileNoPath"_counts.txt
+		echo "Sample $curFileNoPath has been counted!"
 	done
 done

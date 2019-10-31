@@ -46,13 +46,13 @@ for f1 in "$@"; do
 	mkdir aligned_hisat2_run"$runNum"/out
 	for f2 in "$f1"/*pForward.fq.gz; do
 		#Trim extension from current file name
-		curFile=$(echo $f2 | sed 's/pForward\.fq\.gz//')
+		curFile=$(echo $f2 | sed 's/.pForward\.fq\.gz//')
 		#Trim file path from current file name
 		curFileNoPath=$(basename $f2)
-		curFileNoPath=$(echo $curFileNoPath | sed 's/pForward\.fq\.gz//')
+		curFileNoPath=$(echo $curFileNoPath | sed 's/.pForward\.fq\.gz//')
 		echo "Sample $curFileNoPath is being aligned..."
-		#hisat2 -p 4 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "$curFile"pReverse.fq.gz -S "$outputFolder"/out/"$curFileNoPath".sam --summary-file "$outputFolder"/alignedSummary.txt | samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"$curFileNoPath".sam > "$outputFolder"/out/"$curFileNoPath".bam
-		hisat2 -p 8 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "$curFile"pReverse.fq.gz -S "$outputFolder"/out/"$curFileNoPath".sam --summary-file "$outputFolder"/alignedSummary.txt
+		#hisat2 -p 4 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "$curFile"_pReverse.fq.gz -S "$outputFolder"/out/"$curFileNoPath".sam --summary-file "$outputFolder"/alignedSummary.txt | samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"$curFileNoPath".sam > "$outputFolder"/out/"$curFileNoPath".bam
+		hisat2 -p 8 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "$curFile"_pReverse.fq.gz -S "$outputFolder"/out/"$curFileNoPath".sam --summary-file "$outputFolder"/alignedSummary.txt
 		#Convert output sam files to bam format for downstream analysis
 		echo "Sample $curFileNoPath is being converted..."
 		samtools view -@ 8 -bS "$outputFolder"/out/"$curFileNoPath".sam > "$outputFolder"/out/"$curFileNoPath".bam
