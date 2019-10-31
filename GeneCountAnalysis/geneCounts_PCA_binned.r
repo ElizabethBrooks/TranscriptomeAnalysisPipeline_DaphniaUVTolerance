@@ -13,4 +13,4 @@ if (length(args)!=3) {
 #Retrieve gene count tables with gene IDs
 gCount0 = read.csv(args[1], sep=",", row.names=1)
 #Plot principal componants of PCA performed with prcomp
-autoplot(prcomp(gCount0[, names(gCount0)!=args[2]], scale.=TRUE), data=gCount0, colour=args[2])
+autoplot(prcomp(gCount0[, names(gCount0)!=args[2]], scale.=args[3]), data=gCount0, colour=args[2])
