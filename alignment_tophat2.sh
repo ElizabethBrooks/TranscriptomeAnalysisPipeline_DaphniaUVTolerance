@@ -41,10 +41,6 @@ for f1 in "$@"; do
 			echo "Creating folder for $runNum run of tophat2 alignment on $f1 data..."
 		fi
 	done
-	#Copy genome file to current run folder
-	genomeFileBase=$(basename $genomeFile)
-	tmpGenomeFile="aligned_tophat2_run$runNum/$genomeFileBase"
-	cp $genomeFile $tmpGenomeFile
 	#Loop through all forward and reverse paired reads and run tophat2 on each pair
 	# using 8 threads
 	mkdir aligned_tophat2_run"$runNum"/out
@@ -55,9 +51,7 @@ for f1 in "$@"; do
 		curFileNoPath=$(basename $f2)
 		curFileNoPath=$(echo $curFileNoPath | sed 's/.pForward\.fq\.gz//')
 		echo "Sample $curFileNoPath is being aligned..."
-		tophat2 -p 8 -G "$tmpGenomeFile" -o aligned_tophat2_run"$runNum" aligned_tophat2_build/Daphnia_pulex.allmasked "$f2" "$curFile"_pReverse.fq.gz
+		tophat2 -p 8 -G "$genomeFile" -o aligned_tophat2_run"$runNum" aligned_tophat2_build/Daphnia_pulex.allmasked "$f2" "$curFile"_pReverse.fq.gz
 		echo "Sample $curFileNoPath has been aligned!"
 	done
-	#Remove genome file from current run folder
-	rm $tmpGenomeFile
 done
