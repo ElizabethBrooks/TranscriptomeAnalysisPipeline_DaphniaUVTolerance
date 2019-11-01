@@ -50,7 +50,7 @@ for f1 in "$@"; do
 		curFileNoPath=$(basename $f2)
 		curFileNoPath=$(echo $curFileNoPath | sed 's/.pForward\.fq\.gz//')
 		echo "Sample $curFileNoPath is being aligned..."
-		tophat2 -p 8 -G "$tmpGenomeFile" -o aligned_tophat2_run"$runNum" Daphnia_pulex.allmasked "$f2" "$curFile"_pReverse.fq.gz
+		tophat2 -p 8 -G "$tmpGenomeFile" -o aligned_tophat2_run"$runNum" aligned_tophat2_run"$runNum"/Daphnia_pulex.allmasked "$f2" "$curFile"_pReverse.fq.gz
 		echo "Sample $curFileNoPath has been aligned!"
 	done
 	#Remove genome file from current run folder
