@@ -16,6 +16,16 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
+#Build reference genome if folder does not exist
+mkdir aligned_tophat2_build
+if [ $? -eq 0 ]; then
+	echo "Beginning bowtie2 build... "
+	cp /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_tophat2_build/Daphnia_pulex.allmasked.fa
+	bowtie2-build aligned_tophat2_build/Daphnia_pulex.allmasked.fa aligned_tophat2_build/Daphnia_pulex.allmasked
+	echo "Bowtie2 build complete!"
+else
+	echo "Build already exists, skipping building..."
+fi
 #Retrieve folders to analyze from the input arguments
 for f1 in "$@"; do
 	#Make a new directory for each alignment run
@@ -31,15 +41,10 @@ for f1 in "$@"; do
 			echo "Creating folder for $runNum run of tophat2 alignment on $f1 data..."
 		fi
 	done
-	#Build reference genome
-	echo "Beginning bowtie2 build... "
-	bowtie2-build /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_tophat2_run"$runNum"/Daphnia_pulex.allmasked
-	echo "Bowtie2 build complete!"
 	#Copy genome file to current run folder
 	genomeFileBase=$(basename $genomeFile)
 	tmpGenomeFile="aligned_tophat2_run$runNum/$genomeFileBase"
 	cp $genomeFile $tmpGenomeFile
-	echo "TMP: $tmpGenomeFile"
 	#Loop through all forward and reverse paired reads and run tophat2 on each pair
 	# using 8 threads
 	mkdir aligned_tophat2_run"$runNum"/out
@@ -50,7 +55,7 @@ for f1 in "$@"; do
 		curFileNoPath=$(basename $f2)
 		curFileNoPath=$(echo $curFileNoPath | sed 's/.pForward\.fq\.gz//')
 		echo "Sample $curFileNoPath is being aligned..."
-		tophat2 -p 8 -G "$tmpGenomeFile" -o aligned_tophat2_run"$runNum" aligned_tophat2_run"$runNum"/Daphnia_pulex.allmasked "$f2" "$curFile"_pReverse.fq.gz
+		tophat2 -p 8 -G "$tmpGenomeFile" -o aligned_tophat2_run"$runNum" aligned_tophat2_build/Daphnia_pulex.allmasked "$f2" "$curFile"_pReverse.fq.gz
 		echo "Sample $curFileNoPath has been aligned!"
 	done
 	#Remove genome file from current run folder
