@@ -15,7 +15,7 @@ if (length(args)!=1) {
 countsTable <- read.delim(file=args[1], row.names="gene")
 head(countsTable)
 #Set control and treatment order
-conds <- c(rep((rep("ctrl",3),rep("treat",3)),4))
+conds <- c(rep("ctrl",3),rep("treat",3))
 #Generate list of DE genes
 cds <- DGEList(counts=countsTable, group=conds)
 d <- calcNormFactors(cds)
