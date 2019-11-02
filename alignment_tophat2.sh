@@ -34,9 +34,6 @@ for f1 in "$@"; do
 			echo "Creating folder for $runNum run of tophat2 alignment on $f1 data..."
 		fi
 	done
-	#Tophat tmp output directory
-	tophatOut="$tophatOut/out"
-	mkdir "$tophatOut"
 	#Build output directory for Tophat reference
 	buildOut="reference_bowtie2_build"
 	#Trim .fa file extension from build file
@@ -55,7 +52,8 @@ for f1 in "$@"; do
 		curSampleNoEx=$(echo $curFileNoPath | sed 's/.pForward\.fq\.gz//')
 		#Begin Tophat run for current sample
 		echo "Sample $curFileNoPath is being aligned..."
-		tophat2 -p 8 -G "$tophatOut"/"$genomeFileNoPath" -o "$tophatOut"/"$curFileNoPath" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
+		#tophat2 -p 8 -G "$tophatOut"/"$genomeFileNoPath" -o "$tophatOut"/"$curFileNoPath" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
+		tophat2 -p 8 -G "$tophatOut"/"$genomeFileNoPath" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
 		echo "Sample $curFileNoPath has been aligned!"
 	done
 done
