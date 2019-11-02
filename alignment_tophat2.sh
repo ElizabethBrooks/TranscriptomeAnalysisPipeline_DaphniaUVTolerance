@@ -42,6 +42,8 @@ for f1 in "$@"; do
 	#Copy genome file to the current Tophat run folder
 	genomeFileNoPath=$(basename $genomeFile)
 	cp "$genomeFile" "$tophatOut"/"$genomeFileNoPath"
+	#Tophat tmp output directory
+	mkdir "$tophatOut/out/tmp"
 	#Loop through all forward and reverse paired reads and run tophat2 on each pair
 	# using 8 threads
 	for f2 in "$f1"/*pForward.fq.gz; do
