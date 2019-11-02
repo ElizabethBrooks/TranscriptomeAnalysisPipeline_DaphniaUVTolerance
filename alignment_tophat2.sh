@@ -51,8 +51,8 @@ for f1 in "$@"; do
 		curSampleNoPath=$(basename $f2)
 		curSampleNoEx=$(echo $curFileNoPath | sed 's/.pForward\.fq\.gz//')
 		#Begin Tophat run for current sample
-		echo "Sample $curSampleNoPath is being aligned..."
-		tophat2 -p 8 -G "$tophatOut"/"$genomeFileNoPath" -o "$tophatOut"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
-		echo "Sample $curSampleNoPath has been aligned!"
+		echo "Sample $curSampleNoEx is being aligned..."
+		tophat2 -p 8 -G "$tophatOut"/"$genomeFileNoPath" -o "$tophatOut"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
+		echo "Sample $curSampleNoEx has been aligned!"
 	done
 done
