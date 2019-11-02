@@ -41,7 +41,7 @@ for f1 in "$@"; do
 	buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fa//')
 	#Copy genome file to the current Tophat run folder
 	genomeFileNoPath=$(basename $genomeFile)
-	cp "$genomeFile" "$buildOut"/"$genomeFileNoPath"
+	cp "$genomeFile" "$tophatOut"/"$genomeFileNoPath"
 	#Loop through all forward and reverse paired reads and run tophat2 on each pair
 	# using 8 threads
 	for f2 in "$f1"/*pForward.fq.gz; do
