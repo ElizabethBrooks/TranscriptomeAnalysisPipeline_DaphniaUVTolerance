@@ -11,11 +11,6 @@ cd ..
 dirFlag=0
 runNum=0
 buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
-#Check for input arguments of folder names
-if [ $# -eq 0 ]; then
-   	echo "ERROR: No folder name(s) supplied... exiting"
-   	exit 1
-fi
 #Build reference genome if folder does not exist
 mkdir reference_bowtie2_build
 if [ $? -eq 0 ]; then
