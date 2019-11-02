@@ -41,7 +41,7 @@ for f1 in "$@"; do
 	buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fa//')
 	#Copy genome file to the current Tophat run folder
 	genomeFileNoPath=$(basename $genomeFile)
-	cp "$genomeFile" "$tophatOut"/"$genomeFileNoPath"
+	cp "$genomeFile" "$buildOut"/"$genomeFileNoPath"
 	#Loop through all forward and reverse paired reads and run tophat2 on each pair
 	# using 8 threads
 	for f2 in "$f1"/*pForward.fq.gz; do
@@ -52,7 +52,7 @@ for f1 in "$@"; do
 		curSampleNoEx=$(echo $curFileNoPath | sed 's/.pForward\.fq\.gz//')
 		#Begin Tophat run for current sample
 		echo "Sample $curFileNoPath is being aligned..."
-		tophat2 -p 8 -G "$tophatOut"/"$genomeFileNoPath" -o "$tophatOut"/"$curFileNoPath" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
+		tophat2 -p 8 -G "$buildOut"/"$genomeFileNoPath" -o "$tophatOut"/"$curFileNoPath" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
 		echo "Sample $curFileNoPath has been aligned!"
 	done
 done
