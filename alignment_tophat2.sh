@@ -10,27 +10,20 @@ module load bio
 cd ..
 dirFlag=0
 runNum=0
-genomeFile=$(head -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePath.txt")
+genomeFile=$(head -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
+buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Build reference genome if folder does not exist
-mkdir aligned_tophat2_build
-if [ $? -eq 0 ]; then
-	echo "Beginning bowtie2 build... "
-	cp /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_tophat2_build/Daphnia_pulex.allmasked.fa
-	bowtie2-build aligned_tophat2_build/Daphnia_pulex.allmasked.fa aligned_tophat2_build/Daphnia_pulex.allmasked
-	echo "Bowtie2 build complete!"
-else
-	echo "Build already exists, skipping building..."
-fi
 #Retrieve folders to analyze from the input arguments
 for f1 in "$@"; do
 	#Make a new directory for each alignment run
 	while [ $dirFlag -eq 0 ]; do
-		mkdir aligned_tophat2_run"$runNum"
+		#Tophat output directory name
+		tophatOut="aligned_tophat2_run$runNum"
+		mkdir "$tophatOut"
 		#Check if the folder already exists
 		if [ $? -ne 0 ]; then
 			#Increment the folder name
@@ -41,17 +34,25 @@ for f1 in "$@"; do
 			echo "Creating folder for $runNum run of tophat2 alignment on $f1 data..."
 		fi
 	done
+	#Build output directory for Tophat reference
+	buildOut="reference_bowtie2_build"
+	#Trim .fa file extension from build file
+	buildFileNoPath=$(basename $buildFile)
+	buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fa//')
+	#Copy genome file to the current Tophat run folder
+	genomeFileNoPath=$(basename $genomeFile)
+	cp "$genomeFile" "$tophatOut"/"$genomeFileNoPath"
 	#Loop through all forward and reverse paired reads and run tophat2 on each pair
 	# using 8 threads
-	mkdir aligned_tophat2_run"$runNum"/out
 	for f2 in "$f1"/*pForward.fq.gz; do
 		#Trim extension from current file name
-		curFile=$(echo $f2 | sed 's/.pForward\.fq\.gz//')
+		curSample=$(echo $f2 | sed 's/.pForward\.fq\.gz//')
 		#Trim file path from current file name
-		curFileNoPath=$(basename $f2)
-		curFileNoPath=$(echo $curFileNoPath | sed 's/.pForward\.fq\.gz//')
+		curSampleNoPath=$(basename $f2)
+		curSampleNoEx=$(echo $curFileNoPath | sed 's/.pForward\.fq\.gz//')
+		#Begin Tophat run for current sample
 		echo "Sample $curFileNoPath is being aligned..."
-		tophat2 -p 8 -G "$genomeFile" -o aligned_tophat2_run"$runNum"/"$curFileNoPath" aligned_tophat2_build/Daphnia_pulex.allmasked "$f2" "$curFile"_pReverse.fq.gz
+		tophat2 -p 8 -G "$tophatOut"/"$genomeFileNoPath" -o "$tophatOut"/"$curFileNoPath" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
 		echo "Sample $curFileNoPath has been aligned!"
 	done
 done

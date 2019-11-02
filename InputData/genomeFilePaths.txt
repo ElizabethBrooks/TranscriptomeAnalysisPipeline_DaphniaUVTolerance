@@ -1,1 +1,2 @@
 /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/PA42.3.0.annotation.18440.gff
+/afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa

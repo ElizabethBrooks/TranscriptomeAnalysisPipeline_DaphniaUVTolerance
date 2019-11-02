@@ -11,26 +11,19 @@ module load bio/hisat2/2.1.0
 cd ..
 dirFlag=0
 runNum=0
+buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Build reference genome if folder does not exist
-mkdir aligned_hisat2_build
-if [ $? -eq 0 ]; then
-	echo "Beginning hisat2 build... "
-	hisat2-build -f /afs/crc.nd.edu/group/hoth/echo_base/genome/Daphnia_pulex.allmasked.fa aligned_hisat2_build/Daphnia_pulex.allmasked
-	echo "Hisat2 build complete!"
-else
-	echo "Build already exists, skipping building..."
-fi
 #Retrieve folders to analyze from the input arguments
 for f1 in "$@"; do
 	#Make a new directory for each alignment run
 	while [ $dirFlag -eq 0 ]; do
-		outputFolder=aligned_hisat2_run"$runNum"
-		mkdir "$outputFolder"
+		#Hisat output directory name
+		hisatOut="aligned_hisat2_run$runNum"
+		mkdir "$hisatOut"
 		#Check if the folder already exists
 		if [ $? -ne 0 ]; then
 			#Increment the folder name
@@ -41,23 +34,27 @@ for f1 in "$@"; do
 			echo "Creating folder for $runNum run of hisat2 alignment on $f1 data..."
 		fi
 	done
-	#Loop through all forward and reverse paired reads and run hisat2 on each pair
+	#Build output directory for Hisat reference
+	buildOut="reference_bowtie2_build"
+	#Trim .fa file extension from build file
+	buildFileNoPath=$(basename $buildFile)
+	buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fa//')
+	#Loop through all forward and reverse paired reads and run Hisat2 on each pair
 	# using 8 threads and samtools to convert output sam files to bam
-	mkdir aligned_hisat2_run"$runNum"/out
 	for f2 in "$f1"/*pForward.fq.gz; do
 		#Trim extension from current file name
-		curFile=$(echo $f2 | sed 's/.pForward\.fq\.gz//')
+		curSample=$(echo $f2 | sed 's/.pForward\.fq\.gz//')
 		#Trim file path from current file name
-		curFileNoPath=$(basename $f2)
-		curFileNoPath=$(echo $curFileNoPath | sed 's/.pForward\.fq\.gz//')
-		echo "Sample $curFileNoPath is being aligned..."
-		#hisat2 -p 4 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "$curFile"_pReverse.fq.gz -S "$outputFolder"/out/"$curFileNoPath".sam --summary-file "$outputFolder"/alignedSummary.txt | samtools view -@ 8 -bS aligned_hisat2_run"$runNum"/out/"$curFileNoPath".sam > "$outputFolder"/out/"$curFileNoPath".bam
-		hisat2 -p 8 -q -x aligned_hisat2_build/Daphnia_pulex.allmasked -1 $f2 -2 "$curFile"_pReverse.fq.gz -S "$outputFolder"/out/"$curFileNoPath".sam --summary-file "$outputFolder"/alignedSummary.txt
+		curSampleNoPath=$(basename $f2)
+		curSampleNoPath=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
+		echo "Sample $curSampleNoPath is being aligned..."
+		#hisat2 -p 4 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f2" -2 "$curSample"_pReverse.fq.gz -S "$hisatOut"/"$curSampleNoPath".sam --summary-file "$hisatOut"/alignedSummary.txt | samtools view -@ 8 -bS "$hisatOut"/"$curSampleNoPath".sam > "$hisatOut"/"$curSampleNoPath".bam
+		hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f2" -2 "$curSample"_pReverse.fq.gz -S "$hisatOut"/"$curSampleNoPath".sam --summary-file "$hisatOut"/alignedSummary.txt
 		#Convert output sam files to bam format for downstream analysis
-		echo "Sample $curFileNoPath is being converted..."
-		samtools view -@ 8 -bS "$outputFolder"/out/"$curFileNoPath".sam > "$outputFolder"/out/"$curFileNoPath".bam
-		echo "Sample $curFileNoPath has been aligned and converted!"
+		echo "Sample $curSampleNoPath is being converted..."
+		samtools view -@ 8 -bS "$hisatOut"/"$curSampleNoPath".sam > "$hisatOut"/"$curSampleNoPath".bam
+		echo "Sample $curSampleNoPath has been aligned and converted!"
 		#Remove the now converted .sam file
-		rm "$outputFolder"/out/"$curFileNoPath".sam
+		rm "$hisatOut"/"$curSampleNoPath".sam
 	done
 done
