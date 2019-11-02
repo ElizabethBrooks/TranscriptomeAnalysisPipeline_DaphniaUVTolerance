@@ -49,7 +49,7 @@ for f1 in "$@"; do
 		curSample=$(echo $f2 | sed 's/.pForward\.fq\.gz//')
 		#Trim file path from current file name
 		curSampleNoPath=$(basename $f2)
-		curSampleNoEx=$(echo $curFileNoPath | sed 's/.pForward\.fq\.gz//')
+		curSampleNoEx=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
 		#Begin Tophat run for current sample
 		echo "Sample $curSampleNoEx is being aligned..."
 		tophat2 -p 8 -G "$tophatOut"/"$genomeFileNoPath" -o "$tophatOut"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
