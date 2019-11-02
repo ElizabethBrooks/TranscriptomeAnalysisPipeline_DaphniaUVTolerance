@@ -34,6 +34,9 @@ for f1 in "$@"; do
 			echo "Creating folder for $runNum run of tophat2 alignment on $f1 data..."
 		fi
 	done
+	#Tophat tmp output directory
+	tophatOut="$tophatOut/out"
+	mkdir "$tophatOut"
 	#Build output directory for Tophat reference
 	buildOut="reference_bowtie2_build"
 	#Trim .fa file extension from build file
@@ -42,8 +45,6 @@ for f1 in "$@"; do
 	#Copy genome file to the current Tophat run folder
 	genomeFileNoPath=$(basename $genomeFile)
 	cp "$genomeFile" "$tophatOut"/"$genomeFileNoPath"
-	#Tophat tmp output directory
-	mkdir "$tophatOut/out/tmp"
 	#Loop through all forward and reverse paired reads and run tophat2 on each pair
 	# using 8 threads
 	for f2 in "$f1"/*pForward.fq.gz; do
