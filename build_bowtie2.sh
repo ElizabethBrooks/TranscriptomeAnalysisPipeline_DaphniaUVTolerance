@@ -8,7 +8,7 @@ module load bio
 #Prepare for alignment
 cd ..
 dirFlag=0
-runNum=0
+runNum=1
 buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
 #Build reference genome if folder does not exist
 #Build output directory

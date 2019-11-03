@@ -9,7 +9,7 @@ module load bio
 #Prepare for alignment
 cd ..
 dirFlag=0
-runNum=0
+runNum=1
 genomeFile=$(head -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
 buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
 #Check for input arguments of folder names
@@ -31,7 +31,7 @@ for f1 in "$@"; do
 		else
 			#Indicate that the folder was successfully made
 			dirFlag=1
-			echo "Creating folder for $runNum run of tophat2 alignment on $f1 data..."
+			echo "Creating folder for run $runNum of tophat2 alignment on $f1 data..."
 		fi
 	done
 	#Build output directory for Tophat reference

@@ -14,7 +14,7 @@ qcCountStart=0
 qcCountEnd=0
 score=0
 dirFlag=0
-runNum=0
+runNum=1
 #Retrieve input paired reads path and adapter path
 readPath=$(head -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/pairedReadsPath.txt")
 adapterPath=$(head -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/adapterPath.txt")
@@ -28,7 +28,7 @@ while [ $dirFlag -eq 0 ]; do
 	else
 		#Indicate that the folder was successfully made
 		dirFlag=1
-		echo "Creating folder for $runNum run of trimming..."
+		echo "Creating folder for run $runNum of trimming..."
 	fi
 done
 #Loop through all forward and reverse reads and run trimmomatic on each pair

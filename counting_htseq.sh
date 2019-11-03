@@ -11,7 +11,7 @@ module load bio/htseq/0.11.2
 #Prepare for analysis
 cd ..
 dirFlag=0
-runNum=0
+runNum=1
 COUNTER=0
 analysisTag=".sorted.bam"
 #Check for input arguments of folder names
@@ -51,7 +51,7 @@ for f1 in "$@"; do
 		else
 			#Indicate that the folder was successfully made
 			dirFlag=1
-			echo "Creating folder for $runNum run of HtSeq counting of $f1 data..."
+			echo "Creating folder for run $runNum of HtSeq counting of $f1 data..."
 		fi
 	done
 	#Loop through all sorted forward and reverse paired reads and store the file locations in an array

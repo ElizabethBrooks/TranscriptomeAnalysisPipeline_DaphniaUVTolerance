@@ -10,7 +10,7 @@ module load bio/hisat2/2.1.0
 #Prepare for mapping
 cd ..
 dirFlag=0
-runNum=0
+runNum=1
 buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -31,7 +31,7 @@ for f1 in "$@"; do
 		else
 			#Indicate that the folder was successfully made
 			dirFlag=1
-			echo "Creating folder for $runNum run of hisat2 alignment on $f1 data..."
+			echo "Creating folder for run $runNum of hisat2 alignment on $f1 data..."
 		fi
 	done
 	#Build output directory for Hisat reference

@@ -11,7 +11,7 @@ module load bio/htseq/0.11.2
 #Prepare for analysis
 cd ..
 dirFlag=0
-runNum=0
+runNum=1
 COUNTER=0
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -47,7 +47,7 @@ for f1 in "$@"; do
 		else
 			#Indicate that the folder was successfully made
 			dirFlag=1
-			echo "Creating folder for $runNum run of Samtools sorting of $f1 data..."
+			echo "Creating folder for run $runNum of Samtools sorting of $f1 data..."
 		fi
 	done
 	#Sort input bam files if folder does not already exist
