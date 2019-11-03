@@ -49,13 +49,7 @@ for f1 in "$@"; do
 		curSampleNoEx=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
 		#Begin Tophat run for current sample
 		echo "Sample $curSampleNoEx is being aligned..."
-		mkdir "$tophatOut"/"$curSampleNoEx"
-		mkdir "$tophatOut"/"$curSampleNoEx"/tmp
-		genomeFileNoPath=$(basename $genomeFile)
-		genomeFileTmpPath="$tophatOut/$curSampleNoEx/tmp/$genomeFileNoPath"
-		cp "$genomeFile" "$genomeFileTmpPath"
-		tophat2 -p 8 -G "$genomeFileTmpPath" -o "$tophatOut"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
-		rm "$genomeFileTmpPath"
+		tophat2 -p 8 -G "$genomeFile" -o "$tophatOut"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
 		echo "Sample $curSampleNoEx has been aligned!"
 	done
 done
