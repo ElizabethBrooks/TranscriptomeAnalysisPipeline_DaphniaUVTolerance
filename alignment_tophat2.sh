@@ -51,9 +51,11 @@ for f1 in "$@"; do
 		echo "Sample $curSampleNoEx is being aligned..."
 		mkdir "$tophatOut"/"$curSampleNoEx"
 		mkdir "$tophatOut"/"$curSampleNoEx"/tmp
-		cp "$genomeFile" "$tophatOut"/"$curSampleNoEx"/tmp
-		tophat2 -p 8 -G "$tophatOut"/"$curSampleNoEx"/tmp/"$genomeFile" -o "$tophatOut"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
-		rm "$tophatOut"/"$curSampleNoEx"/tmp/"$genomeFile"
+		genomeFileNoPath=$(basename $genomeFile)
+		cp "$genomeFile" "$tophatOut"/"$curSampleNoEx"/tmp/"$genomeFileNoPath"
+		genomeFile="$tophatOut/$curSampleNoEx/tmp/$genomeFileNoPath"
+		tophat2 -p 8 -G "$genomeFile" -o "$tophatOut"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
+		rm "$genomeFile"
 		echo "Sample $curSampleNoEx has been aligned!"
 	done
 done
