@@ -4,31 +4,17 @@
 #$ -r n
 #$ -N stats_edgeR_jobOutput
 #Script to run Rscripts that perform DE analysis of gene count tables
-cd ..
-dirFlag=0
-runNum=1
+#Usage: bash statistics_DEAnalysis_edgeR.r countsFile startColPos endColPos
+#Usage Ex: bash statistics_DEAnalysis_edgeR.r ../GeneCounts_Merged/merged_counts_legacy_cleaned.csv 1 6
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve folders to analyze from the input arguments
-for f1 in "$@"; do
-	#Make a new directory for each alignment run
-	while [ $dirFlag -eq 0 ]; do
-		#Tophat output directory name
-		edgeROut="aligned_edgeR_run$runNum"
-		mkdir "$edgeROut"
-		#Check if the folder already exists
-		if [ $? -ne 0 ]; then
-			#Increment the folder name
-			let runNum+=1
-		else
-			#Indicate that the folder was successfully made
-			dirFlag=1
-			echo "Creating folder for run $runNum of edgeR alignment on $f1 data..."
-		fi
-	done
-	#Perform DE analysis using edgeR
-	Rscript statistics_edgeR.r $f1
-done
+#Perform DE analysis using edgeR
+Rscript statistics_edgeR.r "$1" $2 $3
+#Make directory for output stats files
+mkdir ../AlignmentStats_Analysis
+#Move produce stats file
+outFile=$(basename "$1")
+mv stats_tmpOut.csv ../AlignmentStats_Analysis/alignmentStats_cols"$2"to"$3"_"$outFile"
