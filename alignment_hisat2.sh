@@ -34,6 +34,8 @@ for f1 in "$@"; do
 			echo "Creating folder for run $runNum of hisat2 alignment on $f1 data..."
 		fi
 	done
+	#Name output file of inputs
+	inputOutFile="$hisatOut"/"$hisatOut"_summary.txt
 	#Build output directory for Hisat reference
 	buildOut="reference_bowtie2_build"
 	#Trim .fa file extension from build file
@@ -55,5 +57,8 @@ for f1 in "$@"; do
 		echo "Sample $curSampleNoPath has been aligned and converted!"
 		#Remove the now converted .sam file
 		rm "$hisatOut"/"$curSampleNoPath".sam
+		#Add run inputs to output summary file
+		echo $curSampleNoPath >> $inputOutFile
+		echo "hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f2" -2 "$curSample"_pReverse.fq.gz -S "$hisatOut"/"$curSampleNoPath"/"$curSampleNoPath".sam --summary-file "$hisatOut"/"$curSampleNoPath"/alignedSummary.txt" >> $inputOutFile
 	done
 done

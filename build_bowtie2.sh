@@ -14,6 +14,8 @@ buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputDat
 #Build output directory
 buildOut="reference_bowtie2_build"
 mkdir "$buildOut"
+#Name output file of inputs
+inputOutFile="$buildOut"/"$buildOut"_summary.txt
 if [ $? -eq 0 ]; then
 	#Copy genome build fasta file to Tophat build folder
 	buildFileNoPath=$(basename $buildFile)
@@ -27,3 +29,5 @@ if [ $? -eq 0 ]; then
 else
 	echo "Build folder reference_bowtie2_build already exists, skipping building..."
 fi
+#Add run inputs to output summary file
+echo "bowtie2-build "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoEx >> $inputOutFile

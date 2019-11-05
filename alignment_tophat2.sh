@@ -34,6 +34,8 @@ for f1 in "$@"; do
 			echo "Creating folder for run $runNum of tophat2 alignment on $f1 data..."
 		fi
 	done
+	#Name output file of inputs
+	inputOutFile="$tophatOut"/"$tophatOut"_summary.txt
 	#Build output directory for Tophat reference
 	buildOut="reference_bowtie2_build"
 	#Trim .fa file extension from build file
@@ -51,5 +53,8 @@ for f1 in "$@"; do
 		echo "Sample $curSampleNoEx is being aligned..."
 		tophat2 -p 8 -G "$genomeFile" -o "$buildOut"/"$curSampleNoEx" "$tophatOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
 		echo "Sample $curSampleNoEx has been aligned!"
+		#Add run inputs to output summary file
+		echo $curSampleNoPath >> $inputOutFile
+		echo "tophat2 -p 8 -G "$genomeFile" -o "$buildOut"/"$curSampleNoEx" "$tophatOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz" >> $inputOutFile
 	done
 done

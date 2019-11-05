@@ -50,21 +50,26 @@ for f1 in "$@"; do
 			echo "Creating folder for run $runNum of Samtools sorting of $f1 data..."
 		fi
 	done
+	#Name output file of inputs
+	inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 	#Sort input bam files if folder does not already exist
 	if [ $? -eq 0 ]; then
 		echo "Creating folder for sorted bam files..."
 		#Loop through all reads and sort bam files for input to samtools
 		for f3 in "$f1"/out/*; do
 			#Trim extension from current file name
-			curFile=$(echo $f3 | sed 's/\.bam//')
+			curSample=$(echo $f3 | sed 's/\.bam//')
 			#Trim file path from current file name
-			curFileNoPath=$(basename $f3)
-			curFileNoPath=$(echo $curFileNoPath | sed 's/\.bam//')
-			echo "Sample $curFileNoPath is being sorted..."
+			curSampleNoPath=$(basename $f3)
+			curSampleNoPath=$(echo $curSampleNoPath | sed 's/\.bam//')
+			echo "Sample $curSampleNoPath is being sorted..."
 			#Run samtools to prepare mapped reads for sorting by name
 			#using 8 threads
-			samtools sort -@ 8 -n -o "$outputFolder/$curFileNoPath".sorted.bam -T /tmp/"$analysisMethod"_sorted_"$f3".sorted "$f3"
-			echo "Sample $curFileNoPath has been sorted!"
+			samtools sort -@ 8 -n -o "$outputFolder"/"$curSampleNoPath".sorted.bam -T /tmp/"$analysisMethod"_sorted_"$f3".sorted "$f3"
+			echo "Sample $curSampleNoPath has been sorted!"
+			#Add run inputs to output summary file
+			echo $curSampleNoPath >> $inputOutFile
+			echo "samtools sort -@ 8 -n -o "$outputFolder"/"$curSampleNoPath".sorted.bam -T /tmp/"$analysisMethod"_sorted_"$f3".sorted "$f3 >> $inputOutFile
 		done
 	else
 		echo "Sorted files already exists, skipping sorting..."
