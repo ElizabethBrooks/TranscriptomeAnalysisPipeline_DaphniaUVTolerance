@@ -25,7 +25,7 @@ grep "overall alignment rate" "$inputStats" > "$outputStats_overall.txt"
 #Combine all stats by sample
 paste -d "," "$outputStats_sampleOrder.txt" "$outputStats_concordant.txt" "$outputStats_overall.txt" > "$outputStats_combined.txt"
 #Clean up
-rm "tmp.txt"
-rm "$outputStats_sampleOrder.txt"
-rm "$outputStats_concordant.txt"
-rm "$outputStats_overall.txt"
+#rm "tmp.txt"
+#rm "$outputStats_sampleOrder.txt"
+#rm "$outputStats_concordant.txt"
+#rm "$outputStats_overall.txt"
