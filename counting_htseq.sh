@@ -53,6 +53,8 @@ for f1 in "$@"; do
 		curSampleNoPath=$(basename $f2)
 		curSampleNoPath=$(echo $curSampleNoPath | sed 's/\.bam//')
 		echo "Sample $curSampleNoPath is being counted..."
+		#Create directory for current sample outputs
+		mkdir "$outputFolder"/"$curSampleNoPath"
 		htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
 		echo "Sample $curSampleNoPath has been counted!"
 		#Add run inputs to output summary file
