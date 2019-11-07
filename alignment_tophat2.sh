@@ -55,6 +55,6 @@ for f1 in "$@"; do
 		echo "Sample $curSampleNoEx has been aligned!"
 		#Add run inputs to output summary file
 		echo $curSampleNoPath >> $inputOutFile
-		echo "tophat2 -p 8 -G "$genomeFile" -o "$tophatOut"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz" >> $inputOutFile
+		echo tophat2 -p 8 -G "$genomeFile" -o "$tophatOut"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz >> $inputOutFile
 	done
 done

@@ -69,7 +69,7 @@ for f1 in "$@"; do
 			echo "Sample $curSampleNoPath has been sorted!"
 			#Add run inputs to output summary file
 			echo $curSampleNoPath >> $inputOutFile
-			echo "samtools sort -@ 8 -n -o "$outputFolder"/"$curSampleNoPath".sorted.bam -T /tmp/"$analysisMethod"_sorted_"$f3".sorted "$f3 >> $inputOutFile
+			echo samtools sort -@ 8 -n -o "$outputFolder"/"$curSampleNoPath".sorted.bam -T /tmp/"$analysisMethod"_sorted_"$f3".sorted "$f3" >> $inputOutFile
 		done
 	else
 		echo "Sorted files already exists, skipping sorting..."

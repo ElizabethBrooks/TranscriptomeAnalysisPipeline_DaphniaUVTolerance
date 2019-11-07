@@ -30,4 +30,4 @@ else
 	echo "Build folder reference_bowtie2_build already exists, skipping building..."
 fi
 #Add run inputs to output summary file
-echo "bowtie2-build "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoEx >> $inputOutFile
+echo bowtie2-build "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoEx" >> $inputOutFile
