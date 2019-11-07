@@ -5,6 +5,7 @@
 #$ -N build_bowtie2_jobOutput
 #Required modules for ND CRC servers
 module load bio
+module load bio/hisat2/2.1.0
 #Prepare for alignment
 cd ..
 dirFlag=0
@@ -12,7 +13,7 @@ runNum=1
 buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
 #Build reference genome if folder does not exist
 #Build output directory
-buildOut="reference_bowtie2_build"
+buildOut="reference_hisat2_build"
 mkdir "$buildOut"
 #Name output file of inputs
 inputOutFile="$buildOut"/"$buildOut"_summary.txt
@@ -24,7 +25,7 @@ if [ $? -eq 0 ]; then
 	buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta//')
 	#Begin Bowtie2 build
 	echo "Beginning bowtie2 build... "
-	bowtie2-build "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoEx"
+	hisat2-build -p 8 -f "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoEx"
 	echo "Bowtie2 build complete!"
 else
 	echo "Build folder reference_bowtie2_build already exists, skipping building..."
