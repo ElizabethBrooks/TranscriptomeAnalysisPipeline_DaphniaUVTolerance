@@ -20,7 +20,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve inputs for gff absolute path
-inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePath.txt"
+inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt"
 genomeFile=$(head -n 1 $inputsFile)
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in "$@"; do
@@ -29,17 +29,6 @@ for f1 in "$@"; do
 		echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
 		exit 1
 	fi
-	#Determine what analysis method was used for the input folder of data
-	if [[ $f1 == *"hisat2"*  ]]; then
-		#Set analysis method for folder naming
-		analysisMethod="hisat2"
-	elif [[ $f1 == *"tophat2"* ]]; then
-		#Set analysis method for folder naming
-		analysisMethod="tophat2"	
-	else
-		echo "ERROR: The $f1 folder or bam files were not found... exiting"
-		exit 1
-	fi	
 	#Make a new directory for each analysis run
 	while [ $dirFlag -eq 0 ]; do
 		outputFolder=counts_htseq_run"$runNum"
