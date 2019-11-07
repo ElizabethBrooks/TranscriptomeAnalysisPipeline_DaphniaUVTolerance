@@ -50,13 +50,15 @@ for f1 in "$@"; do
 		curSampleNoPath=$(basename $f2)
 		curSampleNoPath=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
 		echo "Sample $curSampleNoPath is being aligned..."
+		#Create directory for current sample outputs
+		mkdir "$hisatOut"/"$curSampleNoPath"
 		hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f2" -2 "$curSample"_pReverse.fq.gz -S "$hisatOut"/"$curSampleNoPath"/"$curSampleNoPath".sam --summary-file "$hisatOut"/"$curSampleNoPath"/alignedSummary.txt
 		#Convert output sam files to bam format for downstream analysis
 		echo "Sample $curSampleNoPath is being converted..."
 		samtools view -@ 8 -bS "$hisatOut"/"$curSampleNoPath"/"$curSampleNoPath".sam > "$hisatOut"/"$curSampleNoPath"/"$curSampleNoPath".bam
 		echo "Sample $curSampleNoPath has been aligned and converted!"
 		#Remove the now converted .sam file
-		rm "$hisatOut"/"$curSampleNoPath".sam
+		rm "$hisatOut"/"$curSampleNoPath"/"$curSampleNoPath".sam
 		#Add run inputs to output summary file
 		echo $curSampleNoPath >> $inputOutFile
 		echo "hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f2" -2 "$curSample"_pReverse.fq.gz -S "$hisatOut"/"$curSampleNoPath"/"$curSampleNoPath".sam --summary-file "$hisatOut"/"$curSampleNoPath"/alignedSummary.txt" >> $inputOutFile
