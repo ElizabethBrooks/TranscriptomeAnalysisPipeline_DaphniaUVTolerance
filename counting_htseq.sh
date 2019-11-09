@@ -52,12 +52,14 @@ for f1 in "$@"; do
 		#Trim file path from current file name
 		curSampleNoPath=$(basename $f2)
 		curSampleNoPath=$(echo $curSampleNoPath | sed 's/\.bam//')
-		echo "Sample $curSampleNoPath is being counted..."
 		#Create directory for current sample outputs
 		mkdir "$outputFolder"/"$curSampleNoPath"
 		#Sort sam file reads by name for counting
+		echo "Sample $curSampleNoPath is being sorted..."
 		samtools sort -n -T /tmp/"$outputFolder"/"$curSampleNoPath"/sorted.bam -o "$outputFolder"/"$curSampleNoPath"/sorted.bam "$curAlignedSample"
+		echo "Sample $curSampleNoPath has been sorted!"
 		#Count reads using htseq-count
+		echo "Sample $curSampleNoPath is being counted..."
 		htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$outputFolder"/"$curSampleNoPath"/sorted.bam "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
 		echo "Sample $curSampleNoPath has been counted!"
 		#Add run inputs to output summary file
