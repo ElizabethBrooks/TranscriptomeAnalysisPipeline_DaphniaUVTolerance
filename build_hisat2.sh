@@ -30,7 +30,7 @@ inputOutFile="$buildOut"/"$buildOut"_summary.txt
 if [ $? -eq 0 ]; then
 	#Trim file path from build file
 	buildFileNoPath=$(basename $buildFile)
-	buildFileNoPath=$(echo $buildFileNoPath | sed 's/\.fasta/.fa/g')
+	buildFileNoPath=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/g')
 	#Copy genome build fasta file to hisat2 build folder
 	cp "$buildFile" "$buildOut"/"$buildFileNoPath"
 	#Begin hisat2 build
