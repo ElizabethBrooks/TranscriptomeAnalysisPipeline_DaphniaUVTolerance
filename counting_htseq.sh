@@ -31,7 +31,7 @@ for f1 in "$@"; do
 	fi
 	#Make a new directory for each analysis run
 	while [ $dirFlag -eq 0 ]; do
-		outputFolder=counts_htseq_run"$runNum"
+		outputFolder=counted_htseq_run"$runNum"
 		mkdir "$outputFolder"
 		#Check if the folder already exists
 		if [ $? -ne 0 ]; then
