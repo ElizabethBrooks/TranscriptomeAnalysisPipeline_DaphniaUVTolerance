@@ -74,10 +74,10 @@ for f1 in "$@"; do
 		mkdir "$outputFolder"/"$curSampleNoPath"
 		#Count reads using htseq-count
 		echo "Sample $curSampleNoPath is being counted..."
-		htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$outputFolder"/"$curSampleNoPath"/sorted.bam "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
+		htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
 		echo "Sample $curSampleNoPath has been counted!"
 		#Add run inputs to output summary file
 		echo "$curSampleNoPath" >> $inputOutFile
-		echo htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$outputFolder"/"$curSampleNoPath"/sorted.bam "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> $inputOutFile
+		echo htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> $inputOutFile
 	done
 done
