@@ -30,7 +30,7 @@ for f1 in "$@"; do
 		exit 1
 	fi	
 	#Determine what analysis method was used for the input folder of data
-	if [[ $f1 == *"hisat2"*  ]]; then
+	if [[ $f1 == *"isat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="Hisat2"
 		#Determine if hisat2 files were sorted
