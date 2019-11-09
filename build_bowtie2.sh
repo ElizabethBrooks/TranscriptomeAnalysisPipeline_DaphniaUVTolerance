@@ -26,17 +26,17 @@ fi
 #Name output file of inputs
 inputOutFile="$buildOut"/"$buildOut"_summary.txt
 if [ $? -eq 0 ]; then
-	#Trim file extension from build file
+	#Trim file path from build file
 	buildFileNoPath=$(basename $buildFile)
-	buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta//')
+	buildFileNoPath=$(echo $buildFileNoPath | sed 's/\.fasta/.fa/g')
 	#Copy genome build fasta file to bowtie2 build folder
-	cp "$buildFile" "$buildOut"/"$buildFileNoEx".fa
+	cp "$buildFile" "$buildOut"/"$buildFileNoPath"
 	#Begin Bowtie2 build
 	echo "Beginning bowtie2 build... "
-	bowtie2-build "$buildOut"/"$buildFileNoEx".fa "$buildOut"/"$buildFileNoEx"
+	bowtie2-build "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoPath"
 	echo "Bowtie2 build complete!"
 else
 	echo "Build folder reference_bowtie2_build already exists, skipping building..."
 fi
 #Add run inputs to output summary file
-echo bowtie2-build "$buildOut"/"$buildFileNoEx".fa "$buildOut"/"$buildFileNoEx" >> $inputOutFile
+echo bowtie2-build "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoPath" >> $inputOutFile

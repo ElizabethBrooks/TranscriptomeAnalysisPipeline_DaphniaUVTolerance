@@ -28,17 +28,17 @@ fi
 #Name output file of inputs
 inputOutFile="$buildOut"/"$buildOut"_summary.txt
 if [ $? -eq 0 ]; then
-	#Copy genome build fasta file to Tophat build folder
+	#Trim file path from build file
 	buildFileNoPath=$(basename $buildFile)
+	buildFileNoPath=$(echo $buildFileNoPath | sed 's/\.fasta/.fa/g')
+	#Copy genome build fasta file to hisat2 build folder
 	cp "$buildFile" "$buildOut"/"$buildFileNoPath"
-	#Trim .fa file extension from build file
-	buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta//')
 	#Begin hisat2 build
 	echo "Beginning hisat2 build... "
-	hisat2-build -p 8 -f "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoEx"
+	hisat2-build -p 8 -f "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoPath"
 	echo "hisat2 build complete!"
 else
 	echo "Build folder reference_hisat2_build already exists, skipping building..."
 fi
 #Add run inputs to output summary file
-echo hisat2-build -p 8 -f "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoEx" >> $inputOutFile
+echo hisat2-build -p 8 -f "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoPath" >> $inputOutFile
