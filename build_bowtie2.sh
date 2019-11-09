@@ -14,6 +14,15 @@ buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputDat
 #Build output directory
 buildOut="reference_bowtie2_build"
 mkdir "$buildOut"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	#Build files already exsist
+	echo "Build files for bowtie2 already found in $buildOut... exiting"
+	exit 1
+else
+	#Build files do not exsist
+	echo "Creating $buildOut folder for bowtie2 build..."
+fi
 #Name output file of inputs
 inputOutFile="$buildOut"/"$buildOut"_summary.txt
 if [ $? -eq 0 ]; then
