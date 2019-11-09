@@ -55,7 +55,7 @@ for f1 in "$@"; do
 		hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f2" -2 "$curSample"_pReverse.fq.gz -S "$hisatOut"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$hisatOut"/"$curSampleNoPath"/alignedSummary.txt
 		#Convert output sam files to bam format for downstream analysis
 		echo "Sample $curSampleNoPath is being converted..."
-		samtools view -@ 8 -bS "$hisatOut"/"$curSampleNoPath"/"$curSampleNoPath".sam > "$hisatOut"/"$curSampleNoPath"/accepted_hits.bam
+		samtools view -@ 8 -bS "$hisatOut"/"$curSampleNoPath"/"$curSampleNoPath"/accepted_hits.sam > "$hisatOut"/"$curSampleNoPath"/accepted_hits.bam
 		echo "Sample $curSampleNoPath has been aligned and converted!"
 		#Remove the now converted .sam file
 		rm "$hisatOut"/"$curSampleNoPath"/accepted_hits.sam

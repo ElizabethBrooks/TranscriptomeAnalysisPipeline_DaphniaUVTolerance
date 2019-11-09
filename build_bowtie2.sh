@@ -17,17 +17,17 @@ mkdir "$buildOut"
 #Name output file of inputs
 inputOutFile="$buildOut"/"$buildOut"_summary.txt
 if [ $? -eq 0 ]; then
-	#Copy genome build fasta file to Tophat build folder
+	#Trim file extension from build file
 	buildFileNoPath=$(basename $buildFile)
-	cp "$buildFile" "$buildOut"/"$buildFileNoPath"
-	#Trim .fa file extension from build file
 	buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta//')
+	#Copy genome build fasta file to bowtie2 build folder
+	cp "$buildFile" "$buildOut"/"$buildFileNoEx".fa
 	#Begin Bowtie2 build
 	echo "Beginning bowtie2 build... "
-	bowtie2-build "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoEx"
+	bowtie2-build "$buildOut"/"$buildFileNoEx".fa "$buildOut"/"$buildFileNoEx"
 	echo "Bowtie2 build complete!"
 else
 	echo "Build folder reference_bowtie2_build already exists, skipping building..."
 fi
 #Add run inputs to output summary file
-echo bowtie2-build "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoEx" >> $inputOutFile
+echo bowtie2-build "$buildOut"/"$buildFileNoEx".fa "$buildOut"/"$buildFileNoEx" >> $inputOutFile
