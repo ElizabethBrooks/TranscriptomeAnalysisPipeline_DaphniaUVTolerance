@@ -28,7 +28,7 @@ for f1 in "$@"; do
 	#Determine what analysis method was used for the input folder of data
 	if [[ $f1 == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
-		analysisMethod="hisat2"
+		analysisMethod="Hisat2"
 	elif [[ $f1 == *"tophat2"* ]]; then
 		echo "ERROR: Tophat aligned files do not need to be sorted... exiting"
 		exit 1
@@ -38,7 +38,7 @@ for f1 in "$@"; do
 	fi
 	#Make a new directory for each analysis run
 	while [ $dirFlag -eq 0 ]; do
-		outputFolder=sorted_"$analysisMethod"Samtools_run"$runNum"
+		outputFolder=sorted_samtools"$analysisMethod"_run"$runNum"
 		mkdir "$outputFolder"
 		#Check if the folder already exists
 		if [ $? -ne 0 ]; then
@@ -56,20 +56,24 @@ for f1 in "$@"; do
 	if [ $? -eq 0 ]; then
 		echo "Creating folder for sorted bam files..."
 		#Loop through all reads and sort bam files for input to samtools
-		for f3 in "$f1"/out/*; do
+		for f2 in "$f1"/*; do
+			#Name of aligned file
+			curAlignedSample="$f2"/accepted_hits.bam
 			#Trim extension from current file name
-			curSample=$(echo $f3 | sed 's/\.bam//')
+			curSample=$(echo $f2 | sed 's/\.bam//')
 			#Trim file path from current file name
-			curSampleNoPath=$(basename $f3)
+			curSampleNoPath=$(basename $f2)
 			curSampleNoPath=$(echo $curSampleNoPath | sed 's/\.bam//')
-			echo "Sample $curSampleNoPath is being sorted..."
+			#Create directory for current sample outputs
+			mkdir "$outputFolder"/"$curSampleNoPath"
 			#Run samtools to prepare mapped reads for sorting by name
 			#using 8 threads
-			samtools sort -@ 8 -n -o "$outputFolder"/"$curSampleNoPath".sorted.bam -T /tmp/"$analysisMethod"_sorted_"$f3".sorted "$f3"
+			echo "Sample $curSampleNoPath is being sorted..."
+			samtools sort -@ 8 -n -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam -T /tmp/"$curSampleNoPath".sorted.bam "$curAlignedSample"
 			echo "Sample $curSampleNoPath has been sorted!"
 			#Add run inputs to output summary file
-			echo $curSampleNoPath >> $inputOutFile
-			echo samtools sort -@ 8 -n -o "$outputFolder"/"$curSampleNoPath".sorted.bam -T /tmp/"$analysisMethod"_sorted_"$f3".sorted "$f3" >> $inputOutFile
+			echo "$curSampleNoPath" >> $inputOutFile
+			echo samtools sort -@ 8 -n -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam -T /tmp/"$curSampleNoPath".sorted.bam "$curAlignedSample" >> $inputOutFile
 		done
 	else
 		echo "Sorted files already exists, skipping sorting..."
