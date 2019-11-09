@@ -55,10 +55,14 @@ for f1 in "$@"; do
 		echo "Sample $curSampleNoPath is being counted..."
 		#Create directory for current sample outputs
 		mkdir "$outputFolder"/"$curSampleNoPath"
-		htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
+		#Sort sam file reads by name for counting
+		samtools sort -n -T /tmp/"$outputFolder"/"$curSampleNoPath"/sorted.bam -o "$outputFolder"/"$curSampleNoPath"/sorted.bam "$curAlignedSample"
+		#Count reads using htseq-count
+		htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$outputFolder"/"$curSampleNoPath"/sorted.bam "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
 		echo "Sample $curSampleNoPath has been counted!"
 		#Add run inputs to output summary file
-		echo $curSampleNoPath >> $inputOutFile
-		echo htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> $inputOutFile
+		echo "$curSampleNoPath" >> $inputOutFile
+		echo samtools sort -n -T /tmp/"$outputFolder"/"$curSampleNoPath"/sorted.bam -o "$outputFolder"/"$curSampleNoPath"/sorted.bam "$curAlignedSample" >> $inputOutFile
+		echo htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$outputFolder"/"$curSampleNoPath"/sorted.bam "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> $inputOutFile
 	done
 done
