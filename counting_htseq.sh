@@ -64,7 +64,7 @@ for f1 in "$@"; do
 	#Name output file of inputs
 	inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 	#Loop through all sorted forward and reverse paired reads and store the file locations in an array
-	for f2 in "$f1"/*; do
+	for f2 in "$f1"/*/; do
 		#Name of aligned file
 		curAlignedSample="$f2"/accepted_hits.bam
 		#Trim file path from current file name
@@ -80,4 +80,6 @@ for f1 in "$@"; do
 		echo "$curSampleNoPath" >> $inputOutFile
 		echo htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> $inputOutFile
 	done
+	#Copy previous summaries
+	cp "$f1"/*summary.txt "$outputFolder"
 done

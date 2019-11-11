@@ -22,8 +22,8 @@ for f1 in "$@"; do
 	#Make a new directory for each alignment run
 	while [ $dirFlag -eq 0 ]; do
 		#Hisat output directory name
-		hisatOut="aligned_hisat2_run$runNum"
-		mkdir "$hisatOut"
+		outputFolder="aligned_hisat2_run$runNum"
+		mkdir "$outputFolder"
 		#Check if the folder already exists
 		if [ $? -ne 0 ]; then
 			#Increment the folder name
@@ -35,7 +35,7 @@ for f1 in "$@"; do
 		fi
 	done
 	#Name output file of inputs
-	inputOutFile="$hisatOut"/"$hisatOut"_summary.txt
+	inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 	#Build output directory for Hisat reference
 	buildOut="reference_hisat2_build"
 	#Trim .fa file extension from build file
@@ -52,17 +52,20 @@ for f1 in "$@"; do
 		curSampleNoPath=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
 		echo "Sample $curSampleNoPath is being aligned..."
 		#Create directory for current sample outputs
-		mkdir "$hisatOut"/"$curSampleNoPath"
-		hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f2" -2 "$curSample"_pReverse.fq.gz -S "$hisatOut"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$hisatOut"/"$curSampleNoPath"/alignedSummary.txt
+		mkdir "$outputFolder"/"$curSampleNoPath"
+		hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f2" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
 		#Convert output sam files to bam format for downstream analysis
 		echo "Sample $curSampleNoPath is being converted..."
-		samtools view -@ 8 -bS "$hisatOut"/"$curSampleNoPath"/"$curSampleNoPath"/accepted_hits.sam > "$hisatOut"/"$curSampleNoPath"/accepted_hits.bam
+		samtools view -@ 8 -bS "$outputFolder"/"$curSampleNoPath"/"$curSampleNoPath"/accepted_hits.sam > "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam
 		echo "Sample $curSampleNoPath has been aligned and converted!"
 		#Remove the now converted .sam file
-		rm "$hisatOut"/"$curSampleNoPath"/accepted_hits.sam
+		rm "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam
 		#Add run inputs to output summary file
 		echo $curSampleNoPath >> $inputOutFile
-		echo hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f2" -2 "$curSample"_pReverse.fq.gz -S "$hisatOut"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$hisatOut"/"$curSampleNoPath"/alignedSummary.txt >> $inputOutFile
-		echo samtools view -@ 8 -bS "$hisatOut"/"$curSampleNoPath"/"$curSampleNoPath".sam > "$hisatOut"/"$curSampleNoPath"/accepted_hits.bam >> $inputOutFile
+		echo hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f2" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> $inputOutFile
+		echo samtools view -@ 8 -bS "$outputFolder"/"$curSampleNoPath"/"$curSampleNoPath".sam > "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam >> $inputOutFile
 	done
+	#Copy previous summaries
+	cp "$f1"/*summary.txt "$outputFolder"
+	cp "$buildOut"/*summary.txt "$outputFolder"
 done

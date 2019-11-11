@@ -56,7 +56,7 @@ for f1 in "$@"; do
 	if [ $? -eq 0 ]; then
 		echo "Creating folder for sorted bam files..."
 		#Loop through all reads and sort bam files for input to samtools
-		for f2 in "$f1"/*; do
+		for f2 in "$f1"/*/; do
 			#Name of aligned file
 			curAlignedSample="$f2"/accepted_hits.bam
 			#Trim extension from current file name
@@ -75,6 +75,8 @@ for f1 in "$@"; do
 			echo "$curSampleNoPath" >> $inputOutFile
 			echo samtools sort -@ 8 -n -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam -T /tmp/"$curSampleNoPath".sorted.bam "$curAlignedSample" >> $inputOutFile
 		done
+		#Copy previous summaries
+		cp "$f1"/*summary.txt "$outputFolder"
 	else
 		echo "Sorted files already exists, skipping sorting..."
 	fi

@@ -22,8 +22,8 @@ for f1 in "$@"; do
 	#Make a new directory for each alignment run
 	while [ $dirFlag -eq 0 ]; do
 		#Tophat output directory name
-		tophatOut="aligned_tophat2_run$runNum"
-		mkdir "$tophatOut"
+		outputFolder="aligned_tophat2_run$runNum"
+		mkdir "$outputFolder"
 		#Check if the folder already exists
 		if [ $? -ne 0 ]; then
 			#Increment the folder name
@@ -35,7 +35,7 @@ for f1 in "$@"; do
 		fi
 	done
 	#Name output file of inputs
-	inputOutFile="$tophatOut"/"$tophatOut"_summary.txt
+	inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 	#Build output directory for Tophat reference
 	buildOut="reference_bowtie2_build"
 	#Trim .fa file extension from build file
@@ -52,10 +52,13 @@ for f1 in "$@"; do
 		curSampleNoEx=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
 		#Begin Tophat run for current sample
 		echo "Sample $curSampleNoEx is being aligned..."
-		tophat2 -p 8 -G "$genomeFile" -o "$tophatOut"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
+		tophat2 -p 8 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz
 		echo "Sample $curSampleNoEx has been aligned!"
 		#Add run inputs to output summary file
 		echo $curSampleNoPath >> $inputOutFile
-		echo tophat2 -p 8 -G "$genomeFile" -o "$tophatOut"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz >> $inputOutFile
+		echo tophat2 -p 8 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz >> $inputOutFile
 	done
+	#Copy previous summaries
+	cp "$f1"/*summary.txt "$outputFolder"
+	cp "$buildOut"/*summary.txt "$outputFolder"
 done

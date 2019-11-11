@@ -14,31 +14,31 @@ runNum=1
 buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
 #Build reference genome if folder does not exist
 #Build output directory
-buildOut="reference_hisat2_build"
-mkdir "$buildOut"
+outputFolder="reference_hisat2_build"
+mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
 	#Build files already exsist
-	echo "Build files for hisat2 already found in $buildOut... exiting"
+	echo "Build files for hisat2 already found in $outputFolder... exiting"
 	exit 1
 else
 	#Build files do not exsist
-	echo "Creating $buildOut folder for hisat2 build..."
+	echo "Creating $outputFolder folder for hisat2 build..."
 fi
 #Name output file of inputs
-inputOutFile="$buildOut"/"$buildOut"_summary.txt
+inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 if [ $? -eq 0 ]; then
 	#Trim file path from build file
 	buildFileNoPath=$(basename $buildFile)
 	buildFileNoPath=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/g')
 	#Copy genome build fasta file to hisat2 build folder
-	cp "$buildFile" "$buildOut"/"$buildFileNoPath"
+	cp "$buildFile" "$outputFolder"/"$buildFileNoPath"
 	#Begin hisat2 build
 	echo "Beginning hisat2 build... "
-	hisat2-build -p 8 -f "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoPath"
+	hisat2-build -p 8 -f "$outputFolder"/"$buildFileNoPath" "$outputFolder"/"$buildFileNoPath"
 	echo "hisat2 build complete!"
 else
 	echo "Build folder reference_hisat2_build already exists, skipping building..."
 fi
 #Add run inputs to output summary file
-echo hisat2-build -p 8 -f "$buildOut"/"$buildFileNoPath" "$buildOut"/"$buildFileNoPath" >> $inputOutFile
+echo hisat2-build -p 8 -f "$outputFolder"/"$buildFileNoPath" "$outputFolder"/"$buildFileNoPath" >> $inputOutFile
