@@ -1,7 +1,7 @@
 #!/bin/bash
 #Bash script to retrieve mapping stats
-#Usage: bash alignmentStats"_prepareSummary.sh jobOutput alignmentMethod
-#Usage Ex: bash alignmentStats"_prepareSummary.sh ../alignment"_hisat2"_jobOutput.o522510 hisat2
+#Usage: bash alignmentStats_prepareSummary.sh jobOutput alignmentMethod
+#Usage Ex: bash alignmentStats_prepareSummary.sh ../alignment_hisat2_jobOutput.o522510 hisat2
 #Prepare input and output file names
 inputStats="$1"
 outputStats=alignmentStats_"$2"
