@@ -76,7 +76,7 @@ for f1 in "$@"; do
 			echo samtools sort -@ 8 -n -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam -T /tmp/"$curSampleNoPath".sorted.bam "$curAlignedSample" >> $inputOutFile
 		done
 		#Copy previous summaries
-		cp "$f1"/*summary.txt "$outputFolder"
+		cp "$f1"/*.txt "$outputFolder"
 	else
 		echo "Sorted files already exists, skipping sorting..."
 	fi

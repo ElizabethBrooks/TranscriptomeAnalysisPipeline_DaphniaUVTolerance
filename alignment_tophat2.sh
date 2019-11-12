@@ -41,7 +41,7 @@ for f1 in "$@"; do
 	#Trim .fa file extension from build file
 	buildFileNoPath=$(basename $buildFile)
 	buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/')
-	buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fa//')
+	buildFileNoEx=$(echo $buildFileNoEx | sed 's/\.fa//')
 	#Loop through all forward and reverse paired reads and run tophat2 on each pair
 	# using 8 threads
 	for f2 in "$f1"/*pForward.fq.gz; do
@@ -59,6 +59,6 @@ for f1 in "$@"; do
 		echo tophat2 -p 8 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f2" "$curSample"_pReverse.fq.gz >> $inputOutFile
 	done
 	#Copy previous summaries
-	cp "$f1"/*summary.txt "$outputFolder"
-	cp "$buildOut"/*summary.txt "$outputFolder"
+	cp "$f1"/*.txt "$outputFolder"
+	cp "$buildOut"/*.txt "$outputFolder"
 done
