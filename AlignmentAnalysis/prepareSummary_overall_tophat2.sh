@@ -13,7 +13,7 @@ cd ../..
 inputStats="$1"
 outputStats=alignmentStats_"$2"
 #Retrieve summaries for each aligned sample
-for f1 in "$@"; do
+for f1 in "$1"/*/; do
 	bash prepareSummary_sample_tophat2.sh "$f1" $2
 	#Combine summaries into one csv file
 	cat "$outputStats"_combined.csv >> "$outputStats"_allSamples.csv
