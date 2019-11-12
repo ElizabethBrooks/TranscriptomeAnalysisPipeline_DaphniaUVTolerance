@@ -1,7 +1,7 @@
 #!/bin/bash
 #Bash script to retrieve mapping stats
-#Usage: bash alignmentStats_prepareSummary.sh alignmentOutputFolder alignmentMethod
-#Usage Ex: bash alignmentStats_prepareSummary.sh aligned_topaht2_run2 topaht2
+#Usage: bash prepareSummary_overall_tophat2.sh alignmentOutputFolder alignmentMethod
+#Usage Ex: bash prepareSummary_overall_tophat2.sh aligned_topaht2_run2 topaht2
 #Determine if the folder name was input in the correct format
 if [[ $1 == *\/* ]] || [[ $1 == *\\* ]]; then
 	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
