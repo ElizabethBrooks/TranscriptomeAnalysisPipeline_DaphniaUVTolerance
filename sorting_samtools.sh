@@ -30,8 +30,8 @@ for f1 in "$@"; do
 		#Set analysis method for folder naming
 		analysisMethod="Hisat2"
 	elif [[ $f1 == *"tophat2"* ]]; then
-		echo "ERROR: Tophat aligned files do not need to be sorted... exiting"
-		exit 1
+		#Set analysis method for folder naming
+		analysisMethod="Tophat2"
 	else
 		echo "ERROR: The $f1 folder or bam files were not found... exiting"
 		exit 1

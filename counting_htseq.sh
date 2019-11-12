@@ -40,9 +40,16 @@ for f1 in "$@"; do
 			echo "ERROR: The $f1 folder of bam files need to be sorted... exiting"
 			exit 1
 		fi
-	elif [[ $f1 == *"tophat2"* ]]; then
+	elif [[ $f1 == *"ophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="Tophat2"
+		#Determine if hisat2 files were sorted
+		if [[ $f1 == *"sorted"* ]]; then
+			echo "Sorted Tophat2 files found! Proceeding with counting..."
+		else
+			echo "ERROR: The $f1 folder of bam files need to be sorted... exiting"
+			exit 1
+		fi
 	else
 		echo "ERROR: The $f1 folder or bam files were not found... exiting"
 		exit 1
