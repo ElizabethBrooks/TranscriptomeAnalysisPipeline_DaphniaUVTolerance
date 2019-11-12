@@ -1,7 +1,14 @@
 #!/bin/bash
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentStats_prepareSummary.sh jobOutput alignmentMethod
-#Usage Ex: bash alignmentStats_prepareSummary.sh ../alignment_hisat2_jobOutput.o522510 hisat2
+#Usage Ex: bash alignmentStats_prepareSummary.sh alignment_hisat2_jobOutput.o522510 hisat2
+#Determine if the folder name was input in the correct format
+if [[ $1 == *\/* ]] || [[ $1 == *\\* ]]; then
+	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
+	exit 1
+fi
+#Move to directory with output alignment folders
+cd ../..
 #Prepare input and output file names
 inputStats="$1"
 outputStats=alignmentStats_"$2"
