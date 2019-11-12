@@ -19,6 +19,16 @@ if [ $# -eq 0 ]; then
 fi
 #Retrieve folders to analyze from the input arguments
 for f1 in "$@"; do
+	#Determine if the folder name was input in the correct format
+	if [[ $f1 == *\/* ]] || [[ $f1 == *\\* ]]; then
+		echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
+		exit 1
+	fi
+	#Determine if the correct analysis folder was input
+	if [[ $f1  != trimmed* ]]; then
+		echo "ERROR: The $f1 folder of aligned bam files were not found... exiting"
+		exit 1
+	fi
 	#Make a new directory for each alignment run
 	while [ $dirFlag -eq 0 ]; do
 		#Tophat output directory name

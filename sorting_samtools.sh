@@ -24,7 +24,12 @@ for f1 in "$@"; do
 	if [[ $f1 == *\/* ]] || [[ $f1 == *\\* ]]; then
 		echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
 		exit 1
-	fi	
+	fi
+	#Determine if the correct analysis folder was input
+	if [[ $f1  != aligned* ]]; then
+		echo "ERROR: The $f1 folder of aligned bam files were not found... exiting"
+		exit 1
+	fi
 	#Determine what analysis method was used for the input folder of data
 	if [[ $f1 == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
