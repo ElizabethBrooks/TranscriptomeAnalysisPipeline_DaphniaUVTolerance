@@ -7,8 +7,6 @@ if [[ $1 == *\/* ]] || [[ $1 == *\\* ]]; then
 	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
 	exit 1
 fi
-#Move to directory with output alignment folders
-cd ../..
 #Prepare input and output file names
 inputStats="$1"
 outputStats=alignmentStats_"$2"
