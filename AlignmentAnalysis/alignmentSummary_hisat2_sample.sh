@@ -1,7 +1,7 @@
 #!/bin/bash
 #Bash script to retrieve mapping stats
-#Usage: bash prepareSummary_overall_hisat2.sh jobOutput alignmentMethod
-#Usage Ex: bash prepareSummary_overall_hisat2.sh alignment_hisat2_jobOutput.o522510 hisat2
+#Usage: bash alignmentSummary_hisat2_sample.sh jobOutput alignmentMethod
+#Usage Ex: bash alignmentSummary_hisat2_sample.sh alignment_hisat2_jobOutput.o522510 hisat2
 #Determine if the folder name was input in the correct format
 if [[ $1 == *\/* ]] || [[ $1 == *\\* ]]; then
 	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
@@ -11,7 +11,7 @@ fi
 cd ../..
 #Prepare input and output file names
 inputStats="$1"
-outputStats=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentStats_"$2"
+outputStats=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummarized_"$2"
 #Retrieve sample order
 grep "is being aligned" "$inputStats" > "$outputStats"_sampleOrder.txt
 sed -i "s/.is being aligned\.\.\.//g" "$outputStats"_sampleOrder.txt
