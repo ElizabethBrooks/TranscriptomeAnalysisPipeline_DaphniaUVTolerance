@@ -11,7 +11,7 @@ fi
 cd ../..
 #Prepare input and output file names
 inputStats="$1"
-outputStats=alignmentStats_"$2"
+outputStats=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentStats_"$2"
 #Retrieve sample order
 grep "is being aligned" "$inputStats" > "$outputStats"_sampleOrder.txt
 sed -i "s/.is being aligned\.\.\.//g" "$outputStats"_sampleOrder.txt

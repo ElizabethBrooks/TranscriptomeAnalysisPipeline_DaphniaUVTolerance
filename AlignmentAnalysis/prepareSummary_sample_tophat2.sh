@@ -11,7 +11,7 @@
 cd ../..
 #Prepare input and output file names
 inputStats="$1"/align_summary.txt
-outputStats=alignmentStats_"$2"
+outputStats=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentStats_"$2"
 #Retrieve mapped left read percents
 grep "Mapped" "$inputStats" > "$outputStats"_mapped.txt
 head -1 "$outputStats"_mapped.txt > "$outputStats"_mappedLeft.txt

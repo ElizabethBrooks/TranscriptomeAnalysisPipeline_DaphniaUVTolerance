@@ -9,10 +9,12 @@ if [[ $1 == *\/* ]] || [[ $1 == *\\* ]]; then
 fi
 #Prepare input and output file names
 inputStats="$1"
-outputStats=alignmentStats_"$2"
+outputStats=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentStats_"$2"
 #Retrieve summaries for each aligned sample
 for f1 in "$1"/*/; do
-	bash prepareSummary_sample_tophat2.sh "$f1" $2
+	echo "Merging sample $f1 alignment summary..."
+	#bash prepareSummary_sample_tophat2.sh "$f1" $2
 	#Combine summaries into one csv file
-	cat "$outputStats"_combined.csv >> "$outputStats"_allSamples.csv
+	#cat "$outputStats"_combined.csv >> "$outputStats"_allSamples.csv
+	echo "Sample $f1 alignment summary has been merged!"
 done
