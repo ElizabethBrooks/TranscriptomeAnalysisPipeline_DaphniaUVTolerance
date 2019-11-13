@@ -5,31 +5,33 @@
 #Move to directory with output alignment folders
 cd ../..
 #Prepare input and output file names
-inputStats="$1"/align_summary.txt
+inputStats="$1"/align_summary_"$runNum".txt
 outputStats=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummarized_"$2"
+#Retrieve run number for input alignment folder
+runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 #Retrieve mapped left read percents
-grep "Mapped" "$inputStats" > "$outputStats"_mapped.txt
-head -1 "$outputStats"_mapped.txt > "$outputStats"_mappedLeft.txt
-cat "$outputStats"_mappedLeft.txt | tr " " "\n" > tmp.txt
-grep "%" tmp.txt > "$outputStats"_mappedLeft.txt
-sed -i "s/(//g" "$outputStats"_mappedLeft.txt
+grep "Mapped" "$inputStats" > "$outputStats"_mapped_"$runNum".txt
+head -1 "$outputStats"_mapped_"$runNum".txt > "$outputStats"_mappedLeft_"$runNum".txt
+cat "$outputStats"_mappedLeft_"$runNum".txt | tr " " "\n" > tmp_"$runNum".txt
+grep "%" tmp_"$runNum".txt > "$outputStats"_mappedLeft_"$runNum".txt
+sed -i "s/(//g" "$outputStats"_mappedLeft_"$runNum".txt
 #Retrieve mapped right read percents
-tail -1 "$outputStats"_mapped.txt > "$outputStats"_mappedRight.txt
-cat "$outputStats"_mappedRight.txt | tr " " "\n" > tmp.txt
-grep "%" tmp.txt > "$outputStats"_mappedRight.txt
-sed -i "s/(//g" "$outputStats"_mappedRight.txt
+tail -1 "$outputStats"_mapped_"$runNum".txt > "$outputStats"_mappedRight_"$runNum".txt
+cat "$outputStats"_mappedRight_"$runNum".txt | tr " " "\n" > tmp_"$runNum".txt
+grep "%" tmp_"$runNum".txt > "$outputStats"_mappedRight_"$runNum".txt
+sed -i "s/(//g" "$outputStats"_mappedRight_"$runNum".txt
 #Retrieve overall percents
-grep "overall" "$inputStats" > "$outputStats"_overall.txt
-cat "$outputStats"_overall.txt | tr " " "\n" > tmp.txt
-grep "%" tmp.txt > "$outputStats"_overall.txt
+grep "overall" "$inputStats" > "$outputStats"_overall_"$runNum".txt
+cat "$outputStats"_overall_"$runNum".txt | tr " " "\n" > tmp_"$runNum".txt
+grep "%" tmp_"$runNum".txt > "$outputStats"_overall_"$runNum".txt
 #Retrieve concordant percent
-grep "concordant" "$inputStats" > "$outputStats"_concordant.txt
-cat "$outputStats"_concordant.txt | tr " " "\n" > tmp.txt
-grep "%" tmp.txt > "$outputStats"_concordant.txt
+grep "concordant" "$inputStats" > "$outputStats"_concordant_"$runNum".txt
+cat "$outputStats"_concordant_"$runNum".txt | tr " " "\n" > tmp_"$runNum".txt
+grep "%" tmp_"$runNum".txt > "$outputStats"_concordant_"$runNum".txt
 #Combine all stats by sample
-paste -d "," "$outputStats"_mapped.txt "$outputStats"_overall.txt "$outputStats"_concordant.txt > "$outputStats"_combined.csv
+paste -d "," "$outputStats"_mapped_"$runNum".txt "$outputStats"_overall_"$runNum".txt "$outputStats"_concordant_"$runNum".txt > "$outputStats"_combined_"$runNum".csv
 #Clean up
-rm "tmp.txt"
-rm "$outputStats"_mapped.txt
-rm "$outputStats"_overall.txt
-rm "$outputStats"_concordant.txt
+rm "tmp_"$runNum".txt"
+rm "$outputStats"_mapped_"$runNum".txt
+rm "$outputStats"_overall_"$runNum".txt
+rm "$outputStats"_concordant_"$runNum".txt

@@ -25,13 +25,15 @@ for f1 in "$@"; do
 	#Prepare input and output file names
 	inputStats="$f1"
 	outputStats=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummarized_"$analysisMethod"
+	#Retrieve run number for input alignment folder
+	runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 	#Retrieve summaries for each aligned sample
 	for f2 in "$f1"/*/; do
 		echo "Merging sample $f1 of $analysisMethod alignment summary..."
 		#Retrieve sample summary based on alignment method
 		#bash alignmentSummary_"$analysisMethod"_sample.sh "$f1" "$analysisMethod"
 		#Combine summaries into one csv file
-		#cat "$outputStats"_"$analysisMethod"_combined.csv >> "$outputStats"_"$analysisMethod"_allSamples.csv
+		#cat "$outputStats"_"$analysisMethod"_combined_"$runNum".csv >> "$outputStats"_"$analysisMethod"_allSamples_"$runNum".csv
 		echo "Sample $f1 of $analysisMethod alignment summary has been merged!"
 	done
 done
