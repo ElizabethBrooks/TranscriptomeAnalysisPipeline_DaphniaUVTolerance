@@ -15,6 +15,7 @@ grep "aligned concordantly exactly" "$inputStats" > "$outputStats"_concordant_"$
 cat "$outputStats"_concordant_"$runNum".txt | tr " " "\n" > tmp_"$runNum".txt
 grep "%" tmp_"$runNum".txt > "$outputStats"_concordant_"$runNum".txt
 sed -i "s/(//g" "$outputStats"_concordant_"$runNum".txt
+sed -i "s/)//g" "$outputStats"_concordant_"$runNum".txt
 #Retrieve overall alignment percent
 grep "overall alignment rate" "$inputStats" > "$outputStats"_overall_"$runNum".txt
 cat "$outputStats"_overall_"$runNum".txt | tr " " "\n" > tmp_"$runNum".txt
