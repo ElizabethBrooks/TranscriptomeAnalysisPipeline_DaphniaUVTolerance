@@ -7,8 +7,6 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Move to directory with output alignment folders
-cd ../..
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in $@; do
 	#Determine if the folder name was input in the correct format
@@ -28,7 +26,7 @@ for f1 in $@; do
 		exit 1
 	fi
 	#Prepare input and output file names
-	inputStats="$f1"
+	inputStats="../../$f1"
 	outputStats=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummarized_"$analysisMethod"
 	#Retrieve run number for input alignment folder
 	runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
