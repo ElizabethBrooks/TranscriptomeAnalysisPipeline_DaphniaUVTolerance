@@ -36,7 +36,7 @@ for f1 in $@; do
 	for f2 in "$f1"/*/; do
 		echo "Merging sample $f2 of $analysisMethod alignment summary..."
 		#Retrieve sample summary based on alignment method
-		bash TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummary_"$analysisMethod"_sample.sh "$f1" "$analysisMethod"
+		bash TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummary_"$analysisMethod"_sample.sh "$f2" "$analysisMethod"
 		#Combine summaries into one csv file
 		cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_allSamples_"$runNum".csv
 		rm "$outputStats"_combined_"$runNum".csv
