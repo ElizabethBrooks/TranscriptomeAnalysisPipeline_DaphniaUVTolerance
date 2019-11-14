@@ -8,6 +8,8 @@ inputStats="$1"align_summary.txt
 outputStats=alignmentSummarized_"$2"
 #Retrieve sample name
 sampleName=$(basename "$1")
+#Store sample name in tmp txt file for pasting
+echo "$sampleName" > "$outputStats"_sample_"$runNum".txt
 #Retrieve mapped left read percents
 grep "Mapped" "$inputStats" > "$outputStats"_mapped_"$runNum".txt
 head -1 "$outputStats"_mapped_"$runNum".txt > "$outputStats"_mappedLeft_"$runNum".txt
@@ -28,9 +30,10 @@ grep "concordant" "$inputStats" > "$outputStats"_concordant_"$runNum".txt
 cat "$outputStats"_concordant_"$runNum".txt | tr " " "\n" > tmp_"$runNum".txt
 grep "%" tmp_"$runNum".txt > "$outputStats"_concordant_"$runNum".txt
 #Combine all stats by sample
-paste -d "," "$sampleName" "$outputStats"_mappedLeft_"$runNum".txt "$outputStats"_mappedRight_"$runNum".txt "$outputStats"_overall_"$runNum".txt "$outputStats"_concordant_"$runNum".txt > "$outputStats"_combined_"$runNum".csv
+paste -d "," "$outputStats"_sample_"$runNum".txt "$outputStats"_mappedLeft_"$runNum".txt "$outputStats"_mappedRight_"$runNum".txt "$outputStats"_overall_"$runNum".txt "$outputStats"_concordant_"$runNum".txt > "$outputStats"_combined_"$runNum".csv
 #Clean up
 rm "tmp_"$runNum".txt"
+rm "$outputStats"_sample_"$runNum".txt
 rm "$outputStats"_mapped_"$runNum".txt
 rm "$outputStats"_mappedLeft_"$runNum".txt
 rm "$outputStats"_mappedRight_"$runNum".txt
