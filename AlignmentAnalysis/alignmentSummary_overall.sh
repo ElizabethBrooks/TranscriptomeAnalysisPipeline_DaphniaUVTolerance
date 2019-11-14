@@ -25,7 +25,7 @@ for f1 in $@; do
 		analysisMethod="tophat2"
 	else
 		echo "ERROR: The $f1 folder or bam files were not found... exiting"
-		#exit 1
+		exit 1
 	fi
 	#Prepare input and output file names
 	inputStats="$f1"
@@ -38,7 +38,8 @@ for f1 in $@; do
 		#Retrieve sample summary based on alignment method
 		bash alignmentSummary_"$analysisMethod"_sample.sh "$f1" "$analysisMethod"
 		#Combine summaries into one csv file
-		cat "$outputStats"_"$analysisMethod"_combined_"$runNum".csv >> "$outputStats"_"$analysisMethod"_allSamples_"$runNum".csv
+		cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_allSamples_"$runNum".csv
+		rm "$outputStats"_combined_"$runNum".csv
 		echo "Sample $f2 of $analysisMethod alignment summary has been merged!"
 	done
 done
