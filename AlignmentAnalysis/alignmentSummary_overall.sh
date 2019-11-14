@@ -2,6 +2,8 @@
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummary_overall.sh alignmentFolder
 #Usage Ex: bash alignmentSummary_overall.sh aligned_tophat2_run2
+#Move to directory with output alignment folders
+cd ../..
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -26,15 +28,15 @@ for f1 in $@; do
 		exit 1
 	fi
 	#Prepare input and output file names
-	inputStats=../../"$f1"
-	outputStats=../../alignmentSummarized_"$analysisMethod"
+	inputStats="$f1"
+	outputStats=alignmentSummarized_"$analysisMethod"
 	#Retrieve run number for input alignment folder
 	runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 	#Retrieve summaries for each aligned sample
-	for f2 in "$inputStats"/*/; do
+	for f2 in "$f1"/*/; do
 		echo "Merging sample $f2 of $analysisMethod alignment summary..."
 		#Retrieve sample summary based on alignment method
-		bash alignmentSummary_"$analysisMethod"_sample.sh "$f1" "$analysisMethod"
+		bash TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummary_"$analysisMethod"_sample.sh "$f1" "$analysisMethod"
 		#Combine summaries into one csv file
 		cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_allSamples_"$runNum".csv
 		rm "$outputStats"_combined_"$runNum".csv
