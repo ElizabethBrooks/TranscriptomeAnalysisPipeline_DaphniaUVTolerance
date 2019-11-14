@@ -17,10 +17,10 @@ for f1 in $@; do
 		exit 1
 	fi
 	#Determine what analysis method was used for the input folder of data
-	if [[ "$f1" == *"hisat2"*  ]]; then
+	if [[ "$f1" == "*hisat2*"  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
-	elif [[ "$f1" == *"tophat2"* ]]; then
+	elif [[ "$f1" == "*tophat2*" ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"
 	else
@@ -33,7 +33,7 @@ for f1 in $@; do
 	#Retrieve run number for input alignment folder
 	runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 	#Retrieve summaries for each aligned sample
-	for f2 in "$f1"/*/; do
+	for f2 in "$f1/*/"; do
 		echo "Merging sample $f2 of $analysisMethod alignment summary..."
 		#Retrieve sample summary based on alignment method
 		#bash alignmentSummary_"$analysisMethod"_sample.sh "$f1" "$analysisMethod"
