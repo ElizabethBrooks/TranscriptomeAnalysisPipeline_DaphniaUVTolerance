@@ -2,20 +2,25 @@
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummary_overall.sh alignmentFolder
 #Usage Ex: bash alignmentSummary_overall.sh aligned_topaht2_run2
+#Check for input arguments of folder names
+if [ $# -eq 0 ]; then
+   	echo "ERROR: No folder name(s) supplied... exiting"
+   	exit 1
+fi
 #Move to directory with output alignment folders
 cd ../..
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in $@; do
 	#Determine if the folder name was input in the correct format
-	if [[ $1 == *\/* ]] || [[ $1 == *\\* ]]; then
+	if [[ "$f1" == *\/* ]] || [[ "$f1" == *\\* ]]; then
 		echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
 		exit 1
 	fi
 	#Determine what analysis method was used for the input folder of data
-	if [[ $f1 == *"hisat2"*  ]]; then
+	if [[ "$f1" == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="Hisat2"
-	elif [[ $f1 == *"tophat2"* ]]; then
+	elif [[ "$f1" == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="Tophat2"
 	else
