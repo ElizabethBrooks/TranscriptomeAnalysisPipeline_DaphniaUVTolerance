@@ -6,8 +6,6 @@
 runNum="$3"
 inputStats="$1"align_summary.txt
 outputStats=alignmentSummarized_"$2"
-#Retrieve run number for input alignment folder
-runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 #Retrieve mapped left read percents
 grep "Mapped" "$inputStats" > "$outputStats"_mapped_"$runNum".txt
 head -1 "$outputStats"_mapped_"$runNum".txt > "$outputStats"_mappedLeft_"$runNum".txt

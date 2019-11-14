@@ -6,8 +6,6 @@
 runNum="$3"
 inputStats="$1"alignedSummary.txt
 outputStats=alignmentSummarized_"$2"
-#Retrieve run number for input alignment folder
-runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 #Retrieve sample order
 grep "is being aligned" "$inputStats" > "$outputStats"_sampleOrder_"$runNum".txt
 sed -i "s/.is being aligned\.\.\.//g" "$outputStats"_sampleOrder_"$runNum".txt
