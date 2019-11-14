@@ -1,7 +1,7 @@
 #!/bin/bash
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummary_tophat2_sample.sh alignedSampleFolder alignmentMethod
-#Usage Ex: bash alignmentSummary_tophat2_sample.sh alignment_topaht2_run2/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV topaht2
+#Usage Ex: bash alignmentSummary_tophat2_sample.sh alignment_tophat2_run2/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV topaht2
 #Move to directory with output alignment folders
 cd ../..
 #Prepare input and output file names

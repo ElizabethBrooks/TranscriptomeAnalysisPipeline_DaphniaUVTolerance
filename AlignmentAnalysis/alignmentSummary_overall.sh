@@ -1,7 +1,7 @@
 #!/bin/bash
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummary_overall.sh alignmentFolder
-#Usage Ex: bash alignmentSummary_overall.sh aligned_topaht2_run2
+#Usage Ex: bash alignmentSummary_overall.sh aligned_tophat2_run2
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -36,9 +36,9 @@ for f1 in $@; do
 	for f2 in "$f1"/*/; do
 		echo "Merging sample $f2 of $analysisMethod alignment summary..."
 		#Retrieve sample summary based on alignment method
-		#bash alignmentSummary_"$analysisMethod"_sample.sh "$f1" "$analysisMethod"
+		bash alignmentSummary_"$analysisMethod"_sample.sh "$f1" "$analysisMethod"
 		#Combine summaries into one csv file
-		#cat "$outputStats"_"$analysisMethod"_combined_"$runNum".csv >> "$outputStats"_"$analysisMethod"_allSamples_"$runNum".csv
+		cat "$outputStats"_"$analysisMethod"_combined_"$runNum".csv >> "$outputStats"_"$analysisMethod"_allSamples_"$runNum".csv
 		echo "Sample $f2 of $analysisMethod alignment summary has been merged!"
 	done
 done
