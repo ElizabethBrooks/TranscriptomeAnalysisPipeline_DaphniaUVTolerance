@@ -20,26 +20,35 @@ for f1 in $@; do
 	if [[ "$f1" == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
+		#Set output folder name
+		outputStats=alignmentSummarized_"$analysisMethod"
+		#Retrieve run number for input alignment folder
+		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
+		#Set header of overall summary csv file
+		echo "overall, concordant" > "$outputStats"_allSamples_"$runNum".csv
 	elif [[ "$f1" == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"
+		#Set output folder name
+		outputStats=alignmentSummarized_"$analysisMethod"
+		#Retrieve run number for input alignment folder
+		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
+		#Set header of overall summary csv file
+		echo "mappedLeft, mappedRight, overall, concordant" > "$outputStats"_allSamples_"$runNum".csv
 	else
 		echo "ERROR: The $f1 folder or bam files were not found... exiting"
 		exit 1
 	fi
-	#Prepare input and output file names
-	inputStats="$f1"
-	outputStats=alignmentSummarized_"$analysisMethod"
-	#Retrieve run number for input alignment folder
-	runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 	#Retrieve summaries for each aligned sample
 	for f2 in "$f1"/*/; do
-		echo "Merging sample $f2 of $analysisMethod alignment summary..."
+		#Retrieve sample name
+		sampleName=$(basename "$f2")
+		echo "Merging sample $sampleName alignment summary..."
 		#Retrieve sample summary based on alignment method
 		bash TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummary_"$analysisMethod"_sample.sh "$f2" "$analysisMethod" "$runNum"
 		#Combine summaries into one csv file
 		cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_allSamples_"$runNum".csv
 		rm "$outputStats"_combined_"$runNum".csv
-		echo "Sample $f2 of $analysisMethod alignment summary has been merged!"
+		echo "Sample $sampleName alignment summary has been merged!"
 	done
 done
