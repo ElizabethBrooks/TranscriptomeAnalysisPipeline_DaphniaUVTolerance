@@ -34,7 +34,7 @@ for f1 in $@; do
 		#Retrieve run number for input alignment folder
 		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 		#Set header of overall summary csv file
-		echo "sample,mappedLeft,mappedRight,overall,concordant" > "$outputStats"_allSamples_"$runNum".csv
+		echo "sample,leftMapped,rightMapped,overall,concordant" > "$outputStats"_allSamples_"$runNum".csv
 	else
 		echo "ERROR: The $f1 folder or bam files were not found... exiting"
 		exit 1
