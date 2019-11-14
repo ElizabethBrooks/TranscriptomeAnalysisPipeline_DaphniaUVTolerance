@@ -5,7 +5,7 @@
 #Move to directory with output alignment folders
 cd ../..
 #Prepare input and output file names
-inputStats="$1"/alignedSummary.txt
+inputStats="$1"alignedSummary.txt
 outputStats=alignmentSummarized_"$2"
 #Retrieve run number for input alignment folder
 runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
