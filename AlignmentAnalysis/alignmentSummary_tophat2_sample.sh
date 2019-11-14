@@ -6,7 +6,7 @@
 cd ../..
 #Prepare input and output file names
 inputStats="$1"/align_summary_"$runNum".txt
-outputStats=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummarized_"$2"
+outputStats=../../alignmentSummarized_"$2"
 #Retrieve run number for input alignment folder
 runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 #Retrieve mapped left read percents

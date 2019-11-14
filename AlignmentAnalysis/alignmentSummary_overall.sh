@@ -26,12 +26,12 @@ for f1 in $@; do
 		exit 1
 	fi
 	#Prepare input and output file names
-	inputStats="../../$f1"
-	outputStats=TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummarized_"$analysisMethod"
+	inputStats=../../"$f1"
+	outputStats=../../alignmentSummarized_"$analysisMethod"
 	#Retrieve run number for input alignment folder
 	runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 	#Retrieve summaries for each aligned sample
-	for f2 in "$f1"/*/; do
+	for f2 in "$inputStats"/*/; do
 		echo "Merging sample $f2 of $analysisMethod alignment summary..."
 		#Retrieve sample summary based on alignment method
 		bash alignmentSummary_"$analysisMethod"_sample.sh "$f1" "$analysisMethod"
