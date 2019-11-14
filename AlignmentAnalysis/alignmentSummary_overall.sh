@@ -47,7 +47,7 @@ for f1 in $@; do
 		#Retrieve sample summary based on alignment method
 		bash TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummary_"$analysisMethod"_sample.sh "$f2" "$analysisMethod" "$runNum"
 		#Combine summaries into one csv file
-		cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_allSamples_"$runNum".csv
+		cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_"$runNum".csv
 		rm "$outputStats"_combined_"$runNum".csv
 		echo "Sample $sampleName alignment summary has been merged!"
 	done
