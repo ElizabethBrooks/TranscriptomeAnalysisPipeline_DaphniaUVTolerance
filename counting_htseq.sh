@@ -23,7 +23,7 @@ fi
 inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt"
 genomeFile=$(head -n 1 $inputsFile)
 #Retrieve folders to analyze from the input arguments to the script
-for f1 in "$@"; do
+for f1 in $@; do
 	#Determine if the folder name was input in the correct format
 	if [[ $f1 == *\/* ]] || [[ $f1 == *\\* ]]; then
 		echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"

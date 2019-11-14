@@ -18,7 +18,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve folders to analyze from the input arguments
-for f1 in "$@"; do
+for f1 in $@; do
 	#Determine if the folder name was input in the correct format
 	if [[ $f1 == *\/* ]] || [[ $f1 == *\\* ]]; then
 		echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"

@@ -5,7 +5,7 @@
 #Move to directory with output alignment folders
 cd ../..
 #Retrieve folders to analyze from the input arguments to the script
-for f1 in "$@"; do
+for f1 in $@; do
 	#Determine if the folder name was input in the correct format
 	if [[ $1 == *\/* ]] || [[ $1 == *\\* ]]; then
 		echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
