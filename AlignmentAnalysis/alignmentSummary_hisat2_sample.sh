@@ -1,10 +1,9 @@
 #!/bin/bash
 #Bash script to retrieve mapping stats
-#Usage: bash alignmentSummary_hisat2_sample.sh jobOutput alignmentMethod
-#Usage Ex: bash alignmentSummary_hisat2_sample.sh alignment_hisat2_jobOutput.o522510 hisat2
-#Move to directory with output alignment folders
-cd ../..
+#Usage: bash alignmentSummary_hisat2_sample.sh jobOutput alignmentMethod runNum
+#Usage Ex: bash alignmentSummary_hisat2_sample.sh alignment_hisat2_jobOutput.o522510 hisat2 run1
 #Prepare input and output file names
+runNum="$3"
 inputStats="$1"alignedSummary.txt
 outputStats=alignmentSummarized_"$2"
 #Retrieve run number for input alignment folder
