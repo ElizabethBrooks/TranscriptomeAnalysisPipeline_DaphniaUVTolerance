@@ -78,7 +78,7 @@ for f1 in $@; do
 	#Loop through all sorted forward and reverse paired reads and store the file locations in an array
 	for f2 in "$f1"/*/; do
 		#Name of aligned file
-		curAlignedSample="$f2"/accepted_hits.bam
+		curAlignedSample="$f2"accepted_hits.bam
 		#Trim file path from current file name
 		curSampleNoPath=$(basename $f2)
 		curSampleNoPath=$(echo $curSampleNoPath | sed 's/\.bam//')
