@@ -3,7 +3,6 @@
 #$ -m abe
 #$ -r n
 #$ -N counting_htseq_jobOutput
-#$ -pe smp 8
 #Required modules for ND CRC servers
 module load bio
 module load bio/python/2.7.14
