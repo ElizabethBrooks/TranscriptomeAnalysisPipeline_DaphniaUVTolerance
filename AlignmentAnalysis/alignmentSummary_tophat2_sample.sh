@@ -2,10 +2,18 @@
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummary_tophat2_sample.sh alignedSampleFolder alignmentMethod runNum
 #Usage Ex: bash alignmentSummary_tophat2_sample.sh alignment_tophat2_run2/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV topaht2 run2
+#Retrieve outputs absolute path
+outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsPath=$(head -n 1 $outputsFile)
+#Move to outputs directory
+cd "$outputsPath"
+#Create directory for alignment analysis
+outputAnalysis=AlignmentAnalysis
+mkdir "$outputAnalysis"
 #Prepare input and output file names
 runNum="$3"
 inputStats="$1"align_summary.txt
-outputStats=alignmentSummarized_"$2"
+outputStats="$outputAnalysis"/alignmentSummarized_"$2"
 #Retrieve sample name
 sampleName=$(basename "$1")
 #Store sample name in tmp txt file for pasting

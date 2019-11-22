@@ -1,7 +1,15 @@
 #!/bin/bash
 #Script to prepare alignment summary matrices
+#Retrieve outputs absolute path
+outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsPath=$(head -n 1 $outputsFile)
+#Move to outputs directory
+cd "$outputsPath"
+#Create directory for alignment analysis
+#outputAnalysis=AlignmentAnalysis
+#mkdir "$outputAnalysis"
 #Move to folder with alignment summaries
-cd ../../AlignmentStats_Analysis/
+cd AlignmentStats_Analysis
 
 sed -i "s/%//g" alignmentSummarized_tophat2.csv 
 

@@ -1,6 +1,14 @@
 #!/bin/bash
 #Usage: Rscript generatePlots_barPlot_binned.r percentsFile.csv
 #Usage Ex: Rscript generatePlots_barPlot_binned.r alignmentSummarized_legacyTophat2Hisat2_differences_merged.csv
+#Retrieve outputs absolute path
+outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsPath=$(head -n 1 $outputsFile)
+#Move to outputs directory
+cd "$outputsPath"
+#Create directory for alignment analysis
+outputAnalysis=AlignmentAnalysis
+mkdir "$outputAnalysis"
 #Script to run Rscripts that generate kMeans plots
 if [[ "$1" == *"differences" ]]; then
 	#Plot merged data kMeans clustering
@@ -11,4 +19,4 @@ else
 fi
 #Rename produced plot
 outFile=$(echo $1 | sed 's/\.csv//')
-mv Rplots.pdf "$outFile".pdf
+mv Rplots.pdf "$outputAnalysis"/"$outFile".pdf

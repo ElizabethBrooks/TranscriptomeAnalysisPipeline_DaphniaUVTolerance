@@ -2,13 +2,19 @@
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummary_overall.sh alignmentFolder
 #Usage Ex: bash alignmentSummary_overall.sh aligned_tophat2_run2
-#Move to directory with output alignment folders
-cd ../..
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
+#Retrieve outputs absolute path
+outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsPath=$(head -n 1 $outputsFile)
+#Move to outputs directory
+cd "$outputsPath"
+#Create directory for alignment analysis
+outputAnalysis=AlignmentAnalysis
+mkdir "$outputAnalysis"
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in $@; do
 	#Determine if the folder name was input in the correct format
@@ -21,7 +27,7 @@ for f1 in $@; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		#Set output folder name
-		outputStats=alignmentSummarized_"$analysisMethod"
+		outputStats="$outputAnalysis"/alignmentSummarized_"$analysisMethod"
 		#Retrieve run number for input alignment folder
 		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 		#Set header of overall summary csv file
@@ -30,7 +36,7 @@ for f1 in $@; do
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"
 		#Set output folder name
-		outputStats=alignmentSummarized_"$analysisMethod"
+		outputStats="$outputAnalysis"/alignmentSummarized_"$analysisMethod"
 		#Retrieve run number for input alignment folder
 		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 		#Set header of overall summary csv file

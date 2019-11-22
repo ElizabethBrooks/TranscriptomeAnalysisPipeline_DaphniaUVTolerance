@@ -7,6 +7,14 @@ if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
+#Retrieve outputs absolute path
+outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsPath=$(head -n 1 $outputsFile)
+#Move to outputs directory
+cd "$outputsPath"
+#Create directory for alignment analysis
+outputAnalysis=AlignmentAnalysis
+mkdir "$outputAnalysis"
 #Determine what analysis method was used for the input first folder of data
 if [[ $1 == *"hisat2"*  || $1 == *"tophat2"* ]]; then
 	echo "ERROR: The $1 file should be the legacy stats... exiting"
@@ -29,7 +37,6 @@ Rscript generateMatrix_differences.r "$1" "$2"
 sed -i "s/\"x\"/overallDifferences/g" alignmentSummarized_differences_overall.csv
 sed -i "s/\"x\"/concordantDifferences/g" alignmentSummarized_differences_concordant.csv
 #Move and rename produced csv files
-outFolder=../../AlignmentStats_Analysis
-outFile=alignmentSummarized_legacy"$analysisMethod"_differences
-mv alignmentSummarized_differences_overall.csv "$outFolder"/"$outFile"_overall.csv
-mv alignmentSummarized_differences_concordant.csv "$outFolder"/"$outFile"_concordant.csv
+outFile="$outputAnalysis"/alignmentSummarized_legacy"$analysisMethod"_differences
+mv alignmentSummarized_differences_overall.csv "$outFile"_overall.csv
+mv alignmentSummarized_differences_concordant.csv "$outFile"_concordant.csv
