@@ -15,10 +15,10 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve inputs for gff absolute path
-inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt"
+inputsFile="InputData/genomeFilePaths.txt"
 genomeFile=$(head -n 1 $inputsFile)
 #Retrieve outputs absolute path
-outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsFile="InputData/outputsPath.txt"
 outputsPath=$(head -n 1 $outputsFile)
 #Move to outputs directory
 cd "$outputsPath"

@@ -16,9 +16,9 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve genome file path for alignment
-buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
+buildFile=$(tail -n 1 "InputData/genomeFilePaths.txt")
 #Retrieve outputs absolute path
-outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsFile="InputData/outputsPath.txt"
 outputsPath=$(head -n 1 $outputsFile)
 #Move to outputs directory
 cd "$outputsPath"

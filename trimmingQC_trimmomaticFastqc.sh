@@ -14,10 +14,10 @@ score=0
 dirFlag=0
 runNum=1
 #Retrieve input paired reads path and adapter path
-readPath=$(head -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/pairedReadsPath.txt")
-adapterPath=$(head -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/adapterPath.txt")
+readPath=$(head -n 1 "InputData/pairedReadsPath.txt")
+adapterPath=$(head -n 1 "InputData/adapterPath.txt")
 #Retrieve outputs absolute path
-outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsFile="InputData/outputsPath.txt"
 outputsPath=$(head -n 1 $outputsFile)
 #Move to outputs directory
 cd "$outputsPath"
