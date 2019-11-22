@@ -8,8 +8,6 @@
 module load bio
 module load bio/trimmomatic/0.32
 #Prepare for adapter trimming and quality control
-cd ..
-#Initialize variables
 qcCountStart=0
 qcCountEnd=0
 score=0
@@ -18,6 +16,11 @@ runNum=1
 #Retrieve input paired reads path and adapter path
 readPath=$(head -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/pairedReadsPath.txt")
 adapterPath=$(head -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/adapterPath.txt")
+#Retrieve outputs absolute path
+outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsPath=$(head -n 1 $outputsFile)
+#Move to outputs directory
+cd "$outputsPath"
 #Make a new directory for each alignment run
 while [ $dirFlag -eq 0 ]; do
 	trimOut=trimmed_run"$runNum"

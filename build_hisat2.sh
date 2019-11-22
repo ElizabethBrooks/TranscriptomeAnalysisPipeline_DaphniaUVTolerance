@@ -8,12 +8,16 @@
 module load bio
 module load bio/hisat2/2.1.0
 #Prepare for alignment
-cd ..
 dirFlag=0
 runNum=1
+#Retrieve genome file path for building
 buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
-#Build reference genome if folder does not exist
-#Build output directory
+#Retrieve outputs absolute path
+outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsPath=$(head -n 1 $outputsFile)
+#Move to outputs directory
+cd "$outputsPath"
+#Create output directory
 outputFolder="reference_hisat2_build"
 mkdir "$outputFolder"
 #Check if the folder already exists

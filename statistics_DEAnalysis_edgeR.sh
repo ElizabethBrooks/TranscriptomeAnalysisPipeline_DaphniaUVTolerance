@@ -11,6 +11,11 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
+#Retrieve outputs absolute path
+outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsPath=$(head -n 1 $outputsFile)
+#Move to outputs directory
+cd "$outputsPath"
 #Perform DE analysis using edgeR
 Rscript statistics_edgeR.r "$1" $2 $3
 #Make directory for output stats files

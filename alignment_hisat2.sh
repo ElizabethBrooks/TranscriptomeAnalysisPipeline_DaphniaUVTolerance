@@ -8,15 +8,20 @@
 module load bio
 module load bio/hisat2/2.1.0
 #Prepare for mapping
-cd ..
 dirFlag=0
 runNum=1
-buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
+#Retrieve genome file path for alignment
+buildFile=$(tail -n 1 "TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt")
+#Retrieve outputs absolute path
+outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsPath=$(head -n 1 $outputsFile)
+#Move to outputs directory
+cd "$outputsPath"
 #Retrieve folders to analyze from the input arguments
 for f1 in $@; do
 	#Determine if the folder name was input in the correct format

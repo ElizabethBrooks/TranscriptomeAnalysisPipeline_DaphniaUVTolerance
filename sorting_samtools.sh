@@ -9,7 +9,6 @@ module load bio
 module load bio/python/2.7.14
 module load bio/htseq/0.11.2
 #Prepare for analysis
-cd ..
 dirFlag=0
 runNum=1
 COUNTER=0
@@ -18,6 +17,11 @@ if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
+#Retrieve outputs absolute path
+outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsPath=$(head -n 1 $outputsFile)
+#Move to outputs directory
+cd "$outputsPath"
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in $@; do
 	#Determine if the folder name was input in the correct format
@@ -63,7 +67,7 @@ for f1 in $@; do
 		#Loop through all reads and sort bam files for input to samtools
 		for f2 in "$f1"/*/; do
 			#Name of aligned file
-			curAlignedSample="$f2"/accepted_hits.bam
+			curAlignedSample="$f2"accepted_hits.bam
 			#Trim extension from current file name
 			curSample=$(echo $f2 | sed 's/\.bam//')
 			#Trim file path from current file name

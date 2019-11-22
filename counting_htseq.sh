@@ -8,7 +8,6 @@ module load bio
 module load bio/python/2.7.14
 module load bio/htseq/0.11.2
 #Prepare for analysis
-cd ..
 dirFlag=0
 runNum=1
 COUNTER=0
@@ -21,6 +20,11 @@ fi
 #Retrieve inputs for gff absolute path
 inputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/genomeFilePaths.txt"
 genomeFile=$(head -n 1 $inputsFile)
+#Retrieve outputs absolute path
+outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
+outputsPath=$(head -n 1 $outputsFile)
+#Move to outputs directory
+cd "$outputsPath"
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in $@; do
 	#Determine if the folder name was input in the correct format
