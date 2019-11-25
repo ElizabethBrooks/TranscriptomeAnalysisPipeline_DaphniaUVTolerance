@@ -75,11 +75,11 @@ done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Loop through all sorted forward and reverse paired reads and store the file locations in an array
-for f2 in "$1"/*/; do
+for f1 in "$1"/*/; do
 	#Name of aligned file
-	curAlignedSample="$f2"accepted_hits.bam
+	curAlignedSample="$f1"accepted_hits.bam
 	#Trim file path from current file name
-	curSampleNoPath=$(basename $f2)
+	curSampleNoPath=$(basename $f1)
 	curSampleNoPath=$(echo $curSampleNoPath | sed 's/\.bam//')
 	#Create directory for current sample outputs
 	mkdir "$outputFolder"/"$curSampleNoPath"
