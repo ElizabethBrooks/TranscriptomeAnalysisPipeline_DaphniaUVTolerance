@@ -22,7 +22,7 @@ if [[ "$1" == "-name" || "$1" == "-Name" || "$1" == "-n" || "$1" == "-N" ]]; the
 	#Name sorted flag with num threads flag
 	flags="-@ 8 -n"
 	methodTag="Name"
-elif [[ "$1" == "-coordinate" || "$1" == "-Coordinate" || "$1" == "-c" || "$1" == "-C" ]]
+elif [[ "$1" == "-coordinate" || "$1" == "-Coordinate" || "$1" == "-c" || "$1" == "-C" ]]; then
 	#Coordinate sorted with num threads flag
 	flags="-@ 8"
 	methodTag="Coordinate"
