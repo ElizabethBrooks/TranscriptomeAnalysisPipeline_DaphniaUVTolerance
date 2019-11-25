@@ -94,4 +94,4 @@ for f1 in "$inputsPath"/"$1"/*/; do
 	echo htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> $inputOutFile
 done
 #Copy previous summaries
-cp "$1"/*.txt "$outputFolder"
+cp "$inputsPath"/"$1"/*.txt "$outputFolder"

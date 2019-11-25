@@ -26,6 +26,8 @@ if [[ "$1"  != trimmed* ]]; then
 fi
 #Retrieve trimmed reads input absolute path
 inputsPath=$(grep "trimming:" InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
+#Retrieve build genome files absolute path
+buildInputsPath=$(grep "building:" InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
 #Retrieve genome reference absolute path for alignment
 buildFile=$(grep "genomeReference:" InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve genome features absolute path for alignment
@@ -52,7 +54,7 @@ done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Build output directory for Tophat reference
-buildOut="reference_bowtie2_build"
+buildOut="$buildInputsPath"/"reference_bowtie2_build"
 #Trim .fa file extension from build file
 buildFileNoPath=$(basename $buildFile)
 buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/')
@@ -74,5 +76,5 @@ for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 	echo tophat2 -p 8 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
 done
 #Copy previous summaries
-cp "$1"/*.txt "$outputFolder"
+cp "$inputsPath"/"$1"/*.txt "$outputFolder"
 cp "$buildOut"/*.txt "$outputFolder"

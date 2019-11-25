@@ -27,6 +27,8 @@ if [[ "$1"  != trimmed* ]]; then
 fi
 #Retrieve trimmed reads input absolute path
 inputsPath=$(grep "trimming:" InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
+#Retrieve build genome files absolute path
+buildInputsPath=$(grep "building:" InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
 #Retrieve genome reference absolute path for alignment
 buildFile=$(grep "genomeReference:" InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve alignment outputs absolute path
@@ -51,7 +53,7 @@ done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Build output directory for Hisat reference
-buildOut="reference_hisat2_build"
+buildOut="$buildInputsPath"/"reference_hisat2_build"
 #Trim .fa file extension from build file
 buildFileNoPath=$(basename $buildFile)
 buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/')
@@ -80,5 +82,5 @@ for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 	echo samtools view -@ 8 -bS "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam ">" "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam >> "$inputOutFile"
 done
 #Copy previous summaries
-cp "$1"/*.txt "$outputFolder"
+cp "$inputsPath"/"$1"/*.txt "$outputFolder"
 cp "$buildOut"/*.txt "$outputFolder"

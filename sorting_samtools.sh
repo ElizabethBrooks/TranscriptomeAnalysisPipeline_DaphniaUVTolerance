@@ -18,17 +18,18 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve sorting method flags from input
-if [[ "$1" == "-name" || "$1" == "-n" ]]; then
+if [[ "$1" == "-name" || "$1" == "-Name" || "$1" == "-n" || "$1" == "-N" ]]; then
 	#Name sorted flag with num threads flag
 	flags="-@ 8 -n"
 	methodTag="Name"
-elif [[ "$1" == "-coordinate" || "$1" == "-c" ]]
+elif [[ "$1" == "-coordinate" || "$1" == "-Coordinate" || "$1" == "-c" || "$1" == "-C" ]]
 	#Coordinate sorted with num threads flag
 	flags="-@ 8"
 	methodTag="Coordinate"
 else
 	#Report error with input flag
 	echo "ERROR: a flag for sorting method (name or coordiante) is expected... exiting"
+	exit 1
 fi
 #Determine if the folder name was input in the correct format
 if [[ "$2" == *\/* ]] || [[ "$2" == *\\* ]]; then
@@ -77,13 +78,13 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 if [ $? -eq 0 ]; then
 	echo "Creating folder for sorted bam files..."
 	#Loop through all reads and sort bam files for input to samtools
-	for f2 in "$inputsPath"/"$2"/*/; do
+	for f1 in "$inputsPath"/"$2"/*/; do
 		#Name of aligned file
-		curAlignedSample="$f2"accepted_hits.bam
+		curAlignedSample="$f1"accepted_hits.bam
 		#Trim extension from current file name
-		curSample=$(echo $f2 | sed 's/\.bam//')
+		curSample=$(echo $f1 | sed 's/\.bam//')
 		#Trim file path from current file name
-		curSampleNoPath=$(basename $f2)
+		curSampleNoPath=$(basename $f1)
 		curSampleNoPath=$(echo $curSampleNoPath | sed 's/\.bam//')
 		#Create directory for current sample outputs
 		mkdir "$outputFolder"/"$curSampleNoPath"
@@ -97,7 +98,7 @@ if [ $? -eq 0 ]; then
 		echo samtools sort "$flags" -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam -T /tmp/"$curSampleNoPath".sorted.bam "$curAlignedSample" >> $inputOutFile
 	done
 	#Copy previous summaries
-	cp "$2"/*.txt "$outputFolder"
+	cp "$inputsPath"/"$2"/*.txt "$outputFolder"
 else
 	echo "Sorted files already exists, skipping sorting..."
 fi

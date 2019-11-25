@@ -20,7 +20,7 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	exit 1
 fi
 #Determine if the correct analysis folder was input
-if [[ "$1"  != sortedCoord* ]]; then
+if [[ "$1"  != sortedCoordinate* ]]; then
 	echo "ERROR: The "$1" folder of coordinate sorted bam files were not found... exiting"
 	exit 1
 fi
@@ -91,4 +91,4 @@ for f2 in "$inputsPath"/"$1"/*/; do
 	echo featureCounts -T 8 -p -t gene -g ID -a "$genomeFile" -s 2 --donotsort -o "$outputFolder"/"$curSampleNoPath"/counted.sam -M "$curAlignedSample" >> $inputOutFile
 done
 #Copy previous summaries
-cp "$1"/*.txt "$outputFolder"
+cp "$inputsPath"/"$1"/*.txt "$outputFolder"
