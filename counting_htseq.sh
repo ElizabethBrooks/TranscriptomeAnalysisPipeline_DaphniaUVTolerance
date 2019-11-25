@@ -23,76 +23,73 @@ genomeFile=$(grep "genomeFeatures:" InputData/inputPaths.txt | tr -d " " | sed "
 outputsPath=$(grep "counting:" InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
 #Move to outputs directory
 cd "$outputsPath"
-#Retrieve folders to analyze from the input arguments to the script
-for f1 in $@; do
-	#Determine if the folder name was input in the correct format
-	if [[ $f1 == *\/* ]] || [[ $f1 == *\\* ]]; then
-		echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
-		exit 1
-	fi
-	#Determine if the correct analysis folder was input
-	if [[ $f1  != sortedName* ]]; then
-		echo "ERROR: The $f1 folder of name sorted bam files were not found... exiting"
-		exit 1
-	fi
-	#Determine what analysis method was used for the input folder of data
-	if [[ $f1 == *"isat2"*  ]]; then
-		#Set analysis method for folder naming
-		analysisMethod="Hisat2"
-		#Determine if hisat2 files were sorted
-		if [[ $f1 == *"sorted"* ]]; then
-			echo "Sorted Hisat2 files found! Proceeding with counting..."
-		else
-			echo "ERROR: The $f1 folder of bam files need to be sorted... exiting"
-			exit 1
-		fi
-	elif [[ $f1 == *"ophat2"* ]]; then
-		#Set analysis method for folder naming
-		analysisMethod="Tophat2"
-		#Determine if hisat2 files were sorted
-		if [[ $f1 == *"sorted"* ]]; then
-			echo "Sorted Tophat2 files found! Proceeding with counting..."
-		else
-			echo "ERROR: The $f1 folder of bam files need to be sorted... exiting"
-			exit 1
-		fi
+#Determine if the folder name was input in the correct format
+if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
+	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
+	exit 1
+fi
+#Determine if the correct analysis folder was input
+if [[ "$1"  != sortedName* ]]; then
+	echo "ERROR: The "$1" folder of name sorted bam files were not found... exiting"
+	exit 1
+fi
+#Determine what analysis method was used for the input folder of data
+if [[ "$1" == *"isat2"*  ]]; then
+	#Set analysis method for folder naming
+	analysisMethod="Hisat2"
+	#Determine if hisat2 files were sorted
+	if [[ "$1" == *"sorted"* ]]; then
+		echo "Sorted Hisat2 files found! Proceeding with counting..."
 	else
-		echo "ERROR: The $f1 folder or bam files were not found... exiting"
+		echo "ERROR: The "$1" folder of bam files need to be sorted... exiting"
 		exit 1
 	fi
-	#Make a new directory for each analysis run
-	while [ $dirFlag -eq 0 ]; do
-		outputFolder=counted_htseq"$analysisMethod"_run"$runNum"
-		mkdir "$outputFolder"
-		#Check if the folder already exists
-		if [ $? -ne 0 ]; then
-			#Increment the folder name
-			let runNum+=1
-		else
-			#Indicate that the folder was successfully made
-			dirFlag=1
-			echo "Creating folder for run $runNum of htseq counting of $f1 data..."
-		fi
-	done
-	#Name output file of inputs
-	inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
-	#Loop through all sorted forward and reverse paired reads and store the file locations in an array
-	for f2 in "$f1"/*/; do
-		#Name of aligned file
-		curAlignedSample="$f2"accepted_hits.bam
-		#Trim file path from current file name
-		curSampleNoPath=$(basename $f2)
-		curSampleNoPath=$(echo $curSampleNoPath | sed 's/\.bam//')
-		#Create directory for current sample outputs
-		mkdir "$outputFolder"/"$curSampleNoPath"
-		#Count reads using htseq-count
-		echo "Sample $curSampleNoPath is being counted..."
-		htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
-		echo "Sample $curSampleNoPath has been counted!"
-		#Add run inputs to output summary file
-		echo "$curSampleNoPath" >> $inputOutFile
-		echo htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> $inputOutFile
-	done
-	#Copy previous summaries
-	cp "$f1"/*.txt "$outputFolder"
+elif [[ "$1" == *"ophat2"* ]]; then
+	#Set analysis method for folder naming
+	analysisMethod="Tophat2"
+	#Determine if hisat2 files were sorted
+	if [[ "$1" == *"sorted"* ]]; then
+		echo "Sorted Tophat2 files found! Proceeding with counting..."
+	else
+		echo "ERROR: The "$1" folder of bam files need to be sorted... exiting"
+		exit 1
+	fi
+else
+	echo "ERROR: The "$1" folder or bam files were not found... exiting"
+	exit 1
+fi
+#Make a new directory for each analysis run
+while [ $dirFlag -eq 0 ]; do
+	outputFolder=counted_htseq"$analysisMethod"_run"$runNum"
+	mkdir "$outputFolder"
+	#Check if the folder already exists
+	if [ $? -ne 0 ]; then
+		#Increment the folder name
+		let runNum+=1
+	else
+		#Indicate that the folder was successfully made
+		dirFlag=1
+		echo "Creating folder for run $runNum of htseq counting of "$1" data..."
+	fi
 done
+#Name output file of inputs
+inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
+#Loop through all sorted forward and reverse paired reads and store the file locations in an array
+for f2 in "$1"/*/; do
+	#Name of aligned file
+	curAlignedSample="$f2"accepted_hits.bam
+	#Trim file path from current file name
+	curSampleNoPath=$(basename $f2)
+	curSampleNoPath=$(echo $curSampleNoPath | sed 's/\.bam//')
+	#Create directory for current sample outputs
+	mkdir "$outputFolder"/"$curSampleNoPath"
+	#Count reads using htseq-count
+	echo "Sample $curSampleNoPath is being counted..."
+	htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
+	echo "Sample $curSampleNoPath has been counted!"
+	#Add run inputs to output summary file
+	echo "$curSampleNoPath" >> $inputOutFile
+	echo htseq-count -f bam -s no -m union -t gene -i ID -o "$outputFolder"/"$curSampleNoPath"/counted.sam "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> $inputOutFile
+done
+#Copy previous summaries
+cp "$1"/*.txt "$outputFolder"
