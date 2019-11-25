@@ -28,8 +28,8 @@ for f1 in $@; do
 		exit 1
 	fi
 	#Determine if the correct analysis folder was input
-	if [[ $f1  != sorted* ]]; then
-		echo "ERROR: The $f1 folder of aligned bam files were not found... exiting"
+	if [[ $f1  != sortedCoord* ]]; then
+		echo "ERROR: The $f1 folder of coordinate sorted bam files were not found... exiting"
 		exit 1
 	fi
 	#Determine what analysis method was used for the input folder of data
