@@ -1,8 +1,7 @@
 #!/bin/bash
 #Script to prepare alignment summary matrices
-#Retrieve outputs absolute path
-outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
-outputsPath=$(head -n 1 $outputsFile)
+#Retrieve alignment analysis outputs absolute path
+outputsPath=$(grep "alignmentAnalysis:" InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Create directory for alignment analysis

@@ -10,11 +10,10 @@ module load bio/hisat2/2.1.0
 #Prepare for alignment
 dirFlag=0
 runNum=1
-#Retrieve genome file path for building
-buildFile=$(tail -n 1 "InputData/genomeFilePaths.txt")
-#Retrieve outputs absolute path
-outputsFile="InputData/outputsPath.txt"
-outputsPath=$(head -n 1 $outputsFile)
+#Retrieve genome reference absolute path for alignment
+buildFile=$(grep "genomeReference:" InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+#Retrieve build outputs absolute path
+outputsPath=$(grep "building:" InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Create output directory

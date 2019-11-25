@@ -2,9 +2,8 @@
 #Fullset gene counts were created using trimmomatic, hisat2, and cuffdiff
 #Subset gene counts were created using trimmomatic, hisat2, and cuffdiff
 #Legacy gene counts were created using trimmomatic, tophat, and cuffdiff
-#Retrieve outputs absolute path
-outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
-outputsPath=$(head -n 1 $outputsFile)
+#Retrieve gene count analysis outputs absolute path
+outputsPath=$(grep "geneCountAnalysis:" InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Directory for gene count tables

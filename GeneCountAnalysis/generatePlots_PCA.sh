@@ -2,9 +2,8 @@
 #Usage: bash generatePlots_PCA.sh mergedCounts_file_transposed.csv
 #Usage Ex: bash generatePlots_PCA.sh mergedCounts_legacy_transposed.csv
 #Script to run Rscripts that generate PCA plots
-#Retrieve outputs absolute path
-outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
-outputsPath=$(head -n 1 $outputsFile)
+#Retrieve gene count analysis outputs absolute path
+outputsPath=$(grep "geneCountAnalysis:" InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Create directory for gene count analysis

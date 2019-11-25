@@ -1,2 +1,0 @@
-/afs/crc.nd.edu/group/pfrenderlab/devries/melanica/rnaseq/PA42.3.0.annotation.18440.gff
-/afs/crc.nd.edu/group/pfrenderlab/cope/PA_Genome/Daphnia_pulex_PA42_v3.0.fasta

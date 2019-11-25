@@ -14,12 +14,10 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve inputs for gff absolute path
-inputsFile="InputData/genomeFilePaths.txt"
-genomeFile=$(head -n 1 $inputsFile)
-#Retrieve outputs absolute path
-outputsFile="InputData/outputsPath.txt"
-outputsPath=$(head -n 1 $outputsFile)
+#Retrieve genome features absolute path for alignment
+genomeFile=$(grep "genomeFeatures:" InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
+#Retrieve alignment outputs absolute path
+outputsPath=$(grep "counting:" InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Retrieve folders to analyze from the input arguments to the script

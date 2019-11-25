@@ -17,9 +17,8 @@ if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve outputs absolute path
-outputsFile="InputData/outputsPath.txt"
-outputsPath=$(head -n 1 $outputsFile)
+#Retrieve sorting outputs absolute path
+outputsPath=$(grep "sorting:" InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Retrieve folders to analyze from the input arguments to the script

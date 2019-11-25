@@ -13,12 +13,12 @@ qcCountEnd=0
 score=0
 dirFlag=0
 runNum=1
-#Retrieve input paired reads path and adapter path
-readPath=$(head -n 1 "InputData/pairedReadsPath.txt")
-adapterPath=$(head -n 1 "InputData/adapterPath.txt")
-#Retrieve outputs absolute path
-outputsFile="InputData/outputsPath.txt"
-outputsPath=$(head -n 1 $outputsFile)
+#Retrieve paired reads absolute path for alignment
+readPath=$(grep "pairedReads:" InputData/inputPaths.txt | tr -d " " | sed "s/pairedReads://g")
+#Retrieve adapter absolute path for alignment
+adapterPath=$(grep "adapter:" InputData/inputPaths.txt | tr -d " " | sed "s/adapter://g")
+#Retrieve trimming outputs absolute path
+outputsPath=$(grep "trimming:" InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Make a new directory for each alignment run

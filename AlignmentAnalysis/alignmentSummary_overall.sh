@@ -7,9 +7,8 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve outputs absolute path
-outputsFile="TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/outputsPath.txt"
-outputsPath=$(head -n 1 $outputsFile)
+#Retrieve alignment analysis outputs absolute path
+outputsPath=$(grep "alignmentAnalysis:" InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Create directory for alignment analysis

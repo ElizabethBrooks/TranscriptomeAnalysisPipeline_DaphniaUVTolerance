@@ -11,9 +11,8 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve outputs absolute path
-outputsFile="InputData/outputsPath.txt"
-outputsPath=$(head -n 1 $outputsFile)
+#Retrieve statistics outputs absolute path
+outputsPath=$(grep "statistics:" InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Perform DE analysis using edgeR
