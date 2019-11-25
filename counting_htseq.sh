@@ -17,12 +17,6 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve genome features absolute path for alignment
-genomeFile=$(grep "genomeFeatures:" InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
-#Retrieve alignment outputs absolute path
-outputsPath=$(grep "counting:" InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
-#Move to outputs directory
-cd "$outputsPath"
 #Determine if the folder name was input in the correct format
 if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
@@ -58,6 +52,14 @@ else
 	echo "ERROR: The "$1" folder or bam files were not found... exiting"
 	exit 1
 fi
+#Retrieve sorted reads input absolute path
+inputsPath=$(grep "sorting:" InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+#Retrieve genome features absolute path for alignment
+genomeFile=$(grep "genomeFeatures:" InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
+#Retrieve alignment outputs absolute path
+outputsPath=$(grep "counting:" InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
+#Move to outputs directory
+cd "$outputsPath"
 #Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
 	outputFolder=counted_htseq"$analysisMethod"_run"$runNum"
@@ -75,7 +77,7 @@ done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Loop through all sorted forward and reverse paired reads and store the file locations in an array
-for f1 in "$1"/*/; do
+for f1 in "$inputsPath"/"$1"/*/; do
 	#Name of aligned file
 	curAlignedSample="$f1"accepted_hits.bam
 	#Trim file path from current file name

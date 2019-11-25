@@ -14,14 +14,6 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve genome reference absolute path for alignment
-buildFile=$(grep "genomeReference:" InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-#Retrieve genome features absolute path for alignment
-genomeFile=$(grep "genomeFeatures:" InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
-#Retrieve alignment outputs absolute path
-outputsPath=$(grep "alignment:" InputData/outputPaths.txt | tr -d " " | sed "s/alignment://g")
-#Move to outputs directory
-cd "$outputsPath"
 #Determine if the folder name was input in the correct format
 if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
@@ -32,6 +24,16 @@ if [[ "$1"  != trimmed* ]]; then
 	echo "ERROR: The "$1" folder of aligned bam files were not found... exiting"
 	exit 1
 fi
+#Retrieve trimmed reads input absolute path
+inputsPath=$(grep "trimming:" InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
+#Retrieve genome reference absolute path for alignment
+buildFile=$(grep "genomeReference:" InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+#Retrieve genome features absolute path for alignment
+genomeFile=$(grep "genomeFeatures:" InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
+#Retrieve alignment outputs absolute path
+outputsPath=$(grep "alignment:" InputData/outputPaths.txt | tr -d " " | sed "s/alignment://g")
+#Move to outputs directory
+cd "$outputsPath"
 #Make a new directory for each alignment run
 while [ $dirFlag -eq 0 ]; do
 	#Tophat output directory name
@@ -57,7 +59,7 @@ buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/')
 buildFileNoEx=$(echo $buildFileNoEx | sed 's/\.fa//')
 #Loop through all forward and reverse paired reads and run tophat2 on each pair
 # using 8 threads
-for f1 in "$1"/*pForward.fq.gz; do
+for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 	#Trim extension from current file name
 	curSample=$(echo $f1 | sed 's/.pForward\.fq\.gz//')
 	#Trim file path from current file name

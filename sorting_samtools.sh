@@ -17,17 +17,15 @@ if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve sorting outputs absolute path
-outputsPath=$(grep "sorting:" InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
-#Move to outputs directory
-cd "$outputsPath"
 #Retrieve sorting method flags from input
 if [[ "$1" == "-name" || "$1" == "-n" ]]; then
 	#Name sorted flag with num threads flag
 	flags="-@ 8 -n"
+	methodTag="Name"
 elif [[ "$1" == "-coordinate" || "$1" == "-c" ]]
 	#Coordinate sorted with num threads flag
 	flags="-@ 8"
+	methodTag="Coordinate"
 else
 	#Report error with input flag
 	echo "ERROR: a flag for sorting method (name or coordiante) is expected... exiting"
@@ -53,9 +51,15 @@ else
 	echo "ERROR: The "$2" folder or bam files were not found... exiting"
 	exit 1
 fi
+#Retrieve aligned reads input absolute path
+inputsPath=$(grep "alignment:" InputData/outputPaths.txt | tr -d " " | sed "s/alignment://g")
+#Retrieve sorting outputs absolute path
+outputsPath=$(grep "sorting:" InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+#Move to outputs directory
+cd "$outputsPath"
 #Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
-	outputFolder=sorted_samtools"$analysisMethod"_run"$runNum"
+	outputFolder=sorted"$methodTag"_samtools"$analysisMethod"_run"$runNum"
 	mkdir "$outputFolder"
 	#Check if the folder already exists
 	if [ $? -ne 0 ]; then
@@ -73,7 +77,7 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 if [ $? -eq 0 ]; then
 	echo "Creating folder for sorted bam files..."
 	#Loop through all reads and sort bam files for input to samtools
-	for f2 in "$2"/*/; do
+	for f2 in "$inputsPath"/"$2"/*/; do
 		#Name of aligned file
 		curAlignedSample="$f2"accepted_hits.bam
 		#Trim extension from current file name
