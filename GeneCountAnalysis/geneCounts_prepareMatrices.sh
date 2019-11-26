@@ -3,13 +3,13 @@
 #Subset gene counts were created using trimmomatic, hisat2, and cuffdiff
 #Legacy gene counts were created using trimmomatic, tophat, and cuffdiff
 #Retrieve gene count analysis outputs absolute path
-outputsPath=$(grep "geneCountAnalysis:" InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
+outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Directory for gene count tables
-prefixInputs="GeneCounts_Merged/GeneCounts_Tables"
+prefixInputs="$outputsPath"/"GeneCounts_Merged/GeneCounts_Tables"
 #Directory for outputs
-prefixOutputs="GeneCounts_Merged"
+prefixOutputs="$outputsPath"/"GeneCounts_Merged"
 
 #Merge counts from fullset of new gene count table
 #Add directory paths to each file name in the guide file

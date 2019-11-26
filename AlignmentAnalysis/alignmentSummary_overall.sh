@@ -8,7 +8,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve alignment analysis outputs absolute path
-outputsPath=$(grep "alignmentAnalysis:" InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
+outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Create directory for alignment analysis

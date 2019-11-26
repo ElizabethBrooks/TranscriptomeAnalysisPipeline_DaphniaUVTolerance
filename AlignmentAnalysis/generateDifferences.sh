@@ -8,26 +8,26 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve alignment analysis outputs absolute path
-outputsPath=$(grep "alignmentAnalysis:" InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
+outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Create directory for alignment analysis
 outputAnalysis=AlignmentAnalysis
 mkdir "$outputAnalysis"
 #Determine what analysis method was used for the input first folder of data
-if [[ $1 == *"hisat2"*  || $1 == *"tophat2"* ]]; then
-	echo "ERROR: The $1 file should be the legacy stats... exiting"
+if [[ "$1" == *"hisat2"*  || "$1" == *"tophat2"* ]]; then
+	echo "ERROR: The "$1" file should be the legacy stats... exiting"
 	exit 1
 fi
 #Determine what analysis method was used for the input second folder of data
-if [[ $2 == *"hisat2"*  ]]; then
+if [[ "$2" == *"hisat2"*  ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Hisat2"
-elif [[ $2 == *"tophat2"* ]]; then
+elif [[ "$2" == *"tophat2"* ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Tophat2"
 else
-	echo "ERROR: The $2 file was not found... exiting"
+	echo "ERROR: The "$2" file was not found... exiting"
 	exit 1
 fi
 #Generate csv files of differences

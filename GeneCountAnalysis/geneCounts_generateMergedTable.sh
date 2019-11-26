@@ -16,9 +16,9 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	exit 1
 fi
 #Retrieve path for input counted reads
-inputsPath=$(grep "counting:" InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
+inputsPath=$(grep "counting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
 #Retrieve alignment outputs absolute path
-outputsPath=$(grep "geneCountAnalysis:" InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
+outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
 #Prepare tags file for comparison
 grep "Pool_1" mergeGuideFile_"$1"_"$2".txt > tmp.txt | sed -ie 's|^|Pool_1_|' tmp.txt
 grep "Pool_2" mergeGuideFile_"$1"_"$2".txt >> tmp.txt | sed -ie 's|^|Pool_2_|' tmp.txt
