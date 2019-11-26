@@ -22,9 +22,9 @@ outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " "
 #Make directory for output path of gene count analysis
 mkdir "$outputsPath"
 #Prepare tags file for comparison
-grep "Pool_1" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_1_/' > "$outputsPath"/tmp1.txt
-grep "Pool_2" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_2_/' > "$outputsPath"/tmp2.txt
-grep "Pool_3" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_3_/' > "$outputsPath"/tmp3.txt
+grep "Pool1" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_1_/' > "$outputsPath"/tmp1.txt
+grep "Pool2" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_2_/' > "$outputsPath"/tmp2.txt
+grep "Pool3" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_3_/' > "$outputsPath"/tmp3.txt
 cat "$outputsPath"/tmp*.txt >> "$outputsPath"/tmp.txt
 #Loop through all counted paired reads and append each sample tag
 # with the corresponding file path
@@ -32,7 +32,7 @@ cat ../InputData/mergeCounts_guideFile_tags_"$2".txt > "$outputsPath"/mergeCount
 for f1 in "$inputsPath""$1"/*/; do
 	currSample=$(basename "$f1" | sed "s/140327_I481_FCC3P1PACXX_L..//g")
 	currTag=$(grep "$currSample" "$outputsPath"/tmp.txt | sed "s/^Pool_._//g")
-	sed -i 's,'"$currTag"','"$currTag"' '"$f1"',g' "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
+	sed -i 's,'"$currTag"','"$currTag"' '"$f1"',' "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 done
 head "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 #Clean up
