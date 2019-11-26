@@ -32,7 +32,7 @@ cat ../InputData/mergeCounts_guideFile_tags_"$2".txt > "$outputsPath"/mergeCount
 for f1 in "$inputsPath"/"$1"/*/; do
 	currSample=$(basename "$f1" | sed "s/140327_I481_FCC3P1PACXX_L..//g")
 	currTag=$(grep "$currSample" "$outputsPath"/tmp.txt | sed "s/^Pool_._//g")
-	sed -i 's,'"$currTag"','"$currTag"' '"$f1"',' "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
+	sed -i 's,'"$currTag"','"$currTag"' '"$f1"'counts.txt,' "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 done
 head "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 #Clean up
