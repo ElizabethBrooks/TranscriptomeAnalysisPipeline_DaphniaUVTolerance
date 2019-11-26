@@ -19,6 +19,8 @@ fi
 inputsPath=$(grep "counting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
 #Retrieve alignment outputs absolute path
 outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
+#Make directory for output path of gene count analysis
+mkdir "$outputsPath"
 #Prepare tags file for comparison
 grep "Pool_1" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_1_/' > "$outputsPath"/tmp1.txt
 grep "Pool_2" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_2_/' > "$outputsPath"/tmp2.txt

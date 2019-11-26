@@ -4,5 +4,5 @@ sorting: /afs/crc.nd.edu/group/pfrenderlab/devries/melanica/rnaseq
 building: /afs/crc.nd.edu/group/pfrenderlab/devries/melanica/rnaseq
 counting: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/
 statistics: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/
-alignmentAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/
-geneCountAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/
+alignmentAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/AlignmentsAnalyzed
+geneCountAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/GeneCountsAnalyzed
