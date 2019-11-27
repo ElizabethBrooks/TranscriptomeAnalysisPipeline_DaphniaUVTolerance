@@ -58,6 +58,8 @@ buildOut="$buildInputsPath"/"reference_hisat2_build"
 buildFileNoPath=$(basename $buildFile)
 buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/')
 buildFileNoEx=$(echo $buildFileNoEx | sed 's/\.fa//')
+#Copy genome build fasta file to hisat2 alignment folder
+cp "$buildFile" "$outputFolder"/"$buildFileNoPath"
 #Loop through all forward and reverse paired reads and run Hisat2 on each pair
 # using 8 threads and samtools to convert output sam files to bam
 for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
