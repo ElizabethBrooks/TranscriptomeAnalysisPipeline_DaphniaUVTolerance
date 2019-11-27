@@ -1,7 +1,7 @@
-trimming: /afs/crc.nd.edu/group/pfrenderlab/devries/melanica/rnaseq
-alignment: /afs/crc.nd.edu/group/pfrenderlab/devries/melanica/rnaseq
-sorting: /afs/crc.nd.edu/group/pfrenderlab/devries/melanica/rnaseq
-building: /afs/crc.nd.edu/group/pfrenderlab/devries/melanica/rnaseq
+trimming: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/
+alignment: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/
+sorting: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/
+building: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/
 counting: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 statistics: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 alignmentAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/AlignmentsAnalyzed
