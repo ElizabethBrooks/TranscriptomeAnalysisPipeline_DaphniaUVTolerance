@@ -27,12 +27,12 @@ grep "Pool2" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_2_
 grep "Pool3" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_3_/' > "$outputsPath"/tmp3.txt
 cat "$outputsPath"/tmp*.txt >> "$outputsPath"/tmp.txt
 #Remove extra number tags
-sed -i 's/UV1/UV/' "$outputsPath"/tmp.txt
-sed -i 's/VIS1/VIS/' "$outputsPath"/tmp.txt
-sed -i 's/UV2/UV/' "$outputsPath"/tmp.txt
-sed -i 's/VIS2/VIS/' "$outputsPath"/tmp.txt
-sed -i 's/UV3/UV/' "$outputsPath"/tmp.txt
-sed -i 's/VIS3/VIS/' "$outputsPath"/tmp.txt
+sed -i 's/UV1/UV/g' "$outputsPath"/tmp.txt
+sed -i 's/VIS1/VIS/g' "$outputsPath"/tmp.txt
+sed -i 's/UV2/UV/g' "$outputsPath"/tmp.txt
+sed -i 's/VIS2/VIS/g' "$outputsPath"/tmp.txt
+sed -i 's/UV3/UV/g' "$outputsPath"/tmp.txt
+sed -i 's/VIS3/VIS/g' "$outputsPath"/tmp.txt
 #Loop through all counted paired reads and append each sample tag
 # with the corresponding file path
 cat ../InputData/mergeCounts_guideFile_tags_"$2".txt > "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
@@ -43,8 +43,8 @@ for f1 in "$inputsPath"/"$1"/*/; do
 done
 head "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 #Clean up
-rm "$outputsPath"/tmp*.txt
+#rm "$outputsPath"/tmp*.txt
 #Merge gene counts based on generated guide file
-python merge_tables.py "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
+#python merge_tables.py "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 #Rename the output merged counts file
-mv merged_counts.txt "$outputsPath"/geneCounts_merged_"$1"_"$2".txt
+#mv merged_counts.txt "$outputsPath"/geneCounts_merged_"$1"_"$2".txt
