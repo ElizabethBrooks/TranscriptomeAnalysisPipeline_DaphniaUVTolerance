@@ -27,6 +27,8 @@ keep <- which(rowSums(countsPerMillion) >= 1)
 dgList <- dgList[keep,]
 #View summary of filtered counts
 summary(cpm(dgList))
+#Write filtered counts to csv
+write.csv(cpm(dgList),"tmpOut.csv",row.names=FALSE)
 #Normalize data
 dgList <- calcNormFactors(dgList, method="TMM")
 #We can examine inter-sample relationships by producing a plot

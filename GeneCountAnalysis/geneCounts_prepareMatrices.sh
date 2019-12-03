@@ -69,8 +69,8 @@ csvtool transpose "$prefixOutputs"/"$inputTable"_tagged.csv | sed 's/\<gene\>/sa
 csvtool transpose "$prefixOutputs"/merged_counts_legacy_cleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"/merged_counts_legacy_transposed.csv
 csvtool transpose "$prefixOutputs"/merged_counts_legacy_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"/merged_counts_legacy_tagged_transposed.csv
 #Clean up temporary files
-rm "$prefixOutputs"/"$inputTable"_cleaned.csv
-rm "$prefixOutputs"/merged_counts_legacy_cleaned.csv
+#rm "$prefixOutputs"/"$inputTable"_cleaned.csv
+#rm "$prefixOutputs"/merged_counts_legacy_cleaned.csv
 
 #Add column to transposed tables with treatment and alignment method before merging
 # or add column to transposed tables with treatment
