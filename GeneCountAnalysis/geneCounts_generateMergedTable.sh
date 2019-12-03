@@ -29,8 +29,8 @@ for f0 in "$inputsPath"/"$1"/*/; do
 	newName=$(echo $newName | sed 's/VIS2/VIS/g')
 	newName=$(echo $newName | sed 's/UV3/UV/g')
 	newName=$(echo $newName | sed 's/VIS3/VIS/g')
-	if [[ $newname != $f0 ]]; then
-		mv $f0 $newname
+	if [[ "$newName" != "$f0" ]]; then
+		mv $f0 $newName
 	fi
 done
 #Prepare tags file for comparison
