@@ -33,7 +33,7 @@ while [ $dirFlag -eq 0 ]; do
 	else
 		#Indicate that the folder was successfully made
 		dirFlag=1
-		echo "Creating folder for run $runNum of gene count analysis..."
+		echo "Creating folder for run $runNum of gene count analysis for a $2 of $1..."
 	fi
 done
 #Remove extra number tags from file names
