@@ -5,6 +5,9 @@
 # using the merge_tables.py script
 #Load necessary modules for ND CRC servers
 module load bio/python/2.7.14
+#Prepare for adapter trimming and quality control
+dirFlag=0
+runNum=1
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -19,8 +22,20 @@ fi
 inputsPath=$(grep "counting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
 #Retrieve alignment outputs absolute path
 outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
-#Make directory for output path of gene count analysis
-mkdir "$outputsPath"
+#Make a new directory for each analysis run
+while [ $dirFlag -eq 0 ]; do
+	outputsPath="$outputsPath"_"$1"_"$2"_run"$runNum"
+	mkdir $outputsPath
+	#Check if the folder already exists
+	if [ $? -ne 0 ]; then
+		#Increment the folder name
+		let runNum+=1
+	else
+		#Indicate that the folder was successfully made
+		dirFlag=1
+		echo "Creating folder for run $runNum of trimming..."
+	fi
+done
 #Remove extra number tags from file names
 for f0 in "$inputsPath"/"$1"/*/; do
 	newName=$(echo $f0 | sed 's/UV1/UV/g')

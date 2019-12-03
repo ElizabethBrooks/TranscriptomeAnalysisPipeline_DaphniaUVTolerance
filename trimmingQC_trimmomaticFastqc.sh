@@ -21,7 +21,7 @@ adapterPath=$(grep "adapter:" InputData/inputPaths.txt | tr -d " " | sed "s/adap
 outputsPath=$(grep "trimming:" InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
 #Move to outputs directory
 cd "$outputsPath"
-#Make a new directory for each alignment run
+#Make a new directory for each trimming run
 while [ $dirFlag -eq 0 ]; do
 	trimOut=trimmed_run"$runNum"
 	mkdir $trimOut
