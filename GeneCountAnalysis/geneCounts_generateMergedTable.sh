@@ -32,18 +32,18 @@ cat ../InputData/mergeCounts_guideFile_tags_"$2".txt > "$outputsPath"/mergeCount
 for f1 in "$inputsPath"/"$1"/*/; do
 	currSample=$(basename "$f1" | sed "s/140327_I481_FCC3P1PACXX_L..//g")
 	currTag=$(grep "$currSample" "$outputsPath"/tmp.txt | sed "s/^Pool_._//g")
-	sed -i 's,'"$currTag"','"$currTag"' '"$f1"'counts.txt,' "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
+	sed -i 's,'"$currTag"','"$f1"'counts.txt '"$currTag"',' "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 done
 head "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 #Clean up
-rm "$outputsPath"/tmp*.txt
+#rm "$outputsPath"/tmp*.txt
 #Reformat columns for input to merging script
-cut -d ' ' -f1 "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt > "$outputsPath"/tmp1.txt
-cut -d ' ' -f2 "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt > "$outputsPath"/tmp2.txt
-paste -d " " "$outputsPath"/tmp2.txt "$outputsPath"/tmp1.txt > "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
+#cut -d ' ' -f1 "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt > "$outputsPath"/tmp1.txt
+#cut -d ' ' -f2 "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt > "$outputsPath"/tmp2.txt
+#paste -d " " "$outputsPath"/tmp2.txt "$outputsPath"/tmp1.txt > "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 #Clean up
-rm "$outputsPath"/tmp*.txt
+#rm "$outputsPath"/tmp*.txt
 #Merge gene counts based on generated guide file
-python merge_tables.py "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
+#python merge_tables.py "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 #Rename the output merged counts file
-mv merged_counts.txt "$outputsPath"/geneCounts_merged_"$1"_"$2".txt
+#mv merged_counts.txt "$outputsPath"/geneCounts_merged_"$1"_"$2".txt
