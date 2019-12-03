@@ -4,6 +4,7 @@
 #$ -r n
 #$ -N build_hisat2_jobOutput
 #$ -pe smp 8
+#$ -q debug
 #Required modules for ND CRC servers
 module load bio
 module load bio/hisat2/2.1.0

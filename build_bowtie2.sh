@@ -3,6 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N build_bowtie2_jobOutput
+#$ -q debug
 #Required modules for ND CRC servers
 module load bio
 #Prepare for alignment
