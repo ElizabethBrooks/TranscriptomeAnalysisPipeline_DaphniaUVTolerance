@@ -31,14 +31,14 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 if [ $? -eq 0 ]; then
 	#Trim file path from build file
 	buildFileNoPath=$(basename $buildFile)
-	buildFileNoPath=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/g')
-	#Copy genome build fasta file to bowtie2 build folder
+	buildFileNewPath=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/g')
+	#Copy genome build fasta file to hisat2 build folder
 	cp "$buildFile" "$outputFolder"/"$buildFileNoPath"
 	#Trim file extension
-	buildFileNoPath=$(echo $buildFileNoPath | sed 's/\.fa//g')
+	buildFileNoPath=$(echo $buildFileNewPath | sed 's/\.fa//g')	
 	#Begin Bowtie2 build
 	echo "Beginning bowtie2 build... "
-	bowtie2-build "$outputFolder"/"$buildFileNoPath" "$outputFolder"/"$buildFileNoPath"
+	bowtie2-build "$outputFolder"/"$buildFileNewPath" "$outputFolder"/"$buildFileNoPath"
 	echo "Bowtie2 build complete!"
 else
 	echo "Build folder reference_bowtie2_build already exists, skipping building..."
