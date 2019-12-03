@@ -5,7 +5,7 @@
 # using the merge_tables.py script
 #Load necessary modules for ND CRC servers
 module load bio/python/2.7.14
-#Prepare for adapter trimming and quality control
+#Prepare for analysis
 dirFlag=0
 runNum=1
 #Check for input arguments of folder names
