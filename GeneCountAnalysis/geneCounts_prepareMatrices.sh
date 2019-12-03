@@ -10,7 +10,7 @@ runNum=1
 #Trim file extension from input
 inputTable=$(echo "$1" | sed "s/\.txt//g")
 #Directory for outputs
-outputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
+outputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
 prefixOutputs="$outputsPath"
 #Directory for gene count tables
 prefixInputs="$outputsPath"/"GeneCounts_Tables"
