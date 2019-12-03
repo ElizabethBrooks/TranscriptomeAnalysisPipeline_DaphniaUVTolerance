@@ -34,22 +34,21 @@ for f0 in "$inputsPath"/"$1"/*/; do
 	fi
 done
 #Prepare tags file for comparison
-#grep "Pool1" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_1_/' > "$outputsPath"/tmp1.txt
-#grep "Pool2" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_2_/' > "$outputsPath"/tmp2.txt
-#grep "Pool3" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_3_/' > "$outputsPath"/tmp3.txt
-#cat "$outputsPath"/tmp*.txt >> "$outputsPath"/tmp.txt
+grep "Pool1" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_1_/' > "$outputsPath"/tmp1.txt
+grep "Pool2" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_2_/' > "$outputsPath"/tmp2.txt
+grep "Pool3" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_3_/' > "$outputsPath"/tmp3.txt
+cat "$outputsPath"/tmp*.txt >> "$outputsPath"/tmp.txt
 #Loop through all counted paired reads and append each sample tag
 # with the corresponding file path
-#cat ../InputData/mergeCounts_guideFile_tags_"$2".txt > "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
-#for f1 in "$inputsPath"/"$1"/*/; do
-#	currSample=$(basename "$f1" | sed "s/140327_I481_FCC3P1PACXX_L..//g")
-	#currTag=$(grep "$currSample" "$outputsPath"/tmp.txt | sed "s/Pool_._//g")
-	#sed -i 's,'"$currTag"','"$f1"'counts.txt '"$currTag"',' "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
-#done
-#head "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
+cat ../InputData/mergeCounts_guideFile_tags_"$2".txt > "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
+for f1 in "$inputsPath"/"$1"/*/; do
+	currSample=$(basename "$f1" | sed "s/140327_I481_FCC3P1PACXX_L..//g")
+	currTag=$(grep "$currSample" "$outputsPath"/tmp.txt | sed "s/Pool_._//g")
+	sed -i 's,'"$currTag"','"$f1"'counts.txt '"$currTag"',' "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
+done
 #Clean up
-#rm "$outputsPath"/tmp*.txt
+rm "$outputsPath"/tmp*.txt
 #Merge gene counts based on generated guide file
-#python merge_tables.py "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
+python merge_tables.py "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 #Rename the output merged counts file
-#mv merged_counts.txt "$outputsPath"/geneCounts_merged_"$1"_"$2".txt
+mv merged_counts.txt "$outputsPath"/geneCounts_merged_"$1"_"$2".txt
