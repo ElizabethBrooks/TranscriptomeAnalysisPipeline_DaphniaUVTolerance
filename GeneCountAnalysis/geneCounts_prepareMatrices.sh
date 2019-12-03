@@ -9,13 +9,20 @@ dirFlag=0
 runNum=1
 #Trim file extension from input
 inputTable=$(echo "$1" | sed "s/\.txt//g")
-#Directory for gene count tables
-prefixInputs="/home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Merged/GeneCounts_Tables"
 #Directory for outputs
-prefixOutputs="/home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Merged"
+outputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
+prefixOutputs="$outputsPath"
+#Directory for gene count tables
+prefixInputs="$outputsPath"/"GeneCounts_Tables"
+#Check which set of data is used
+if [[ "$inputTable" == *"subset"* ]]; then
+	analysisSet="subset"
+else
+	analysisSet="fullset"
+fi
 #Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
-	prefixOutputs="$prefixOutputs"/GeneCountAnalysis_run"$runNum"
+	prefixOutputs="$prefixOutputs"/GeneCountAnalysis_"$analysisSet"_run"$runNum"
 	mkdir $prefixOutputs
 	#Check if the folder already exists
 	if [ $? -ne 0 ]; then
@@ -69,7 +76,7 @@ rm "$prefixOutputs"/merged_counts_legacy_cleaned.csv
 # or add column to transposed tables with treatment
 if [[ "$inputTable" == *"subset"* ]]; then
 	#Subset
-	sed '1 s/$/,method/' "$prefixOutputs"/"$inputTable"_tagged_transposed.csv > "$prefixOutputs"/merged_counts_subset_annotatedMethod_transposed.csv
+	sed '1 s/$/,method/' "$prefixOutputs"/"$inputTable"_tagged_transposed.csv > "$prefixOutputs"/"$inputTable"_annotatedMethod_transposed.csv
 	sed -i 's/$/,hisat2/' "$prefixOutputs"/"$inputTable"_annotatedMethod_transposed.csv
 	sed -i 's/\<method,hisat2\>/method/g' "$prefixOutputs"/"$inputTable"_annotatedMethod_transposed.csv
 	#Legacy
@@ -78,7 +85,7 @@ if [[ "$inputTable" == *"subset"* ]]; then
 	sed -i 's/\<method,tophat\>/method/g' "$prefixOutputs"/merged_counts_legacy_annotatedMethod_transposed.csv
 	#Add column to transposed tables with treatment
 	#Subset
-	sed '1 s/$/,treatment/' "$prefixOutputs"/"$inputTable"_tagged_transposed.csv > "$prefixOutputs"/merged_counts_subset_annotatedTreatment_transposed.csv
+	sed '1 s/$/,treatment/' "$prefixOutputs"/"$inputTable"_tagged_transposed.csv > "$prefixOutputs"/"$inputTable"_annotatedTreatment_transposed.csv
 	sed -i '/UV/ s/$/,UV/' "$prefixOutputs"/"$inputTable"_annotatedTreatment_transposed.csv
 	sed -i '/VIS/ s/$/,VIS/' "$prefixOutputs"/"$inputTable"_annotatedTreatment_transposed.csv
 	#Legacy
