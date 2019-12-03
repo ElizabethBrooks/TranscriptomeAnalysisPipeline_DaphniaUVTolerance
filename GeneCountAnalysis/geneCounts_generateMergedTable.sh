@@ -31,7 +31,7 @@ for f0 in "$inputsPath"/"$1"/*/; do
 	newName=$(echo $newName | sed 's/VIS3/VIS/g')
 	if [[ $newname != $f0 ]]; then
 		mv $f0 $newname
-	done
+	fi
 done
 #Prepare tags file for comparison
 #grep "Pool1" ../InputData/mergeCounts_guideFile_tags_"$2".txt | sed 's/^/Pool_1_/' > "$outputsPath"/tmp1.txt
