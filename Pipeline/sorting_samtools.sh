@@ -4,6 +4,10 @@
 #$ -r n
 #$ -N sorting_samtools_jobOutput
 #$ -pe smp 8
+#Script to perform samtools sorting of trimmed, then aligned
+# paired end reads
+#Usage: qsub sorting_samtools.sh -sortingMethod alignedFolder
+#Usage Ex: qsub sorting_samtools.sh -name aligned_tophat2_run1
 #Required modules for ND CRC servers
 module load bio
 module load bio/python/2.7.14
@@ -53,9 +57,9 @@ else
 	exit 1
 fi
 #Retrieve aligned reads input absolute path
-inputsPath=$(grep "alignment:" InputData/outputPaths.txt | tr -d " " | sed "s/alignment://g")
+inputsPath=$(grep "alignment:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignment://g")
 #Retrieve sorting outputs absolute path
-outputsPath=$(grep "sorting:" InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+outputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Make a new directory for each analysis run

@@ -12,9 +12,9 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve statistics outputs absolute path
-outputsPath=$(grep "statistics:" InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
+outputsPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
 #Retrieve analysis inputs path
-inputsPath=$(grep "geneTableAnalysis:" InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
+inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
 #Perform DE analysis using edgeR
 Rscript statistics_edgeR.r "$inputsPath"/"$1" $2 $3
 #Move produce stats file

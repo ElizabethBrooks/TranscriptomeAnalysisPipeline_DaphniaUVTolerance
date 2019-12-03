@@ -4,15 +4,18 @@
 #$ -r n
 #$ -N build_bowtie2_jobOutput
 #$ -q debug
+#Script to generate a bowtie2 genome refernce build folder
+#Usage: qsub build_bowtie2.sh
+#Usage Ex: qsub build_bowtie2.sh
 #Required modules for ND CRC servers
 module load bio
 #Prepare for alignment
 dirFlag=0
 runNum=1
 #Retrieve genome reference absolute path for alignment
-buildFile=$(grep "genomeReference:" InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve build outputs absolute path
-outputsPath=$(grep "building:" InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
+outputsPath=$(grep "building:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Create output directory

@@ -4,6 +4,11 @@
 #$ -r n
 #$ -N alignment_hisat2_jobOutput
 #$ -pe smp 8
+#Script to perform hisat2 alignment of trimmed
+# paired end reads
+#Note that a hisat2 genome refernce build folder needs to be generated first
+#Usage: qsub alignment_hisat2.sh trimmedFolder
+#Usage Ex: qsub alignment_hisat2.sh trimmed_run1
 #Required modules for ND CRC servers
 module load bio
 module load bio/hisat2/2.1.0
@@ -26,13 +31,13 @@ if [[ "$1"  != trimmed* ]]; then
 	exit 1
 fi
 #Retrieve trimmed reads input absolute path
-inputsPath=$(grep "trimming:" InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
+inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
 #Retrieve build genome files absolute path
-buildInputsPath=$(grep "building:" InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
+buildInputsPath=$(grep "building:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
 #Retrieve genome reference absolute path for alignment
-buildFile=$(grep "genomeReference:" InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve alignment outputs absolute path
-outputsPath=$(grep "alignment:" InputData/outputPaths.txt | tr -d " " | sed "s/alignment://g")
+outputsPath=$(grep "alignment:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignment://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Make a new directory for each alignment run

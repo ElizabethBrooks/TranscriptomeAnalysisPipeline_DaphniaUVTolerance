@@ -4,6 +4,10 @@
 #$ -r n
 #$ -N trimmingQC_trimmomaticFastqc_jobOutput
 #$ -pe smp 8
+#Script to perform trimmomatic trimming and fastqc quality control
+# of paired end reads
+#Usage: qsub trimmingQC_trimmomaticFastqc.sh
+#Usage Ex: qsub trimmingQC_trimmomaticFastqc.sh
 #Required modules for ND CRC servers
 module load bio
 module load bio/trimmomatic/0.32
@@ -14,11 +18,11 @@ score=0
 dirFlag=0
 runNum=1
 #Retrieve paired reads absolute path for alignment
-readPath=$(grep "pairedReads:" InputData/inputPaths.txt | tr -d " " | sed "s/pairedReads://g")
+readPath=$(grep "pairedReads:" ../InputData/inputPaths.txt | tr -d " " | sed "s/pairedReads://g")
 #Retrieve adapter absolute path for alignment
-adapterPath=$(grep "adapter:" InputData/inputPaths.txt | tr -d " " | sed "s/adapter://g")
+adapterPath=$(grep "adapter:" ../InputData/inputPaths.txt | tr -d " " | sed "s/adapter://g")
 #Retrieve trimming outputs absolute path
-outputsPath=$(grep "trimming:" InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
+outputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Make a new directory for each trimming run
