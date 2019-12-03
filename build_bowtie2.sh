@@ -34,6 +34,8 @@ if [ $? -eq 0 ]; then
 	buildFileNoPath=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/g')
 	#Copy genome build fasta file to bowtie2 build folder
 	cp "$buildFile" "$outputFolder"/"$buildFileNoPath"
+	#Trim file extension
+	buildFileNoPath=$(echo $buildFileNoPath | sed 's/\.fa//g')
 	#Begin Bowtie2 build
 	echo "Beginning bowtie2 build... "
 	bowtie2-build "$outputFolder"/"$buildFileNoPath" "$outputFolder"/"$buildFileNoPath"

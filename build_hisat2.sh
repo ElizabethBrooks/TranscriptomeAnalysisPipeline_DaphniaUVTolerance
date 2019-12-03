@@ -36,6 +36,8 @@ if [ $? -eq 0 ]; then
 	buildFileNoPath=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/g')
 	#Copy genome build fasta file to hisat2 build folder
 	cp "$buildFile" "$outputFolder"/"$buildFileNoPath"
+	#Trim file extension
+	buildFileNoPath=$(echo $buildFileNoPath | sed 's/\.fa//g')
 	#Begin hisat2 build
 	echo "Beginning hisat2 build... "
 	hisat2-build -p 8 -f "$outputFolder"/"$buildFileNoPath" "$outputFolder"/"$buildFileNoPath"
