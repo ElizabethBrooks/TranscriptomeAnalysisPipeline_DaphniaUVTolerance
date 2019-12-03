@@ -33,19 +33,19 @@ while [ $dirFlag -eq 0 ]; do
 	else
 		#Indicate that the folder was successfully made
 		dirFlag=1
-		echo "Creating folder for run $runNum of trimming..."
+		echo "Creating folder for run $runNum of gene count analysis..."
 	fi
 done
 #Remove extra number tags from file names
 for f0 in "$inputsPath"/"$1"/*/; do
-	newName=$(echo $f0 | sed 's/UV1/UV/g')
-	newName=$(echo $newName | sed 's/VIS1/VIS/g')
-	newName=$(echo $newName | sed 's/UV2/UV/g')
-	newName=$(echo $newName | sed 's/VIS2/VIS/g')
-	newName=$(echo $newName | sed 's/UV3/UV/g')
-	newName=$(echo $newName | sed 's/VIS3/VIS/g')
+	newName=$(echo "$f0" | sed 's/UV1/UV/g')
+	newName=$(echo "$newName" | sed 's/VIS1/VIS/g')
+	newName=$(echo "$newName" | sed 's/UV2/UV/g')
+	newName=$(echo "$newName" | sed 's/VIS2/VIS/g')
+	newName=$(echo "$newName" | sed 's/UV3/UV/g')
+	newName=$(echo "$newName" | sed 's/VIS3/VIS/g')
 	if [[ "$newName" != "$f0" ]]; then
-		mv $f0 $newName
+		mv "$f0" "$newName"
 	fi
 done
 #Prepare tags file for comparison
@@ -59,7 +59,7 @@ cat ../InputData/mergeCounts_guideFile_tags_"$2".txt > "$outputsPath"/mergeCount
 for f1 in "$inputsPath"/"$1"/*/; do
 	currSample=$(basename "$f1" | sed "s/140327_I481_FCC3P1PACXX_L..//g")
 	#Determine if subset of files are to be used
-	if grep -iF "$currSample" "$outputsPath"/tmp.txt; then
+	if grep -iFq "$currSample" "$outputsPath"/tmp.txt; then
 		currTag=$(grep "$currSample" "$outputsPath"/tmp.txt | sed "s/Pool_._//g")
 		sed -i 's,'"$currTag"','"$f1"'counts.txt '"$currTag"',' "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 	fi
