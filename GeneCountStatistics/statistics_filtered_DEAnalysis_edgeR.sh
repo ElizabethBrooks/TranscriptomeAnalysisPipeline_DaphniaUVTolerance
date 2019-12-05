@@ -13,7 +13,7 @@ if [ $# -eq 0 ]; then
 fi
 #Retrieve statistics outputs absolute path
 outputsPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
-outputCounts="$outputsPath"/alignmentStats_filtered_cols"$2"to"$3"
+outputCounts="$outputsPath"/geneCountStats_cols"$2"to"$3"
 #Retrieve analysis inputs path
 inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
 outFile=$(basename "$inputsPath"/"$1" | sed 's/\.csv//g')

@@ -19,4 +19,4 @@ inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " 
 Rscript statistics_edgeR.r "$inputsPath"/"$1" $2 $3
 #Move produce stats file
 outFile=$(basename "$inputsPath"/"$1" | sed 's/\.csv//g')
-mv stats_tmpOut.csv "$outputsPath"/alignmentStats_cols"$2"to"$3"_"$outFile"
+mv stats_tmpOut.csv "$outputsPath"/geneCountStats_cols"$2"to"$3"_"$outFile"
