@@ -76,15 +76,15 @@ for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 	mkdir "$outputFolder"/"$curSampleNoPath"
 	hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
 	#Convert output sam files to bam format for downstream analysis
-	echo "Sample $curSampleNoPath is being converted..."
-	samtools view -@ 8 -bS "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam > "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam
-	echo "Sample $curSampleNoPath has been aligned and converted!"
+	#echo "Sample $curSampleNoPath is being converted..."
+	#samtools view -@ 8 -bS "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam > "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam
+	#echo "Sample $curSampleNoPath has been aligned and converted!"
 	#Remove the now converted .sam file
-	rm "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam
+	#rm "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam
 	#Add run inputs to output summary file
 	echo $curSampleNoPath >> $inputOutFile
 	echo hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
-	echo samtools view -@ 8 -bS "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam ">" "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam >> "$inputOutFile"
+	#echo samtools view -@ 8 -bS "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam ">" "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam >> "$inputOutFile"
 done
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"

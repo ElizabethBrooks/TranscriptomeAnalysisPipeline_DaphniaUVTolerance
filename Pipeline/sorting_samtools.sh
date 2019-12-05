@@ -49,11 +49,13 @@ fi
 if [[ "$2" == *"hisat2"*  ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Hisat2"
+	extension="sam"
 elif [[ "$2" == *"tophat2"* ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Tophat2"
+	extension="bam"
 else
-	echo "ERROR: The "$2" folder or bam files were not found... exiting"
+	echo "ERROR: The "$2" folder of "$extension" files were not found... exiting"
 	exit 1
 fi
 #Retrieve aligned reads input absolute path
@@ -78,18 +80,18 @@ while [ $dirFlag -eq 0 ]; do
 done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
-#Sort input bam files if folder does not already exist
+#Sort input sam/bam files if folder does not already exist
 if [ $? -eq 0 ]; then
-	echo "Creating folder for sorted bam files..."
-	#Loop through all reads and sort bam files for input to samtools
+	echo "Creating folder for sorted "$extension" files..."
+	#Loop through all reads and sort sam/bam files for input to samtools
 	for f1 in "$inputsPath"/"$2"/*/; do
 		#Name of aligned file
-		curAlignedSample="$f1"accepted_hits.bam
+		curAlignedSample="$f1"accepted_hits."$extension"
 		#Trim extension from current file name
-		curSample=$(echo $f1 | sed 's/\.bam//')
+		curSample=$(echo $f1 | sed 's/\."$extension"//')
 		#Trim file path from current file name
 		curSampleNoPath=$(basename $f1)
-		curSampleNoPath=$(echo $curSampleNoPath | sed 's/\.bam//')
+		curSampleNoPath=$(echo $curSampleNoPath | sed 's/\."$extension"//')
 		#Create directory for current sample outputs
 		mkdir "$outputFolder"/"$curSampleNoPath"
 		#Run samtools to prepare mapped reads for sorting by name
