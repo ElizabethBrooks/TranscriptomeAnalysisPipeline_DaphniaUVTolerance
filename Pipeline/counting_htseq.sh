@@ -30,9 +30,11 @@ fi
 if [[ "$1"  == sortedName* ]]; then
 	#Set name sorted flag (default) with file type flag
 	flags="-f bam"
+	sortType="Name"
 elif [[ "$1"  == sortedCoordinate* ]]; then
 	#Set coordinate sorted flag with file type flag
 	flags="-f bam -r pos"
+	sortType="coordinate"
 else
 	echo "ERROR: The "$1" folder of name or coordinate sorted files were not found... exiting"
 	exit 1
@@ -58,7 +60,7 @@ outputsPath=$(grep "counting:" ../InputData/outputPaths.txt | tr -d " " | sed "s
 cd "$outputsPath"
 #Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
-	outputFolder=counted_htseq"$analysisMethod"_run"$runNum"
+	outputFolder=counted"$sortType"_htseq"$analysisMethod"_run"$runNum"
 	mkdir "$outputFolder"
 	#Check if the folder already exists
 	if [ $? -ne 0 ]; then
