@@ -34,7 +34,7 @@ if [[ "$1"  == sortedName* ]]; then
 elif [[ "$1"  == sortedCoordinate* ]]; then
 	#Set coordinate sorted flag with file type flag
 	flag=" -r pos "
-	sortType="coordinate"
+	sortType="Coordinate"
 else
 	echo "ERROR: The "$1" folder of name or coordinate sorted files were not found... exiting"
 	exit 1
