@@ -24,33 +24,25 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	exit 1
 fi
 #Determine if the correct analysis folder was input
-if [[ "$1"  != sortedCoordinate* ]]; then
-	echo "ERROR: The "$1" folder of coordinate sorted bam files were not found... exiting"
+if [[ "$1"  == sortedName* ]]; then
+	#Set name sorted flag (default) with file type flag
+	#flags="-f bam"
+elif [[ "$1"  == sortedCoordinate* ]]; then
+	#Set coordinate sorted flag with file type flag
+	#flags="-f bam -r pos"
+else
+	echo "ERROR: The "$1" folder of name or coordinate sorted files were not found... exiting"
 	exit 1
 fi
 #Determine what analysis method was used for the input folder of data
-if [[ "$1" == *"isat2"*  ]]; then
+if [[ "$1" == *"Hisat2"*  ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Hisat2"
-	#Determine if hisat2 files were sorted
-	if [[ "$1" == *"sorted"* ]]; then
-		echo "Sorted Hisat2 files found! Proceeding with counting..."
-	else
-		echo "ERROR: The "$1" folder of bam files need to be sorted... exiting"
-		exit 1
-	fi
-elif [[ "$1" == *"ophat2"* ]]; then
+elif [[ "$1" == *"Tophat2"* ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Tophat2"
-	#Determine if hisat2 files were sorted
-	if [[ "$1" == *"sorted"* ]]; then
-		echo "Sorted Tophat2 files found! Proceeding with counting..."
-	else
-		echo "ERROR: The "$1" folder of bam files need to be sorted... exiting"
-		exit 1
-	fi
 else
-	echo "ERROR: The "$1" folder or bam files were not found... exiting"
+	echo "ERROR: The sorted "$1" folder or bam files were not found... exiting"
 	exit 1
 fi
 #Retrieve sorted reads input absolute path
