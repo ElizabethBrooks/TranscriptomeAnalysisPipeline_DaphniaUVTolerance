@@ -58,31 +58,49 @@ rm "$prefixOutputs"/"$inputTable"_blankCleaned.csv
 
 #Add postfix tags to each sample name in each file indicating
 # the alignment method used (T for tophat and H for hisat2)
-sed 's/Pool1/Pool1_H/g' "$prefixOutputs"/"$inputTable"_cleaned.csv |sed 's/Pool2/Pool2_H/g' | sed 's/Pool3/Pool3_H/g' > "$prefixOutputs"/"$inputTable"_tagged.csv
-sed 's/Pool1/Pool1_T/g' "$prefixOutputs"/merged_counts_legacy_cleaned.csv |sed 's/Pool2/Pool2_T/g' | sed 's/Pool3/Pool3_T/g' > "$prefixOutputs"/merged_counts_legacy_tagged.csv
+#Determine which analysis method was used
+if [[ "$inputTable" == *"Hisat2"* ]]; then
+	sed 's/Pool1/Pool1_H/g' "$prefixOutputs"/"$inputTable"_cleaned.csv |sed 's/Pool2/Pool2_H/g' | sed 's/Pool3/Pool3_H/g' > "$prefixOutputs"/"$inputTable"_tagged.csv
+else
+	#Subset
+	sed 's/Pool1/Pool1_T/g' "$prefixOutputs"/"$inputTable"_cleaned.csv |sed 's/Pool2/Pool2_T/g' | sed 's/Pool3/Pool3_T/g' > "$prefixOutputs"/"$inputTable"_tagged.csv
+	#Legacy
+	sed 's/Pool1/Pool1_T/g' "$prefixOutputs"/merged_counts_legacy_cleaned.csv |sed 's/Pool2/Pool2_T/g' | sed 's/Pool3/Pool3_T/g' > "$prefixOutputs"/merged_counts_legacy_tagged.csv
+fi
 
 #Transpose gene count tables for PCA and fix headers
 #Fullset and Subset
 csvtool transpose "$prefixOutputs"/"$inputTable"_cleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"/"$inputTable"_transposed.csv
 csvtool transpose "$prefixOutputs"/"$inputTable"_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"/"$inputTable"_tagged_transposed.csv
-#Legacy
-csvtool transpose "$prefixOutputs"/merged_counts_legacy_cleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"/merged_counts_legacy_transposed.csv
-csvtool transpose "$prefixOutputs"/merged_counts_legacy_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"/merged_counts_legacy_tagged_transposed.csv
+if [[ "$inputTable" == *"subset"* ]]; then
+	#Legacy
+	csvtool transpose "$prefixOutputs"/merged_counts_legacy_cleaned.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"/merged_counts_legacy_transposed.csv
+	csvtool transpose "$prefixOutputs"/merged_counts_legacy_tagged.csv | sed 's/\<gene\>/sample/g' > "$prefixOutputs"/merged_counts_legacy_tagged_transposed.csv
+	#Clean up temporary files
+	#rm "$prefixOutputs"/merged_counts_legacy_cleaned.csv
+fi
 #Clean up temporary files
 #rm "$prefixOutputs"/"$inputTable"_cleaned.csv
-#rm "$prefixOutputs"/merged_counts_legacy_cleaned.csv
 
 #Add column to transposed tables with treatment and alignment method before merging
 # or add column to transposed tables with treatment
+#Determine which set of data is being analyzed
 if [[ "$inputTable" == *"subset"* ]]; then
-	#Subset
-	sed '1 s/$/,method/' "$prefixOutputs"/"$inputTable"_tagged_transposed.csv > "$prefixOutputs"/"$inputTable"_annotatedMethod_transposed.csv
-	sed -i 's/$/,hisat2/' "$prefixOutputs"/"$inputTable"_annotatedMethod_transposed.csv
-	sed -i 's/\<method,hisat2\>/method/g' "$prefixOutputs"/"$inputTable"_annotatedMethod_transposed.csv
-	#Legacy
-	sed '1 s/$/,method/' "$prefixOutputs"/merged_counts_legacy_tagged_transposed.csv > "$prefixOutputs"/merged_counts_legacy_annotatedMethod_transposed.csv
-	sed -i 's/$/,tophat/' "$prefixOutputs"/merged_counts_legacy_annotatedMethod_transposed.csv
-	sed -i 's/\<method,tophat\>/method/g' "$prefixOutputs"/merged_counts_legacy_annotatedMethod_transposed.csv
+	#Determine which analysis method was used
+	if [[ "$inputTable" == *"Hisat2"* ]]; then
+		sed '1 s/$/,method/' "$prefixOutputs"/"$inputTable"_tagged_transposed.csv > "$prefixOutputs"/"$inputTable"_annotatedMethod_transposed.csv
+		sed -i 's/$/,hisat2/' "$prefixOutputs"/"$inputTable"_annotatedMethod_transposed.csv
+		sed -i 's/\<method,hisat2\>/method/g' "$prefixOutputs"/"$inputTable"_annotatedMethod_transposed.csv
+	else
+		#Subset
+		sed '1 s/$/,method/' "$prefixOutputs"/"$inputTable"_tagged_transposed.csv > "$prefixOutputs"/merged_counts_legacy_annotatedMethod_transposed.csv
+		sed -i 's/$/,tophat/' "$prefixOutputs"/"$inputTable"_annotatedMethod_transposed.csv
+		sed -i 's/\<method,tophat\>/method/g' "$prefixOutputs"/"$inputTable"_annotatedMethod_transposed.csv
+		#Legacy
+		sed '1 s/$/,method/' "$prefixOutputs"/merged_counts_legacy_tagged_transposed.csv > "$prefixOutputs"/merged_counts_legacy_annotatedMethod_transposed.csv
+		sed -i 's/$/,tophat/' "$prefixOutputs"/merged_counts_legacy_annotatedMethod_transposed.csv
+		sed -i 's/\<method,tophat\>/method/g' "$prefixOutputs"/merged_counts_legacy_annotatedMethod_transposed.csv
+	fi
 	#Add column to transposed tables with treatment
 	#Subset
 	sed '1 s/$/,treatment/' "$prefixOutputs"/"$inputTable"_tagged_transposed.csv > "$prefixOutputs"/"$inputTable"_annotatedTreatment_transposed.csv
@@ -123,10 +141,11 @@ else
 	sed -i '/R2/ s/$/,R2/' "$prefixOutputs"/"$inputTable"_annotatedGeneotype_transposed.csv
 	sed -i '/PA/ s/$/,PA/' "$prefixOutputs"/"$inputTable"_annotatedGeneotype_transposed.csv
 	sed -i '/Sierra/ s/$/,Sierra/' "$prefixOutputs"/"$inputTable"_annotatedGeneotype_transposed.csv
+	#Clean up
+	rm "$prefixOutputs"/merged_counts_legacy_tagged_transposed.csv
 fi
 #Clean up
 rm "$prefixOutputs"/"$inputTable"_tagged_transposed.csv
-rm "$prefixOutputs"/merged_counts_legacy_tagged_transposed.csv
 
 #Create merged count tables
 #Transpose the annotated tables
