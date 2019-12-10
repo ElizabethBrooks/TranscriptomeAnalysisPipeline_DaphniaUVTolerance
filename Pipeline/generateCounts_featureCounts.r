@@ -8,11 +8,12 @@
 #Load the Rsubread library for featureCounts
 library(Rsubread)
 
-bam.files <- list.files(path = "./data", pattern = ".BAM$", full.names = TRUE)
-bam.files
+#Retrieve all sorted bam files in directory and sub directories
+bam.files <- list.files(path="/afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/sortedName_samtoolsHisat2_run1", pattern=".bam", full.names=TRUE, recursive=TRUE)
 
-#The mapped reads can be counted across mouse genes by using the featureCounts function
-fc <- featureCounts(bam.files, annot.inbuilt="mm10")
+#The mapped reads can be counted across genes by using the featureCounts function
+# and input gtf/gff file, paired end reads, and 8 threads
+fc <- featureCounts(bam.files, annot.ext="/afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/PA42.3.0.annotation.18440.gff", isGTFAnnotationFile=TRUE, GTF.attrType="ID", isPairedEnd=TRUE, autosort=TRUE, nthreads=8)
 
 # See what slots are stored in fc
 names(fc)
