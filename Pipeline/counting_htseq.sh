@@ -15,7 +15,6 @@ module load bio/htseq/0.11.2
 dirFlag=0
 runNum=1
 COUNTER=0
-analysisTag=".sorted."$extension""
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -49,7 +48,7 @@ elif [[ "$1" == *"Tophat2"* ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Tophat2"
 else
-	echo "ERROR: The sorted "$1" folder or "$extension" files were not found... exiting"
+	echo "ERROR: The sorted "$1" folder of files were not found... exiting"
 	exit 1
 fi
 #Retrieve sorted reads input absolute path
@@ -77,7 +76,7 @@ done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Loop through all sorted forward and reverse paired reads and store the file locations in an array
-for f1 in "$inputsPath"/"$1"/*/"accepted_hits"; do
+for f1 in "$inputsPath"/"$1"/*/; do
 	#Determine what extension the files have
 	curSampleNoPath=$(basename $f1)
 	extension=${curSampleNoPath##*.}
