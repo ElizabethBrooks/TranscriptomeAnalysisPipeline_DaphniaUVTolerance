@@ -76,7 +76,7 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 	#Current sample
 	curSampleNoPath=$(basename $f1)
 	#Name of aligned file
-	curAlignedSample="$f1".bam
+	curAlignedSample="$f1"
 	#Trim file path from current file name
 	curSampleNoPath=$(echo $curSampleNoPath | sed 's/\.bam//')
 	#Create directory for current sample outputs
