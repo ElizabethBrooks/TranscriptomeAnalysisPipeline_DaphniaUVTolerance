@@ -27,14 +27,10 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 fi
 #Determine if the correct analysis folder was input
 if [[ "$1"  == sortedName* ]]; then
-	#Set name sorted flag (default) with file type flag
-	#https://github.com/simon-anders/htseq/issues/37
-	flags="-f bam -s no -m union -t gene -i ID --secondary-alignments ignore --supplementary-alignments ignore"
+	#Set name sorted method flag
 	sortType="Name"
 elif [[ "$1"  == sortedCoordinate* ]]; then
-	#Set coordinate sorted flag with file type flag
-	#https://github.com/simon-anders/htseq/issues/37
-	flags="-f bam -r pos -s no -m union -t gene -i ID --secondary-alignments ignore --supplementary-alignments ignore"
+	#Set coordinate sorted method flag
 	sortType="Coordinate"
 else
 	echo "ERROR: The "$1" folder of name or coordinate sorted files were not found... exiting"
@@ -87,13 +83,29 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 	mkdir "$outputFolder"/"$curSampleNoPath"
 	#Count reads using htseq-count
 	echo "Sample $curSampleNoPath is being counted..."
-	#Flag to output features in sam format
-	#-o "$outputFolder"/"$curSampleNoPath"/counted.sam
-	htseq-count "$flags" "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
+	#Determine which flags to use based on sorting method
+	if [[ "$1"  == sortedName* ]]; then
+		#Use name sorted flag (default)
+		#https://github.com/simon-anders/htseq/issues/37
+		#Flag to output features in sam format
+		#-o "$outputFolder"/"$curSampleNoPath"/counted.sam
+		htseq-count -f bam -s no -m union -t gene -i ID --secondary-alignments ignore --supplementary-alignments ignore "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
+		commandInputs=htseq-count -f bam -s no -m union -t gene -i ID --secondary-alignments ignore --supplementary-alignments ignore "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
+	elif [[ "$1"  == sortedCoordinate* ]]; then
+		#Use coordinate sorted flag
+		#https://github.com/simon-anders/htseq/issues/37
+		#Flag to output features in sam format
+		#-o "$outputFolder"/"$curSampleNoPath"/counted.sam
+		htseq-count -f bam -r pos -s no -m union -t gene -i ID --secondary-alignments ignore --supplementary-alignments ignore "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
+		commandInputs=htseq-count -f bam -r pos -s no -m union -t gene -i ID --secondary-alignments ignore --supplementary-alignments ignore "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
+	else
+		echo "ERROR: The "$1" folder of name or coordinate sorted files were not found... exiting"
+		exit 1
+	fi
 	echo "Sample $curSampleNoPath has been counted!"
 	#Add run inputs to output summary file
 	echo "$curSampleNoPath" >> $inputOutFile
-	echo htseq-count "$flags" "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> $inputOutFile
+	echo "$commandInputs" "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> $inputOutFile
 done
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
