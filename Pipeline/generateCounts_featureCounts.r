@@ -9,7 +9,7 @@
 library(Rsubread)
 
 #Retrieve all sorted bam files in directory and sub directories
-bam.files <- list.files(path="/afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/sortedName_samtoolsHisat2_run1", pattern=".bam", full.names=TRUE, recursive=TRUE)
+bam.files <- list.files(path="/afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/aligned_hisat2_run2", pattern="accepted_hits.sam", full.names=TRUE, recursive=TRUE)
 
 #The mapped reads can be counted across genes by using the featureCounts function
 # and input gtf/gff file, paired end reads, and 8 threads

@@ -10,8 +10,8 @@
 #Usage Ex: qsub sorting_samtools.sh -name aligned_tophat2_run1
 #Required modules for ND CRC servers
 module load bio
-module load bio/python/2.7.14
-module load bio/htseq/0.11.2
+#module load bio/python/2.7.14
+#module load bio/htseq/0.11.2
 #Prepare for analysis
 dirFlag=0
 runNum=1
@@ -49,13 +49,11 @@ fi
 if [[ "$2" == *"hisat2"*  ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Hisat2"
-	extension="sam"
 elif [[ "$2" == *"tophat2"* ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Tophat2"
-	extension="bam"
 else
-	echo "ERROR: The "$2" folder of "$extension" files were not found... exiting"
+	echo "ERROR: The "$2" folder of files were not found... exiting"
 	exit 1
 fi
 #Retrieve aligned reads input absolute path
@@ -82,15 +80,17 @@ done
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Sort input sam/bam files if folder does not already exist
 if [ $? -eq 0 ]; then
-	echo "Creating folder for sorted "$extension" files..."
+	echo "Creating folder for sorted files..."
 	#Loop through all reads and sort sam/bam files for input to samtools
 	for f1 in "$inputsPath"/"$2"/*/; do
+		#Determine what extension the files have
+		curSampleNoPath=$(basename $f1)
+		extension=${curSampleNoPath##*.}
 		#Name of aligned file
 		curAlignedSample="$f1"accepted_hits."$extension"
 		#Trim extension from current file name
 		curSample=$(echo $f1 | sed 's/\."$extension"//')
 		#Trim file path from current file name
-		curSampleNoPath=$(basename $f1)
 		curSampleNoPath=$(echo $curSampleNoPath | sed 's/\."$extension"//')
 		#Create directory for current sample outputs
 		mkdir "$outputFolder"/"$curSampleNoPath"
