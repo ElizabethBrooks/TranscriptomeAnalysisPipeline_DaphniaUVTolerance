@@ -29,11 +29,13 @@ fi
 #Determine if the correct analysis folder was input
 if [[ "$1"  == sortedName* ]]; then
 	#Set name sorted flag (default) with file type flag
-	flags="-s no -m union -t gene -i ID"
+	#https://github.com/simon-anders/htseq/issues/37
+	flags="-s no -m union -t gene -i ID --secondary-alignments ignore --supplementary-alignments ignore"
 	sortType="Name"
 elif [[ "$1"  == sortedCoordinate* ]]; then
 	#Set coordinate sorted flag with file type flag
-	flags="-r pos -s no -m union -t gene -i ID"
+	#https://github.com/simon-anders/htseq/issues/37
+	flags="-r pos -s no -m union -t gene -i ID --secondary-alignments ignore --supplementary-alignments ignore"
 	sortType="Coordinate"
 else
 	echo "ERROR: The "$1" folder of name or coordinate sorted files were not found... exiting"
