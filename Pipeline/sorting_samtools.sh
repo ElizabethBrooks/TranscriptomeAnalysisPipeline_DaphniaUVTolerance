@@ -84,14 +84,13 @@ if [ $? -eq 0 ]; then
 	#Loop through all reads and sort sam/bam files for input to samtools
 	for f1 in "$inputsPath"/"$2"/*/; do
 		#Determine what extension the files have
-		curSampleNoPath=$(basename $f1)
-		extension=${curSampleNoPath##*.}
+		curSampleHits=$(echo "$f1"*)
+		curSampleHits=$(basename "$curSampleHits")
+		extension=${curSampleHits##*.}
 		#Name of aligned file
 		curAlignedSample="$f1"accepted_hits."$extension"
-		#Trim extension from current file name
-		curSample=$(echo $f1 | sed 's/\."$extension"//')
-		#Trim file path from current file name
-		curSampleNoPath=$(echo $curSampleNoPath | sed 's/\."$extension"//')
+		#Trim file path from current folder name
+		curSampleNoPath=$(echo "$f1")
 		#Create directory for current sample outputs
 		mkdir "$outputFolder"/"$curSampleNoPath"
 		#Run samtools to prepare mapped reads for sorting by name
