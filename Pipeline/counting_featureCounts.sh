@@ -3,11 +3,16 @@
 #$ -m abe
 #$ -r n
 #$ -N counting_featureCounts_jobOutput
-#$ -pe smp 8
-#Script to perform freatureCounts counting of trimmed, aligned, then name sorted
+#Script to perform freatureCounts counting of aligned or sorted
 # paired end reads
 #Usage: qsub counting_featureCounts.sh sortedNameFolder
 #Usage Ex: qsub counting_featureCounts.sh sortedName_samtoolsTophat2_run1
+#Required modules for ND CRC servers
+module load R/3.5.3
+#Set paths for r script
+#export PATH=/afs/crc.nd.edu/user/e/ebrooks5/R/x86_64-pc-linux-gnu-library/3.5/Rsubread/libs:$PATH
+export R_LIBS=/afs/crc.nd.edu/user/e/ebrooks5/R/x86_64-pc-linux-gnu-library/3.5:$R_LIBS
+#OG_DIR=$( pwd )
 #Prepare for analysis
 dirFlag=0
 runNum=1
@@ -53,8 +58,6 @@ inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/s
 genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
 #Retrieve alignment outputs absolute path
 outputsPath=$(grep "counting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
-#Move to outputs directory
-cd "$outputsPath"
 #Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
 	outputFolder=counted"$sortType"_featureCounts"$analysisMethod"_run"$runNum"
@@ -69,24 +72,13 @@ while [ $dirFlag -eq 0 ]; do
 		echo "Creating folder for run $runNum of featureCounts counting of "$1" data..."
 	fi
 done
+#Move to outputs directory
+cd "$outputsPath"/"$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
-#Loop through all sorted forward and reverse paired reads and store the file locations in an array
-for f2 in "$inputsPath"/"$1"/*/; do
-	#Name of aligned file
-	curAlignedSample="$f2"accepted_hits.bam
-	#Trim file path from current file name
-	curSampleNoPath=$(basename $f2)
-	curSampleNoPath=$(echo $curSampleNoPath | sed 's/\.bam//')
-	#Create directory for current sample outputs
-	mkdir "$outputFolder"/"$curSampleNoPath"
-	#Count reads using featureCounts
-	echo "Sample $curSampleNoPath is being counted..."
-	featureCounts -T 8 -p -t gene -g ID -a "$genomeFile" -s 2 --donotsort -o "$outputFolder"/"$curSampleNoPath"/counted.sam -M "$curAlignedSample"
-	echo "Sample $curSampleNoPath has been counted!"
-	#Add run inputs to output summary file
-	echo "$curSampleNoPath" >> $inputOutFile
-	echo featureCounts -T 8 -p -t gene -g ID -a "$genomeFile" -s 2 --donotsort -o "$outputFolder"/"$curSampleNoPath"/counted.sam -M "$curAlignedSample" >> $inputOutFile
-done
+#Count reads using featureCounts via an R script
+Rscript generateCounts_featureCounts.r "$inputsPath"/"$1" "$genomeFile"
+#Add run to summary file
+echo Rscript generateCounts_featureCounts.r >> "$inputOutFile"
 #Copy previous summaries
-cp "$inputsPath"/"$1"/*.txt "$outputFolder"
+cp "$inputsPath"/"$1"/*.txt "$outputsPath"/"$outputFolder"

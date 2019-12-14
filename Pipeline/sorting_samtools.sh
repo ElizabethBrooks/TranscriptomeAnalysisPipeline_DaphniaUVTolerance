@@ -110,22 +110,22 @@ for f1 in "$inputsPath"/"$2"/*/; do
 		#Run samtools to prepare mapped reads for sorting by coordinate
 		#using 8 threads
 		echo "Sample $curSampleNoPath is being sorted..."
-		samtools sort "$flags" -o "$outputFolder"/"$curSampleNoPath"/sorted.bam -T /tmp/"$curSampleNoPath".sorted.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam
+		samtools sort "$flags" -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam.bam -T /tmp/"$curSampleNoPath".sorted.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam
 		echo "Sample $curSampleNoPath has been sorted!"
 		#Clean up
 		rm "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam
 		#Add run inputs to output summary file
 		echo samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam >> "$inputOutFile"
-		echo samtools sort "$flags" -o "$outputFolder"/"$curSampleNoPath"/sorted.bam -T /tmp/"$curSampleNoPath".sorted.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam >> "$inputOutFile"
+		echo samtools sort "$flags" -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam.bam -T /tmp/"$curSampleNoPath".sorted.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam >> "$inputOutFile"
 	else
 		#Run fixmate to update paired-end flags for singletons
 		echo "Sample $curSampleNoPath singleton flags are being updated..."
-		samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/sorted.bam
+		samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam.bam
 		echo "Sample $curSampleNoPath singleton flags have been updated!"
 		#Clean up
 		rm "$outputFolder"/"$curSampleNoPath"/sortedName.bam
 		#Add run inputs to output summary file
-		echo samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/sorted.bam >> "$inputOutFile"
+		echo samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam.bam >> "$inputOutFile"
 	fi
 #Copy previous summaries
 cp "$inputsPath"/"$2"/*.txt "$outputFolder"

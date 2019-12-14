@@ -76,7 +76,7 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 	#Name of sorted and aligned file
 	curAlignedSample="$f1"
 	#Trim file paths from current sample folder name
-	curSampleNoPath=$(echo $f1 | sed 's/accepted\_hits\.bam//' | sed 's/sorted\.bam//')
+	curSampleNoPath=$(echo $f1 | sed 's/accepted\_hits\.bam//g')
 	curSampleNoPath=$(basename $curSampleNoPath)
 	#Create directory for current sample outputs
 	mkdir "$outputFolder"/"$curSampleNoPath"
@@ -91,8 +91,8 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 		#-o "$outputFolder"/"$curSampleNoPath"/counted.sam
 		htseq-count -f bam -s no -m union -t gene -i ID "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
 		#Add run inputs to output summary file
-		echo "$curSampleNoPath" >> $inputOutFile
-		echo "htseq-count -f bam -s no -m union -t gene -i ID" "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> $inputOutFile
+		echo "$curSampleNoPath" >> "$inputOutFile"
+		echo "htseq-count -f bam -s no -m union -t gene -i ID" "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> "$inputOutFile"
 	elif [[ "$1"  == sortedCoordinate* ]]; then
 		#Use coordinate sorted flag
 		#https://github.com/simon-anders/htseq/issues/37
@@ -101,8 +101,8 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 		#-o "$outputFolder"/"$curSampleNoPath"/counted.sam
 		htseq-count -f bam -r pos -s no -m union -t gene -i ID "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
 		#Add run inputs to output summary file
-		echo "$curSampleNoPath" >> $inputOutFile
-		echo "htseq-count -f bam -r pos -s no -m union -t gene -i ID" "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> $inputOutFile
+		echo "$curSampleNoPath" >> "$inputOutFile"
+		echo "htseq-count -f bam -r pos -s no -m union -t gene -i ID" "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> "$inputOutFile"
 	else
 		echo "ERROR: The "$1" folder of name or coordinate sorted files were not found... exiting"
 		exit 1
