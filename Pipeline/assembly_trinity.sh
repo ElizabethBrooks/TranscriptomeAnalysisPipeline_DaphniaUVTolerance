@@ -1,0 +1,26 @@
+#!/bin/bash
+#$ -M ebrooks5@nd.edu
+#$ -m abe
+#$ -r n
+#$ -N decoding_transdecoder_jobOutput
+#Script to generate a trinity assembly for input transcripts
+#Usage: 
+#Usage Ex:
+
+#fastqc reads
+#trim
+#use on trimmed files!!!
+
+#move to trimmed directory
+
+#TO DO: double check required modules
+#module load bio
+module load bio/trinity/2.8.4
+#module load bio/salmon/0.11.2
+#module load bio/jellyfish/2.2.10
+#module load bio/python/2.7.14
+
+#TO DO: update for flexible inputs and add directed outputs (assembled_trinity_run1)
+Trinity --seqType fq --max_memory 50G --left *_pForward.fq --right *_pReverse.fq --CPU 6
+
+#do fastqc again!

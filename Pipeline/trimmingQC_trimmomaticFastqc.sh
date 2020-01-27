@@ -8,6 +8,7 @@
 # of paired end reads
 #Usage: qsub trimmingQC_trimmomaticFastqc.sh
 #Usage Ex: qsub trimmingQC_trimmomaticFastqc.sh
+
 #Required modules for ND CRC servers
 module load bio
 module load bio/trimmomatic/0.32

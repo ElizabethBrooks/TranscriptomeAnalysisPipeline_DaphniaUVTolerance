@@ -9,6 +9,7 @@
 #Note that a hisat2 genome refernce build folder needs to be generated first
 #Usage: qsub alignment_hisat2.sh trimmedFolder
 #Usage Ex: qsub alignment_hisat2.sh trimmed_run1
+
 #Required modules for ND CRC servers
 module load bio
 module load bio/hisat2/2.1.0

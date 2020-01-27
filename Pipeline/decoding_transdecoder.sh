@@ -2,8 +2,10 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N stats_edgeR_jobOutput
+#$ -N decoding_transdecoder_jobOutput
 #Script to predict coding regions from a transcript fasta file
+#Usage: 
+#Usage Ex:
 
 #Move up a directory
 cd ..

@@ -9,6 +9,7 @@
 #Note that a bowtie2 genome refernce build folder needs to be generated first
 #Usage: qsub alignment_tophat2.sh trimmedFolder
 #Usage Ex: qsub alignment_tophat2.sh trimmed_run1
+
 #Required modules for ND CRC servers
 module load bio
 #Prepare for alignment

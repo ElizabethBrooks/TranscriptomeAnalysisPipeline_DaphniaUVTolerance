@@ -7,6 +7,7 @@
 # paired end reads
 #Usage: qsub counting_featureCounts.sh sortedNameFolder
 #Usage Ex: qsub counting_featureCounts.sh sortedName_samtoolsTophat2_run1
+
 #Required modules for ND CRC servers
 module load R/3.5.3
 #Set paths for r script

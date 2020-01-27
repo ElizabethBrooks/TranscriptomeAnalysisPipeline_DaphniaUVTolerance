@@ -8,6 +8,7 @@
 # paired end reads
 #Usage: qsub sorting_samtools.sh -sortingMethod alignedFolder
 #Usage Ex: qsub sorting_samtools.sh -name aligned_tophat2_run1
+
 #Required modules for ND CRC servers
 module load bio
 #module load bio/python/2.7.14

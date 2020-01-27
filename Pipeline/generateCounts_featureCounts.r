@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 #Usage: Rscript generateCounts_featureCounts.r readPath
 #Usage Ex: Rscript generateCounts_featureCounts.r /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/aligned_hisat2_run1
+
 #R script to perform analysis of aliged paired-end reads and generate gene count tables
 #Install Rsubread using BiocManager, this should only need to be done once
 #install.packages("BiocManager")

@@ -7,6 +7,7 @@
 #Script to generate a bowtie2 genome refernce build folder
 #Usage: qsub build_bowtie2.sh
 #Usage Ex: qsub build_bowtie2.sh
+
 #Required modules for ND CRC servers
 module load bio
 #Prepare for alignment

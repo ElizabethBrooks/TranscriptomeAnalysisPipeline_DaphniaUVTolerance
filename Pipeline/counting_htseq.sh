@@ -7,6 +7,7 @@
 # paired end reads
 #Usage: qsub counting_htseq.sh sortedNameFolder
 #Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1
+
 #Required modules for ND CRC servers
 module load bio
 module load bio/python/2.7.14
