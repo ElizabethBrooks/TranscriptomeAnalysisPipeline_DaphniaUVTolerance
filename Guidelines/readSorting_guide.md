@@ -1,2 +1,2 @@
 ## Samtools Notes ##
-- **A:**
+- **TO DO**
