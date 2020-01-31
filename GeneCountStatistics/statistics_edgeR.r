@@ -22,8 +22,13 @@ conds <- c(rep("ctrl",3),rep("treat",3))
 cds <- DGEList(counts=countsTable, group=conds)
 d <- calcNormFactors(cds)
 d$samples
-d <- estimateCommonDisp(d)
-d <- estimateTagwiseDisp(d)
+#Produce a matrix of pseudo-counts
+#Estimate common dispersion and tagwise dispersions
+d <- estimateDisp(d)
+#Alternatively, first estimate common dispersion
+#d <- estimateCommonDisp(d)
+#Then estimate tagwise dispersions
+#d <- estimateTagwiseDisp(d)
 de <- exactTest(d, pair=c("ctrl", "treat"))
 #Create results table of DE genes
 resultsTbl <- topTags(de, n=nrow(de$table))$table

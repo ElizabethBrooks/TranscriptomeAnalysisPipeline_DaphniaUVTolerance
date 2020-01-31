@@ -7,21 +7,23 @@
 #bioLite("edgeR")
 #Load the edgeR library
 
+#GLM Method
 #Import gene count data
-x <- read.delim("TableOfCounts.txt",row.names="Symbol")
+countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
+head(countsTable)
 #Add grouping factor
-group <- factor(c(1,1,2,2))
-#Generate list of DE genes
-y <- DGEList(counts=x,group=group)
+group <- factor(c(rep("ctrl",3),rep("treat",3)))
+#Create DGE list object
+list <- DGEList(counts=countsTable,group=group)
 #Calculate normalized factors
-y <- calcNormFactors(y)
-y$samples
+list <- calcNormFactors(list)
+list$samples
 #Design the model
 design <- model.matrix(~group)
-#Estimate pairwise disperssion
-y <- estimateDisp(y,design)
+#Estimate common dispersion, trended dispersions, and tagwise dispersions
+list <- estimateDisp(list,design)
 
 #Perform quasi-likelihood F-tests
-fit <- glmQLFit(y,design)
+fit <- glmQLFit(list,design)
 qlf <- glmQLFTest(fit,coef=2)
 topTags(qlf)
