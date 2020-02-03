@@ -21,6 +21,7 @@ conds <- c(rep("ctrl",3),rep("treat",3))
 #Generate list of DE genes
 cds <- DGEList(counts=countsTable, group=conds)
 d <- calcNormFactors(cds)
+#View normalization factors
 d$samples
 #Produce a matrix of pseudo-counts
 #Estimate common dispersion and tagwise dispersions
