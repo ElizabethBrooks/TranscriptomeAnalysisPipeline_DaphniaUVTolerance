@@ -61,7 +61,7 @@ fit <- glmQLFit(list,design)
 #Estimate Quasi-Likelihood dispersions, then visualize
 plotQLDisp(fit)
 
-#Now conduct QL F-tests for the treatment effect and show the top genes
+#Conduct Quasi-Likelihood F-tests for the treatment effect and show the top genes
 #By default, the test is for the last coefficient in the design matrix
 qlf <- glmQLFTest(fit)
 topTags(qlf)
