@@ -16,6 +16,8 @@ group <- factor(c(rep("ctrl",3),rep("treat",3)))
 #Create DGE list object
 list <- DGEList(counts=countsTable,group=group)
 
+#Plot the library sizes before normalization
+barplot(list$samples$lib.size*1e-6, names=1:36, ylab="Library size (millions)")
 #There is no purpose in analysing genes that are not expressed in either 
 # experimental condition, so genes are first filtered on expression levels
 keep <- filterByExpr(list)
@@ -25,6 +27,9 @@ list <- list[keep, , keep.lib.sizes=FALSE]
 list <- calcNormFactors(list)
 #View normalization factors
 list$samples
+dim(list)
+#Plot the library sizes after normalization
+barplot(list$samples$lib.size*1e-6, names=1:36, ylab="Library size (millions)")
 
 #An MDS plot shows the relative similarities of the six samples
 #Distances on an MDS plot of a DGEList object correspond to leading log-fold-change
