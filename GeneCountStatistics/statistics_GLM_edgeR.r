@@ -31,9 +31,8 @@ dim(list)
 #Plot the library sizes after normalization
 barplot(list$samples$lib.size*1e-6, names=1:36, ylab="Library size (millions)")
 
-#An MDS plot shows the relative similarities of the six samples
-#Distances on an MDS plot of a DGEList object correspond to leading log-fold-change
-# between each pair of samples, and can be used to view batch and treatment effects
+#Draw a MDS plot to show the relative similarities of the samples
+# and to view batch and treatment effects
 plotMDS(list, col=rep(1:2, each=3))
 #Draw a heatmap of individual RNA-seq samples using moderated log-counts-per-million
 logcpm <- cpm(list, log=TRUE)
@@ -48,11 +47,39 @@ topKEGG(keg, sort="up")
 
 #Design the model
 design <- model.matrix(~group)
+#Compute predictive log2-foldchanges (logFC) 
+logFC <- predFC(list,design,prior.count=1,dispersion=0.05)
+cor(logFC[,4:6])
 #Estimate common dispersion, trended dispersions, and tagwise dispersions
 list <- estimateDisp(list,design)
-#Perform quasi-likelihood F-tests
+#Estimate the genewise dispersion estimates over all genes, allowing for a
+# possible abundance trend
+plotBCV(list)
 #The fit has three parameters. The first is the baseline level of group 1,
 # and the second and third are the 2 vs 1 and 3 vs 1 differences
 fit <- glmQLFit(list,design)
+#Estimate Quasi-Likelihood dispersions, then visualize
+plotQLDisp(fit)
+
+#Now conduct QL F-tests for the treatment effect and show the top genes
+#By default, the test is for the last coefficient in the design matrix
+qlf <- glmQLFTest(fit)
+topTags(qlf)
+#Look at the individual counts-per-million for the top genes.
+top <- rownames(topTags(qlf))
+cpm(list)[top,]
+#Summarize the total number of genes significantly up-regulated or
+# down-regulated at 5% FDR
+summary(decideTests(qlf))
+#Plot all the logFCs against average count size, highlighting the DE genes
+#The blue lines indicate 2-fold up or down
+plotMD(qlf)
+abline(h=c(-1,1), col="blue")
+
+#Perform quasi-likelihood F-tests to test for significant differential
+# expression in each gene, and show the top genes
 qlf <- glmQLFTest(fit,coef=2)
 topTags(qlf)
+#Calculte the false discovery rate
+FDR <- p.adjust(qlf$table$PValue, method="BH")
+sum(FDR < 0.05)
