@@ -60,7 +60,7 @@ jpeg("plotMDSAfter.jpg")
 plotMDS(list, col=rep(1:3, each=3))
 dev.off()
 #Draw a heatmap of individual RNA-seq samples using moderated
-# log-counts-per-million before normalization
+# log-counts-per-million after normalization
 jpeg("plotHeatMapAfter.jpg")
 logcpm <- cpm(list, log=TRUE)
 heatmap(logcpm)
@@ -94,11 +94,6 @@ summary(decideTests(tested))
 jpeg("plotMD.jpg")
 plotMD(tested)
 abline(h=c(-1, 1), col="blue")
-dev.off()
-
-#Create a volcano plot with the default FDR cutoff of 0.05
-jpeg("plotVolcano.jpg")
-plotVolcano(tested)
 dev.off()
 
 #Make a mean-difference plot of two libraries of count data with smearing of points

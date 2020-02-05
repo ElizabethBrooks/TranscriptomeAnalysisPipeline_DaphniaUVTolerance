@@ -35,5 +35,4 @@ mv plotMDSAfter.jpg "$outputCounts"_"$outFile"/plotMDSAfter.jpg
 mv plotHeatMapAfter.jpg "$outputCounts"_"$outFile"/plotHeatMapAfter.jpg
 mv plotBCV.jpg "$outputCounts"_"$outFile"/plotBCV.jpg
 mv plotMD.jpg "$outputCounts"_"$outFile"/plotMD.jpg
-mv plotVolcano.jpg "$outputCounts"_"$outFile"/plotVolcano.jpg
 mv plotMA.jpg "$outputCounts"_"$outFile"/plotMA.jpg
