@@ -95,3 +95,14 @@ jpeg("plotMD.jpg")
 plotMD(tested)
 abline(h=c(-1, 1), col="blue")
 dev.off()
+
+#Create a volcano plot with the default FDR cutoff of 0.05
+jpeg("plotVolcano.jpg")
+plotVolcano(tested)
+dev.off()
+
+#Make a mean-difference plot of two libraries of count data with smearing of points
+#  with very low counts, especially those that are zero for one of the columns
+jpeg("plotMA.jpg")
+plotSmear(tested)
+dev.off()
