@@ -1,13 +1,12 @@
 #!/usr/bin/env Rscript
 #Usage: Rscript statistics_edgeR.r countsFile.csv startColPos endColPos
 #Usage Ex: Rscript statistics_edgeR.r ../GeneCounts_Merged/merged_counts_legacy_cleaned.csv 1 6
-#R script to perform statistical analysis of gene count tables using edgeR
+#R script to perform statistical analysis of gene count tables using edgeR GLMM
 #Install edgeR, this should only need to be done once
 #Since edgeR is already installed on the CRC this can be skipped if using the module
 #bioLite("edgeR")
 #Load the edgeR library
 
-#GLM Method
 #Import gene count data
 countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
 head(countsTable)
@@ -47,6 +46,7 @@ topKEGG(keg, sort="up")
 
 #Design the model
 design <- model.matrix(~group)
+colnames(design)
 #Compute predictive log2-foldchanges (logFC) 
 logFC <- predFC(list,design,prior.count=1,dispersion=0.05)
 cor(logFC[,4:6])
