@@ -41,6 +41,7 @@ mv plotMA.jpg "$outputCounts"_"$outFile"/plotMA.jpg
 cd "$outputCounts"_"$outFile"
 #Make table of GO data for the top tags from exact tests
 head -11 stats_exactTest.csv > topGenesStats_exactTest.csv
+sed -i 's/"logFC"/"geneID","logFC"/g' topGenesStats_exactTest.csv
 cut -f1 -d ',' topGenesStats_exactTest.csv > tmp.csv
 sed -i 's/"//g' tmp.csv
 head -1 "../gene.Blast2GO.merged.csv" > topGenesGO_exactTest.csv
