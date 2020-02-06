@@ -18,7 +18,7 @@ outputCounts="$outputsPath"/geneCountStats_cols"$2"to"$3"
 inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
 outFile=$(basename "$inputsPath"/"$1" | sed 's/\.csv//g')
 #Perform DE analysis using edgeR
-Rscript statistics_filtered_edgeR.r "$inputsPath"/"$1" $2 $3
+Rscript DEStatistics_filtered_edgeR.r "$inputsPath"/"$1" $2 $3
 #Rename and move produced filtered table
 mv tmpOut.csv "$outputCounts"_"$outFile".csv
 #Rename and move produced plot

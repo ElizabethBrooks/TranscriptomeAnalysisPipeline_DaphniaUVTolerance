@@ -23,7 +23,7 @@ outFile=$(basename "$inputsPath"/"$1" | sed 's/\.csv//g')
 mkdir "$outputCounts"_"$outFile"
 
 #Perform DE analysis using edgeR and output analysis results to a txt file
-Rscript statistics_exactTest_edgeR.r "$inputsPath"/"$1" $2 $3 > "$outputCounts"_"$outFile"/analysisResults.txt
+Rscript exactTest_edgeR.r "$inputsPath"/"$1" $2 $3 > "$outputCounts"_"$outFile"/analysisResults.txt
 #Rename and move produced filtered table
 mv stats_exactTest.csv "$outputCounts"_"$outFile"/stats_exactTest.csv
 #Rename and move produced plots

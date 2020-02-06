@@ -15,7 +15,7 @@ for i in $(seq 1 $colMax); do
 	#Offset by sample treatment set
 	if [[ $i -gt $iMax ]]; then
 		iMax=$(($i+5))
-		bash statistics_exactTest_subset.sh "$1" $i $iMax
+		bash exactTest_subset_edgeR.sh "$1" $i $iMax
 		i=$iMax
 	fi
 done
