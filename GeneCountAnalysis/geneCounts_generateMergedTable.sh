@@ -66,6 +66,8 @@ for f1 in "$inputsPath"/"$1"/*/; do
 done
 #Clean up
 rm "$outputsPath"/tmp*.txt
+#Move to location of merge_tagles.py script
+cd ../util
 #Merge gene counts based on generated guide file
 python merge_tables.py "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 #Rename the output merged counts file
