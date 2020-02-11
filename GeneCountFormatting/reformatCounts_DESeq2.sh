@@ -9,26 +9,34 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve statistics outputs absolute path
-outputsPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
+outputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
 #Retrieve analysis inputs path
 inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
+#Initialize values
+numRows=0
+numCols=0
 #Retrieve input filename
-countsFile=$(basename "$1" | sed 's/\.txt//g')
+inFile="$inputsPath/$1"
+countsFile=$(basename "$inFile" | sed 's/\.txt//g')
 #Set output file name
-outFile="$1_reformatted.gct"
+outFile="$outputsPath/$countsFile"_reformatted.gct
 #Retrieve number of rows
-numRows=$(wc -l "$1")
+wc -l "$inFile" > tmpNumRows.txt
+numRows=$(cut -d ' ' -f1 tmpNumRows.txt)
 #Retrieve number of samples
-numCols=$(head -n1 "$1" | awk '{print NF}')
+numCols=$(($(head -n1 "$inFile" | awk '{print NF}')-1))
 #Output headers for GCT formatting
-echo "#1.2" >> tmpHeader.gct
-printf '$numRows \t $numCols' >> tmpHeader.gct
+echo "#1.2" > tmpHeader.gct
+echo -e "$numRows \t $numCols" >> tmpHeader.gct
 #Create temporary file with added empty second column for the 'description' field
-cut -f1 "$1" > tmpData.gct
-sed -e 's/$/\t/' -i tmpData.gct
-cut -f2- "$1" >> tmpData.gct
+cut -f1 "$inFile" > tmpData1.gct
+sed -e "s/$/\tNA/" -i tmpData1.gct
+cut -f2- "$inFile" > tmpData2.gct
+paste tmpData1.gct tmpData2.gct > tmpData3.gct
+sed -i "s/gene\tNA/Name\tDescription/g" tmpData3.gct
 #Append header to reformatted counts table
-cat tmpHeader.gct tmpData.gct > "$outputsPath/$outFile"
+cat tmpHeader.gct tmpData3.gct > "$outFile"
+echo "Gene counts file has been reformatted!"
 #Clean up
-rm tmpHeader.gct
-rm tmpData.gct
+rm tmp*.txt
+rm tmp*.gct
