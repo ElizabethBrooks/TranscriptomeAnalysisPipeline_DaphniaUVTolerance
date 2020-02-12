@@ -2,3 +2,4 @@ pairedReads: /afs/crc.nd.edu/group/pfrenderlab/haldane/ebrooks/rnaseq/dmelUV
 adapter: /afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10
 genomeReference: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/Daphnia_pulex_PA42_v3.0.fasta
 genomeFeatures: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/PA42.3.0.annotation.18440.gff
+geneOntology: /home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Stats/gene.Blast2GO.merged.csv

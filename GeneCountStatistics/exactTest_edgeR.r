@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 #Usage: Rscript statistics_edgeR.r countsFile.csv startColPos endColPos
-#Usage Ex: Rscript statistics_exactTest_edgeR.r ../GeneCounts_Merged/geneCounts_merged_counted_htseqTophat2_run1_fullset_cleaned.csv 31 36
+#Usage Ex: Rscript statistics_exactTest_edgeR.r geneCounts_merged_counted_htseqTophat2_run1_fullset_cleaned.csv 31 36
 #R script to perform statistical analysis of gene count tables using edgeR exact test
 #Install edgeR, this should only need to be done once
 #Since edgeR is already installed on the CRC this can be skipped if using the module
