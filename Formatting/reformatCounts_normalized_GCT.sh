@@ -2,7 +2,7 @@
 #!/bin/bash
 #Script to re-format merged count tables to Gene Cluster Text file format (*.gct)
 #Usage: bash reformatCounts_GCT.sh countsFile
-#Usage Ex: bash reformatCounts_GCT.sh GeneCountsAnalyzed_countedCoordinate_htseqHisat2_run1_fullset_run1
+#Usage Ex: bash reformatCounts_GCT.sh geneCounts_merged_counted_htseqTophat2_run1_fullset_cleaned/geneCountStats_cols1to6_geneCounts_merged_counted_htseqTophat2_run1_fullset_cleaned
 
 #Check for input argument of file name
 if [ $# -eq 0 ]; then
@@ -10,14 +10,14 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve statistics outputs absolute path
-outputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
+outputsPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
 #Retrieve analysis inputs path
-inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
+inputsPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
 #Initialize values
 numRows=0
 numCols=0
 #Retrieve input filename
-inFile="$inputsPath"/GeneCounts_Merged/"$1"/geneCounts_merged_*_fullset.txt
+inFile="$inputsPath"/"$1"/stats_exactTest.csv
 countsFile=$(basename "$inFile" | sed 's/\.txt//g' | sed 's/\.csv//g')
 #Change delimiter for csv files
 sed 's/,/\t/g' "$inFile" > tmpInFile.txt
@@ -27,7 +27,7 @@ numRows=$(cut -d ' ' -f1 tmpNumRows.txt)
 #Retrieve number of samples
 numCols=$(($(head -n1 tmpInFile.txt | awk '{print NF}')-1))
 #Set output file name
-outFile="$outputsPath"/GeneCounts_Merged/"$1"/"$countsFile"_reformatted.gct
+outFile="$outputsPath"/"$1"/"$countsFile"_reformatted.gct
 mkdir "$outputsPath"/GeneCounts_Merged/"$1"
 #Output headers for GCT formatting
 echo "#1.2" > tmpHeader.gct

@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to perform t-test analysis of all samples in an input set
-#Usage: bash statistics_exactTests.sh countsFile.csv maxCols
-#Usage Ex: bash statistics_exactTests.sh ../GeneCounts_Merged/geneCounts_merged_counted_htseqTophat2_run1_fullset_cleaned.csv 36
+#Usage: bash exactTestDriver_edgeR.sh countsFolder maxCols
+#Usage Ex: bash exactTestDriver_edgeR.sh GeneCountsAnalyzed_countedCoordinate_htseqHisat2_run1_fullset_run1 36
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
