@@ -22,20 +22,10 @@ fi
 inputsPath=$(grep "counting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
 #Retrieve alignment outputs absolute path
 outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
-#Make a new directory for each analysis run
-while [ $dirFlag -eq 0 ]; do
-	outputsPath="$outputsPath"_"$1"_"$2"_run"$runNum"
-	mkdir $outputsPath
-	#Check if the folder already exists
-	if [ $? -ne 0 ]; then
-		#Increment the folder name
-		let runNum+=1
-	else
-		#Indicate that the folder was successfully made
-		dirFlag=1
-		echo "Creating folder for run $runNum of gene count analysis for a $2 of $1..."
-	fi
-done
+#Make a new directory for the analysis
+outputsPath="$outputsPath"_"$1"_"$2"
+mkdir $outputsPath
+echo "Creating folder for gene count analysis for a $2 of $1..."
 #Remove extra number tags from file names
 for f0 in "$inputsPath"/"$1"/*/; do
 	newName=$(echo "$f0" | sed 's/UV1/UV/g')

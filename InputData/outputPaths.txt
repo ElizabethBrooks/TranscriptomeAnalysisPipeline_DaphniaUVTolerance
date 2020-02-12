@@ -4,7 +4,7 @@ alignment: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 sorting: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 building: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 counting: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
-statistics: /home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Stats
+statistics: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneCounts_Stats
 alignmentAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/AlignmentsAnalyzed
 geneCountAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/GeneCountsAnalyzed
 geneTableAnalysis: /home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Formatted

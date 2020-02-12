@@ -1,8 +1,4 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N stats_edgeR_jobOutput
 #Script to run Rscripts that perform DE analysis of gene count tables
 #Usage: bash exactTest_subset_edgeR.sh countsFolder sample
 #Usage Ex: bash exactTest_subset_edgeR.sh GeneCountsAnalyzed_countedCoordinate_htseqHisat2_run1_fullset_run1 R2
@@ -32,10 +28,11 @@ sed -e 's/\s\+/,/g' "$inFile" > "$newFile"
 head -1 "$inFile" | tr "\t" "\n" | grep -n "$2" > tmpColNum.txt
 colNumStart=$(($(head -1 tmpColNum.txt | cut -d ':' -f1)-1))
 colNumEnd=$(($colNumStart+5))
+#Clean up
 rm tmpColNum.txt
 #Perform DE analysis using edgeR and output analysis results to a txt file
 Rscript exactTest_edgeR.r "$newFile" $colNumStart $colNumEnd > "$outputStats"/analysisResults.txt
-#Rename and move produced filtered table
+#Rename and move produced normalized counts table and exact test stats
 mv stats_normalizedCounts.csv "$outputStats"/stats_normalizedCounts.csv
 mv stats_exactTest.csv "$outputStats"/stats_exactTest.csv
 #Rename and move produced plots
@@ -48,13 +45,18 @@ mv plotHeatMapAfter.jpg "$outputStats"/plotHeatMapAfter.jpg
 mv plotBCV.jpg "$outputStats"/plotBCV.jpg
 mv plotMD.jpg "$outputStats"/plotMD.jpg
 mv plotMA.jpg "$outputStats"/plotMA.jpg
+#Fix formatting and headers for the normalized counts table and exact test stats
+sed -i 's/"//g' "$outputStats"/stats_normalizedCounts.csv
+sed -i 's/"//g' "$outputStats"/stats_exactTest.csv
+sed -i -e 's/^$2_VIS_Pool1/gene,$2_VIS_Pool1/' "$outputStats"/stats_normalizedCounts.csv
+sed -i -e 's/^logFC/gene,logFC/' "$outputStats"/stats_exactTest.csv
 #Move to current outputs folder
 cd "$outputStats"
 #Make table of GO data for the top tags from exact tests
 head -11 stats_exactTest.csv > topGenesStats_exactTest.csv
-sed -i 's/"logFC"/"geneID","logFC"/g' topGenesStats_exactTest.csv
+sed -i 's/^logFC/gene,logFC/g' topGenesStats_exactTest.csv
 cut -f1 -d ',' topGenesStats_exactTest.csv > tmp.csv
-sed -i 's/"//g' tmp.csv
 head -1 "$ontologyPath" > topGenesGO_exactTest.csv
 while IFS= read -r line; do grep $line "$ontologyPath" >> topGenesGO_exactTest.csv; done < "tmp.csv"
+#Clean up
 rm tmp.csv
