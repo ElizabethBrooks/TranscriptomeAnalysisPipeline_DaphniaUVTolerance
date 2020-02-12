@@ -72,4 +72,5 @@ cd ../util
 python merge_tables.py "$outputsPath"/mergeCounts_guideFile_"$1"_"$2".txt
 #Rename the output merged counts file
 mv merged_counts.txt "$outputsPath"/geneCounts_merged_"$1"_"$2".txt
+#Print a script completion confirmation message
 echo "Merged table has been renamed 'geneCounts_merged_"$1"_"$2".txt' and moved!"

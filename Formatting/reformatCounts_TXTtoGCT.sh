@@ -36,6 +36,7 @@ paste tmpData1.gct tmpData2.gct > tmpData3.gct
 sed -i "s/gene\tNA/Name\tDescription/g" tmpData3.gct
 #Append header to reformatted counts table
 cat tmpHeader.gct tmpData3.gct > "$outFile"
+#Print a script completion confirmation message
 echo "Gene counts file has been reformatted!"
 #Clean up
 rm tmp*.txt

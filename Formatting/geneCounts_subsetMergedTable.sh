@@ -37,6 +37,7 @@ else #TXT and CSV formatted
 	# including the first column with gene IDs
 	cut -f 1,$colNum,$(($colNum+1)),$(($colNum+2)),$(($colNum+3)),$(($colNum+4)),$(($colNum+5)) "$inFile" > "$outFile"
 fi
+#Print a script completion confirmation message
 echo "Selected $2 subset has been generated!"
 #Clean up
 rm tmp*.txt

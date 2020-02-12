@@ -205,3 +205,5 @@ if [[ "$inputTable" == *"subset"* ]]; then
 	rm "$prefixOutputs"/"$inputTable"_final_merged_counts_annotatedTreatment.csv
 	rm "$prefixOutputs"/"$inputTable"_final_merged_counts_annotatedGeneotype.csv
 fi
+#Print a script completion confirmation message
+echo "Gene count matricies have been prepared!"
