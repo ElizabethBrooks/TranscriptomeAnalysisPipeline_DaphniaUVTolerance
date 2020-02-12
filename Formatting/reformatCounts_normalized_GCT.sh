@@ -19,7 +19,7 @@ numCols=0
 #Retrieve input filename
 inFile="$inputsPath"/"$1"/stats_normalizedCounts.csv
 countsFile=$(basename "$inFile" | sed 's/\.txt//g' | sed 's/\.csv//g')
-#Change delimiter for csv files
+#Change delimiter for input files
 sed 's/,/\t/g' "$inFile" > tmpInFile.txt
 sed -i 's/ /\t/g' tmpInFile.txt
 #Retrieve number of rows

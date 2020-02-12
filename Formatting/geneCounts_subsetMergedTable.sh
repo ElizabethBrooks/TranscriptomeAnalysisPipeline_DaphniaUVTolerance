@@ -31,7 +31,6 @@ if [ ${inFile: -4} == ".gct" ]; then #GCT formatted
 	head -3 "$inFile" > tmpHeader.txt
 	tail tmpHeader.txt | tr "\t" "\n" | grep -n "$subsetStart" > tmpColNum.txt
 	colNum=$(($(cut -d ':' -f1 tmpColNum.txt)-3))
-	echo $colNum
 	#Retrieve the selected subset (default of 3 replicates for 2 treatments), 
 	# including the first column with gene IDs and second with description
 	cut -f 1,2,$colNum,$(($colNum+1)),$(($colNum+2)),$(($colNum+3)),$(($colNum+4)),$(($colNum+5)) "$inFile" > "$outFile"
