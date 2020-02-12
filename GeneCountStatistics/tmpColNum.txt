@@ -1,6 +1,0 @@
-32:Sierra_VIS_Pool1
-33:Sierra_VIS_Pool2
-34:Sierra_VIS_Pool3
-35:Sierra_UV_Pool1
-36:Sierra_UV_Pool2
-37:Sierra_UV_Pool3

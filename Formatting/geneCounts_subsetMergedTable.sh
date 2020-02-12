@@ -16,8 +16,10 @@ inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " 
 colNum=0
 numSamples=6
 numRows=0
-#Retrieve input filename
+numCols=0
+#Retrieve input filename and current number of columns
 inFile="$inputsPath/$1"
+numCols=$(($(head -n1 "$inFile" | awk '{print NF}')-1))
 #Set output file name
 countsFile=$(basename "$inFile" | sed 's/\.txt//g' | sed 's/\.csv//g' | sed 's/\.gct//g')
 outFile="$outputsPath"/GeneCounts_Merged/"$countsFile"/subset"$2"_"$1"
@@ -36,7 +38,7 @@ if [ ${inFile: -4} == ".gct" ]; then #GCT formatted
 	#Reset sample count for the second line of GCT formatted file
 	head -1 tmpHeader.txt > tmpHeadLine.txt
 	head -2 "$outFile" > tmpHeader.txt
-	tail -1 tmpHeader.txt | sed 's/ 36/ 6/g' > tmpSampleLine.txt
+	tail -1 tmpHeader.txt | sed "/\t$numCols/\t$numSamples/g" > tmpSampleLine.txt
 	#Retrieve remaining data
 	wc -l "$inFile" > tmpNumRows.txt
 	numRows=$(($(cut -d ' ' -f1 tmpNumRows.txt)-2))
