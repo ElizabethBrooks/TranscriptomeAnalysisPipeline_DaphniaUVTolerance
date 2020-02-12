@@ -1,7 +1,7 @@
 #!/bin/bash
-#Script to run Rscripts that perform DE analysis of gene count tables
-#Usage: bash statistics_DEAnalysis_edgeR.sh countsFile startColPos endColPos
-#Usage Ex: bash statistics_DEAnalysis_edgeR.sh GeneCountAnalysis_subset_run1/geneCounts_merged_counted_htseqTophat2_run1_subset_cleaned.csv 1 6
+#Script to generate venn diagrams from edgeR stats
+#Usage: bash 
+#Usage Ex: bash 
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -12,8 +12,15 @@ fi
 outputsPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
 #Retrieve analysis inputs path
 inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
-#Perform DE analysis using edgeR
-Rscript DEStatistics_edgeR.r "$inputsPath"/"$1" $2 $3
-#Move produce stats file
 outFile=$(basename "$inputsPath"/"$1" | sed 's/\.csv//g')
-mv stats_tmpOut.csv "$outputsPath"/geneCountStats_cols"$2"to"$3"_"$outFile"
+#Create directory for output files
+outDir="$outputsPath"/"$outFile"
+outputStats="$outDir"/geneCountStats_cols"$2"to"$3"_"$outFile"
+mkdir "$outDir"
+mkdir "$outputStats"
+
+#TO DO
+#Prepare for analysis
+Rscript geneSets_vennDiagram.r "$1"
+Rscript topTags_vennDiagram.r "$1"
+#Move output JPGs

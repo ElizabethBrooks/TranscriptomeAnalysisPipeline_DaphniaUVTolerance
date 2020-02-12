@@ -2,7 +2,7 @@
 library(VennDiagram)
 
 #Import data
-ids <- read.csv("/home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Stats/mergedGenes_exactTest.csv")
+ids <- read.csv(file=args[1])
 #Define sets for diagram
 SET1 <- ids$Y05
 SET2 <- ids$Y023

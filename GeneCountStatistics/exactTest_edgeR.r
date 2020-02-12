@@ -46,6 +46,9 @@ table(keep)
 list <- list[keep, , keep.lib.sizes=FALSE]
 #Calculate normalized factors
 list <- calcNormFactors(list)
+#Write normalized counts to file
+normList <- cpm(list, normalized.lib.sizes=TRUE)
+write.table(normList, file="stats_normalizedCounts.csv", sep=",", row.names=TRUE)
 #View normalization factors
 list$samples
 dim(list)

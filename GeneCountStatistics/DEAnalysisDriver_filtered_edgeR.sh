@@ -1,11 +1,8 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N stats_edgeR_jobOutput
 #Script to run Rscripts that perform DE analysis of gene count tables
 #Usage: bash statistics_filtered_DEAnalysis_edgeR.sh countsFile startColPos endColPos
 #Usage Ex: bash statistics_filtered_DEAnalysis_edgeR.sh GeneCountAnalysis_subset_run1/geneCounts_merged_counted_htseqTophat2_run1_subset_cleaned.csv 1 6
+
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"

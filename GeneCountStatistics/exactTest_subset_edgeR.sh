@@ -15,30 +15,33 @@ fi
 
 #Retrieve statistics outputs absolute path
 outputsPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
-outputCounts="$outputsPath"/geneCountStats_cols"$2"to"$3"
 #Retrieve analysis inputs path
 inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
 outFile=$(basename "$inputsPath"/"$1" | sed 's/\.csv//g')
 #Create directory for output files
-mkdir "$outputCounts"_"$outFile"
+outDir="$outputsPath"/"$outFile"
+outputStats="$outDir"/geneCountStats_cols"$2"to"$3"
+mkdir "$outDir"
+mkdir "$outputStats"
 
 #Perform DE analysis using edgeR and output analysis results to a txt file
-Rscript exactTest_edgeR.r "$inputsPath"/"$1" $2 $3 > "$outputCounts"_"$outFile"/analysisResults.txt
+Rscript exactTest_edgeR.r "$inputsPath"/"$1" $2 $3 > "$outputStats"/analysisResults.txt
 #Rename and move produced filtered table
-mv stats_exactTest.csv "$outputCounts"_"$outFile"/stats_exactTest.csv
+mv stats_normalizedCounts.csv "$outputStats"/stats_normalizedCounts.csv
+mv stats_exactTest.csv "$outputStats"/stats_exactTest.csv
 #Rename and move produced plots
-mv plotBarsBefore.jpg "$outputCounts"_"$outFile"/plotBarsBefore.jpg
-mv plotMDSBefore.jpg "$outputCounts"_"$outFile"/plotMDSBefore.jpg
-mv plotHeatMapBefore.jpg "$outputCounts"_"$outFile"/plotHeatMapBefore.jpg
-mv plotBarsAfter.jpg "$outputCounts"_"$outFile"/plotBarsAfter.jpg
-mv plotMDSAfter.jpg "$outputCounts"_"$outFile"/plotMDSAfter.jpg
-mv plotHeatMapAfter.jpg "$outputCounts"_"$outFile"/plotHeatMapAfter.jpg
-mv plotBCV.jpg "$outputCounts"_"$outFile"/plotBCV.jpg
-mv plotMD.jpg "$outputCounts"_"$outFile"/plotMD.jpg
-mv plotMA.jpg "$outputCounts"_"$outFile"/plotMA.jpg
+mv plotBarsBefore.jpg "$outputStats"/plotBarsBefore.jpg
+mv plotMDSBefore.jpg "$outputStats"/plotMDSBefore.jpg
+mv plotHeatMapBefore.jpg "$outputStats"/plotHeatMapBefore.jpg
+mv plotBarsAfter.jpg "$outputStats"/plotBarsAfter.jpg
+mv plotMDSAfter.jpg "$outputStats"/plotMDSAfter.jpg
+mv plotHeatMapAfter.jpg "$outputStats"/plotHeatMapAfter.jpg
+mv plotBCV.jpg "$outputStats"/plotBCV.jpg
+mv plotMD.jpg "$outputStats"/plotMD.jpg
+mv plotMA.jpg "$outputStats"/plotMA.jpg
 
 #Move to current outputs folder
-cd "$outputCounts"_"$outFile"
+cd "$outputStats"
 #Make table of GO data for the top tags from exact tests
 head -11 stats_exactTest.csv > topGenesStats_exactTest.csv
 sed -i 's/"logFC"/"geneID","logFC"/g' topGenesStats_exactTest.csv

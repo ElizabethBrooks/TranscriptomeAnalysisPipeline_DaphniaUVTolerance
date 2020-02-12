@@ -14,7 +14,7 @@ outputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " "
 numSamples=6
 numTreatments=2
 #Set output file name
-outFile="$outputsPath"/"$1"_exactTest.cls
+outFile="$outputsPath"/CLS/"$1"_exactTest.cls
 #Set header line and write to file
 headerLine="$numSamples $numTreatments 1"
 echo $headerLine > "$outFile"

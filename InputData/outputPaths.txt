@@ -7,4 +7,4 @@ counting: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 statistics: /home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Stats
 alignmentAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/AlignmentsAnalyzed
 geneCountAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/GeneCountsAnalyzed
-geneTableAnalysis: /home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Merged
+geneTableAnalysis: /home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Formatted
