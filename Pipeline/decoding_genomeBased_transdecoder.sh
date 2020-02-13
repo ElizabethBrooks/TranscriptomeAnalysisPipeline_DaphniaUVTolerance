@@ -33,6 +33,5 @@ TransDecoder.LongOrfs -t "$outFolder"/transcripts_"$1".fasta
 #TransDecoder.Predict -t transcripts.fasta [ homology options ]
 #Generate a genome-based coding region annotation file
 perl util/cdna_alignment_orf_to_genome_orf.pl \
-     "$outFolder"/transcripts.fasta.transdecoder_"$1".gff3 \
      "$outFolder"/transcripts_"$1".gff3 \
      "$outFolder"/transcripts_"$1".fasta > "$outFolder"/transcripts.fasta.transdecoder.genome_"$1".gff3
