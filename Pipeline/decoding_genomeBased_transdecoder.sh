@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N decoding_transdecoder_jobOutput
+#$ -N decoding_genomeBased_transdecoder_jobOutput
 #Script to predict coding regions from a transcript fasta file
 # using Transdecoder with genome reference and features files
 #Usage: qsub decoding_genomeBased_transdecoder.sh genomeVersion
