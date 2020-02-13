@@ -16,7 +16,7 @@ genomeRef=$(grep "genomeReference:" ../InputData/outputPaths.txt | tr -d " " | s
 genomeFeat=$(grep "genomeFeatures:" ../InputData/outputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
 #Retrieve outputs absolute path
 outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
-outFolder="$outputPath"/decoded_"$1"
+outFolder="$outputsPath"/decoded_"$1"
 mkdir "$outFolder"
 #Move to util
 cd ../util
