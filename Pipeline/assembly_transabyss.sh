@@ -10,7 +10,7 @@
 #Note that the genome version input is for output file naming purposes only
 
 #Required modules for ND CRC servers
-module load bio/transabyss
+#module load bio/transabyss
 #Prepare for alignment
 dirFlag=0
 runNum=1
@@ -56,18 +56,19 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 # using 8 threads
 touch tmpSampleList.txt
 for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
+	echo "Pasting sample $f1"
 	#Combine sample paths into one list
-	paste -d ' ' tmpSampleList.txt "$f1" > tmpSampleList.txt
+	paste -d ' ' tmpSampleList.txt "$f1" >> tmpSampleList.txt
 done
 #Retrieve sample list
 sampleList=$(head -1 tmpSampleList.txt)
 echo $sampleList
 #Begin transabyss assembly
 #transabyss --threads 8 --pe $sampleList --SS --name "$2" --outdir "$outputFolder"
-echo "Transabyss assembly of $1 data is complete!"
+#echo "Transabyss assembly of $1 data is complete!"
 #Add run inputs to output summary file
-echo "$curSampleNoPath" > "$inputOutFile"
-echo "transabyss --threads 8 --pe $sampleList --SS --name $2 --outdir $outputFolder" > "$inputOutFile"
+#echo "$curSampleNoPath" > "$inputOutFile"
+#echo "transabyss --threads 8 --pe $sampleList --SS --name $2 --outdir $outputFolder" > "$inputOutFile"
 #Copy previous summaries
 #cp "$inputsPath"/"$1"/*.txt "$outputFolder"
 #Clean up
