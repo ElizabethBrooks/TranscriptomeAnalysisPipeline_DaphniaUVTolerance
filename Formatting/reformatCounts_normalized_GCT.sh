@@ -17,7 +17,7 @@ inputsPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "
 numRows=0
 numCols=0
 #Retrieve input filename
-inFile="$inputsPath"/"$1"/geneCountStats_"$2"/stats_normalizedCounts.csv
+inFile="$inputsPath"/GeneCounts_Stats/"$1"/geneCountStats_"$2"/stats_normalizedCounts.csv
 #Change delimiter for input files
 sed 's/,/\t/g' "$inFile" > tmpInFile.txt
 sed -i 's/ /\t/g' tmpInFile.txt
@@ -27,7 +27,7 @@ numRows=$(cut -d ' ' -f1 tmpNumRows.txt)
 #Retrieve number of samples
 numCols=$(($(head -n1 tmpInFile.txt | awk '{print NF}')-1))
 #Set output file name
-outFile="$outputsPath"/"$1"/geneCountStats_"$2"/stats_normalizedCounts_reformatted.gct
+outFile="$outputsPath"/GeneCounts_Stats/"$1"/geneCountStats_"$2"/stats_normalizedCounts_reformatted.gct
 #Output headers for GCT formatting
 echo "#1.2" > tmpHeader.gct
 echo -e "$numRows \t $numCols" >> tmpHeader.gct

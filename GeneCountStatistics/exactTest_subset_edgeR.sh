@@ -14,11 +14,11 @@ outputsPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed 
 ontologyPath=$(grep "geneOntology:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneOntology://g")
 #Retrieve analysis inputs path
 inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
-inFile=$(echo "$inputsPath"/GeneCounts_Merged/"$1"/geneCounts_merged_*_fullset.txt)
+inFile=$(echo "$inputsPath"/GeneCounts_Formatted/GeneCounts_Merged/"$1"/geneCounts_merged_*_fullset.txt)
 noExt=$(echo $inFile | sed 's/\.txt//g')
 newFile=$(echo "$noExt".csv)
 #Create directory for output files
-outDir="$outputsPath"/"$1"
+outDir="$outputsPath"/GeneCounts_Stats/"$1"
 outputStats=$(echo "$outDir"/geneCountStats_"$2")
 mkdir "$outDir"
 mkdir "$outputStats"

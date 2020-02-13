@@ -18,11 +18,11 @@ numSamples=6
 numRows=0
 numCols=0
 #Retrieve input filename and current number of columns
-inFile="$inputsPath/$1"
+inFile="$inputsPath/GeneCounts_Formatted/$1"
 numCols=$(($(head -n1 "$inFile" | awk '{print NF}')-1))
 #Set output file name
 countsFile=$(basename "$inFile" | sed 's/\.txt//g' | sed 's/\.csv//g' | sed 's/\.gct//g')
-outFile="$outputsPath"/GeneCounts_Merged/"$countsFile"/subset"$2"_"$1"
+outFile="$outputsPath"/GeneCounts_Formatted/GeneCounts_Merged/"$countsFile"/subset"$2"_"$1"
 #Set sample subset
 subsetStart="$2"_VIS_Pool1
 #Check file type

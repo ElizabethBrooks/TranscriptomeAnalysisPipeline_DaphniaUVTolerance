@@ -7,9 +7,9 @@ inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " 
 #Retrieve gene count analysis outputs absolute path
 outputsPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
 #Plot merged data kMeans clustering
-Rscript geneCounts_kMeans.r "$inputsPath"/"$1" $2
+Rscript geneCounts_kMeans.r "$inputsPath"/GeneCounts_Formatted/"$1" $2
 #Rename and move produced plot
 outFolder=$(dirname "$1")
-mkdir "$outputsPath"/"$outFolder"
+mkdir "$outputsPath"/GeneCounts_Stats/"$outFolder"
 outFile=$(echo "$1" | sed 's/\.csv//')
-mv Rplots.pdf "$outputsPath"/"$outFile"_k"$2".pdf
+mv Rplots.pdf "$outputsPath"/GeneCounts_Stats/"$outFile"_k"$2".pdf

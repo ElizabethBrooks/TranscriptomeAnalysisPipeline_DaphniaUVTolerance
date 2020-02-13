@@ -12,9 +12,9 @@ fi
 outputsPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
 #Retrieve analysis inputs path
 inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
-outFile=$(basename "$inputsPath"/"$1" | sed 's/\.csv//g')
+outFile=$(basename "$inputsPath"/GeneCounts_Formatted/"$1" | sed 's/\.csv//g')
 #Create directory for output files
-outDir="$outputsPath"/"$outFile"
+outDir="$outputsPath"/GeneCounts_Stats/"$outFile"
 outputStats="$outDir"/geneCountStats_cols"$2"to"$3"_"$outFile"
 mkdir "$outDir"
 mkdir "$outputStats"

@@ -3,7 +3,7 @@
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Move to outputs directory
-cd "$outputsPath"
+cd "$outputsPath"/AlignmentsAnalyzed
 #Create directory for alignment analysis
 #outputAnalysis=AlignmentAnalysis
 #mkdir "$outputAnalysis"

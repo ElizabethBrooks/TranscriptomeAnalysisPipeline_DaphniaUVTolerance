@@ -15,5 +15,5 @@ inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " 
 #Perform DE analysis using edgeR
 Rscript DEStatistics_edgeR.r "$inputsPath"/"$1" $2 $3
 #Move produce stats file
-outFile=$(basename "$inputsPath"/"$1" | sed 's/\.csv//g')
-mv stats_tmpOut.csv "$outputsPath"/geneCountStats_cols"$2"to"$3"_"$outFile"
+outFile=$(basename "$inputsPath"/GeneCounts_Formatted/"$1" | sed 's/\.csv//g')
+mv stats_tmpOut.csv "$outputsPath"/GeneCounts_Stats/geneCountStats_cols"$2"to"$3"_"$outFile"

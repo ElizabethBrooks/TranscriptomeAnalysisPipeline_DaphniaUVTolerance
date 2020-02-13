@@ -23,7 +23,7 @@ inputsPath=$(grep "counting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/
 #Retrieve alignment outputs absolute path
 outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
 #Make a new directory for the analysis
-outputsPath="$outputsPath"_"$1"_"$2"
+outputsPath="$outputsPath"_"$1"_"$2"/GeneCountsAnalyzed
 mkdir $outputsPath
 echo "Creating folder for gene count analysis for a $2 of $1..."
 #Remove extra number tags from file names

@@ -11,9 +11,9 @@ runNum=1
 inputTable=$(echo "$1" | sed "s/\.txt//g")
 #Directory for outputs
 outputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
-prefixOutputs="$outputsPath"
+prefixOutputs="$outputsPath"/GeneCounts_Formatted
 #Directory for gene count tables
-prefixInputs="$outputsPath"/"GeneCounts_Tables"
+prefixInputs="$outputsPath"/GeneCounts_Formatted/"GeneCounts_Tables"
 #Check which set of data is used
 if [[ "$inputTable" == *"subset"* ]]; then
 	analysisSet="subset"

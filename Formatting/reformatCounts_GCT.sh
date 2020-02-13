@@ -17,7 +17,7 @@ inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " 
 numRows=0
 numCols=0
 #Retrieve input filename
-inFile="$inputsPath"/GeneCounts_Merged/"$1"/geneCounts_merged_*_fullset.txt
+inFile="$inputsPath"/GeneCounts_Formatted/GeneCounts_Merged/"$1"/geneCounts_merged_*_fullset.txt
 countsFile=$(basename "$inFile" | sed 's/\.txt//g' | sed 's/\.csv//g')
 #Change delimiter for csv files
 sed 's/,/\t/g' "$inFile" > tmpInFile.txt
@@ -27,8 +27,8 @@ numRows=$(cut -d ' ' -f1 tmpNumRows.txt)
 #Retrieve number of samples
 numCols=$(($(head -n1 tmpInFile.txt | awk '{print NF}')-1))
 #Set output file name
-outFile="$outputsPath"/GeneCounts_Merged/"$1"/"$countsFile"_reformatted.gct
-mkdir "$outputsPath"/GeneCounts_Merged/"$1"
+outFile="$outputsPath"/GeneCounts_Formatted/GeneCounts_Merged/"$1"/"$countsFile"_reformatted.gct
+mkdir "$outputsPath"/GeneCounts_Formatted/GeneCounts_Merged/"$1"
 #Output headers for GCT formatting
 echo "#1.2" > tmpHeader.gct
 echo -e "$numRows \t $numCols" >> tmpHeader.gct
