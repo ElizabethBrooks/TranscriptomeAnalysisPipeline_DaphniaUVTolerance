@@ -61,7 +61,7 @@ for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 	#Store current sample file name in a temp txt file
 	SARRAY[counter]=" $f1"
 	#Incrememnt counter
-	counter=counter+1
+	let counter=$counter+1
 done
 #Retrieve sample list
 echo ${SARRAY[@]}
