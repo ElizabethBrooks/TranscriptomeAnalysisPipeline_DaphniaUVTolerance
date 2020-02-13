@@ -1,8 +1,8 @@
 #!/bin/bash
 #!/bin/bash
 #Script to re-format merged count tables to Gene Cluster Text file format (*.gct)
-#Usage: bash reformatCounts_normalized_GCT.sh countsFile sampleSet
-#Usage Ex: bash reformatCounts_normalized_GCT.sh GeneCountsAnalyzed_countedCoordinate_htseqHisat2_run1_fullset sampleSet
+#Usage: bash reformatCounts_normalized_GCT.sh countsFolder sampleSet
+#Usage Ex: bash reformatCounts_normalized_GCT.sh GeneCountsAnalyzed_countedCoordinate_htseqHisat2_run1_fullset R2
 
 #Check for input argument of file name
 if [ $# -eq 0 ]; then

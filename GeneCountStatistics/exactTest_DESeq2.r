@@ -23,6 +23,5 @@ group <- factor(c(rep("ctrl",3),rep("treat",3)))
 
 #TO DO
 ## Example 1: two-group comparison
-dds <- makeExampleDESeqDataSet(m=4)
-dds <- DESeq(dds)
-res <- results(dds, contrast=c("condition","B","A"))
+dds <- DESeq(countsTable)
+res <- results(dds, contrast=c("condition","ctrl","treat"))
