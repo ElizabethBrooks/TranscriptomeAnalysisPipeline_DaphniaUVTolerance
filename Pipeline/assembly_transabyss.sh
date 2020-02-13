@@ -14,6 +14,7 @@
 #Prepare for alignment
 dirFlag=0
 runNum=1
+counter=0
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -55,16 +56,15 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Loop through all forward and reverse paired reads and run transabyss on each pair
 # using 8 threads
 #Set the flag for paired-end sample input to transabyss
-echo "--pe" > "$outputFolder"/tmpSampleList.txt
+SARRAY[counter]="--pe"
 for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 	#Store current sample file name in a temp txt file
-	echo "$f1" > "$outputFolder"/tmpSample.txt
-	#Combine sample paths into one list
-	paste -d ' ' "$outputFolder"/tmpSampleList.txt "$outputFolder"/tmpSample.txt >> "$outputFolder"/tmpSampleList.txt
+	SARRAY[counter]=" $f1"
+	#Incrememnt counter
+	counter=counter+1
 done
 #Retrieve sample list
-sampleList=$(head -1 tmpSampleList.txt)
-echo $sampleList
+echo ${SARRAY[@]}
 #Begin transabyss assembly
 #transabyss --threads 8 $sampleList --SS --name "$2" --outdir "$outputFolder"
 #echo "Transabyss assembly of $1 data is complete!"

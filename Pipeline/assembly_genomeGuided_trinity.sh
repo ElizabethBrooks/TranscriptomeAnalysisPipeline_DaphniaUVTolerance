@@ -8,12 +8,8 @@
 #Usage: qsub assembly_genomeGuided_trinity.sh
 #Usage Ex: qsub assembly_genomeGuided_trinity.sh
 
-#TO DO: double check required modules
-#module load bio
-module load bio/trinity/2.8.4
-#module load bio/salmon/0.11.2
-#module load bio/jellyfish/2.2.10
-#module load bio/python/2.7.14
+#Load required modules for ND CRC servers
+module load bio/2.0
 
 #Users must provide read alignments to Trinity as a coordinate-sorted bam file
 #Be sure it's coordinate sorted by running 'samtools sort' on it
