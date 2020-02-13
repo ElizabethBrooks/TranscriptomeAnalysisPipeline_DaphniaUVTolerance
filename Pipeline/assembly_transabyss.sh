@@ -62,11 +62,11 @@ done
 #Retrieve sample list
 sampleList=$(head -1 tmpSampleList.txt)
 #Begin transabyss assembly
-transabyss --pe "$sampleList" --name "$2" --outdir "$outputFolder"
+transabyss --threads 8 --pe "$sampleList" --SS --name "$2" --outdir "$outputFolder"
 echo "Transabyss assembly of $1 data is complete!"
 #Add run inputs to output summary file
 echo "$curSampleNoPath" > "$inputOutFile"
-echo "transabyss --pe $sampleList --name $2 --outdir $outputFolder" > "$inputOutFile"
+echo "transabyss --threads 8 --pe $sampleList --SS --name $2 --outdir $outputFolder" > "$inputOutFile"
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
 #Clean up
