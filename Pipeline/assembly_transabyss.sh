@@ -55,7 +55,7 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Loop through all forward and reverse paired reads and run transabyss on each pair
 # using 8 threads
 #Set the flag for paired-end sample input to transabyss
-acho "--pe" > "$outputFolder"/tmpSampleList.txt
+echo "--pe" > "$outputFolder"/tmpSampleList.txt
 for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 	#Store current sample file name in a temp txt file
 	echo "$f1" > "$outputFolder"/tmpSample.txt
