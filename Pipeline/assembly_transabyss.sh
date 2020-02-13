@@ -10,7 +10,7 @@
 #Note that the genome version input is for output file naming purposes only
 
 #Required modules for ND CRC servers
-#module load bio/transabyss
+module load bio/transabyss
 #Prepare for alignment
 dirFlag=0
 runNum=1
@@ -57,21 +57,18 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 # using 8 threads
 #Set the flag for paired-end sample input to transabyss
 SARRAY[counter]="--pe"
+let counter=$counter+1
 for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 	#Store current sample file name in a temp txt file
 	SARRAY[counter]=" $f1"
 	#Incrememnt counter
 	let counter=$counter+1
 done
-#Retrieve sample list
-echo ${SARRAY[@]}
 #Begin transabyss assembly
-#transabyss --threads 8 $sampleList --SS --name "$2" --outdir "$outputFolder"
-#echo "Transabyss assembly of $1 data is complete!"
+transabyss --threads 8 $sampleList --SS --name "$2" --outdir "$outputFolder"
+echo "Transabyss assembly of $1 data is complete!"
 #Add run inputs to output summary file
-#echo "$curSampleNoPath" > "$inputOutFile"
-#echo "transabyss --threads 8 --pe $sampleList --SS --name $2 --outdir $outputFolder" > "$inputOutFile"
+echo "$curSampleNoPath" > "$inputOutFile"
+echo "transabyss --threads 8 --pe $sampleList --SS --name $2 --outdir $outputFolder" > "$inputOutFile"
 #Copy previous summaries
-#cp "$inputsPath"/"$1"/*.txt "$outputFolder"
-#Clean up
-rm "$outputFolder"/tmpSampleList.txt
+cp "$inputsPath"/"$1"/*.txt "$outputFolder"
