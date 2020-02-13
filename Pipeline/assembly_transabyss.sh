@@ -54,17 +54,19 @@ done
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Loop through all forward and reverse paired reads and run transabyss on each pair
 # using 8 threads
-touch tmpSampleList.txt
+#Set the flag for paired-end sample input to transabyss
+acho "--pe" > "$outputFolder"/tmpSampleList.txt
 for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
-	echo "Pasting sample $f1"
+	#Store current sample file name in a temp txt file
+	echo "$f1" > "$outputFolder"/tmpSample.txt
 	#Combine sample paths into one list
-	paste -d ' ' tmpSampleList.txt "$f1" >> tmpSampleList.txt
+	paste -d ' ' "$outputFolder"/tmpSampleList.txt "$outputFolder"/tmpSample.txt >> "$outputFolder"/tmpSampleList.txt
 done
 #Retrieve sample list
 sampleList=$(head -1 tmpSampleList.txt)
 echo $sampleList
 #Begin transabyss assembly
-#transabyss --threads 8 --pe $sampleList --SS --name "$2" --outdir "$outputFolder"
+#transabyss --threads 8 $sampleList --SS --name "$2" --outdir "$outputFolder"
 #echo "Transabyss assembly of $1 data is complete!"
 #Add run inputs to output summary file
 #echo "$curSampleNoPath" > "$inputOutFile"
@@ -72,4 +74,4 @@ echo $sampleList
 #Copy previous summaries
 #cp "$inputsPath"/"$1"/*.txt "$outputFolder"
 #Clean up
-rm tmpSampleList.txt
+rm "$outputFolder"/tmpSampleList.txt
