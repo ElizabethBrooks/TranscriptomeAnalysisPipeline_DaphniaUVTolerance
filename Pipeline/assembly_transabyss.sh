@@ -61,13 +61,14 @@ for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 done
 #Retrieve sample list
 sampleList=$(head -1 tmpSampleList.txt)
+echo $sampleList
 #Begin transabyss assembly
-transabyss --threads 8 --pe "$sampleList" --SS --name "$2" --outdir "$outputFolder"
+#transabyss --threads 8 --pe $sampleList --SS --name "$2" --outdir "$outputFolder"
 echo "Transabyss assembly of $1 data is complete!"
 #Add run inputs to output summary file
 echo "$curSampleNoPath" > "$inputOutFile"
 echo "transabyss --threads 8 --pe $sampleList --SS --name $2 --outdir $outputFolder" > "$inputOutFile"
 #Copy previous summaries
-cp "$inputsPath"/"$1"/*.txt "$outputFolder"
+#cp "$inputsPath"/"$1"/*.txt "$outputFolder"
 #Clean up
 rm tmpSampleList.txt
