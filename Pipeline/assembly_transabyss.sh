@@ -10,6 +10,7 @@
 #Note that the genome version input is for output file naming purposes only
 
 #Required modules for ND CRC servers
+module load bio
 module load bio/transabyss
 #Prepare for alignment
 dirFlag=0
