@@ -20,19 +20,23 @@ softPath=$(grep "transdecoder:" ../InputData/inputPaths.txt | tr -d " " | sed "s
 outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
 outFolder="$outputsPath"/decoded_"$1"
 mkdir "$outFolder"
+#Clean up genome features file
+sed -e "s/\r//g" "$genomeFeat" > "$outFolder"/tmpGenomeFeat.gff
 #Move to transdecoder software folder
 cd "$softPath"
 #Construct the transcript fasta file using the genome and the transcripts.gtf file
-perl util/gtf_genome_to_cdna_fasta.pl "$genomeFeat" "$genomeRef" > "$outFolder"/transcripts_"$1".fasta
+perl util/gtf_genome_to_cdna_fasta.pl "$outFolder"/tmpGenomeFeat.gff "$genomeRef" > "$outFolder"/transcripts_"$1".fasta
 #Convert the transcript structure GTF file to an alignment-GFF3 formatted file
-perl util/gtf_to_alignment_gff3.pl "$genomeFeat" > "$outFolder"/transcripts_"$1".gff3
+perl util/gtf_to_alignment_gff3.pl "$outFolder"/tmpGenomeFeat.gff > "$outFolder"/transcripts_"$1".gff3
 #TO DO: transcripts.fasta
 #Generate your best candidate open rading frame (ORF) predictions
-TransDecoder.LongOrfs -t "$outFolder"/transcripts_"$1".fasta > "$outFolder"/transcripts.fasta.transdecoder_"$1".gff3
+TransDecoder.LongOrfs -t "$outFolder"/transcripts_"$1".fasta
 #Optionally, identify peptides with homology to known proteins
 #TransDecoder.Predict -t transcripts.fasta [ homology options ]
 #Generate a genome-based coding region annotation file
 perl util/cdna_alignment_orf_to_genome_orf.pl \
-     "$outFolder"/transcripts.fasta.transdecoder_"$1".gff3 \
+     "$outFolder"/transcripts_"$1".fasta.transdecoder.gff3 \
      "$outFolder"/transcripts_"$1".gff3 \
      "$outFolder"/transcripts_"$1".fasta > "$outFolder"/transcripts.fasta.transdecoder.genome_"$1".gff3
+#Clean up
+rm "$outFolder"/tmpGenomeFeat.gff
