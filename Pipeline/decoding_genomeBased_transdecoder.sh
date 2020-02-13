@@ -10,7 +10,7 @@
 #Note that the genome version input is for output file naming purposes only
 
 #Load necessary modules for ND CRC servers
-#module load bio/transdecoder/
+module load bio/transdecoder/
 #Retrieve genome reference and features paths
 genomeRef=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 genomeFeat=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
