@@ -2,10 +2,10 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N decoding_transdecoder_jobOutput
+#$ -N assembly_trinity_jobOutput
 #Script to generate a trinity assembly for input transcripts
-#Usage: 
-#Usage Ex:
+#Usage: qsub assembly_trinity.sh
+#Usage Ex: qsub assembly_trinity.sh
 
 #fastqc reads
 #trim
