@@ -28,7 +28,6 @@ cd "$softPath"
 perl util/gtf_genome_to_cdna_fasta.pl "$outFolder"/tmpGenomeFeat.gff "$genomeRef" > "$outFolder"/transcripts_"$1".fasta
 #Convert the transcript structure GTF file to an alignment-GFF3 formatted file
 perl util/gtf_to_alignment_gff3.pl "$outFolder"/tmpGenomeFeat.gff > "$outFolder"/transcripts_"$1".gff3
-#TO DO: transcripts.fasta
 #Generate your best candidate open rading frame (ORF) predictions
 TransDecoder.LongOrfs -t "$outFolder"/transcripts_"$1".fasta
 #Optionally, identify peptides with homology to known proteins
