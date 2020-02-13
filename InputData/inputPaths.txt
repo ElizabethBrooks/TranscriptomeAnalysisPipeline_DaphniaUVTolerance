@@ -3,4 +3,4 @@ adapter: /afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.f
 genomeReference: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/Daphnia_pulex_PA42_v3.0.fasta
 genomeFeatures: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/PA42.3.0.annotation.18440.gff
 geneOntology: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/gene.Blast2GO.merged.csv
-transdecoder: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq/TransDecoder
+transdecoder: /afs/crc.nd.edu/group/hoth/ebrooks/ebrooks_RNASeq/dmeluv/TransDecoder
