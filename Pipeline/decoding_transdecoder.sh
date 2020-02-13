@@ -21,15 +21,15 @@ mkdir "$outFolder"
 #Move to util
 cd ../util
 #Construct the transcript fasta file using the genome and the transcripts.gtf file
-gtf_genome_to_cdna_fasta.pl "$genomeFeat" "$genomeRef" > "$outFolder"/transcripts_"$1".fasta
+perl gtf_genome_to_cdna_fasta.pl "$genomeFeat" "$genomeRef" > "$outFolder"/transcripts_"$1".fasta
 #Convert the transcript structure GTF file to an alignment-GFF3 formatted file
-gtf_to_alignment_gff3.pl "$genomeFeat" > "$outFolder"/transcripts_"$1".gff3
+perl gtf_to_alignment_gff3.pl "$genomeFeat" > "$outFolder"/transcripts_"$1".gff3
 #Generate your best candidate open rading frame (ORF) predictions
 TransDecoder.LongOrfs -t "$outFolder"/transcripts_"$1".fasta
 #Optionally, identify peptides with homology to known proteins
 #TransDecoder.Predict -t transcripts.fasta [ homology options ]
 #Generate a genome-based coding region annotation file
-cdna_alignment_orf_to_genome_orf.pl \
+perl cdna_alignment_orf_to_genome_orf.pl \
      "$outFolder"/transcripts.fasta.transdecoder_"$1".gff3 \
      "$outFolder"/transcripts_"$1".gff3 \
      "$outFolder"/transcripts_"$1".fasta > "$outFolder"/transcripts.fasta.transdecoder.genome_"$1".gff3
