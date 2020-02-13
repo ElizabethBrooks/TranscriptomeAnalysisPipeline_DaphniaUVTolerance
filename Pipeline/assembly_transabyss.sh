@@ -10,7 +10,6 @@
 #Note that the genome version input is for output file naming purposes only
 
 #Required modules for ND CRC servers
-module load bio
 module load bio/transabyss
 #Prepare for alignment
 dirFlag=0
@@ -54,8 +53,8 @@ while [ $dirFlag -eq 0 ]; do
 done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
-#Loop through all forward and reverse paired reads and run transabyss on each pair
-# using 8 threads
+#Loop through all forward and reverse paired reads and
+# store the file names in an array list
 #Set the flag for paired-end sample input to transabyss
 SARRAY[counter]="--pe"
 let counter=$counter+1

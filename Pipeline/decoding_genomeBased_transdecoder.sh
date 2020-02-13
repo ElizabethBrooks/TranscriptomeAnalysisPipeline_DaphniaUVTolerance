@@ -18,7 +18,7 @@ genomeFeat=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | se
 softPath=$(grep "transdecoder:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transdecoder://g")
 #Retrieve outputs absolute path
 outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
-outFolder="$outputsPath"/decoded_"$1"
+outFolder="$outputsPath"/decoded_genomeBased_"$1"
 mkdir "$outFolder"
 #Clean up genome features file
 sed -e "s/\r//g" "$genomeFeat" > "$outFolder"/tmpGenomeFeat.gff
