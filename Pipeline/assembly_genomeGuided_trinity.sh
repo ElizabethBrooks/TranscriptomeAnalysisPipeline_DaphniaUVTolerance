@@ -3,11 +3,10 @@
 #$ -m abe
 #$ -r n
 #$ -N assembly_genomeGuided_trinity_jobOutput
-#Script to predict coding regions from a transcript fasta file
-# using Transdecoder with genome reference and features files
+#$ -pe smp 8
+#Script to perform genome-guided Trinity de novo transcriptome assembly
 #Usage: qsub assembly_genomeGuided_trinity.sh
 #Usage Ex: qsub assembly_genomeGuided_trinity.sh
-#Genome-guided Trinity De novo Transcriptome Assembly
 
 #TO DO: double check required modules
 #module load bio
@@ -21,4 +20,4 @@ module load bio/trinity/2.8.4
 #Use a maximum intron length that makes most sense given your targeted organism
 Trinity --genome_guided_bam rnaseq.coordSorted.bam \
          --genome_guided_max_intron 10000 \
-         --max_memory 10G --CPU 10 
+         --max_memory 50G --CPU 8 

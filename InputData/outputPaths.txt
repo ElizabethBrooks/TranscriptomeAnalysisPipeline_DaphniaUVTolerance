@@ -1,5 +1,6 @@
 qc: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq
 trimming: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq
+assembly: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq
 decoding: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq
 alignment: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 sorting: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
