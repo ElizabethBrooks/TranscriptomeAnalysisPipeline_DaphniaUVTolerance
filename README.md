@@ -17,7 +17,7 @@ To avoid uploading outputs to this repository, the outputs from these scripts be
 * To run a compiled trimming script: **./*SCRIPTNAME*.sh**
 * To run a compiled alignment or stats script: **./*SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***
 
-## Naming
+## Script Naming Format
 Each script is named by the action and the primary software needed to perform the action.
 
 ## Running Any Script
