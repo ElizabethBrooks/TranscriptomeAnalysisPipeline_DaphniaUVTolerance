@@ -1,7 +1,7 @@
 # TranscriptomeAnalysisPipeline_DaphniaUVTolerance
 Bash shell scripts for analyzing short paired-end RNA sequence reads for Daphnia UV tolerance treatments.
 
-To avoid uploading outputs to this repository, the outputs from these scripts be placed in separate folders in the same directory as the script folder. In other words, outputs from scripts in this repository folder (Directory/TranscriptomeAnalysisPipeline_DaphniaUVTolerance) will be placed in the directory that contains this repository folder (Directory/ScriptOutputFolder).
+To avoid uploading outputs to this repository, the outputs from these scripts be placed in separate folders from this directory.
 
 ## RNA-seq Analysis Pipeline
 ![RNA-seq Analysis Pipeline](RNASeq_Workflow_DmelUV.png)
@@ -20,7 +20,7 @@ To avoid uploading outputs to this repository, the outputs from these scripts be
 ## Script Naming Format
 Each script is named by the action and the primary software needed to perform the action.
 
-## Running Any Script
+## Script Inputs and Outputs
 Instructions for usage, with required inputs are given in the first few lines of each script. There is a text file with information about the inputs, and one for outputs in the **InputData** folder. This is where paths may be set for input and output directories.
 
 ## Pipeline Component Scripts
