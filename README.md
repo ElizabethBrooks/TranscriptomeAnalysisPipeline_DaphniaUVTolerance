@@ -20,8 +20,11 @@ To avoid uploading outputs to this repository, the outputs from these scripts be
 ## Naming
 Each script is named by the action and the primary software needed to perform the action.
 
+## Running Any Script
+Instructions for usage, with required inputs are given in the first few lines of each script. There is a text file with information about the inputs, and one for outputs in the **InputData** folder. This is where paths may be set for input and output directories.
+
 ## Pipeline Component Scripts
-These are scripts that perform a single pipeline operation.
+These are scripts that perform a single pipeline operation, and are located in the **Pipeline** directory.
 
 ### Quality Control
 * QC_fastqc.sh
@@ -45,29 +48,6 @@ These scripts will accept a mix of folders with reads aligned using either HISAT
 * counting_htseq.sh
   * Input(s): ***sorted_SOFTWARE_run0* ... *sorted_SOFTWARE_runN***  
   * Output: **counted_htseq_run#** 
-  
-### Legacy Pipelines
-These are scripts for software that is no longer being updated.
-* alignment_tophat2.sh
-  * Input(s): ***trimmed_run0* ... *trimmed_runN***  
-  * Output: **aligned_tophat2_run#**
-* counting_cuffdiff.sh
-  * Input(s): ***sorted_SOFTWARE_run0* ... *sorted_SOFTWARE_runN***  
-  * Output: **counted_cuffdiff_run#** 
-
-There is a text file with information about the inputs in the **InputData** folder that needs to contain the following information:
-* statsInputs_tuxedo.sh
-  * Line 1: A single number indicating the number of bam files to be analyzed.  
-  * Line 2: A space separated list (sentence) with the tags for the **replicates**, as specified in the sample names. 
-  * Line 3: A space separated list (sentence) with the tags for the **treatments**, as specified in the sample names. 
-  * Line 4: A space separated list (sentence) with the tags for the **genotypes**, as specified in the sample names. 
-  * Line 5: A blank line, necessary for proper reading of the input file by the tuxedo stats script. 
-* statsInputs_edgeR.sh
-  * Line 1: A single number indicating the number of bam files to be analyzed.  
-  * Line 2: A space separated list (sentence) with the tags for the **replicates**, as specified in the sample names. 
-  * Line 3: A space separated list (sentence) with the tags for the **treatments**, as specified in the sample names. 
-  * Line 4: A space separated list (sentence) with the tags for the **genotypes**, as specified in the sample names. 
-  * Line 5: A blank line, necessary for proper reading of the input file by the edgeR stats script. 
 
 ## Pipeline Stage Scripts
 These are scripts that perform all operations necessary for a stage of the pipeline.
