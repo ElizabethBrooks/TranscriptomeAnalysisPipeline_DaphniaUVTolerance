@@ -11,6 +11,7 @@
 
 #Required modules for ND CRC servers
 module load bio/transabyss
+module load python
 #Prepare for alignment
 dirFlag=0
 runNum=1
