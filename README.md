@@ -23,41 +23,10 @@ Each script is named by the action and the primary software needed to perform th
 ## Script Inputs and Outputs
 Instructions for usage, with required inputs are given in the first few lines of each script. There is a text file with information about the inputs, and one for outputs in the **InputData** folder. This is where paths may be set for input and output directories.
 
+Furthermore, inputs and outputs for a given script are vizualized in the workflow diagram.
+
 ## Pipeline Component Scripts
 These are scripts that perform a single pipeline operation, and are located in the **Pipeline** directory.
-
-### Quality Control
-* QC_fastqc.sh
-  * Output: **trimmed_run#/SAMPLENAME_fastqc_report.txt**  
-
-### Adapter Trimming
-* trimming_trimmomaticFastqc.sh
-  * Output: **trimmed_run#**  
-
-### Sequence Alignment
-These scripts will accept any number of folders with reads trimmed using Trimmomatic. A minimum of one folder is expected as input.
-* alignment_hisat2.sh
-  * Input(s): ***trimmed_run0* ... *trimmed_runN***  
-  * Output: **aligned_hisat2_run#**   
-
-### Statistical Analysis
-These scripts will accept a mix of folders with reads aligned using either HISAT2 or Tophat2. A minimum of one folder is expected as input.
-* sorting_samtools.sh
-  * Input(s): ***aligned_SOFTWARE_run0* ... *aligned_SOFTWARE_runN***  
-  * Output: **sorted_samtools_run#** 
-* counting_htseq.sh
-  * Input(s): ***sorted_SOFTWARE_run0* ... *sorted_SOFTWARE_runN***  
-  * Output: **counted_htseq_run#** 
-
-## Pipeline Stage Scripts
-These are scripts that perform all operations necessary for a stage of the pipeline.
-
-### Adapter Trimming with Quality Control
-* trimmingQC_trimmomaticFastqc.sh
-  * Output: **trimmed_run#**  
-
-## Optimized Scripts
-These are scripts that have been optimized for running on ND CRC servers using distributed resources.
 
 ## Workflow Summary ##
 1. Quality control check a sample with [FastQC][2] to identify the correct adapter library encoding of illumina pipeline used and corresponding phred.
