@@ -11,7 +11,7 @@
 
 #Load necessary modules for ND CRC servers
 module load bio/transdecoder/
-module load python
+#module load bio/cufflinks
 #Retrieve genome reference and features paths
 genomeRef=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 genomeFeat=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
