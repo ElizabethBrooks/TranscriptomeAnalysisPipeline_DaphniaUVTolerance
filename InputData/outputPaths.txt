@@ -1,3 +1,4 @@
+multiFASTA: /afs/crc.nd.edu/group/pfrenderlab/haldane/ebrooks/rnaseq/dmelUV
 qc: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq
 trimming: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq
 assembly: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq

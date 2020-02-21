@@ -22,23 +22,21 @@ outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s
 outFolder="$outputsPath"/decoded_genomeBased_"$1"
 mkdir "$outFolder"
 #Clean up genome features file
-#sed -e "s/\r//g" "$genomeFeat" > "$outFolder"/tmpGenomeFeat.gff
+#sed -e "s/\r//g" "$genomeFeat" > "$outFolder"/genomeFeat_"$2".gff
 #Convert gff to gtf, and expose any issues with the -E flag
-gffread -E "$genomeFeat" -T -o- "$outFolder"/tmpGenomeFeat.gtf
+gffread -E "$genomeFeat" -T -o- "$outFolder"/genomeFeat_"$2".gtf
 #Move to transdecoder software folder
-cd "$softPath"
+#cd "$softPath"
 #Construct the transcript fasta file using the genome and the transcripts.gtf file (cufflinks of stringtie)
-perl util/gtf_genome_to_cdna_fasta.pl "$outFolder"/tmpGenomeFeat.gtf "$genomeRef" > "$outFolder"/transcripts_"$1".fasta
+#perl util/gtf_genome_to_cdna_fasta.pl "$outFolder"/genomeFeat_"$2".gtf "$genomeRef" > "$outFolder"/transcripts_"$1".fasta
 #Convert the transcript structure GTF file to an alignment-GFF3 formatted file
-perl util/gtf_to_alignment_gff3.pl "$outFolder"/tmpGenomeFeat.gtf > "$outFolder"/transcripts_"$1".gff3
+#perl util/gtf_to_alignment_gff3.pl "$outFolder"/genomeFeat_"$2".gtf > "$outFolder"/transcripts_"$1".gff3
 #Generate your best candidate open rading frame (ORF) predictions
-TransDecoder.LongOrfs -t "$outFolder"/transcripts_"$1".fasta
+#TransDecoder.LongOrfs -t "$outFolder"/transcripts_"$1".fasta
 #Optionally, identify peptides with homology to known proteins
 #TransDecoder.Predict -t transcripts.fasta [ homology options ]
 #Generate a genome-based coding region annotation file
-perl util/cdna_alignment_orf_to_genome_orf.pl \
-     "$outFolder"/transcripts_"$1".fasta.transdecoder.gff3 \
-     "$outFolder"/transcripts_"$1".gff3 \
-     "$outFolder"/transcripts_"$1".fasta > "$outFolder"/transcripts.fasta.transdecoder.genome_"$1".gff3
-#Clean up
-rm "$outFolder"/tmpGenomeFeat.gtf
+#perl util/cdna_alignment_orf_to_genome_orf.pl \
+#     "$outFolder"/transcripts_"$1".fasta.transdecoder.gff3 \
+#     "$outFolder"/transcripts_"$1".gff3 \
+#     "$outFolder"/transcripts_"$1".fasta > "$outFolder"/transcripts.fasta.transdecoder.genome_"$1".gff3

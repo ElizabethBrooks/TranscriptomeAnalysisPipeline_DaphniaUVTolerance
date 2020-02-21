@@ -12,6 +12,7 @@
 #Required modules for ND CRC servers
 module load bio/transabyss
 module load python
+#TO DO: Need igraph (pip install python-igraph)
 #Prepare for alignment
 dirFlag=0
 runNum=1
