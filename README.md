@@ -1,5 +1,5 @@
 # TranscriptomeAnalysisPipeline_DaphniaUVTolerance
-Bash shell scripts for analyzing short paired-end RNA sequence reads for Daphnia UV tolerance treatments.
+Repository for scripts used to analyze short paired-end RNA sequence reads for Daphnia UV tolerance treatments.
 
 To avoid uploading outputs to this repository, the outputs from these scripts be placed in separate folders from this directory.
 
@@ -7,13 +7,16 @@ To avoid uploading outputs to this repository, the outputs from these scripts be
 ![RNA-seq Analysis Pipeline](RNASeq_Workflow_DmelUV.png)
 
 ## Running Scripts on Servers
+Be sure to read the *usage notes* at the beginning of any script that you intend to run.
 * To submit a trimming job to the queue: **qsub *SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N**
 * To view the jobs you have submitted and corresponding task ID numbers: **qstat -u *USERNAME***
 * To delete a job from the queue: **qdel *TASKIDNUMBER***
 
 ## Running Scripts Locally
+Be sure to read the *usage notes* at the beginning of any script that you intend to run.
 * To run the script: **bash *SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
 ### Alternative Method of Running Scripts Locally
+Be sure to read the *usage notes* at the beginning of any script that you intend to run.
 * To compile the script before running: **chmod +x *SCRIPTNAME*.sh**
 * To run a compiled trimming script: **./*SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
 
