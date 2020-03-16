@@ -7,8 +7,7 @@ To avoid uploading outputs to this repository, the outputs from these scripts be
 ![RNA-seq Analysis Pipeline](RNASeq_Workflow_DmelUV.png)
 
 ## Running Scripts on Servers
-* To submit a trimming job to the queue: **qsub *SCRIPTNAME*.sh** 
-* To submit an alignment or stats job to the queue: **qsub *SCRIPTNAME*.sh *FOLDERNAME_run0* ... *FOLDERNAME_runN***  
+* To submit a trimming job to the queue: **qsub *SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N**
 * To view the jobs you have submitted and corresponding task ID numbers: **qstat -u *USERNAME***
 * To delete a job from the queue: **qdel *TASKIDNUMBER***
 
