@@ -12,7 +12,7 @@ To avoid uploading outputs to this repository, the outputs from these scripts be
 * To delete a job from the queue: **qdel *TASKIDNUMBER***
 
 ## Running Scripts Locally
-* To run the script: **bash *SCRIPTNAME*.sh**
+* To run the script: **bash *SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
 ### Alternative Method of Running Scripts Locally
 * To compile the script before running: **chmod +x *SCRIPTNAME*.sh**
 * To run a compiled trimming script: **./*SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
