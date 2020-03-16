@@ -36,6 +36,7 @@ Furthermore, inputs and outputs for a given script are vizualized in the workflo
    4. Scanning of reads with a 4-base wide sliding window and cutting when the average quality per base drops below 12: *SLIDINGWINDOW:4:15*
    5. Dropping of reads below 36 bases long: *MINLEN:36*
    6. Cutting of specified number of bases from the start of the read: *HEADCROP:13*
+   7. Any additional parameters for necessary quality control...
 3. Quality control check the trimmed paired reads to determine if “reads are good enough” to proceed.
 4. Map trimmed reads using a reference genome to perform sequence alignment with the [HISAT2][5] or [Tophat2][6] packages to
    1. Check the mapping efficiency of each job
@@ -45,6 +46,7 @@ Furthermore, inputs and outputs for a given script are vizualized in the workflo
    1. Statistically find differences in expression levels
    2. Generate an annotation based on the mapped reads
    3. Perform differential gene expression analysis on the mapped reads
+7. **TBA** etc...
 
 ## Required Software ##
 * [FastQC][10]: A quality control tool for high throughput raw sequence data. It generates quality reports for NGS data and gives pass/fail results for the following checks: Per base sequence quality, Per sequence quality scores, Per base sequence content, Per base GC content, Per sequence GC content, Per base N content, Sequence length distribution, Sequence duplication levels, Overrepresented sequences, Kmer content. It also has a Graphic User Interface.
