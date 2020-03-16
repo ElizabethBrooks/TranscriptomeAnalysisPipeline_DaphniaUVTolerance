@@ -13,7 +13,7 @@ To avoid uploading outputs to this repository, the outputs from these scripts be
 
 ## Running Scripts Locally
 * To run the script: **bash *SCRIPTNAME*.sh**
-# Alternative Method
+### Alternative Method of Running Script Locally
 * To compile the script before running: **chmod +x *SCRIPTNAME*.sh**
 * To run a compiled trimming script: **./*SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
 
