@@ -21,7 +21,7 @@ To avoid uploading outputs to this repository, the outputs from these scripts be
 Each script is named by the action and the primary software needed to perform the action.
 
 ## Script Inputs and Outputs
-Instructions for usage, with required inputs are given in the first few lines of each script. There is a text file with information about the inputs, and one for outputs in the **InputData** folder. This is where paths may be set for input and output directories.
+Instructions for usage, with required inputs are given in the first few lines of each script. There is a text file with information about the inputs, and one for outputs in the *InputData* directory. This is where paths may be set for input and output directories.
 
 Furthermore, inputs and outputs for a given script are vizualized in the workflow diagram.
 
@@ -30,13 +30,13 @@ Furthermore, inputs and outputs for a given script are vizualized in the workflo
    * If *Encoding = Illumina 1.5*, then the phred score is 64  
    * If *Encoding = Illumina 1.9*, then the phred score is 33  
 2. Perform adapter trimming with [Trimmomatic][3] for paired-end data with two specified input files, and resulting in 4 output files. Output files consist of 2 files for the paired output where both reads survived the processing, and 2 for corresponding unpaired output where a read survived, but the partner read did not. Adapter trimming is achieved by the
-   1. Removal of adapters: *ILLUMINACLIP:/afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10*
-   2. Removal of leading low quality bases with a score below 3: *LEADING:3*
-   3. Removal of trailing low quality bases with a score below 3: *TRAILING:3*
-   4. Scanning of reads with a 4-base wide sliding window and cutting when the average quality per base drops below 12: *SLIDINGWINDOW:4:15*
-   5. Dropping of reads below 36 bases long: *MINLEN:36*
-   6. Cutting of specified number of bases from the start of the read: *HEADCROP:13*
-   7. Any additional parameters for necessary quality control...
+   1. Removal of adapters
+   2. Removal of leading low quality bases with a score below 3
+   3. Removal of trailing low quality bases with a score below 3
+   4. Scanning of reads with a 4-base wide sliding window and cutting when the average quality per base drops below 12
+   5. Dropping of reads below 36 bases long
+   6. Cutting of specified number of bases from the start of the read
+   7. Any additional parameters for necessary quality control... (**see QC guidelines in *Guidelines* directory**)
 3. Quality control check the trimmed paired reads to determine if “reads are good enough” to proceed.
 4. Map trimmed reads using a reference genome to perform sequence alignment with the [HISAT2][5] or [Tophat2][6] packages to
    1. Check the mapping efficiency of each job
