@@ -12,8 +12,11 @@ To avoid uploading outputs to this repository, the outputs from these scripts be
 * To delete a job from the queue: **qdel *TASKIDNUMBER***
 
 ## Running Scripts Locally
+* To run the script: **bash *SCRIPTNAME*.sh**
+# Alternative Method
 * To compile the script before running: **chmod +x *SCRIPTNAME*.sh**
 * To run a compiled trimming script: **./*SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
+
 ## Script Naming Format
 Each script is named by the action and the primary software needed to perform the action.
 
