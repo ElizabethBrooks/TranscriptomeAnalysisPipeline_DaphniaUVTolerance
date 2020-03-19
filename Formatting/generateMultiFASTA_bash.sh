@@ -5,9 +5,8 @@
 #$ -N generate_multiFASTA_jobOutput
 #Script to predict coding regions from a transcript fasta file
 # using Transdecoder with genome reference and features files
-#Usage: qsub generate_multiFASTA.sh dataSetName
-#Usage Ex: qsub generate_multiFASTA.sh DMelUV
-#Note that the data set name input is for output file naming purposes only
+#Usage: bash generateMultiFASTA_bash.sh genomeVersion
+#Usage Ex: bash generateMultiFASTA_bash.sh PA42_v3.0
 
 #Retrieve genome reference and features paths
 pairedReads=$(grep "pairedReads:" ../InputData/inputPaths.txt | tr -d " " | sed "s/pairedReads://g")
