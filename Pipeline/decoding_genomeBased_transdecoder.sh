@@ -10,7 +10,7 @@
 #Note that the genome version input is for output file naming purposes only
 
 #Load necessary modules for ND CRC servers
-module load bio/transdecoder/
+module load bio/transdecoder
 module load bio/cufflinks
 #Retrieve genome reference and features paths
 genomeRef=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
@@ -23,8 +23,8 @@ outFolder="$outputsPath"/decoded_genomeBased_"$1"
 mkdir "$outFolder"
 #Clean up genome features file
 #sed -e "s/\r//g" "$genomeFeat" > "$outFolder"/genomeFeat_"$2".gff
-#Convert gff to gtf, and expose any issues with the -E flag
-gffread -E "$genomeFeat" -T -o- "$outFolder"/genomeFeat_"$2".gtf
+#Convert gff to gff3, and expose any issues with the -E flag
+gffread -E "$genomeFeat" -o- "$outFolder"/genomeFeat_"$2".gff3
 #Move to transdecoder software folder
 #cd "$softPath"
 #Construct the transcript fasta file using the genome and the transcripts.gtf file (cufflinks of stringtie)
