@@ -12,12 +12,15 @@
 module load bio/transdecoder
 #module load bio/cufflinks
 #Retrieve genome reference and features paths
-multiFASTA=$(grep "multiFASTA:" ../InputData/inputPaths.txt | tr -d " " | sed "s/multiFASTA://g")
+multiFASTAPath=$(grep "multiFASTA:" ../InputData/inputPaths.txt | tr -d " " | sed "s/multiFASTA://g")
+multiFASTA="$multiFASTAPath"/multiFASTA_"$1".fa
 #Retrieve outputs absolute path
 outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
 outFolder="$outputsPath"/decoded_"$1"
 mkdir "$outFolder"
+#Move to output folder
+cd "$outFolder"
 #Generate your best candidate open rading frame (ORF) predictions
-TransDecoder.LongOrfs -t "$multiFASTA"/transcripts_"$1".fasta
+TransDecoder.LongOrfs -t "$multiFASTA"
 #Optionally, identify peptides with homology to known proteins
 #TransDecoder.Predict -t transcripts.fasta [ homology options ]
