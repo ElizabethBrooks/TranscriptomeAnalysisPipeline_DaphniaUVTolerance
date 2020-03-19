@@ -13,7 +13,7 @@
 module load bio/transdecoder
 module load bio/cufflinks
 #Retrieve genome reference and features paths
-genomeRef=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+#genomeRef=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 genomeFeat=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
 #Retrieve TransDecoder software path
 softPath=$(grep "transdecoder:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transdecoder://g")
@@ -24,7 +24,7 @@ mkdir "$outFolder"
 #Clean up genome features file
 #sed -e "s/\r//g" "$genomeFeat" > "$outFolder"/genomeFeat_"$2".gff
 #Convert gff to gff3, and expose any issues with the -E flag
-gffread -E "$genomeFeat" -o- "$outFolder"/genomeFeat_"$2".gff3
+gffread -E "$genomeFeat" -o- > "$outFolder"/genomeFeat_"$1".gff3
 #Move to transdecoder software folder
 #cd "$softPath"
 #Construct the transcript fasta file using the genome and the transcripts.gtf file (cufflinks of stringtie)
