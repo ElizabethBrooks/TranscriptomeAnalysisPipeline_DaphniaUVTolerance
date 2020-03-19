@@ -1,18 +1,13 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N generate_multiFASTA_jobOutput
-#Script to predict coding regions from a transcript fasta file
-# using Transdecoder with genome reference and features files
-#Usage: bash generateMultiFASTA_bash.sh genomeVersion
-#Usage Ex: bash generateMultiFASTA_bash.sh PA42_v3.0
+#Script to generate a multi FASTA file from aligned transcript sequences
+#Usage: bash generateMultiFASTA_bash.sh alignedSequencesFolder
+#Usage Ex: bash generateMultiFASTA_bash.sh aligned_tophat2_run2
 
 #Retrieve genome reference and features paths
-pairedReads=$(grep "pairedReads:" ../InputData/inputPaths.txt | tr -d " " | sed "s/pairedReads://g")
+pairedReads=$(grep "alignment:" ../InputData/inputPaths.txt | tr -d " " | sed "s/alignment://g")
 #Retrieve outputs absolute path
 outputsPath=$(grep "multiFASTA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/multiFASTA://g")
 outFolder="$outputsPath"
 mkdir "$outFolder"
 #Combine paired-end read fasta files into a multi fasta
-cat "$pairedReads"/*.fq.gz > "$outFolder"/multiFASTA_"$1".fa
+cat "$pairedReads"/*.fq.gz > "$outFolder"/"$1"_multiFASTA.fa

@@ -4,8 +4,8 @@
 #$ -r n
 #$ -N decoding_transdecoder_jobOutput
 #Script to predict coding regions from a transcript fasta file using Transdecoder
-#Usage: qsub decoding_transdecoder.sh genomeVersion
-#Usage Ex: qsub decoding_transdecoder.sh PA42_v3.0
+#Usage: qsub decoding_transdecoder.sh
+#Usage Ex: qsub decoding_transdecoder.sh
 #Note that the genome version input is for output file naming purposes only
 
 #Load necessary modules for ND CRC servers
