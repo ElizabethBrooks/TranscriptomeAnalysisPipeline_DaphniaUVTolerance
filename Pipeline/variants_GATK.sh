@@ -65,14 +65,11 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 	mkdir "$outputFolder"/"$curSampleNoPath"
 	#Count reads using htseq-count
 	echo "Sample $curSampleNoPath variant are being called..."
-	#Perform variant calling using Samtools bcftools
-	#Also normalize the vcf file
-	bcftools mpileup -Ou -f "$genomeFile" "$curAlignedSample" | bcftools call -Ou -mv | bcftools norm -f "$genomeFile" Oz -o "$outputFolder"/"$curSampleNoPath".vcf.gz
-	#Finally, index the vcf file
-	tabix "$outputFolder"/"$curSampleNoPath".vcf.gz
+	#Perform variant calling using gatk
+
 	#Add run inputs to output summary file
 	echo "$curSampleNoPath" >> "$inputOutFile"
-	echo "bcftools mpileup -Ou -f" "$genomeFile" "$curAlignedSample" "| bcftools call -Ou -mv | bcftools norm -f" "$genomeFile" "Oz -o" "$outputFolder""/""$curSampleNoPath"".vcf.gz" >> "$inputOutFile"
+
 	echo "Sample $curSampleNoPath variants have been called!"
 done
 #Copy previous summaries
