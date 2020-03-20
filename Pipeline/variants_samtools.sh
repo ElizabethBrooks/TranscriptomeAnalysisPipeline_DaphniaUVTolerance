@@ -8,7 +8,7 @@
 #Usage Ex: qsub variants_samtools.sh sortedCoordinate_samtoolsTophat2_run1
 
 #Required modules for ND CRC servers
-#module load bio
+module load bio/2.0
 #Retrieve aligned reads input absolute path
 inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
 #Retrieve genome reference absolute path for alignment
