@@ -34,7 +34,7 @@ else
 	exit 1
 fi
 #Retrieve aligned reads input absolute path
-inputsPath=$(grep "variants:" ../InputData/outputPaths.txt | tr -d " " | sed "s/variants://g")
+inputsPath=$(grep "variantCalling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/variantCalling://g")
 #Retrieve outputs absolute path
 outputsPath=$(grep "multiFASTA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/multiFASTA://g")
 outFolder="$outputsPath"/"$1"_multiFASTA

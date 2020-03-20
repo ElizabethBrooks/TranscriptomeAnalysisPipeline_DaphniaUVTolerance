@@ -12,6 +12,14 @@
 module load bio
 module load bio/python/2.7.14
 module load bio/htseq/0.11.2
+#Retrieve sorted reads input absolute path
+inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+#Retrieve genome features absolute path for alignment
+genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
+#Retrieve alignment outputs absolute path
+outputsPath=$(grep "counting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
+#Move to outputs directory
+cd "$outputsPath"
 #Prepare for analysis
 dirFlag=0
 runNum=1
@@ -48,14 +56,6 @@ else
 	echo "ERROR: The sorted "$1" folder of bam files were not found... exiting"
 	exit 1
 fi
-#Retrieve sorted reads input absolute path
-inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
-#Retrieve genome features absolute path for alignment
-genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
-#Retrieve alignment outputs absolute path
-outputsPath=$(grep "counting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
-#Move to outputs directory
-cd "$outputsPath"
 #Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
 	outputFolder=counted"$sortType"_htseq"$analysisMethod"_run"$runNum"

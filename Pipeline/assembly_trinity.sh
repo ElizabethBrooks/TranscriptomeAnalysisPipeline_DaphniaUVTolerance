@@ -10,6 +10,15 @@
 
 #Required modules for ND CRC servers
 module load bio/2.0
+#Retrieve aligned reads input absolute path
+inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
+#Retrieve variant calling outputs absolute path
+outputsPath=$(grep "variantCalling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/variantCalling://g")
+#Create output directory
+outputFolder="$outputsPath"/"$1"_assembly
+mkdir "$outputFolder"
+#Move to outputs directory
+cd "$outputFolder"
 #Prepare for analysis
 dirFlag=0
 runNum=1
@@ -40,15 +49,6 @@ else
 	echo "ERROR: The sorted "$1" folder of bam files were not found... exiting"
 	exit 1
 fi
-#Retrieve aligned reads input absolute path
-inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
-#Retrieve variant calling outputs absolute path
-outputsPath=$(grep "variantCalling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/variantCalling://g")
-#Create output directory
-outputFolder="$outputsPath"/"$1"_assembly
-mkdir "$outputFolder"
-#Move to outputs directory
-cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1"_assembly_summary.txt
 #Loop through all trimmed reads for input to trinity

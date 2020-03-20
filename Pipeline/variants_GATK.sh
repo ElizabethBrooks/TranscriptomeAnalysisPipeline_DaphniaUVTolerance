@@ -12,6 +12,17 @@
 #Required modules for ND CRC servers
 module load bio/samtools
 module load bio/gatk
+#Retrieve aligned reads input absolute path
+inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+#Retrieve genome reference absolute path for alignment
+genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+#Retrieve variant calling outputs absolute path
+outputsPath=$(grep "variantCalling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/variantCalling://g")
+#Create output directory
+outputFolder="$outputsPath"/"$1"_variants
+mkdir "$outputFolder"
+#Move to outputs directory
+cd "$outputFolder"
 #Prepare for analysis
 dirFlag=0
 runNum=1
@@ -42,17 +53,6 @@ else
 	echo "ERROR: The sorted "$1" folder of bam files were not found... exiting"
 	exit 1
 fi
-#Retrieve aligned reads input absolute path
-inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
-#Retrieve genome reference absolute path for alignment
-genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-#Retrieve variant calling outputs absolute path
-outputsPath=$(grep "variants:" ../InputData/outputPaths.txt | tr -d " " | sed "s/variants://g")
-#Create output directory
-outputFolder="$outputsPath"/"$1"_variants
-mkdir "$outputFolder"
-#Move to outputs directory
-cd "$outputFolder"
 #Loop through all reads and sort sam/bam files for input to samtools
 for f1 in "$inputsPath"/"$1"/*/*.bam; do
 	#Name of sorted and aligned file

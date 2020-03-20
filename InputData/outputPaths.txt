@@ -1,11 +1,11 @@
 multiFASTA: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 qc: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq
 trimming: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq
-assembly: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq
+assembling: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq
 decoding: /afs/crc.nd.edu/group/pfrenderlab/kimura/ebrooks/rnaseq
-alignment: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
+aligning: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 sorting: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
-variants: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
+variantCalling: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 building: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 counting: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 statistics: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV

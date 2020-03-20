@@ -11,6 +11,12 @@
 
 #Required modules for ND CRC servers
 module load bio
+#Retrieve aligned reads input absolute path
+inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+#Retrieve sorting outputs absolute path
+outputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+#Move to outputs directory
+cd "$outputsPath"
 #module load bio/python/2.7.14
 #module load bio/htseq/0.11.2
 #Prepare for analysis
@@ -57,12 +63,6 @@ else
 	echo "ERROR: The "$2" folder of files were not found... exiting"
 	exit 1
 fi
-#Retrieve aligned reads input absolute path
-inputsPath=$(grep "alignment:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignment://g")
-#Retrieve sorting outputs absolute path
-outputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
-#Move to outputs directory
-cd "$outputsPath"
 #Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
 	outputFolder=sorted"$methodTag"_samtools"$analysisMethod"_run"$runNum"
