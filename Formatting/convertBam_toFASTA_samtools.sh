@@ -1,14 +1,10 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N variants_samtools_jobOutput
-#Script to perform variant calling with samtools bcftools
-#Usage: qsub variants_samtools.sh sortedFolder
-#Usage Ex: qsub variants_samtools.sh sortedCoordinate_samtoolsTophat2_run1
+#Script to convert bam files to fasta format
+#Usage: bash convertBam_toFASTA_samtools.sh sortedSequencesFolder
+#Usage Ex: bash convertBam_toFASTA_samtools.sh sortedCoordinate_samtoolsTophat2_run1
 
 #Required modules for ND CRC servers
-#module load bio
+module load bio
 #Prepare for analysis
 dirFlag=0
 runNum=1
@@ -24,7 +20,7 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	exit 1
 fi
 #Determine if the correct analysis folder was input
-if [[ "$1"  != sortedCoordinate* ]]; then
+if [[ "$1"  != sorted* ]]; then
 	echo "ERROR: The "$1" folder of aligned bam files were not found... exiting"
 	exit 1
 fi
@@ -44,14 +40,14 @@ inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/s
 #Retrieve genome reference absolute path for alignment
 genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve variant calling outputs absolute path
-outputsPath=$(grep "variants:" ../InputData/outputPaths.txt | tr -d " " | sed "s/variants://g")
-#Create output directory
-outputFolder="$outputsPath"/"$1"_variants
+outputsPath=$(grep "multiFASTA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/multiFASTA://g")
+#Make directory for output fasta files
+outputFolder="$outputsPath"/"$1"_converted
 mkdir "$outputFolder"
 #Move to outputs directory
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1"_variants_summary.txt
+inputOutFile="$outputFolder"/"$1"_converted_summary.txt
 #Loop through all reads and sort sam/bam files for input to samtools
 for f1 in "$inputsPath"/"$1"/*/*.bam; do
 	#Name of sorted and aligned file
@@ -59,19 +55,13 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 	#Trim file paths from current sample folder name
 	curSampleNoPath=$(echo $f1 | sed 's/accepted\_hits\.bam//g')
 	curSampleNoPath=$(basename $curSampleNoPath)
-	#Create directory for current sample outputs
-	mkdir "$outputFolder"/"$curSampleNoPath"
-	#Count reads using htseq-count
-	echo "Sample $curSampleNoPath variant are being called..."
-	#Perform variant calling using Samtools bcftools
-	#Also normalize the vcf file
-	bcftools mpileup -Ou -f "$genomeFile" "$curAlignedSample" | bcftools call -Ou -mv | bcftools norm -f "$genomeFile" Oz -o "$outputFolder"/"$curSampleNoPath".vcf.gz
-	#Finally, index the vcf file
-	tabix "$outputFolder"/"$curSampleNoPath".vcf.gz
+	#Convert bam files to fasta format using samtools
+	echo "Sample $curSampleNoPath fasta is being generated..."
+	samtools bam2fq "$f1" | seqtk seq -A > "$outputFolder"/"$curSampleNoPath".fa
+	echo "Sample $curSampleNoPath fasta has been generated!"
 	#Add run inputs to output summary file
 	echo "$curSampleNoPath" >> "$inputOutFile"
-	echo "bcftools mpileup -Ou -f" "$genomeFile" "$curAlignedSample" "| bcftools call -Ou -mv | bcftools norm -f" "$genomeFile" "Oz -o" "$outputFolder""/""$curSampleNoPath"".vcf.gz" >> "$inputOutFile"
-	echo "Sample $curSampleNoPath variants have been called!"
+	echo "samtools bam2fq" "$f1" "| seqtk seq -A >" "$outputFolder""/""$curSampleNoPath"".fa" >> "$inputOutFile"
 done
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"

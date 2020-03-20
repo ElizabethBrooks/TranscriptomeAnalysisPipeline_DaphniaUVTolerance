@@ -103,7 +103,7 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 		htseq-count -f bam -r pos -s no -m union -t gene -i ID "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
 		#Add run inputs to output summary file
 		echo "$curSampleNoPath" >> "$inputOutFile"
-		echo "htseq-count -f bam -r pos -s no -m union -t gene -i ID" "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> "$inputOutFile"
+		echo "htseq-count -f bam -r pos -s no -m union -t gene -i ID" "$curAlignedSample" "$genomeFile" ">" "$outputFolder""/""$curSampleNoPath""/counts.txt" >> "$inputOutFile"
 	else
 		echo "ERROR: The bam file "$f1" was not found... exiting"
 		exit 1
