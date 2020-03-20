@@ -2,13 +2,15 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N variants_samtools_jobOutput
-#Script to perform variant calling with bcftools
-#Usage: qsub variants_samtools.sh sortedFolder
-#Usage Ex: qsub variants_samtools.sh sortedCoordinate_samtoolsTophat2_run1
+#$ -N variants_GATK_jobOutput
+#Script to perform variant calling with gatk
+#Bam files need to have duplicates marked using samtools
+#Usage: qsub variants_GATK.sh sortedFolder
+#Usage Ex: qsub variants_GATK.sh sortedCoordinate_samtoolsTophat2_run1
 
 #Required modules for ND CRC servers
-#module load bio
+module load bio/samtools
+module load bio/gatk
 #Prepare for analysis
 dirFlag=0
 runNum=1
