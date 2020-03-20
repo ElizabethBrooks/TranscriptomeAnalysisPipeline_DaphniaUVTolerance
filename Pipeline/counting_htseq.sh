@@ -105,7 +105,7 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 		echo "$curSampleNoPath" >> "$inputOutFile"
 		echo "htseq-count -f bam -r pos -s no -m union -t gene -i ID" "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> "$inputOutFile"
 	else
-		echo "ERROR: The "$1" folder of name or coordinate sorted files were not found... exiting"
+		echo "ERROR: The bam file "$f1" was not found... exiting"
 		exit 1
 	fi
 	echo "Sample $curSampleNoPath has been counted!"
