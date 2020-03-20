@@ -113,7 +113,6 @@ for f1 in "$inputsPath"/"$2"/*/; do
 		echo "Sample $curSampleNoPath is being sorted..."
 		samtools sort "$flags" -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam.bam -T /tmp/"$curSampleNoPath".sorted.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam
 		echo "Sample $curSampleNoPath has been sorted!"
-		#Clean up
 		rm "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam
 		#Add run inputs to output summary file
 		echo samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam >> "$inputOutFile"
@@ -123,7 +122,6 @@ for f1 in "$inputsPath"/"$2"/*/; do
 		echo "Sample $curSampleNoPath singleton flags are being updated..."
 		samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam.bam
 		echo "Sample $curSampleNoPath singleton flags have been updated!"
-		#Clean up
 		rm "$outputFolder"/"$curSampleNoPath"/sortedName.bam
 		#Add run inputs to output summary file
 		echo samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam.bam >> "$inputOutFile"

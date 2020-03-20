@@ -64,26 +64,21 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 	samtools fixmate -m "$f1" "$outputFolder"/"$curSampleNoPath"_fixed.bam
 	#Remove duplicate reads wtih samtools markdup
 	samtools markdup -r "$outputFolder"/"$curSampleNoPath"_fixed.bam "$outputFolder"/"$curSampleNoPath"_marked.bam
-	#Clean up
 	rm "$outputFolder"/"$curSampleNoPath"_fixed.bam
 	#Index the marked file
 	samtools index "$outputFolder"/"$curSampleNoPath"_marked.bam "$outputFolder"/"$curSampleNoPath"_indexed.bam
-	#Clean up
 	rm "$outputFolder"/"$curSampleNoPath"_marked.bam
 	#Perform variant calling using gatk
 	echo "Sample $curSampleNoPath variant are being called..."
 	#Splits reads into exon segments (getting rid of Ns but maintaining grouping information)
 	# and hard­clip any sequences overhanging into the intronic regions
 	gatk SplitNCigarReads -R "$genomeFile" -I "$outputFolder"/"$curSampleNoPath"_indexed.bam -O "$outputFolder"/"$curSampleNoPath"_split.bam
-	#Clean up
 	rm "$outputFolder"/"$curSampleNoPath"_indexed.bam
 	#Correct for systematic bias that affect the assignment of base quality scores by the sequencer
 	gatk ApplyBQSR -R "$genomeFile" -I "$outputFolder"/"$curSampleNoPath"_split.bam --bqsr-recal-file "$outputFolder"/"$curSampleNoPath"_recalibration.table -O "$outputFolder"/"$curSampleNoPath"_recal.bam
-	#Clean up
 	rm "$outputFolder"/"$curSampleNoPath"_split.bam
 	#Finally, run HaplotypeCaller in GVCF mode so multiple samples may be added in a scalable way
 	gatk HaplotypeCaller -R "$genomeFile" -I "$outputFolder"/"$curSampleNoPath"_recal.bam -O "$outputFolder"/variants.g.vcf -ERC GVCF
-	#Clean up
 	rm "$outputFolder"/"$curSampleNoPath"_recal.bam
 done
 #Copy previous summaries
