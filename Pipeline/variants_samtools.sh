@@ -9,7 +9,7 @@
 #Usage Ex: qsub variants_samtools.sh sortedCoordinate_samtoolsTophat2_run1
 
 #Required modules for ND CRC servers
-module load bio
+#module load bio
 #Prepare for analysis
 dirFlag=0
 runNum=1
@@ -30,14 +30,14 @@ if [[ "$1"  != sortedCoordinate* ]]; then
 	exit 1
 fi
 #Determine what analysis method was used for the input folder of data
-if [[ "$1" == *"hisat2"*  ]]; then
+if [[ "$1" == *"Hisat2"*  ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Hisat2"
-elif [[ "$1" == *"tophat2"* ]]; then
+elif [[ "$1" == *"Tophat2"* ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Tophat2"
 else
-	echo "ERROR: The "$1" folder of files were not found... exiting"
+	echo "ERROR: The sorted "$1" folder of bam files were not found... exiting"
 	exit 1
 fi
 #Retrieve aligned reads input absolute path
