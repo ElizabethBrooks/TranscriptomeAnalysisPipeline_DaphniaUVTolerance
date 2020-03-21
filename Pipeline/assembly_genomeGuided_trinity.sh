@@ -6,7 +6,7 @@
 #$ -pe smp 8
 #Script to perform genome-guided Trinity de novo transcriptome assembly
 #Usage: qsub assembly_genomeGuided_trinity.sh sortedFolder maxIntronLength
-#Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsTophat2_run1 80
+#Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsTophat2_run1 14239
 
 #Required modules for ND CRC servers
 module load bio/2.0
