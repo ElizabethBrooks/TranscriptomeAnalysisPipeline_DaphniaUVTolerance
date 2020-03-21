@@ -53,19 +53,11 @@ else
 fi
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1"_variants_summary.txt
-#Loop through all reads and sort sam/bam files for input to samtools
-for f1 in "$inputsPath"/"$1"/*/*.bam; do
-	#Name of sorted and aligned file
-	curAlignedSample="$f1"
-	#Trim file paths from current sample folder name
-	curSampleNoPath=$(echo $f1 | sed 's/accepted\_hits\.bam//g')
-	curSampleNoPath=$(basename $curSampleNoPath)
-	#Run Trinity on coordinate-sorted bam files using 8 threads, and a maximum intron
-	# length that makes most sense given your targeted organism
-	Trinity --genome_guided_bam "$f1" --genome_guided_max_intron "$2" --max_memory 50G --CPU 8
-	#Add run inputs to output summary file
-	echo "$curSampleNoPath" >> "$inputOutFile"
-	echo "Trinity --genome_guided_bam" "$f1" "--genome_guided_max_intron" "$2" "--max_memory 50G --CPU 8" >> "$inputOutFile"
-done
+#Run Trinity on coordinate-sorted bam files using 8 threads, and a maximum intron
+# length that makes most sense given your targeted organism
+Trinity --genome_guided_bam "$inputsPath"/"$1"/*/*.bam --genome_guided_max_intron "$2" --max_memory 50G --CPU 8
+#Add run inputs to output summary file
+echo "$curSampleNoPath" >> "$inputOutFile"
+echo "Trinity --genome_guided_bam" "$inputsPath"/"$1"/*/*.bam "--genome_guided_max_intron" "$2" "--max_memory 50G --CPU 8" >> "$inputOutFile"
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"

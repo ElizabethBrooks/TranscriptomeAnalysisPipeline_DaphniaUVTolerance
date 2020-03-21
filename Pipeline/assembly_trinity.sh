@@ -51,20 +51,12 @@ else
 fi
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1"_assembly_summary.txt
-#Loop through all trimmed reads for input to trinity
-for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
-	#Trim extension from current file name
-	curSample=$(echo $f1 | sed 's/.pForward\.fq\.gz//')
-	#Trim file path from current file name
-	curSampleNoPath=$(basename $f1)
-	curSampleNoPath=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
-	echo "Sample $curSampleNoPath is being assembled..."
-	#Run trinity assembly with each forward and revered reads, using 8 threads
-	Trinity --seqType fq --max_memory 50G --left "$f1" --right "$curSampleNoPath"_pReverse.fq --CPU 8
-	echo "Sample $curSampleNoPath has been assembled!"
-	#Add run inputs to output summary file
-	echo "$curSampleNoPath" >> "$inputOutFile"
-	echo "Trinity --seqType fq --max_memory 50G --left" "$f1" "--right" "$curSampleNoPath""_pReverse.fq --CPU 8" >> "$inputOutFile"
-done
+echo "Sample $curSampleNoPath is being assembled..."
+#Run trinity assembly with each forward and revered reads, using 8 threads
+Trinity --seqType fq --max_memory 50G --left "$inputsPath"/"$1"/*_pForward.fq.gz --right "$inputsPath"/"$1"/*_pReverse.fq --CPU 8
+echo "Sample $curSampleNoPath has been assembled!"
+#Add run inputs to output summary file
+echo "$curSampleNoPath" >> "$inputOutFile"
+echo "Trinity --seqType fq --max_memory 50G --left" "$inputsPath"/"$1"/*_pForward.fq.gz "--right" "$inputsPath"/"$1"/*_pReverse.fq --CPU 8 >> "$inputOutFile"
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
