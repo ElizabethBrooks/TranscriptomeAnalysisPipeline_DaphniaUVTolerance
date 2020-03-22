@@ -55,7 +55,6 @@ fi
 inputOutFile="$outputFolder"/"$1"_assembly_summary.txt
 #Run Trinity on coordinate-sorted bam files using 8 threads, and a maximum intron
 # length that makes most sense given your targeted organism
-echo "$inputsPath"/"$1"/*/*.bam
 Trinity --genome_guided_bam "$inputsPath"/"$1"/*/*.bam --genome_guided_max_intron "$2" --max_memory 50G --CPU 8
 #Add run inputs to output summary file
 echo "$curSampleNoPath" >> "$inputOutFile"
