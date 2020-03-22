@@ -12,7 +12,7 @@
 module load bio/2.0
 #Retrieve aligned reads input absolute path
 inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
-#Retrieve variant calling outputs absolute path
+#Retrieve assembly outputs absolute path
 outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Create output directory
 outputFolder="$outputsPath"/"$1"_assembly

@@ -14,10 +14,10 @@ module load bio/2.0
 inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
 #Retrieve genome reference absolute path for alignment
 genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-#Retrieve variant calling outputs absolute path
+#Retrieve assembly outputs absolute path
 outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Create output directory
-outputFolder="$outputsPath"/"$1"_variants
+outputFolder="$outputsPath"/"$1"_assembly
 mkdir "$outputFolder"
 #Move to outputs directory
 cd "$outputFolder"
@@ -52,7 +52,7 @@ else
 	exit 1
 fi
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1"_variants_summary.txt
+inputOutFile="$outputFolder"/"$1"_assembly_summary.txt
 #Run Trinity on coordinate-sorted bam files using 8 threads, and a maximum intron
 # length that makes most sense given your targeted organism
 Trinity --genome_guided_bam "$inputsPath"/"$1"/*/*.bam --genome_guided_max_intron "$2" --max_memory 50G --CPU 8
