@@ -11,7 +11,7 @@
 
 #Required modules for ND CRC servers
 module load bio/transabyss
-module load python
+#module load python
 #Retrieve trimmed reads input absolute path
 inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
 #Retrieve outputs path
