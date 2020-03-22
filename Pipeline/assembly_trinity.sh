@@ -34,7 +34,7 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	exit 1
 fi
 #Determine if the correct analysis folder was input
-if [[ "$1"  != sortedCoordinate* ]]; then
+if [[ "$1"  != trimmed* ]]; then
 	echo "ERROR: The "$1" folder of aligned bam files were not found... exiting"
 	exit 1
 fi
