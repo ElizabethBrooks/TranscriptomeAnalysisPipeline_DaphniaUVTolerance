@@ -6,7 +6,7 @@
 #$ -pe smp 8
 #Script to perform genome-guided Trinity de novo transcriptome assembly
 #Usage: qsub assembly_genomeGuided_trinity.sh sortedFolder genotype maxIntronLength
-#Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsTophat2_run1 Sierra 14239
+#Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsHisat2_run1 Sierra 14239
 
 #Required modules for ND CRC servers
 module load bio/2.0
@@ -60,7 +60,7 @@ fi
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
 #Merge and re-coordinate sort the set of bam files
-readFiles=$(echo "$inputsPath"/"$1"/*"$2"*/*.bam)
+readFiles=$(echo "$inputsPath"/"$1"/*_"$2"_*/*.bam)
 samtools merge -@ 8 "$mergedBam" "$readFiles"
 sortedBam="$outputFolder"/"$1""$2"_mergedSorted.bam
 samtools sort -@ 8 -o "$sortedBam" "$mergedBam"

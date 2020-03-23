@@ -46,8 +46,8 @@ fi
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
 #Retrieve forward reads
-forwardReads=$(echo "$inputsPath"/"$1"/*"$2"*_pForward.fq.gz)
-reverseReads=$(echo "$inputsPath"/"$1"/*"$2"*_pReverse.fq.gz)
+forwardReads=$(echo "$inputsPath"/"$1"/*_"$2"_*_pForward.fq.gz)
+reverseReads=$(echo "$inputsPath"/"$1"/*_"$2"_*_pReverse.fq.gz)
 #Run trinity assembly with each forward and revered reads, using 8 threads
 Trinity --seqType fq --max_memory 50G --left $forwardReads --right $reverseReads --CPU 8
 #Add run inputs to output summary file
