@@ -35,18 +35,7 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 fi
 #Determine if the correct analysis folder was input
 if [[ "$1"  != trimmed* ]]; then
-	echo "ERROR: The "$1" folder of aligned bam files were not found... exiting"
-	exit 1
-fi
-#Determine what analysis method was used for the input folder of data
-if [[ "$1" == *"Hisat2"*  ]]; then
-	#Set analysis method for folder naming
-	analysisMethod="Hisat2"
-elif [[ "$1" == *"Tophat2"* ]]; then
-	#Set analysis method for folder naming
-	analysisMethod="Tophat2"
-else
-	echo "ERROR: The sorted "$1" folder of bam files were not found... exiting"
+	echo "ERROR: The "$1" folder of trimmed fq.gz files were not found... exiting"
 	exit 1
 fi
 #Name output file of inputs
