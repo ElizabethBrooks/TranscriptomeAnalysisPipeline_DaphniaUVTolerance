@@ -20,6 +20,10 @@ outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed 
 #Create output directory
 outputFolder="$outputsPath"/"$1""$2"_assembly_Trinity
 mkdir "$outputFolder"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputFolder directory already exsists... please remove before proceeding."
+fi
 #Move to outputs directory
 cd "$outputFolder"
 #Prepare for analysis
@@ -55,9 +59,7 @@ fi
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
 #Merge and re-coordinate sort the set of bam files
-readFiles=$(echo "$inputsPath"/"$1"/*"$2"*/*.bam)
-mergedBam="$outputFolder"/"$1""$2"_merged.bam
-samtools merge -@ 8 "$mergedBam" "$readFiles"
+samtools merge -@ 8 "$mergedBam" "$inputsPath"/"$1"/*"$2"*/*.bam
 sortedBam="$outputFolder"/"$1""$2"_mergedSorted.bam
 samtools sort -@ 8 -o "$sortedBam" "$mergedBam"
 rm "$mergedBam"
@@ -67,7 +69,7 @@ echo "Sample $curSampleNoPath is being assembled..."
 Trinity --genome_guided_bam "$sortedBam" --genome_guided_max_intron "$3" --max_memory 50G --CPU 8
 rm "$sortedBam"
 #Add run inputs to output summary file
-echo "samtools merge --threads 8" "$mergedBam" "$readFiles" > "$inputOutFile"
+echo "samtools merge --threads 8" "$mergedBam" "$inputsPath"/"$1"/*"$2"*/*.bam > "$inputOutFile"
 echo "samtools sort -@ 8 -o" "$sortedBam" "$mergedBam" >> "$inputOutFile"
 echo "Trinity --genome_guided_bam" "$f1" "--genome_guided_max_intron" "$3" "--max_memory 50G --CPU 8" >> "$inputOutFile"
 #Copy previous summaries

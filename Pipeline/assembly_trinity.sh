@@ -17,6 +17,10 @@ outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed 
 #Create output directory
 outputFolder="$outputsPath"/"$1""$2"_assembly_Trinity
 mkdir "$outputFolder"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputFolder directory already exsists... please remove before proceeding."
+fi
 #Move to outputs directory
 cd "$outputFolder"
 #Prepare for analysis
