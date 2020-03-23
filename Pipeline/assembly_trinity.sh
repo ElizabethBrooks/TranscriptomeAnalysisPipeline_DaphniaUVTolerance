@@ -5,8 +5,8 @@
 #$ -N assembly_trinity_jobOutput
 #$ -pe smp 8
 #Script to perform Trinity de novo transcriptome assembly
-#Usage: qsub assembly_trinity.sh trimmedFolder
-#Usage Ex: qsub assembly_trinity.sh trimmed_run1
+#Usage: qsub assembly_trinity.sh trimmedFolder genotype
+#Usage Ex: qsub assembly_trinity.sh trimmed_run1 Sierra
 
 #Required modules for ND CRC servers
 module load bio/2.0
@@ -42,8 +42,8 @@ fi
 inputOutFile="$outputFolder"/"$1"_assembly_summary.txt
 echo "Sample $curSampleNoPath is being assembled..."
 #Retrieve forward reads
-forwardReads=$(echo "$inputsPath"/"$1"/*_pForward.fq.gz)
-reverseReads=$(echo "$inputsPath"/"$1"/*_pReverse.fq.gz)
+forwardReads=$(echo "$inputsPath"/"$1"/*"$genotype"*_pForward.fq.gz)
+reverseReads=$(echo "$inputsPath"/"$1"/*"$genotype"*_pReverse.fq.gz)
 #Run trinity assembly with each forward and revered reads, using 8 threads
 Trinity --seqType fq --max_memory 50G --left $forwardReads --right $reverseReads --CPU 8
 echo "Sample $curSampleNoPath has been assembled!"
