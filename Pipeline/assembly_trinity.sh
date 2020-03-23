@@ -15,7 +15,7 @@ inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/
 #Retrieve assembly outputs absolute path
 outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Create output directory
-outputFolder="$outputsPath"/"$1"_"$2"_assembly_Trinity
+outputFolder="$outputsPath"/"$1""$2"_assembly_Trinity
 mkdir "$outputFolder"
 #Move to outputs directory
 cd "$outputFolder"
@@ -39,10 +39,10 @@ if [[ "$1"  != trimmed* ]]; then
 	exit 1
 fi
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1"_assembly_summary.txt
+inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
 #Retrieve forward reads
-forwardReads=$(echo "$inputsPath"/"$1"/*"$genotype"*_pForward.fq.gz)
-reverseReads=$(echo "$inputsPath"/"$1"/*"$genotype"*_pReverse.fq.gz)
+forwardReads=$(echo "$inputsPath"/"$1"/*"$2"*_pForward.fq.gz)
+reverseReads=$(echo "$inputsPath"/"$1"/*"$2"*_pReverse.fq.gz)
 #Run trinity assembly with each forward and revered reads, using 8 threads
 Trinity --seqType fq --max_memory 50G --left $forwardReads --right $reverseReads --CPU 8
 #Add run inputs to output summary file
