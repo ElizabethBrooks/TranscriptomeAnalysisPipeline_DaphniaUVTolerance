@@ -17,7 +17,7 @@ genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | s
 #Retrieve assembly outputs absolute path
 outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Create output directory
-outputFolder="$outputsPath"/"$1"_assembly
+outputFolder="$outputsPath"/"$1"_assembly_Trinity
 mkdir "$outputFolder"
 #Move to outputs directory
 cd "$outputFolder"
