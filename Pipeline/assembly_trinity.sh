@@ -40,13 +40,11 @@ if [[ "$1"  != trimmed* ]]; then
 fi
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1"_assembly_summary.txt
-echo "Sample $curSampleNoPath is being assembled..."
 #Retrieve forward reads
 forwardReads=$(echo "$inputsPath"/"$1"/*"$genotype"*_pForward.fq.gz)
 reverseReads=$(echo "$inputsPath"/"$1"/*"$genotype"*_pReverse.fq.gz)
 #Run trinity assembly with each forward and revered reads, using 8 threads
 Trinity --seqType fq --max_memory 50G --left $forwardReads --right $reverseReads --CPU 8
-echo "Sample $curSampleNoPath has been assembled!"
 #Add run inputs to output summary file
 echo "$curSampleNoPath" >> "$inputOutFile"
 echo "Trinity --seqType fq --max_memory 50G --left" $forwardReads "--right" $reverseReads "--CPU 8" >> "$inputOutFile"
