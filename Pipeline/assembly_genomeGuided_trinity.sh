@@ -5,8 +5,8 @@
 #$ -N assembly_genomeGuided_trinity_jobOutput
 #$ -pe smp 8
 #Script to perform genome-guided Trinity de novo transcriptome assembly
-#Usage: qsub assembly_genomeGuided_trinity.sh sortedFolder maxIntronLength
-#Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsTophat2_run1 14239
+#Usage: qsub assembly_genomeGuided_trinity.sh sortedFolder genotype maxIntronLength
+#Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsTophat2_run1 Sierra 14239
 
 #Required modules for ND CRC servers
 module load bio/2.0
@@ -17,7 +17,7 @@ genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | s
 #Retrieve assembly outputs absolute path
 outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Create output directory
-outputFolder="$outputsPath"/"$1"_assembly_Trinity
+outputFolder="$outputsPath"/"$1""$2"_assembly_Trinity
 mkdir "$outputFolder"
 #Move to outputs directory
 cd "$outputFolder"
@@ -52,24 +52,22 @@ else
 	exit 1
 fi
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1"_assembly_summary.txt
-#Loop through all genome aligned, coordinate sorted bam files
-for f1 in "$inputsPath"/"$1"/*/*.bam; do
-	#Name of sorted and aligned file
-	curAlignedSample="$f1"
-	#Trim file paths from current sample folder name
-	curSampleNoPath=$(echo $f1 | sed 's/accepted\_hits\.bam//g')
-	curSampleNoPath=$(basename $curSampleNoPath)
-	#Create and move to directory for current sample outputs
-	mkdir "$outputFolder"/"$curSampleNoPath"
-	cd "$outputFolder"/"$curSampleNoPath"
-	#Run Trinity on coordinate-sorted bam files using 8 threads, and a maximum intron
-	# length that makes most sense given your targeted organism
-	echo "Sample $curSampleNoPath is being assembled..."
-	Trinity --genome_guided_bam "$f1" --genome_guided_max_intron "$2" --max_memory 50G --CPU 8
-	#Add run inputs to output summary file
-	echo "$curSampleNoPath" >> "$inputOutFile"
-	echo "Trinity --genome_guided_bam" "$f1" "--genome_guided_max_intron" "$2" "--max_memory 50G --CPU 8" >> "$inputOutFile"
-done
+inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
+#Merge and re-coordinate sort the set of bam files
+readFiles=$(echo "$inputsPath"/"$1"/*"$2"*/*.bam)
+mergedBam="$outputFolder"/"$1""$2"_merged.bam
+samtools merge -@ 8 "$mergedBam" "$readFiles"
+sortedBam="$outputFolder"/"$1""$2"_mergedSorted.bam
+samtools sort -@ 8 -o "$sortedBam" "$mergedBam"
+rm "$mergedBam"
+#Run Trinity on coordinate-sorted bam files using 8 threads, and a maximum intron
+# length that makes most sense given your targeted organism
+echo "Sample $curSampleNoPath is being assembled..."
+Trinity --genome_guided_bam "$sortedBam" --genome_guided_max_intron "$3" --max_memory 50G --CPU 8
+rm "$sortedBam"
+#Add run inputs to output summary file
+echo "samtools merge --threads 8" "$mergedBam" "$readFiles" > "$inputOutFile"
+echo "samtools sort -@ 8 -o" "$sortedBam" "$mergedBam" >> "$inputOutFile"
+echo "Trinity --genome_guided_bam" "$f1" "--genome_guided_max_intron" "$3" "--max_memory 50G --CPU 8" >> "$inputOutFile"
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
