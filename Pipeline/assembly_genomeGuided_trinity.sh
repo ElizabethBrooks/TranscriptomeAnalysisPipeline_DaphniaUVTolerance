@@ -10,6 +10,7 @@
 
 #Required modules for ND CRC servers
 module load bio/2.0
+module load bio/samtools
 #Retrieve aligned reads input absolute path
 inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
 #Retrieve genome reference absolute path for alignment
