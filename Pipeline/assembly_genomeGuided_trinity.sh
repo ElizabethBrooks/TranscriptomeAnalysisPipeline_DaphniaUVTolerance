@@ -60,6 +60,9 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 	#Trim file paths from current sample folder name
 	curSampleNoPath=$(echo $f1 | sed 's/accepted\_hits\.bam//g')
 	curSampleNoPath=$(basename $curSampleNoPath)
+	#Create and move to directory for current sample outputs
+	mkdir "$outputFolder"/"$curSampleNoPath"
+	cd "$outputFolder"/"$curSampleNoPath"
 	#Run Trinity on coordinate-sorted bam files using 8 threads, and a maximum intron
 	# length that makes most sense given your targeted organism
 	echo "Sample $curSampleNoPath is being assembled..."
