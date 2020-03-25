@@ -57,12 +57,17 @@ cd "$outputFolder"
 inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
 #Merge and re-coordinate sort the set of bam files
 readFiles=$(echo "$inputsPath"/"$1"/*_"$2"_*/*.bam)
+echo "Beginning merging..."
 samtools merge -@ 8 merged.bam $readFiles
+echo "Merging complete! Beginning sorting..."
 samtools sort -@ 8 -o sorted.bam merged.bam
+echo "Sorting complete!"
 rm merged.bam
 #Run Trinity on coordinate-sorted bam files using 8 threads, and a maximum intron
 # length that makes most sense given your targeted organism
-#Trinity --genome_guided_bam sorted.bam --genome_guided_max_intron "$3" --max_memory 50G --CPU 8
+echo "Beginning assembly of $1 reads for $2 data..."
+Trinity --genome_guided_bam sorted.bam --genome_guided_max_intron "$3" --max_memory 50G --CPU 8
+echo "Assembly complete!"
 rm sorted.bam
 #Add run inputs to output summary file
 echo "samtools merge --threads 8" merged.bam $readFiles > "$inputOutFile"
