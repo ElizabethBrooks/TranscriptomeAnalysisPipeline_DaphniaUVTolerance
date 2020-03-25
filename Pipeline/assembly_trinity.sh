@@ -12,6 +12,7 @@
 module load bio/2.0
 #Retrieve aligned reads input absolute path
 inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
+samplesPath="../InputData/samplesFile_trinity.txt"
 #Retrieve assembly outputs absolute path
 outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Create output directory
@@ -45,13 +46,13 @@ if [[ "$1"  != trimmed* ]]; then
 fi
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
-#Retrieve forward reads
-forwardReads=$(echo "$inputsPath"/"$1"/*_"$2"_*_pForward.fq.gz)
-reverseReads=$(echo "$inputsPath"/"$1"/*_"$2"_*_pReverse.fq.gz)
+#Re-set reads file paths using input genotype tag
+sed 's/GENEOTYPE/"$2"/g/' "$samplesPath" > tmpSamplesFile.txt
 #Run trinity assembly with each forward and revered reads, using 8 threads
-Trinity --seqType fq --max_memory 50G --left $forwardReads --right $reverseReads --CPU 8
+Trinity --seqType fq --max_memory 50G --samples_file "$samplesPath" --CPU 8
+rm tmpSamplesFile.txt
 #Add run inputs to output summary file
 echo "$curSampleNoPath" >> "$inputOutFile"
-echo "Trinity --seqType fq --max_memory 50G --left" $forwardReads "--right" $reverseReads "--CPU 8" >> "$inputOutFile"
+echo "Trinity --seqType fq --max_memory 50G --samples_file" "$samplesPath" "--CPU 8" >> "$inputOutFile"
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
