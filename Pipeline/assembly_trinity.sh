@@ -46,7 +46,7 @@ cd "$inputsFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
 #Run trinity assembly with each forward and revered reads, using 8 threads
-#Trinity --seqType fq --max_memory 50G --samples_file "$outputFolder"/tmpSamplesFile.txt --CPU 8 --output "$outputFolder"
+Trinity --seqType fq --max_memory 50G --samples_file "$outputFolder"/tmpSamplesFile.txt --CPU 8 --output "$outputFolder"
 rm "$outputFolder"/tmpSamplesFile.txt
 #Add run inputs to output summary file
 echo "$curSampleNoPath" > "$inputOutFile"
