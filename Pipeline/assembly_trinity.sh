@@ -44,7 +44,7 @@ cd "$inputsFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
 #Re-set reads file paths using input genotype tag
-sed 's/GENEOTYPE/"$2"/g/' "$samplesPath" > tmpSamplesFile.txt
+sed "/GENEOTYPE/$2/g/" "$samplesPath" > tmpSamplesFile.txt
 #Run trinity assembly with each forward and revered reads, using 8 threads
 Trinity --seqType fq --max_memory 50G --samples_file tmpSamplesFile.txt --CPU 8 --output "$outputFolder"
 rm tmpSamplesFile.txt
