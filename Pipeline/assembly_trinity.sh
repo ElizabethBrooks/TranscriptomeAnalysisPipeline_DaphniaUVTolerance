@@ -34,6 +34,8 @@ outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed 
 #Create output directory
 outputFolder="$outputsPath"/"$1""$2"_assembly_Trinity
 mkdir "$outputFolder"
+#Re-set reads file paths using input genotype tag
+sed "s/GENEOTYPE/$2/g" "$samplesPath" > "$outputFolder"/tmpSamplesFile.txt
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
 	echo "The $outputFolder directory already exsists... please remove before proceeding."
@@ -43,13 +45,11 @@ fi
 cd "$inputsFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
-#Re-set reads file paths using input genotype tag
-sed "s/GENEOTYPE/$2/g" "$samplesPath" > tmpSamplesFile.txt
 #Run trinity assembly with each forward and revered reads, using 8 threads
-#Trinity --seqType fq --max_memory 50G --samples_file tmpSamplesFile.txt --CPU 8 --output "$outputFolder"
-rm tmpSamplesFile.txt
+#Trinity --seqType fq --max_memory 50G --samples_file "$outputFolder"/tmpSamplesFile.txt --CPU 8 --output "$outputFolder"
+rm "$outputFolder"/tmpSamplesFile.txt
 #Add run inputs to output summary file
-echo "$curSampleNoPath" >> "$inputOutFile"
-echo "Trinity --seqType fq --max_memory 50G --samples_file" "$samplesPath" "--CPU 8 --output" "$outputFolder" >> "$inputOutFile"
+echo "$curSampleNoPath" > "$inputOutFile"
+echo "Trinity --seqType fq --max_memory 50G --samples_file" "$outputFolder"/"tmpSamplesFile.txt" "--CPU 8 --output" "$outputFolder" >> "$inputOutFile"
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
