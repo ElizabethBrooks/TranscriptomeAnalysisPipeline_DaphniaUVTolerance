@@ -28,7 +28,7 @@ fi
 #Retrieve aligned reads input absolute path
 inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
 inputsFolder="$inputsPath"/"$1"
-samplesPath="../InputData/samplesFile_trinity.txt"
+samplesPath=$(echo ../InputData/samplesFile_trinity.txt)
 #Retrieve assembly outputs absolute path
 outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Create output directory
