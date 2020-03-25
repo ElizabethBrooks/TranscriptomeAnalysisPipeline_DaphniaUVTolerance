@@ -62,7 +62,7 @@ samtools sort -@ 8 -o sorted.bam merged.bam
 rm merged.bam
 #Run Trinity on coordinate-sorted bam files using 8 threads, and a maximum intron
 # length that makes most sense given your targeted organism
-Trinity --genome_guided_bam sorted.bam --genome_guided_max_intron "$3" --max_memory 50G --CPU 8
+#Trinity --genome_guided_bam sorted.bam --genome_guided_max_intron "$3" --max_memory 50G --CPU 8
 rm sorted.bam
 #Add run inputs to output summary file
 echo "samtools merge --threads 8" merged.bam "$readFiles" > "$inputOutFile"
