@@ -11,18 +11,6 @@
 
 #Required modules for ND CRC servers
 module load bio
-#Retrieve aligned reads input absolute path
-inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
-#Retrieve sorting outputs absolute path
-outputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
-#Move to outputs directory
-cd "$outputsPath"
-#module load bio/python/2.7.14
-#module load bio/htseq/0.11.2
-#Prepare for analysis
-dirFlag=0
-runNum=1
-COUNTER=0
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -63,6 +51,18 @@ else
 	echo "ERROR: The "$2" folder of files were not found... exiting"
 	exit 1
 fi
+#Retrieve aligned reads input absolute path
+inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+#Retrieve sorting outputs absolute path
+outputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+#Move to outputs directory
+cd "$outputsPath"
+#module load bio/python/2.7.14
+#module load bio/htseq/0.11.2
+#Prepare for analysis
+dirFlag=0
+runNum=1
+COUNTER=0
 #Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
 	outputFolder=sorted"$methodTag"_samtools"$analysisMethod"_run"$runNum"

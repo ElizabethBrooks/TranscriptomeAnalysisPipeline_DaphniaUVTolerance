@@ -14,17 +14,6 @@ module load R/3.5.3
 #export PATH=/afs/crc.nd.edu/user/e/ebrooks5/R/x86_64-pc-linux-gnu-library/3.5/Rsubread/libs:$PATH
 export R_LIBS=/afs/crc.nd.edu/user/e/ebrooks5/R/x86_64-pc-linux-gnu-library/3.5:$R_LIBS
 #OG_DIR=$( pwd )
-#Retrieve sorted reads input absolute path
-inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
-#Retrieve genome features absolute path for alignment
-genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
-#Retrieve alignment outputs absolute path
-outputsPath=$(grep "counting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
-#Prepare for analysis
-dirFlag=0
-runNum=1
-COUNTER=0
-analysisTag=".sorted.bam"
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -59,6 +48,17 @@ else
 	echo "ERROR: The sorted "$1" folder or bam files were not found... exiting"
 	exit 1
 fi
+#Retrieve sorted reads input absolute path
+inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+#Retrieve genome features absolute path for alignment
+genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
+#Retrieve alignment outputs absolute path
+outputsPath=$(grep "counting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
+#Prepare for analysis
+dirFlag=0
+runNum=1
+COUNTER=0
+analysisTag=".sorted.bam"
 #Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
 	outputFolder=counted"$sortType"_featureCounts"$analysisMethod"_run"$runNum"

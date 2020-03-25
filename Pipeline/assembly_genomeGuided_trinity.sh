@@ -11,26 +11,6 @@
 #Required modules for ND CRC servers
 module load bio/2.0
 module load bio/samtools
-#Retrieve aligned reads input absolute path
-inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
-#Retrieve genome reference absolute path for alignment
-genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-#Retrieve assembly outputs absolute path
-outputsPath=$(grep "assemblingWithGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingWithGenome://g")
-#Create output directory
-outputFolder="$outputsPath"/"$1""$2"_assembly_Trinity
-mkdir "$outputFolder"
-#Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outputFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
-#Move to outputs directory
-cd "$outputFolder"
-#Prepare for analysis
-dirFlag=0
-runNum=1
-COUNTER=0
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -57,6 +37,22 @@ else
 	echo "ERROR: The sorted "$1" folder of bam files were not found... exiting"
 	exit 1
 fi
+#Retrieve aligned reads input absolute path
+inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+#Retrieve genome reference absolute path for alignment
+genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+#Retrieve assembly outputs absolute path
+outputsPath=$(grep "assemblingWithGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingWithGenome://g")
+#Create output directory
+outputFolder="$outputsPath"/"$1""$2"_assembly_Trinity
+mkdir "$outputFolder"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
+#Move to outputs directory
+cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
 #Merge and re-coordinate sort the set of bam files

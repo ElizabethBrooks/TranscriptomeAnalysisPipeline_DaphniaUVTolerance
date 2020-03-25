@@ -12,21 +12,6 @@
 
 #Required modules for ND CRC servers
 module load bio
-#Retrieve trimmed reads input absolute path
-inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
-#Retrieve build genome files absolute path
-buildInputsPath=$(grep "building:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
-#Retrieve genome reference absolute path for alignment
-buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-#Retrieve genome features absolute path for alignment
-genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
-#Retrieve alignment outputs absolute path
-outputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
-#Move to outputs directory
-cd "$outputsPath"
-#Prepare for alignment
-dirFlag=0
-runNum=1
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -42,6 +27,21 @@ if [[ "$1"  != trimmed* ]]; then
 	echo "ERROR: The "$1" folder of aligned bam files were not found... exiting"
 	exit 1
 fi
+#Retrieve trimmed reads input absolute path
+inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
+#Retrieve build genome files absolute path
+buildInputsPath=$(grep "building:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
+#Retrieve genome reference absolute path for alignment
+buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+#Retrieve genome features absolute path for alignment
+genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
+#Retrieve alignment outputs absolute path
+outputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+#Move to outputs directory
+cd "$outputsPath"
+#Prepare for alignment
+dirFlag=0
+runNum=1
 #Make a new directory for each alignment run
 while [ $dirFlag -eq 0 ]; do
 	#Tophat output directory name
