@@ -8,7 +8,7 @@
 # paired end reads
 #Note that a hisat2 genome refernce build folder needs to be generated first
 #Usage: qsub alignment_hisat2.sh trimmedFolder minIntronLength maxIntronLength
-#Usage Ex: qsub alignment_hisat2.sh trimmed_run1 4 14239
+#Usage Ex: qsub alignment_hisat2.sh trimmed_run1 20 14239
 
 #Required modules for ND CRC servers
 module load bio

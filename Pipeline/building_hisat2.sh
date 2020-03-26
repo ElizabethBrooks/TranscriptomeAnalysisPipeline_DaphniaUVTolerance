@@ -2,12 +2,12 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N build_hisat2_jobOutput
+#$ -N building_hisat2_jobOutput
 #$ -pe smp 8
 #$ -q debug
 #Script to generate a bowtie2 genome refernce build folder
-#Usage: qsub build_bowtie2.sh
-#Usage Ex: qsub build_bowtie2.sh
+#Usage: qsub building_hisat2.sh
+#Usage Ex: qsub building_hisat2.sh
 
 #Required modules for ND CRC servers
 module load bio

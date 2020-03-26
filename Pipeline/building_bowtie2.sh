@@ -2,11 +2,11 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N build_bowtie2_jobOutput
+#$ -N building_bowtie2_jobOutput
 #$ -q debug
 #Script to generate a bowtie2 genome refernce build folder
-#Usage: qsub build_bowtie2.sh
-#Usage Ex: qsub build_bowtie2.sh
+#Usage: qsub building_bowtie2.sh
+#Usage Ex: qsub building_bowtie2.sh
 
 #Required modules for ND CRC servers
 module load bio
