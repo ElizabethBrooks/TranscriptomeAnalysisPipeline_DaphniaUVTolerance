@@ -7,8 +7,8 @@
 #Script to perform tophat2 alignment of trimmed
 # paired end reads
 #Note that a bowtie2 genome refernce build folder needs to be generated first
-#Usage: qsub alignment_tophat2.sh trimmedFolder
-#Usage Ex: qsub alignment_tophat2.sh trimmed_run1
+#Usage: qsub alignment_tophat2.sh trimmedFolder minIntronLength maxIntronLength
+#Usage Ex: qsub alignment_tophat2.sh trimmed_run1 4 14239
 
 #Required modules for ND CRC servers
 module load bio
@@ -75,11 +75,11 @@ for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 	curSampleNoEx=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
 	#Begin Tophat run for current sample
 	echo "Sample $curSampleNoEx is being aligned..."
-	tophat2 -p 8 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
+	tophat2 -p 8 -i $2 -I $3 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
 	echo "Sample $curSampleNoEx has been aligned!"
 	#Add run inputs to output summary file
 	echo $curSampleNoPath >> $inputOutFile
-	echo tophat2 -p 8 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
+	echo "tophat2 -p 8 -i $2 -I $3 -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
 done
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
