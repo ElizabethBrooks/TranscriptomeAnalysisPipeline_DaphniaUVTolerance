@@ -12,8 +12,8 @@
 module load bio/transdecoder
 #module load bio/cufflinks
 #Retrieve genome reference and features paths
-multiFASTAPath=$(grep "multiFASTA:" ../InputData/inputPaths.txt | tr -d " " | sed "s/multiFASTA://g")
-multiFASTA="$multiFASTAPath"/multiFASTA_"$1".fa
+multiFASTAPath=$(grep "assembling:" ../InputData/inputPaths.txt | tr -d " " | sed "s/assembling://g")
+multiFASTA="$multiFASTAPath"/"$1"/*.fasta
 #Retrieve outputs absolute path
 outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
 outFolder="$outputsPath"/decoded_"$1"
