@@ -3,9 +3,10 @@
 #$ -m abe
 #$ -r n
 #$ -N decoding_transdecoder_jobOutput
-#Script to predict coding regions from a transcript fasta file using Transdecoder
-#Usage: qsub decoding_transdecoder.sh
-#Usage Ex: qsub decoding_transdecoder.sh
+#Script to predict coding regions from a de novo assembled transcriptome fasta file
+# using Transdecoder
+#Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder
+#Usage Ex: qsub decoding_transdecoder.sh trimmed_run1Sierra_assembly_Trinity
 #Note that the genome version input is for output file naming purposes only
 
 #Load necessary modules for ND CRC servers
@@ -22,5 +23,5 @@ mkdir "$outFolder"
 cd "$outFolder"
 #Generate your best candidate open rading frame (ORF) predictions
 TransDecoder.LongOrfs -t "$multiFASTA"
-#Optionally, identify peptides with homology to known proteins
-#TransDecoder.Predict -t transcripts.fasta [ homology options ]
+#Identify peptides with homology to known proteins
+#TransDecoder.Predict -t "$multiFASTA"
