@@ -38,6 +38,7 @@ else
 	echo "ERROR: The sorted "$1" folder of bam files were not found... exiting"
 	exit 1
 fi
+#TODO: check input folder requirements
 #Retrieve aligned reads input absolute path
 inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
 #Retrieve genome reference absolute path for alignment
