@@ -28,9 +28,9 @@ if [[ "$1"  != trimmed*assembly_Trinity ]]; then
 	exit 1
 fi
 #Retrieve genome reference and features paths
-assemblyPath=$(grep "assembling:" ../InputData/inputPaths.txt | tr -d " " | sed "s/assembling://g")
-multiFASTA="$assemblyPath"/"$1"/Trinity*.fasta
-geneMap="$assemblyPath"/"$1"/Trinity.fasta.gene_trans_map
+inputsPath=$(grep "assembling:" ../InputData/inputPaths.txt | tr -d " " | sed "s/assembling://g")
+multiFASTA="$inputsPath"/"$1"/Trinity*.fasta
+geneMap="$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
 #Retrieve outputs absolute path
 outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
 outFolder="$outputsPath"/decoded_"$1"
@@ -42,7 +42,16 @@ if [ $? -ne 0 ]; then
 fi
 #Move to output folder
 cd "$outFolder"
+#Name output file of inputs
+inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
+echo "$inputsPath"/"$1"/Trinity*.fasta
+echo "$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
 #Generate your best candidate open rading frame (ORF) predictions
+echo "Beginning decoding..."
 TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
+echo "Decoding finished!"
 #Identify peptides with homology to known proteins
 #TransDecoder.Predict -t "$multiFASTA"
+echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
+#Copy previous summaries
+cp "$inputsPath"/"$1"/*.txt "$outputFolder"
