@@ -33,15 +33,15 @@ multiFASTA="$inputsPath"/"$1"/Trinity*.fasta
 geneMap="$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
 #Retrieve outputs absolute path
 outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
-outFolder="$outputsPath"/decoded_"$1"
-mkdir "$outFolder"
+outputFolder="$outputsPath"/decoded_"$1"
+mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
 	echo "The $outputFolder directory already exsists... please remove before proceeding."
 	exit 1
 fi
 #Move to output folder
-cd "$outFolder"
+cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
 #Generate your best candidate open rading frame (ORF) predictions
