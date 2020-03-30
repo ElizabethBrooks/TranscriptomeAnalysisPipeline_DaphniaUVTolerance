@@ -29,7 +29,7 @@ if [[ "$1"  != trimmed*assembly_Trinity ]]; then
 fi
 #Retrieve genome reference and features paths
 inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-multiFASTA="$inputsPath"/"$1"/Trinity*.fasta
+multiFASTA=$(echo "$inputsPath"/"$1"/Trinity*.fasta)
 geneMap="$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
 #Retrieve outputs absolute path
 outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
