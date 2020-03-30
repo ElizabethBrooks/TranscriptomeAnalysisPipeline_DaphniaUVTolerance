@@ -46,7 +46,7 @@ cd "$inputsFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
 #Run trinity assembly with each forward and revered reads, using 8 threads
-#Reduce output to only the Trinity.fasta with --full_cleanup
+#Reduce output with --full_cleanup
 Trinity --seqType fq --max_memory 50G --samples_file "$outputFolder"/tmpSamplesFile.txt --CPU 8 --output "$outputFolder"
 echo "Assembly complete!"
 rm "$outputFolder"/tmpSamplesFile.txt
@@ -64,5 +64,6 @@ rm partitioned_reads.*
 rm *.cmds*
 rm -r read_partitions
 rm scaffolding_entries.sam
+rm Trinity.timing
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"

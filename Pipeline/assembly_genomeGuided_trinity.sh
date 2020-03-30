@@ -65,7 +65,7 @@ echo "Sorting complete!"
 rm merged.bam
 #Run Trinity on coordinate-sorted bam files using 8 threads, and a maximum intron
 # length that makes most sense given your targeted organism
-#Reduce output to only the Trinity.fasta with --full_cleanup
+#Reduce output with --full_cleanup
 echo "Beginning assembly of $1 reads for $2 data..."
 Trinity --genome_guided_bam sorted.bam --genome_guided_max_intron "$3" --max_memory 50G --CPU 8
 echo "Assembly complete!"
@@ -81,5 +81,6 @@ rm trinity_out_dir/sorted.bam*
 rm trinity_out_dir/partitions.ok
 rm trinity_out_dir/read_files.list*
 rm trinity_out_dir/trinity_GG.cmds*
+rm trinity_out_dir/Trinity.timing
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
