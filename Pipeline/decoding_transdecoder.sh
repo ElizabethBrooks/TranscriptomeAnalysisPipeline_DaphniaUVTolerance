@@ -28,7 +28,7 @@ if [[ "$1"  != trimmed*assembly_Trinity ]]; then
 	exit 1
 fi
 #Retrieve genome reference and features paths
-inputsPath=$(grep "assembling:" ../InputData/inputPaths.txt | tr -d " " | sed "s/assembling://g")
+inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 multiFASTA="$inputsPath"/"$1"/Trinity*.fasta
 geneMap="$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
 #Retrieve outputs absolute path
@@ -44,8 +44,6 @@ fi
 cd "$outFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
-echo "$inputsPath"/"$1"/Trinity*.fasta
-echo "$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
 #Generate your best candidate open rading frame (ORF) predictions
 echo "Beginning decoding..."
 TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
