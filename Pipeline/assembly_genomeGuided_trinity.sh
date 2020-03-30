@@ -67,7 +67,7 @@ rm merged.bam
 # length that makes most sense given your targeted organism
 #Reduce output to only the Trinity.fasta with --full_cleanup
 echo "Beginning assembly of $1 reads for $2 data..."
-Trinity --genome_guided_bam sorted.bam --genome_guided_max_intron "$3" --max_memory 50G --CPU 8 --full_cleanup
+Trinity --genome_guided_bam sorted.bam --genome_guided_max_intron "$3" --max_memory 50G --CPU 8
 echo "Assembly complete!"
 rm sorted.bam
 #Add run inputs to output summary file
