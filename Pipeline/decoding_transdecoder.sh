@@ -28,8 +28,9 @@ if [[ "$1"  != trimmed*assembly_Trinity ]]; then
 	exit 1
 fi
 #Retrieve genome reference and features paths
-multiFASTAPath=$(grep "assembling:" ../InputData/inputPaths.txt | tr -d " " | sed "s/assembling://g")
-multiFASTA="$multiFASTAPath"/"$1"/Trinity.fasta
+assemblyPath=$(grep "assembling:" ../InputData/inputPaths.txt | tr -d " " | sed "s/assembling://g")
+multiFASTA="$assemblyPath"/"$1"/Trinity*.fasta
+geneMap="$assemblyPath"/"$1"/Trinity.fasta.gene_trans_map
 #Retrieve outputs absolute path
 outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
 outFolder="$outputsPath"/decoded_"$1"
@@ -42,6 +43,6 @@ fi
 #Move to output folder
 cd "$outFolder"
 #Generate your best candidate open rading frame (ORF) predictions
-TransDecoder.LongOrfs -t "$multiFASTA"
+TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
 #Identify peptides with homology to known proteins
 #TransDecoder.Predict -t "$multiFASTA"
