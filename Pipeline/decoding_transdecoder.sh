@@ -50,12 +50,13 @@ inputOutFile="$outputFolder"/"$1"_decoding_summary.txt
 echo "Beginning decoding..."
 #Generate candidate ORFs
 TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
+#TO DO
 #Use BlastP to search a protein database
-blastp -query transdecoder_dir/longest_orfs.pep -db uniprot_sprot.fasta  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 10 > blastp.outfmt6
+#blastp -query transdecoder_dir/longest_orfs.pep -db uniprot_sprot.fasta  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 10 > blastp.outfmt6
 #Search the peptides for protein domains using Pfam
-hmmscan --cpu 8 --domtblout pfam.domtblout /path/to/Pfam-A.hmm transdecoder_dir/longest_orfs.pep
+#hmmscan --cpu 8 --domtblout pfam.domtblout /path/to/Pfam-A.hmm transdecoder_dir/longest_orfs.pep
 #Combine the Blast and Pfam search results into coding region selection
-TransDecoder.Predict -t target_transcripts.fasta --retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6
+#TransDecoder.Predict -t target_transcripts.fasta --retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6
 echo "Decoding finished!"
 #Identify peptides with homology to known proteins
 #TransDecoder.Predict -t "$multiFASTA"
