@@ -64,8 +64,8 @@ blastp -query "$outputFolder"/Trinity.fasta.transdecoder_dir/longest_orfs.pep -d
 #TransDecoder.Predict -t "$multiFASTA" --retain_pfam_hits "$outputFolder"/pfam.domtblout --retain_blastp_hits "$outputFolder"/blastp.outfmt6
 echo "Decoding finished!"
 #Clean up
-rm "$outputFolder"/blastp.outfmt6
-rm "$outputFolder"/pfam.domtblout
+#rm "$outputFolder"/blastp.outfmt6
+#rm "$outputFolder"/pfam.domtblout
 #Output run commands to summary file
 echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
 echo "blastp -query" "$outputFolder"/"Trinity.fasta.transdecoder_dir/longest_orfs.pep -db" "$uniprotDB"  "-max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 10 >" "$outputFolder"/"blastp.outfmt6" >> "$inputOutFile"
