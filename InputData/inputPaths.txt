@@ -4,4 +4,4 @@ genomeReference: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/Daphnia
 genomeFeatures: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42.3.0.annotation.18440.gff
 geneOntology: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/gene.Blast2GO.merged.csv
 uniprotDBs: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/uniprot_DBs
-pfamDB: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/pfam_DB
+pfamDB: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/pfam_DB/Pfam-A.full

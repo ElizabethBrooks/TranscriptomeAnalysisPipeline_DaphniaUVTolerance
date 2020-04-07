@@ -5,11 +5,13 @@
 #$ -N decoding_transdecoder_jobOutput
 #Script to predict coding regions from a de novo assembled transcriptome fasta file
 # using Transdecoder
-#Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder proteinDB
-#Usage Ex: qsub decoding_transdecoder.sh trimmed_run1Sierra_assembly_Trinity uniprot-_dna+repair_+AND+organism_daphnia_isoformsIncluded.fasta
+#Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder
+#Usage Ex: qsub decoding_transdecoder.sh trimmed_run1Sierra_assembly_Trinity
 #Note that the genome version input is for output file naming purposes only
-#Also note that uniprot databases may be downloaded from the UniprotKB search page,
-# and Pfam databases may be downloaded with wget from ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases
+#Also note that uniprot databases may be downloaded from the UniprotKB search page, or wget
+#ex: wget https://www.uniprot.org/uniprot/?query=reviewed:yes+AND+organism:arthropod
+#or ex: wget ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref100/uniref100.fasta.gz
+#And Pfam databases may be downloaded with wget from ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases
 #ex: wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam33.0/Pfam-A.full.gz
 
 #Load necessary modules for ND CRC servers
@@ -57,7 +59,7 @@ echo "Beginning decoding..."
 #Generate candidate ORFs
 #TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
 #Use BlastP to search a protein database
-blastp -query "$outputFolder"/Trinity.fasta.transdecoder_dir/longest_orfs.pep -db "$uniprotDB"  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 10 > "$outputFolder"/blastp.outfmt6
+blastp -query "$outputFolder"/Trinity.fasta.transdecoder_dir/longest_orfs.pep -db "$uniprotDB"  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 > "$outputFolder"/blastp.outfmt6
 #Search the peptides for protein domains using Pfam
 #hmmscan --cpu 8 --domtblout "$outputFolder"/pfam.domtblout "$pfamPath" "$outputFolder"/Trinity.fasta.transdecoder_dir/longest_orfs.pep
 #Combine the Blast and Pfam search results into coding region selection
