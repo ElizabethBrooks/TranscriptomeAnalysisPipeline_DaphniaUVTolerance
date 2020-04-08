@@ -63,6 +63,6 @@ echo "Decoding finished!"
 #echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
 #echo "blastp -query" "Trinity.fasta.transdecoder_dir/longest_orfs.pep -db" "$uniprotPath"  "-max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 >" "blastp.outfmt6" >> "$inputOutFile"
 #echo "hmmscan --cpu 8 --domtblout" "pfam.domtblout" "$pfamPath" "Trinity.fasta.transdecoder_dir/longest_orfs.pep" >> "$inputOutFile"
-#echo "TransDecoder.Predict -t" "$multiFASTA" >> "$inputOutFile"
+#echo "TransDecoder.Predict -t" "$multiFASTA" "--retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6" >> "$inputOutFile"
 #Copy previous summaries
 #cp "$inputsPath"/"$1"/*.txt "$outputFolder"

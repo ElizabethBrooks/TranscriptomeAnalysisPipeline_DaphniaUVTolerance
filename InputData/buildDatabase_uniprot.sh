@@ -17,7 +17,7 @@ uniprotPath=$(dirname "$uniprotPath")
 #Move to database directory
 cd "$uniprotPath"
 #Retrieve selected uniprot database
-wget ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref100/uniref100.fasta.gz
-gunzip -v uniref100.fasta.gz
+#wget ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref100/uniref100.fasta.gz
+#gunzip -v uniref100.fasta.gz
 #Index the uniprot database for blast
 makeblastdb -in uniref100.fasta -dbtype prot
