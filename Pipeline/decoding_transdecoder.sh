@@ -8,11 +8,6 @@
 #Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder
 #Usage Ex: qsub decoding_transdecoder.sh trimmed_run1Sierra_assembly_Trinity
 #Note that the genome version input is for output file naming purposes only
-#Also note that uniprot databases may be downloaded from the UniprotKB search page, or wget
-#ex: wget https://www.uniprot.org/uniprot/?query=reviewed:yes+AND+organism:arthropod
-#or ex: wget ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref100/uniref100.fasta.gz
-#And Pfam databases may be downloaded with wget from ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases
-#ex: wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam33.0/Pfam-A.full.gz
 
 #Load necessary modules for ND CRC servers
 #module load bio/transdecoder
@@ -36,7 +31,7 @@ if [[ "$1"  != trimmed*assembly_Trinity ]]; then
 fi
 #Retrieve genome reference and features paths
 inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-uniprotPath=$(grep "uniprotDBs:" ../InputData/outputPaths.txt | tr -d " " | sed "s/uniprotDBs://g")
+uniprotPath=$(grep "uniprotDB:" ../InputData/outputPaths.txt | tr -d " " | sed "s/uniprotDB://g")
 pfamPath=$(grep "pfamDB:" ../InputData/outputPaths.txt | tr -d " " | sed "s/pfamDB://g")
 multiFASTA=$(echo "$inputsPath"/"$1"/Trinity*.fasta)
 geneMap="$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
