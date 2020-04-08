@@ -8,6 +8,8 @@
 #Note that Pfam databases may be downloaded with wget 
 # from ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases
 
+#Load necessary modules for ND CRC servers
+module load bio/hmmer
 #Retreive pfam database storage path
 pfamPath=$(grep "pfamDB:" inputPaths.txt | tr -d " " | sed "s/pfamDB://g")
 pfamPath=$(dirname "$pfamPath")
