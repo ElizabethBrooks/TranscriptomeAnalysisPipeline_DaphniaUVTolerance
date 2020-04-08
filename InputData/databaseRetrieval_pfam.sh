@@ -16,7 +16,7 @@ pfamPath=$(dirname "$pfamPath")
 #Move to database directory
 cd "$pfamPath"
 #Retrieve selected pfam database
-#wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam33.0/Pfam-A.hmm.gz
-#gunzip -v Pfam-A.hmm.gz
+wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam33.0/Pfam-A.hmm.gz
+gunzip -v Pfam-A.hmm.gz
 #Use hmmpress to prepare an HMM database for hmmscan
 hmmpress Pfam-A.hmm
