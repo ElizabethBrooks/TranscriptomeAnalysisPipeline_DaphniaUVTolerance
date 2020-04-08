@@ -10,6 +10,7 @@
 
 #Retreive uniprot database storage path
 uniprotPath=$(grep "uniprotDBs:" ../InputData/outputPaths.txt | tr -d " " | sed "s/uniprotDBs://g")
+uniprotPath=$(dirname "$uniprotPath")
 #Move to database directory
 cd "$uniprotPath"
 #Retrieve selected uniprot database
