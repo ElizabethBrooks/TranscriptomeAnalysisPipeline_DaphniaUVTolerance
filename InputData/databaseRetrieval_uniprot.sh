@@ -4,6 +4,7 @@
 #$ -r n
 #$ -N database_uniprot_jobOutput
 #Script to retrieve Uniprot protein sequence database fasta files
+#Usage: qsub databaseRetrieval_uniprot.sh 
 #Note that uniprot databases may be downloaded from the UniprotKB search page, or wget
 #ex: wget https://www.uniprot.org/uniprot/?query=reviewed:yes+AND+organism:arthropod
 #or ex: wget ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref100/uniref100.fasta.gz

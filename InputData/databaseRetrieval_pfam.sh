@@ -4,6 +4,7 @@
 #$ -r n
 #$ -N database_pfam_jobOutput
 #Script to retrieve Pfam protein sequence database fasta files
+#Usage: qsub databaseRetrieval_pfam.sh 
 #Note that Pfam databases may be downloaded with wget 
 # from ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases
 
