@@ -11,8 +11,8 @@
 
 #Load necessary modules for ND CRC servers
 #module load bio/transdecoder
-module load bio/blast+
-#module load bio/hmmer
+#module load bio/blast+
+module load bio/hmmer
 #module load bio/cufflinks
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
