@@ -8,7 +8,7 @@
 # from ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases
 
 #Retreive pfam database storage path
-pfamPath=$(grep "pfamDB:" ../InputData/outputPaths.txt | tr -d " " | sed "s/pfamDB://g")
+pfamPath=$(grep "pfamDB:" inputPaths.txt | tr -d " " | sed "s/pfamDB://g")
 pfamPath=$(dirname "$pfamPath")
 #Move to database directory
 cd "$pfamPath"

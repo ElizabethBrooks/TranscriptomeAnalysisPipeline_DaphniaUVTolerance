@@ -9,7 +9,7 @@
 #or ex: wget ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref100/uniref100.fasta.gz
 
 #Retreive uniprot database storage path
-uniprotPath=$(grep "uniprotDBs:" ../InputData/outputPaths.txt | tr -d " " | sed "s/uniprotDBs://g")
+uniprotPath=$(grep "uniprotDB:" inputPaths.txt | tr -d " " | sed "s/uniprotDB://g")
 uniprotPath=$(dirname "$uniprotPath")
 #Move to database directory
 cd "$uniprotPath"
