@@ -38,12 +38,12 @@ geneMap="$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
 #Retrieve outputs absolute path
 outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
 outputFolder="$outputsPath"/decoded_"$1"
-mkdir "$outputFolder"
+#mkdir "$outputFolder"
 #Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outputFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#if [ $? -ne 0 ]; then
+#	echo "The $outputFolder directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
@@ -60,9 +60,9 @@ blastp -query "$outputFolder"/Trinity.fasta.transdecoder_dir/longest_orfs.pep -d
 #TransDecoder.Predict -t "$multiFASTA" --retain_pfam_hits "$outputFolder"/pfam.domtblout --retain_blastp_hits "$outputFolder"/blastp.outfmt6
 echo "Decoding finished!"
 #Output run commands to summary file
-echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
-echo "blastp -query" "$outputFolder"/"Trinity.fasta.transdecoder_dir/longest_orfs.pep -db" "$uniprotPath"  "-max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 10 >" "$outputFolder"/"blastp.outfmt6" >> "$inputOutFile"
-echo "hmmscan --cpu 8 --domtblout" "$outputFolder"/"pfam.domtblout" "$pfamPath" "$outputFolder"/"Trinity.fasta.transdecoder_dir/longest_orfs.pep" >> "$inputOutFile"
-echo "TransDecoder.Predict -t" "$multiFASTA" >> "$inputOutFile"
+#echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
+#echo "blastp -query" "$outputFolder"/"Trinity.fasta.transdecoder_dir/longest_orfs.pep -db" "$uniprotPath"  "-max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 10 >" "$outputFolder"/"blastp.outfmt6" >> "$inputOutFile"
+#echo "hmmscan --cpu 8 --domtblout" "$outputFolder"/"pfam.domtblout" "$pfamPath" "$outputFolder"/"Trinity.fasta.transdecoder_dir/longest_orfs.pep" >> "$inputOutFile"
+#echo "TransDecoder.Predict -t" "$multiFASTA" >> "$inputOutFile"
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
