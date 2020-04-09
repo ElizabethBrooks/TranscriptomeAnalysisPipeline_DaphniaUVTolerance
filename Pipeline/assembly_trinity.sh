@@ -32,7 +32,7 @@ samplesPath=$(echo ../InputData/samplesFile_trinity.txt)
 #Retrieve assembly outputs absolute path
 outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Create output directory
-outputFolder="$outputsPath"/"$1""$2"_assembly_Trinity
+outputFolder="$outputsPath"/"$1""$2"_assemblyTrinity
 mkdir "$outputFolder"
 #Re-set reads file paths using input genotype tag
 sed "s/GENEOTYPE/$2/g" "$samplesPath" > "$outputFolder"/tmpSamplesFile.txt
@@ -44,7 +44,7 @@ fi
 #Move to inputs directory
 cd "$inputsFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1""$2"_assembly_summary.txt
+inputOutFile="$outputFolder"/"$1""$2"_assemblyTrinity_summary.txt
 #Run trinity assembly with each forward and revered reads, using 8 threads
 #Reduce output with --full_cleanup
 Trinity --seqType fq --max_memory 50G --samples_file "$outputFolder"/tmpSamplesFile.txt --CPU 8 --output "$outputFolder"
