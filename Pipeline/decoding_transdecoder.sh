@@ -25,7 +25,7 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	exit 1
 fi
 #Determine if the correct analysis folder was input
-if [[ "$1"  != *assembly* ]]; then
+if [[ "$1"  != *assemblyTrinity ]]; then
 	echo "ERROR: The "$1" folder of trimmed fq.gz files were not found... exiting"
 	exit 1
 fi
