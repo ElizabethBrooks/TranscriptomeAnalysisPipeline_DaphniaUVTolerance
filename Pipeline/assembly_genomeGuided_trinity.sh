@@ -44,7 +44,7 @@ genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | s
 #Retrieve assembly outputs absolute path
 outputsPath=$(grep "assemblingWithGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingWithGenome://g")
 #Create output directory
-outputFolder="$outputsPath"/"$1""$2"_assemblyTrinityGenome
+outputFolder="$outputsPath"/"$1""$2"_assemblyGenomeTrinity
 mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -54,7 +54,7 @@ fi
 #Move to outputs directory
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1""$2"_assemblyTrinityGenome_summary.txt
+inputOutFile="$outputFolder"/"$1""$2"_assemblyGenomeTrinity_summary.txt
 #Merge and re-coordinate sort the set of bam files
 readFiles=$(echo "$inputsPath"/"$1"/*_"$2"_*/*.bam)
 echo "Beginning merging..."
