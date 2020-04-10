@@ -42,6 +42,7 @@ plotOverall <- ggplot(counts, aes(factor(fullsetNames), aStats.overall, fill=aSt
   ggtitle(plotTitle) +
   xlab("Sample Number") +
   ylab("Overall Percent") +
+  theme(plot.title = element_text(hjust = 0.5)) +
   scale_fill_brewer(palette="Set1")
 plotOverall <- plotOverall + guides(fill=guide_legend(title="Run Number"))
 #Save overall percentages plot as a jpg
@@ -53,6 +54,7 @@ plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aSt
   ggtitle(plotTitle) +
   xlab("Sample Number") +
   ylab("Concordant Percent") +
+  theme(plot.title = element_text(hjust = 0.5)) +
   scale_fill_brewer(palette="Set1")
 plotConc <- plotConc + guides(fill=guide_legend(title="Run Number"))
 #Save concordant percentages plot as a jpg
