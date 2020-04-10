@@ -2,6 +2,7 @@
 #Usage: Rscript generateMatrix_differences.r percentsFile_legacy.csv percentsFile_newMethod.csv
 #Usage Ex: Rscript generateMatrix_differences.r ../../AlignmentStats_Analysis/alignmentSummarized_legacy_subset_trimmed.csv ../../AlignmentStats_Analysis/alignmentSummarized_hisat2_trimmed.csv
 #R script to generate matrix of column diferences
+
 #Retrieve input file name of gene counts
 args=commandArgs(trailingOnly=TRUE)
 #Test if there are three input arguments

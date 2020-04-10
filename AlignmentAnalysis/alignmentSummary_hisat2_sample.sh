@@ -2,6 +2,7 @@
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummary_hisat2_sample.sh alignedSampleFolder alignmentMethod runNum
 #Usage Ex: bash alignmentSummary_hisat2_sample.sh aligned_hisat2_run1/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV hisat2 run1
+
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Set outputs directory

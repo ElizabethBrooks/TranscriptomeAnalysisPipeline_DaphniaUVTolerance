@@ -2,6 +2,7 @@
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummary_tophat2_sample.sh alignedSampleFolder analysisMethod runNum
 #Usage Ex: bash alignmentSummary_tophat2_sample.sh aligned_tophat2_run2/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV tophat2 run2
+
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Set outputs directory

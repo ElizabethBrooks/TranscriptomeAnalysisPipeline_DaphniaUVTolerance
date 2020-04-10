@@ -1,6 +1,7 @@
 #!/bin/bash
 #Usage: Rscript generatePlots_barPlot_binned.r percentsFile.csv
 #Usage Ex: Rscript generatePlots_barPlot_binned.r alignmentSummarized_legacyTophat2Hisat2_differences_merged.csv
+
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Move to outputs directory

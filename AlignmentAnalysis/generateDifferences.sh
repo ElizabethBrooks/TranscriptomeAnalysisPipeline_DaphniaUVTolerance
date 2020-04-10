@@ -2,6 +2,7 @@
 #Usage: bash generateDifferences.sh percentsFile_legacy.csv percentsFile_newMethod.csv
 #Usage Ex: bash generateDifferences.sh ../../AlignmentStats_Analysis/alignmentSummarized_legacy_subset_trimmed.csv ../../AlignmentStats_Analysis/alignmentSummarized_hisat2_trimmed.csv
 #Script to run Rscripts that generate csv files of column differences
+
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"

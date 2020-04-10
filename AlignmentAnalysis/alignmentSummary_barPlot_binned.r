@@ -2,6 +2,7 @@
 #Usage: Rscript alignmentSummary_barPlot_binned.r percentsFile.csv
 #Usage Ex: Rscript alignmentSummary_barPlot_binned.r alignmentSummarized_legacyTophat2Hisat2_merged.csv
 #R script to generate grouped and colored bar plots
+
 #Import library
 library(ggplot2)
 #Retrieve input file name of gene counts

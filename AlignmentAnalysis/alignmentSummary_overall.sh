@@ -2,6 +2,7 @@
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummary_overall.sh alignmentFolders
 #Usage Ex: bash alignmentSummary_overall.sh aligned_hisat2_run2 aligned_tophat2_run1 aligned_tophat2_run3
+
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
