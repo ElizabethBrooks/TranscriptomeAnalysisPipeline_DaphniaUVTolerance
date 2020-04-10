@@ -15,8 +15,17 @@ inOutputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d "
 #Set outputs directory and file
 inOutDir="$inOutputsPath"/AlignmentsAnalyzed
 echo "Plotting $1 and $2 alignment summaries..."
-#Plot alignment data using binned bar plots
-Rscript alignmentSummary_barPlot_binnedCompare.r "$inOutDir"/"$1" "$inOutDir"/"$2"
+#Determine what software was used for inputs
+if [[ "$1" == *"tophat2"* && "$2" == *"tophat2"* ]]; then
+	#Plot alignment data using min intron length binned bar plots
+	Rscript alignmentSummary_barPlot_binnedCompareMinIntron.r "$inOutDir"/"$1" "$inOutDir"/"$2"
+elif [[ "$1" == *"hisat2"* && "$2" == *"hisat2"* ]]; then
+	#Plot alignment data using min intron length binned bar plots
+	Rscript alignmentSummary_barPlot_binnedCompareMinIntron.r "$inOutDir"/"$1" "$inOutDir"/"$2"
+else
+	#Plot alignment data using software binned bar plots
+	Rscript alignmentSummary_barPlot_binnedCompareSoftware.r "$inOutDir"/"$1" "$inOutDir"/"$2"
+fi
 echo "Alignment summaries for $1 and $2 have been plotted!"
 #Rename produced pdf of plots
 outFile1=$(echo "$1" | sed 's/_formatted\.csv//' | sed 's/alignmentSummarized_//')

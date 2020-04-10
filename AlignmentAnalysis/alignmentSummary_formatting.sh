@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to prepare alignment summary matrices
 #Usage: bash alignmentSummary_formatting.sh analysisMethod runNum
-#Usage Ex: bash alignmentSummary_formatting.sh tophat2 3
+#Usage Ex: bash alignmentSummary_formatting.sh tophat2 3 
 
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
@@ -39,9 +39,9 @@ sed -i "s/Pool3_//g" "$outFileTmp"
 head -1 "$outFileTmp" > "$outFile"
 tail -n +2 "$outFileTmp" | sort -k1 -n -t, >> "$outFile"
 #Add method and run number tag to each sample
-sed -i "s/$/,$1/" "$outFile"
+sed -i "s/$/,$1,$2/" "$outFile"
 #Add method tag header
-sed -i "s/concordant,$1/concordant,method/" "$outFile"
+sed -i "s/concordant,$1/concordant,software,run/" "$outFile"
 #Determine if tophat2 data was input
 if [[ "$1" == "tophat2" ]]; then
 	#Remove extra columns from tophat2 data
