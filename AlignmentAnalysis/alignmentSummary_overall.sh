@@ -43,16 +43,16 @@ for f1 in $@; do
 		echo "ERROR: The $f1 folder or bam files were not found... exiting"
 		exit 1
 	fi
+	echo "Merging $f1 alignment summaries..."
 	#Retrieve summaries for each aligned sample
 	for f2 in "$inputsPath"/"$f1"/*; do
 		#Retrieve sample name
 		sampleName=$(basename "$f2")
-		echo "Merging sample $sampleName alignment summary..."
 		#Retrieve sample summary based on alignment method
 		bash alignmentSummary_"$analysisMethod"_sample.sh "$f2" "$analysisMethod" "$runNum"
 		#Combine summaries into one csv file
 		cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_"$runNum".csv
 		rm "$outputStats"_combined_"$runNum".csv
-		echo "Sample $sampleName alignment summary has been merged!"
 	done
+	echo "Alignment summaries for $f1 have been merged!"
 done
