@@ -16,14 +16,26 @@ if (length(args)!=1) {
 }
 #Retrieve alignment stats
 aStats <- do.call(rbind,lapply(args,read.csv))
-counts <- data.frame(aStats$sample, aStats$overall, aStats$concordant, aStats$method)
+#Re-set row names to match samples
+subsetLength <- length(rownames(aStats))/2
+subsetNames <- rownames(aStats)[1:subsetLength]
+fullsetNames <- c(subsetNames,subsetNames)
+fullsetNames <- as.numeric(fullsetNames)
+#Create data frame of compined alignment stats
+counts <- data.frame(fullsetNames, aStats$overall, aStats$concordant, aStats$method)
 #Create matrix for multiple plots
 par(mfrow=c(2,1))
 #Generate grouped and colored bar plot
-ggplot(counts, aes(factor(aStats.sample), aStats.overall, fill=aStats.method)) + 
-  geom_bar(stat="identity", position="dodge") + 
+plotOverall <- ggplot(counts, aes(factor(fullsetNames), aStats.overall, fill=aStats.method)) + 
+  geom_bar(stat="identity", position="stack") +
+  xlab("Sample Number") +
+  ylab("Overall Percent") +
   scale_fill_brewer(palette="Set1")
+(plotOverall <- plotOverall + guides(fill=guide_legend(title="Software")))
 #Generate second grouped and colored bar plot
-ggplot(counts, aes(factor(aStats.sample), aStats.concordant, fill=aStats.method)) + 
-  geom_bar(stat="identity", position="dodge") + 
+plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aStats.method)) + 
+  geom_bar(stat="identity", position="stack",by=2) + 
+  xlab("Sample Number") +
+  ylab("Concordant Percent") +
   scale_fill_brewer(palette="Set1")
+(plotConc <- plotConc + guides(fill=guide_legend(title="Software")))
