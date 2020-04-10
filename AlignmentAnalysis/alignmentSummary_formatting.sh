@@ -41,7 +41,7 @@ tail -n +2 "$outFileTmp" | sort -k1 -n -t, >> "$outFile"
 #Add method and run number tag to each sample
 sed -i "s/$/,$1,$2/" "$outFile"
 #Add method tag header
-sed -i "s/concordant,$1/concordant,software,run/" "$outFile"
+sed -i "s/concordant,$1,$2/concordant,software,run/" "$outFile"
 #Determine if tophat2 data was input
 if [[ "$1" == "tophat2" ]]; then
 	#Remove extra columns from tophat2 data
