@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-#Usage: Rscript alignmentSummary_barPlot_binned.r alignmentSummaryFiles
-#Usage Ex: Rscript alignmentSummary_barPlot_binned.r alignmentSummarized_hisat2_run1_formatted.csv alignmentSummarized_tophat2_run2_formatted.csv
+#Usage: Rscript alignmentSummary_barPlot_binned.r alignmentSummaryFiles inputFilesPath
+#Usage Ex: Rscript alignmentSummary_barPlot_binned.r alignmentSummarized_hisat2_run1_formatted.csv alignmentSummarized_tophat2_run2_formatted.csv inputFilesPath
 #R script to generate grouped and colored bar plots
 
 #The easiest way to get ggplot2 is to install the whole tidyverse
@@ -33,7 +33,8 @@ plotOverall <- ggplot(counts, aes(factor(fullsetNames), aStats.overall, fill=aSt
   scale_fill_brewer(palette="Set1")
 plotOverall <- plotOverall + guides(fill=guide_legend(title="Software"))
 #Save overall percentages plot as a jpg
-jpeg("plotOverallPercentages.jpg")
+outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", sep="/")
+jpeg(outFile)
 grid.newpage()
 grid.draw(plotOverall)
 dev.off()
@@ -45,7 +46,8 @@ plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aSt
   scale_fill_brewer(palette="Set1")
 plotConc <- plotConc + guides(fill=guide_legend(title="Software"))
 #Save concordant percentages plot as a jpg
-jpeg("plotConcordantPercentages.jpg")
+outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", sep="/")
+jpeg(outFile)
 grid.newpage()
 grid.draw(plotConc)
 dev.off()
