@@ -55,7 +55,9 @@ for f1 in $@; do
 		cat "$outputStats"_combined_run"$runNum".csv >> "$outputStats"_run"$runNum".csv
 		rm "$outputStats"_combined_run"$runNum".csv
 	done
+	echo "Alignment summaries for $f1 have been merged!"
+	echo "Formatting $f1 merged alignment summary..."
 	#Run alignment summary formatting
 	bash alignmentSummary_formatting.sh "$analysisMethod" "$runNum"
-	echo "Alignment summaries for $f1 have been merged!"
+	echo "Merged alignment summary for $f1 has been formatted!"
 done
