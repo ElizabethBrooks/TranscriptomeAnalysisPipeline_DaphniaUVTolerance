@@ -25,10 +25,15 @@ fullsetNames <- as.numeric(fullsetNames)
 counts <- data.frame(fullsetNames, aStats$overall, aStats$concordant, aStats$software)
 #Create matrix for multiple plots
 par(mfrow=c(2,1))
+#Set the plot titles
+plotTitle1 <- basename(args[1])
+plotTitle1 <- str_remove(plotTitle1, "alignmentSummarized_")
+plotTitle1 <- str_remove(plotTitle1, "_formatted.csv")
+plotTitle2 <- basename(args[2])
+plotTitle2 <- str_remove(plotTitle2, "alignmentSummarized_")
+plotTitle2 <- str_remove(plotTitle2, "_formatted.csv")
+plotTitle <- paste(plotTitle1, plotTitle2, sep=" vs ")
 #Generate grouped and colored bar plot
-plotTitle <- basename(args[1])
-plotTitle <- str_remove(plotTitle, "alignmentSummarized_")
-plotTitle <- str_remove(plotTitle, "_formatted.csv")
 plotOverall <- ggplot(counts, aes(factor(fullsetNames), aStats.overall, fill=aStats.software)) + 
   geom_bar(stat="identity", position="stack") +
   ggtitle(plotTitle) +
@@ -40,9 +45,6 @@ plotOverall <- plotOverall + guides(fill=guide_legend(title="Software"))
 outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", sep="/")
 ggsave(outFile)
 #Generate second grouped and colored bar plot
-plotTitle <- basename(args[2])
-plotTitle <- str_remove(plotTitle, "alignmentSummarized_")
-plotTitle <- str_remove(plotTitle, "_formatted.csv")
 plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aStats.software)) + 
   geom_bar(stat="identity", position="stack") + 
   ggtitle(plotTitle) +
