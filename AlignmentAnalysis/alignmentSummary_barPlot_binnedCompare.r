@@ -31,11 +31,21 @@ plotOverall <- ggplot(counts, aes(factor(fullsetNames), aStats.overall, fill=aSt
   xlab("Sample Number") +
   ylab("Overall Percent") +
   scale_fill_brewer(palette="Set1")
-(plotOverall <- plotOverall + guides(fill=guide_legend(title="Software")))
+plotOverall <- plotOverall + guides(fill=guide_legend(title="Software"))
+#Save overall percentages plot as a jpg
+jpeg("plotOverallPercentages.jpg")
+grid.newpage()
+grid.draw(plotOverall)
+dev.off()
 #Generate second grouped and colored bar plot
 plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aStats.method)) + 
   geom_bar(stat="identity", position="stack",by=2) + 
   xlab("Sample Number") +
   ylab("Concordant Percent") +
   scale_fill_brewer(palette="Set1")
-(plotConc <- plotConc + guides(fill=guide_legend(title="Software")))
+plotConc <- plotConc + guides(fill=guide_legend(title="Software"))
+#Save concordant percentages plot as a jpg
+jpeg("plotConcordantPercentages.jpg")
+grid.newpage()
+grid.draw(plotConc)
+dev.off()

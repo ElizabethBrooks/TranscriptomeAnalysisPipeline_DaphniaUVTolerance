@@ -20,4 +20,5 @@ Rscript alignmentSummary_barPlot_binnedCompare.r "$inOutDir"/"$1" "$inOutDir"/"$
 echo "Alignment summaries for $1 and $2 have been plotted!"
 #Rename produced pdf of plots
 outFile=$(echo "$1"_"$2" | sed 's/\_formatted\.csv//' | sed 's/alignmentSummarized\_//')
-mv Rplots.pdf "$outputAnalysis"/alignmentSummarized_"$outFile"_barPlots.pdf
+mv plotOverallPercentages.jpg "$outputAnalysis"/alignmentSummarized_"$outFile"_overallPercentages.pdf
+mv plotConcordantPercentages.jpg "$outputAnalysis"/alignmentSummarized_"$outFile"_concordantPercentages.pdf
