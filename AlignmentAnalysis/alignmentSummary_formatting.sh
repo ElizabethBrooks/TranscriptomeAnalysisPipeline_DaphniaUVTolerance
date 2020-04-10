@@ -39,9 +39,9 @@ sed -i "s/Pool3_//g" "$outFileTmp"
 head -1 "$outFileTmp" > "$outFile"
 tail -n +2 "$outFileTmp" | sort -k1 -n -t, >> "$outFile"
 #Add method and run number tag to each sample
-sed -i "s/$/,$1,$2/" "$outFile"
+sed -i "s/$/,$1,run$2/" "$outFile"
 #Add method tag header
-sed -i "s/concordant,$1,$2/concordant,software,run/" "$outFile"
+sed -i "s/concordant,$1,run$2/concordant,software,run/" "$outFile"
 #Determine if tophat2 data was input
 if [[ "$1" == "tophat2" ]]; then
 	#Remove extra columns from tophat2 data
