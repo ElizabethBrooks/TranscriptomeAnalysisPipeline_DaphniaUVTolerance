@@ -30,7 +30,7 @@ for f1 in $@; do
 		#Retrieve run number for input alignment folder
 		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_run//g")
 		#Set header of overall summary csv file
-		echo "sample,overall,concordant" > "$outputStats"_"$runNum".csv
+		echo "sample,overall,concordant" > "$outputStats"_run"$runNum".csv
 	elif [[ "$f1" == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"
@@ -39,22 +39,22 @@ for f1 in $@; do
 		#Retrieve run number for input alignment folder
 		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_run//g")
 		#Set header of overall summary csv file
-		echo "sample,leftMapped,rightMapped,overall,concordant" > "$outputStats"_"$runNum".csv
+		echo "sample,leftMapped,rightMapped,overall,concordant" > "$outputStats"_run"$runNum".csv
 	else
 		echo "ERROR: The $f1 folder or bam files were not found... exiting"
 		exit 1
 	fi
 	echo "Merging $f1 alignment summaries..."
 	#Retrieve summaries for each aligned sample
-	#for f2 in "$inputsPath"/"$f1"/*/; do
+	for f2 in "$inputsPath"/"$f1"/*/; do
 		#Retrieve sample name
-		#sampleName=$(basename "$f2")
+		sampleName=$(basename "$f2")
 		#Retrieve sample summary based on alignment method
-		#bash alignmentSummary_"$analysisMethod"_sample.sh "$f2" "$analysisMethod" "$runNum"
+		bash alignmentSummary_"$analysisMethod"_sample.sh "$f2" "$analysisMethod" "$runNum"
 		#Combine summaries into one csv file
-		#cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_"$runNum".csv
-		#rm "$outputStats"_combined_"$runNum".csv
-	#done
+		cat "$outputStats"_combined_run"$runNum".csv >> "$outputStats"_run"$runNum".csv
+		rm "$outputStats"_combined_run"$runNum".csv
+	done
 	#Run alignment summary formatting
 	bash alignmentSummary_formatting.sh "$analysisMethod" "$runNum"
 	echo "Alignment summaries for $f1 have been merged!"

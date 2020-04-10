@@ -39,8 +39,8 @@ sed -i "s/Pool3_//g" "$outFileTmp"
 head -1 "$outFileTmp" > "$outFile"
 tail -n +2 "$outFileTmp" | sort -k1 -n -t, >> "$outFile"
 #Add method tag to each sample
-sed -i 's/$/,"$2"/' "$outFile"
+sed -i 's/$/,"$1"/' "$outFile"
 #Add method tag header
-sed -i 's/concordant,"$2"/concordant,method/' "$outFile"
+sed -i 's/concordant,"$1"/concordant,method/' "$outFile"
 #Clean up
 rm "$outFileTmp"
