@@ -44,16 +44,15 @@ for f1 in $@; do
 		exit 1
 	fi
 	#Retrieve summaries for each aligned sample
-	for f2 in "$f1"/*/; do
+	for f2 in "$inputsPath"/"$f1"/*/; do
 		#Retrieve sample name
-		echo "File: $f2"
 		sampleName=$(basename "$inputsPath"/"$f2")
 		echo "Merging sample $sampleName alignment summary..."
 		#Retrieve sample summary based on alignment method
-		#bash TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummary_"$analysisMethod"_sample.sh "$inputsPath"/"$f2" "$analysisMethod" "$runNum"
+		bash TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummary_"$analysisMethod"_sample.sh "$inputsPath"/"$f2" "$analysisMethod" "$runNum"
 		#Combine summaries into one csv file
-		#cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_"$runNum".csv
-		#rm "$outputStats"_combined_"$runNum".csv
+		cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_"$runNum".csv
+		rm "$outputStats"_combined_"$runNum".csv
 		echo "Sample $sampleName alignment summary has been merged!"
 	done
 done
