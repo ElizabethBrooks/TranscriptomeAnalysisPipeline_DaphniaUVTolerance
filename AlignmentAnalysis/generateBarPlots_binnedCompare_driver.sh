@@ -3,6 +3,8 @@
 #Usage: bash generateBarPlots_binnedCompare_driver.sh twoAlingmentSummaryFiles 
 #Usage Ex: bash generateBarPlots_binnedCompare_driver.sh alignmentSummarized_hisat2_run1_formatted.csv alignmentSummarized_tophat2_run2_formatted.csv
 
+#Load module necessary for crc servers
+module load bio/R/
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
