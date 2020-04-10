@@ -24,13 +24,13 @@ sed -i "s/Pool_3/Pool3/g" "$outFile"
 #Add matrix header
 head -1 "$outFile" > "$outFileTmp"
 #Re-order UV samples
-grep "Pool1.*UV" "$1" | sed "s/UV/UV_Pool1/g" >> "$outFileTmp"
-grep "Pool2.*UV" "$1" | sed "s/UV/UV_Pool2/g" >> "$outFileTmp"
-grep "Pool3.*UV" "$1" | sed "s/UV/UV_Pool3/g" >> "$outFileTmp"
+grep "Pool1.*UV" "$outFile" | sed "s/UV/UV_Pool1/g" >> "$outFileTmp"
+grep "Pool2.*UV" "$outFile" | sed "s/UV/UV_Pool2/g" >> "$outFileTmp"
+grep "Pool3.*UV" "$outFile" | sed "s/UV/UV_Pool3/g" >> "$outFileTmp"
 #Re-order VIS samples
-grep "Pool1.*VIS" "$1" | sed "s/VIS/VIS_Pool1/g" >> "$outFileTmp"
-grep "Pool2.*VIS" "$1" | sed "s/VIS/VIS_Pool2/g" >> "$outFileTmp"
-grep "Pool3.*VIS" "$1" | sed "s/VIS/VIS_Pool3/g" >> "$outFileTmp"
+grep "Pool1.*VIS" "$outFile" | sed "s/VIS/VIS_Pool1/g" >> "$outFileTmp"
+grep "Pool2.*VIS" "$outFile" | sed "s/VIS/VIS_Pool2/g" >> "$outFileTmp"
+grep "Pool3.*VIS" "$outFile" | sed "s/VIS/VIS_Pool3/g" >> "$outFileTmp"
 #Remove excess pool tags
 sed -i "s/Pool1_//g" "$outFileTmp"
 sed -i "s/Pool2_//g" "$outFileTmp"
