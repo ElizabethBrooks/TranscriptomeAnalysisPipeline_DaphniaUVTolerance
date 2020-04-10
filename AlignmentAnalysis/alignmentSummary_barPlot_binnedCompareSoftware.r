@@ -27,6 +27,8 @@ counts <- data.frame(fullsetNames, aStats$overall, aStats$concordant, aStats$sof
 par(mfrow=c(2,1))
 #Generate grouped and colored bar plot
 plotTitle <- basename(args[1])
+plotTitle <- str_remove(plotTitle, "alignmentSummarized_")
+plotTitle <- str_remove(plotTitle, "_formatted.csv")
 plotOverall <- ggplot(counts, aes(factor(fullsetNames), aStats.overall, fill=aStats.software)) + 
   geom_bar(stat="identity", position="stack") +
   ggtitle(plotTitle) +
@@ -39,6 +41,8 @@ outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", 
 ggsave(outFile)
 #Generate second grouped and colored bar plot
 plotTitle <- basename(args[2])
+plotTitle <- str_remove(plotTitle, "alignmentSummarized_")
+plotTitle <- str_remove(plotTitle, "_formatted.csv")
 plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aStats.software)) + 
   geom_bar(stat="identity", position="stack") + 
   ggtitle(plotTitle) +
