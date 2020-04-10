@@ -49,7 +49,7 @@ for f1 in $@; do
 		sampleName=$(basename "$inputsPath"/"$f2")
 		echo "Merging sample $sampleName alignment summary..."
 		#Retrieve sample summary based on alignment method
-		bash TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummary_"$analysisMethod"_sample.sh "$inputsPath"/"$f2" "$analysisMethod" "$runNum"
+		bash alignmentSummary_"$analysisMethod"_sample.sh "$inputsPath"/"$f2" "$analysisMethod" "$runNum"
 		#Combine summaries into one csv file
 		cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_"$runNum".csv
 		rm "$outputStats"_combined_"$runNum".csv
