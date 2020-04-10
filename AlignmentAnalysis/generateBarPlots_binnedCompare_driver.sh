@@ -18,10 +18,10 @@ echo "Plotting $1 and $2 alignment summaries..."
 #Determine what software was used for inputs
 if [[ "$1" == *"tophat2"* && "$2" == *"tophat2"* ]]; then
 	#Plot alignment data using min intron length binned bar plots
-	Rscript alignmentSummary_barPlot_binnedCompareMinIntron.r "$inOutDir"/"$1" "$inOutDir"/"$2"
+	Rscript alignmentSummary_barPlot_binnedCompareRun.r "$inOutDir"/"$1" "$inOutDir"/"$2"
 elif [[ "$1" == *"hisat2"* && "$2" == *"hisat2"* ]]; then
 	#Plot alignment data using min intron length binned bar plots
-	Rscript alignmentSummary_barPlot_binnedCompareMinIntron.r "$inOutDir"/"$1" "$inOutDir"/"$2"
+	Rscript alignmentSummary_barPlot_binnedCompareRun.r "$inOutDir"/"$1" "$inOutDir"/"$2"
 else
 	#Plot alignment data using software binned bar plots
 	Rscript alignmentSummary_barPlot_binnedCompareSoftware.r "$inOutDir"/"$1" "$inOutDir"/"$2"
