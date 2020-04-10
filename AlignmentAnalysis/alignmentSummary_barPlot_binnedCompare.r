@@ -34,10 +34,7 @@ plotOverall <- ggplot(counts, aes(factor(fullsetNames), aStats.overall, fill=aSt
 plotOverall <- plotOverall + guides(fill=guide_legend(title="Software"))
 #Save overall percentages plot as a jpg
 outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", sep="/")
-jpeg(outFile)
-grid.newpage()
-grid.draw(plotOverall)
-dev.off()
+ggsave(outFile)
 #Generate second grouped and colored bar plot
 plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aStats.method)) + 
   geom_bar(stat="identity", position="stack",by=2) + 
@@ -47,7 +44,4 @@ plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aSt
 plotConc <- plotConc + guides(fill=guide_legend(title="Software"))
 #Save concordant percentages plot as a jpg
 outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", sep="/")
-jpeg(outFile)
-grid.newpage()
-grid.draw(plotConc)
-dev.off()
+ggsave(outFile)
