@@ -21,13 +21,13 @@ sed -i "s/Pool_1/Pool1/g" alignmentSummarized_tophat2_run2.csv
 sed -i "s/Pool_2/Pool2/g" alignmentSummarized_tophat2_run2.csv
 sed -i "s/Pool_3/Pool3/g" alignmentSummarized_tophat2_run2.csv
 
-sed -i "s/UV1/UV/g" alignmentSummarized_tophat2_run2.csv
-sed -i "s/UV2/UV/g" alignmentSummarized_tophat2_run2.csv
-sed -i "s/UV3/UV/g" alignmentSummarized_tophat2_run2.csv
+#sed -i "s/UV1/UV/g" alignmentSummarized_tophat2_run2.csv
+#sed -i "s/UV2/UV/g" alignmentSummarized_tophat2_run2.csv
+#sed -i "s/UV3/UV/g" alignmentSummarized_tophat2_run2.csv
 
-sed -i "s/VIS1/UV/g" alignmentSummarized_tophat2_run2.csv
-sed -i "s/VIS2/UV/g" alignmentSummarized_tophat2_run2.csv
-sed -i "s/VIS3/UV/g" alignmentSummarized_tophat2_run2.csv
+#sed -i "s/VIS1/UV/g" alignmentSummarized_tophat2_run2.csv
+#sed -i "s/VIS2/UV/g" alignmentSummarized_tophat2_run2.csv
+#sed -i "s/VIS3/UV/g" alignmentSummarized_tophat2_run2.csv
 
 head -1 alignmentSummarized_tophat2_run2.csv > tmp.csv
 
