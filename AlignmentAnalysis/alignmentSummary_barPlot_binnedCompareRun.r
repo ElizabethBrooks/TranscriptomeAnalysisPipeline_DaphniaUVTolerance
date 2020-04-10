@@ -3,10 +3,13 @@
 #Usage Ex: Rscript alignmentSummary_barPlot_binnedCompareRun.r alignmentSummarized_hisat2_run1_formatted.csv alignmentSummarized_tophat2_run2_formatted.csv
 #R script to generate grouped and colored bar plots
 
+#Installations need to be performed once
 #The easiest way to get ggplot2 is to install the whole tidyverse
 #install.packages("tidyverse")
-#Import library
+#install.packages("stringr")
+#Import librarys
 library(ggplot2)
+library(stringr)
 #Retrieve input file name of gene counts
 args=commandArgs(trailingOnly=TRUE)
 numArgs=length(args)
