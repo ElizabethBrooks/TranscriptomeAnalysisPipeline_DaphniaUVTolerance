@@ -38,7 +38,7 @@ plotTitle2 <- str_remove(plotTitle2, "_formatted.csv")
 plotTitle <- paste(plotTitle1, plotTitle2, sep=" vs ")
 #Generate grouped and colored bar plot
 plotOverall <- ggplot(counts, aes(factor(fullsetNames), aStats.overall, fill=aStats.run)) + 
-  geom_bar(stat="identity", position="stack") +
+  geom_bar(stat="identity", position="dodge") +
   ggtitle(plotTitle) +
   xlab("Sample Number") +
   ylab("Overall Percent") +
@@ -50,7 +50,7 @@ outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", 
 ggsave(outFile)
 #Generate second grouped and colored bar plot
 plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aStats.run)) + 
-  geom_bar(stat="identity", position="stack") + 
+  geom_bar(stat="identity", position="dodge") + 
   ggtitle(plotTitle) +
   xlab("Sample Number") +
   ylab("Concordant Percent") +
