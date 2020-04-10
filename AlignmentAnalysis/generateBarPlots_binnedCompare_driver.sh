@@ -16,7 +16,7 @@ inOutputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d "
 inOutDir="$inOutputsPath"/AlignmentsAnalyzed
 echo "Plotting $1 and $2 alignment summaries..."
 #Plot alignment data using binned bar plots
-Rscript alignmentSummary_barPlot_binnedCompare.r "$inOutDir"/"$1" "$inOutDir"/"$2" "$inOutDir"
+Rscript alignmentSummary_barPlot_binnedCompare.r "$inOutDir"/"$1" "$inOutDir"/"$2"
 echo "Alignment summaries for $1 and $2 have been plotted!"
 #Rename produced pdf of plots
 outFile=$(echo "$1"_"$2" | sed 's/\_formatted\.csv//' | sed 's/alignmentSummarized\_//')

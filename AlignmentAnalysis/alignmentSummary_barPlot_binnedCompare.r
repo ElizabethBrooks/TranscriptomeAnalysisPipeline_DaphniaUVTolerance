@@ -11,8 +11,8 @@ library(ggplot2)
 args=commandArgs(trailingOnly=TRUE)
 numArgs=length(args)
 #Test if there is one input argument
-if (length(args)!=1) {
-  stop("One file name must be supplied.n", call.=FALSE)
+if (length(args)!=2) {
+  stop("Two file names must be supplied.n", call.=FALSE)
 }
 #Retrieve alignment stats
 aStats <- do.call(rbind,lapply(args,read.csv))
@@ -37,7 +37,7 @@ outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", 
 ggsave(outFile)
 #Generate second grouped and colored bar plot
 plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aStats.method)) + 
-  geom_bar(stat="identity", position="stack",by=2) + 
+  geom_bar(stat="identity", position="stack") + 
   xlab("Sample Number") +
   ylab("Concordant Percent") +
   scale_fill_brewer(palette="Set1")
