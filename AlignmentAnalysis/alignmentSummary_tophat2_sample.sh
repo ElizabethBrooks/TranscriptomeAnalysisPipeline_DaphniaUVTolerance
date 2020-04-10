@@ -6,13 +6,10 @@
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Move to outputs directory
 cd "$outputsPath"/AlignmentsAnalyzed
-#Create directory for alignment analysis
-outputAnalysis=AlignmentAnalysis
-mkdir "$outputAnalysis"
 #Prepare input and output file names
 runNum="$3"
-inputStats="$1"/align_summary.txt
-outputStats="$outputAnalysis"/alignmentSummarized_"$2"
+inputStats="$1"align_summary.txt
+outputStats=alignmentSummarized_"$2"
 #Retrieve sample name
 sampleName=$(basename "$1")
 #Store sample name in tmp txt file for pasting
