@@ -28,7 +28,7 @@ for f1 in $@; do
 		#Set output folder name
 		outputStats="$outDir"/alignmentSummarized_"$analysisMethod"
 		#Retrieve run number for input alignment folder
-		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
+		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_run//g")
 		#Set header of overall summary csv file
 		echo "sample,overall,concordant" > "$outputStats"_"$runNum".csv
 	elif [[ "$f1" == *"tophat2"* ]]; then
@@ -37,7 +37,7 @@ for f1 in $@; do
 		#Set output folder name
 		outputStats="$outDir"/alignmentSummarized_"$analysisMethod"
 		#Retrieve run number for input alignment folder
-		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
+		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_run//g")
 		#Set header of overall summary csv file
 		echo "sample,leftMapped,rightMapped,overall,concordant" > "$outputStats"_"$runNum".csv
 	else
@@ -56,6 +56,6 @@ for f1 in $@; do
 		#rm "$outputStats"_combined_"$runNum".csv
 	#done
 	#Run alignment summary formatting
-	bash alignmentSummary_formatting.sh "$f1" "$analysisMethod" "$runNum"
+	bash alignmentSummary_formatting.sh "$analysisMethod" "$runNum"
 	echo "Alignment summaries for $f1 have been merged!"
 done

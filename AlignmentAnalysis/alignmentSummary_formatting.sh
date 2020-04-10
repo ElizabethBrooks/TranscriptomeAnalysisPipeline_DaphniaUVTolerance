@@ -1,16 +1,18 @@
 #!/bin/bash
 #Script to prepare alignment summary matrices
-#Usage: bash alignmentSummary_formatting.sh alignedFolder analysisMethod runNum
-#Usage Ex: bash alignmentSummary_formatting.sh aligned_tophat2_run3 tophat2 run3
+#Usage: bash alignmentSummary_formatting.sh analysisMethod runNum
+#Usage Ex: bash alignmentSummary_formatting.sh tophat2 3
 
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
+#Set input path
+inFile="$outDir"/alignmentSummarized_"$1"_run"$2".csv
 #Set outputs directory and file
 outDir="$outputsPath"/AlignmentsAnalyzed
-outFile="$outDir"/alignmentSummarized_"$2"_"$3"_formatted.csv
-outFileTmp="$outDir"/alignmentSummarized_"$2"_"$3"_tmp.csv
+outFile="$outDir"/alignmentSummarized_"$1"_run"$2"_formatted.csv
+outFileTmp="$outDir"/alignmentSummarized_"$1"_run"$2"_tmp.csv
 #Remove percent symbols
-sed "s/%//g" "$1" > "$outFile"
+sed "s/%//g" "$inFile" > "$outFile"
 #Remove excess tagging
 sed -i "s/140327_I481_FCC3P1PACXX_L2_//g" "$outFile"
 sed -i "s/140327_I481_FCC3P1PACXX_L3_//g" "$outFile"
