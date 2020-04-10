@@ -26,7 +26,7 @@ counts <- data.frame(fullsetNames, aStats$overall, aStats$concordant, aStats$run
 #Create matrix for multiple plots
 par(mfrow=c(2,1))
 #Generate grouped and colored bar plot
-plotTitle <- normalizePath(basename(args[1]))
+plotTitle <- basename(args[1])
 plotOverall <- ggplot(counts, aes(factor(fullsetNames), aStats.overall, fill=aStats.run)) + 
   geom_bar(stat="identity", position="stack") +
   ggtitle(plotTitle) +
@@ -38,7 +38,7 @@ plotOverall <- plotOverall + guides(fill=guide_legend(title="Run Number"))
 outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", sep="/")
 ggsave(outFile)
 #Generate second grouped and colored bar plot
-plotTitle <- normalizePath(basename(args[2]))
+plotTitle <- basename(args[2])
 plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aStats.run)) + 
   geom_bar(stat="identity", position="stack") + 
   ggtitle(plotTitle) +
