@@ -11,8 +11,8 @@ fi
 inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
-#Move to outputs directory
-cd "$outputsPath"/AlignmentsAnalyzed
+#Set outputs directory
+outDir="$outputsPath"/AlignmentsAnalyzed
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in $@; do
 	#Determine if the folder name was input in the correct format
@@ -25,7 +25,7 @@ for f1 in $@; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		#Set output folder name
-		outputStats=alignmentSummarized_"$analysisMethod"
+		outputStats="$outDir"/alignmentSummarized_"$analysisMethod"
 		#Retrieve run number for input alignment folder
 		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 		#Set header of overall summary csv file
@@ -34,7 +34,7 @@ for f1 in $@; do
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"
 		#Set output folder name
-		outputStats=alignmentSummarized_"$analysisMethod"
+		outputStats="$outDir"/alignmentSummarized_"$analysisMethod"
 		#Retrieve run number for input alignment folder
 		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_//g")
 		#Set header of overall summary csv file
