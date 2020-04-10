@@ -43,5 +43,5 @@ plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aSt
   scale_fill_brewer(palette="Set1")
 plotConc <- plotConc + guides(fill=guide_legend(title="Software"))
 #Save concordant percentages plot as a jpg
-outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", sep="/")
+outFile <- paste(normalizePath(dirname(args[1])), "plotConcordantPercentages.jpg", sep="/")
 ggsave(outFile)
