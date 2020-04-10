@@ -46,15 +46,15 @@ for f1 in $@; do
 	fi
 	echo "Merging $f1 alignment summaries..."
 	#Retrieve summaries for each aligned sample
-	for f2 in "$inputsPath"/"$f1"/*/; do
+	#for f2 in "$inputsPath"/"$f1"/*/; do
 		#Retrieve sample name
-		sampleName=$(basename "$f2")
+		#sampleName=$(basename "$f2")
 		#Retrieve sample summary based on alignment method
 		#bash alignmentSummary_"$analysisMethod"_sample.sh "$f2" "$analysisMethod" "$runNum"
 		#Combine summaries into one csv file
-		cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_"$runNum".csv
-		rm "$outputStats"_combined_"$runNum".csv
-	done
+		#cat "$outputStats"_combined_"$runNum".csv >> "$outputStats"_"$runNum".csv
+		#rm "$outputStats"_combined_"$runNum".csv
+	#done
 	#Run alignment summary formatting
 	bash alignmentSummary_formatting.sh "$f1" "$analysisMethod" "$runNum"
 	echo "Alignment summaries for $f1 have been merged!"
