@@ -9,7 +9,7 @@ outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " "
 outDir="$outputsPath"/AlignmentsAnalyzed
 #Prepare input and output file names
 runNum="$3"
-inputStats="$1"/align_summary.txt
+inputStats="$1"align_summary.txt
 outputStats="$outDir"/alignmentSummarized_"$2"
 #Retrieve sample name
 sampleName=$(basename "$1")
