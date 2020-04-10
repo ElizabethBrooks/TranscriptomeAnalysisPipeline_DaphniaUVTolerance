@@ -47,7 +47,8 @@ for f1 in $@; do
 	#Retrieve summaries for each aligned sample
 	for f2 in "$f1"/*/; do
 		#Retrieve sample name
-		sampleName=$(basename "$f2")
+		sampleName=$(echo "$f2")
+		sampleName=$(basename "$sampleName")
 		echo "Merging sample $sampleName alignment summary..."
 		#Retrieve sample summary based on alignment method
 		bash TranscriptomeAnalysisPipeline_DaphniaUVTolerance/AlignmentAnalysis/alignmentSummary_"$analysisMethod"_sample.sh "$f2" "$analysisMethod" "$runNum"
