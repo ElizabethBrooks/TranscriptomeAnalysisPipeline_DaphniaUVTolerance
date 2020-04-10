@@ -4,7 +4,7 @@
 #R script to generate grouped and colored bar plots
 
 #The easiest way to get ggplot2 is to install the whole tidyverse
-install.packages("tidyverse")
+#install.packages("tidyverse")
 #Import library
 library(ggplot2)
 #Retrieve input file name of gene counts
