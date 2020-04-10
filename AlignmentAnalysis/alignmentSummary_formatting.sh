@@ -5,12 +5,12 @@
 
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
-#Set input path
-inFile="$outDir"/alignmentSummarized_"$1"_run"$2".csv
 #Set outputs directory and file
 outDir="$outputsPath"/AlignmentsAnalyzed
 outFile="$outDir"/alignmentSummarized_"$1"_run"$2"_formatted.csv
 outFileTmp="$outDir"/alignmentSummarized_"$1"_run"$2"_tmp.csv
+#Set input path
+inFile="$outDir"/alignmentSummarized_"$1"_run"$2".csv
 #Remove percent symbols
 sed "s/%//g" "$inFile" > "$outFile"
 #Remove excess tagging
