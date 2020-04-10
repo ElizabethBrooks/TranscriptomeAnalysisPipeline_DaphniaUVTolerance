@@ -4,7 +4,7 @@
 #Usage Ex: bash alignmentSummary_tophat2_sample.sh alignment_tophat2_run2/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV tophat2 run2
 #Prepare input and output file names
 runNum="$3"
-inputStats="$1"/align_summary.txt
+inputStats="$1"align_summary.txt
 outputStats=alignmentSummarized_"$2"
 #Retrieve sample name
 sampleName=$(basename "$1")
