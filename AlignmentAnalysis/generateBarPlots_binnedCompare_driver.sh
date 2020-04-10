@@ -11,12 +11,12 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve input alignment summary absolute path
-inputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
+inOutputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Set outputs directory and file
-outDir="$inputsPath"/AlignmentsAnalyzed
+inOutDir="$inOutputsPath"/AlignmentsAnalyzed
 echo "Plotting $1 and $2 alignment summaries..."
 #Plot alignment data using binned bar plots
-Rscript alignmentSummary_barPlot_binnedCompare.r "$inputsPath"/"$1" "$inputsPath"/"$2"
+Rscript alignmentSummary_barPlot_binnedCompare.r "$inOutDir"/"$1" "$inOutDir"/"$2"
 echo "Alignment summaries for $1 and $2 have been plotted!"
 #Rename produced pdf of plots
 outFile=$(echo "$1"_"$2" | sed 's/\_formatted\.csv//' | sed 's/alignmentSummarized\_//')
