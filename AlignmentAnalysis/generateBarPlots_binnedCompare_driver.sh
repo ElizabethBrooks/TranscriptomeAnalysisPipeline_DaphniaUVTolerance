@@ -19,6 +19,8 @@ echo "Plotting $1 and $2 alignment summaries..."
 Rscript alignmentSummary_barPlot_binnedCompare.r "$inOutDir"/"$1" "$inOutDir"/"$2"
 echo "Alignment summaries for $1 and $2 have been plotted!"
 #Rename produced pdf of plots
-outFile=$(echo "$1"_"$2" | sed 's/\_formatted\.csv//' | sed 's/alignmentSummarized\_//')
-mv "$inOutDir"/plotOverallPercentages.jpg "$outputAnalysis"/alignmentSummarized_"$outFile"_overallPercentages.jpg
-mv "$inOutDir"/plotConcordantPercentages.jpg "$outputAnalysis"/alignmentSummarized_"$outFile"_concordantPercentages.jpg
+outFile1=$(echo "$1" | sed 's/_formatted\.csv//' | sed 's/alignmentSummarized_//')
+outFile2=$(echo "$2" | sed 's/_formatted\.csv//' | sed 's/alignmentSummarized_//')
+outFile=$(echo "$outFile1"_"$outFile2" | sed 's/_formatted\.csv//' | sed 's/alignmentSummarized_//')
+mv "$inOutDir"/plotOverallPercentages.jpg "$inOutDir"/alignmentSummarized_"$outFile"_overallPercentages.jpg
+mv "$inOutDir"/plotConcordantPercentages.jpg "$inOutDir"/alignmentSummarized_"$outFile"_concordantPercentages.jpg
