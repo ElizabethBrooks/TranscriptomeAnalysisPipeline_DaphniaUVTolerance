@@ -31,20 +31,20 @@ else
 fi
 #Make output database directory
 outputPath=$(dirname "$outputPath")
-#mkdir $outputPath
+mkdir $outputPath
 #Check if the folder already exists
-#if [ $? -ne 0 ]; then
+if [ $? -ne 0 ]; then
 	#Error message
-#	echo "Database directory for $1 files already exsists... exiting!"
-#	exit 1
-#fi
+	echo "Database directory for $1 files already exsists... exiting!"
+	exit 1
+fi
 #Move to output database directory
 cd $outputPath
 #Retrieve selected input database
-#wget $dbAddress
+wget $dbAddress
 #Extract the database
 dbFile=$(basename $dbAddress)
-#gunzip -v $dbFile
+gunzip -v $dbFile
 #Index the database for blastp
 dbFileNoEx=$(echo $dbFile | sed 's/\.gz//')
 makeblastdb -in $dbFileNoEx -dbtype prot
