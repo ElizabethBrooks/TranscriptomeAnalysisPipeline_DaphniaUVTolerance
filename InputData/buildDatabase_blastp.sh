@@ -21,7 +21,7 @@ if [[ "$1" == "ncbi" ]]; then
 	outputPath=$(grep "ncbiDB:" inputPaths.txt | tr -d " " | sed "s/ncbiDB://g")
 elif [[ "$1" == "uniprot" ]]; then
 	#Set slected database to uniprot
-	dbAddress=ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref100/uniref100.fasta.gz
+	dbAddress="ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref100/uniref100.fasta.gz"
 	#Retreive uniprot database storage path
 	outputPath=$(grep "uniprotDB:" inputPaths.txt | tr -d " " | sed "s/uniprotDB://g")
 else
@@ -44,7 +44,7 @@ cd $outputPath
 #wget $dbAddress
 #Extract the database
 dbFile=$(basename $dbAddress)
-dbFile="$dbFile".gz
 #gunzip -v $dbFile
 #Index the database for blastp
-makeblastdb -in $dbFile -dbtype prot
+dbFileNoEx=$(echo $dbFile | sed 's/\.gz//')
+makeblastdb -in $dbFileNoEx -dbtype prot
