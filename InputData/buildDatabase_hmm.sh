@@ -4,8 +4,8 @@
 #$ -r n
 #$ -N database_hmm_jobOutput
 #Script to retrieve Pfam protein sequence database fasta files
-#Usage: qsub databaseRetrieval_hmm.sh 
-#Usage ex: qsub databaseRetrieval_hmm.sh 
+#Usage: qsub buildDatabase_hmm.sh 
+#Usage ex: qsub buildDatabase_hmm.sh 
 #Note that Pfam databases may be downloaded with wget 
 # from ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases
 

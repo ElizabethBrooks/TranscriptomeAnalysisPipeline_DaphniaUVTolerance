@@ -4,8 +4,8 @@
 #$ -r n
 #$ -N database_blastp_jobOutput
 #Script to retrieve Uniprot protein sequence database fasta files
-#Usage: qsub databaseRetrieval_blastp.sh dbSelection
-#Usage ex: qsub databaseRetrieval_blastp.sh ncbi
+#Usage: qsub buildDatabase_blastp.sh dbSelection
+#Usage ex: qsub buildDatabase_blastp.sh ncbi
 #Note that the NCBI NR DB may be downloaded with wget
 #ex: wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/nr.gz
 #Note that uniprot databases may be downloaded from the UniprotKB search page, or wget
@@ -31,19 +31,20 @@ else
 fi
 #Make output database directory
 outputPath=$(dirname "$outputPath")
-mkdir $outputPath
+#mkdir $outputPath
 #Check if the folder already exists
-if [ $? -ne 0 ]; then
+#if [ $? -ne 0 ]; then
 	#Error message
-	echo "Database directory for $1 files already exsists... exiting!"
-	exit 1
-fi
+#	echo "Database directory for $1 files already exsists... exiting!"
+#	exit 1
+#fi
 #Move to output database directory
 cd $outputPath
 #Retrieve selected input database
-wget $dbAddress
+#wget $dbAddress
 #Extract the database
 dbFile=$(basename $dbAddress)
-gunzip -v $dbFile
+dbFile="$dbFile".gz
+#gunzip -v $dbFile
 #Index the database for blastp
 makeblastdb -in $dbFile -dbtype prot
