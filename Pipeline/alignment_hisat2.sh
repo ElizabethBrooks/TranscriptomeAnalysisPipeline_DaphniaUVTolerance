@@ -9,6 +9,7 @@
 #Note that a hisat2 genome refernce build folder needs to be generated first
 #Usage: qsub alignment_hisat2.sh trimmedFolder minIntronLength maxIntronLength
 #Usage Ex: qsub alignment_hisat2.sh trimmed_run1 20 14239
+#Default usage Ex: qsub alignment_hisat2.sh trimmed_run1
 
 #Required modules for ND CRC servers
 module load bio
@@ -72,19 +73,31 @@ for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 	#Trim file path from current file name
 	curSampleNoPath=$(basename $f1)
 	curSampleNoPath=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
-	echo "Sample $curSampleNoPath is being aligned..."
 	#Create directory for current sample outputs
 	mkdir "$outputFolder"/"$curSampleNoPath"
-	hisat2 -p 8 --min-intronlen $2 --max-intronlen $3 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
+	#Determine if intron lengths were entered
+	if [[ -z "$2" || -z "$3" ]]; then #Arguments were not entered
+		#Run hisat2 with default settings
+		echo "Sample $curSampleNoPath is being aligned using default settings..."
+		hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
+		#Add run inputs to output summary file
+		echo $curSampleNoPath >> $inputOutFile
+		echo "hisat2 -p 8 -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
+	else #Run hisat2 using input intron lengths
+		echo "Sample $curSampleNoPath is being aligned using input intron lengths..."
+		hisat2 -p 8 --min-intronlen $2 --max-intronlen $3 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
+		#Add run inputs to output summary file
+		echo $curSampleNoPath >> $inputOutFile
+		echo "hisat2 -p 8 --min-intronlen $2 --max-intronlen $3 -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
+	fi
+	echo "Sample $curSampleNoPath has been aligned!"
 	#Convert output sam files to bam format for downstream analysis
 	echo "Sample $curSampleNoPath is being converted..."
 	samtools view -@ 8 -bS "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam > "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam
-	echo "Sample $curSampleNoPath has been aligned and converted!"
+	echo "Sample $curSampleNoPath has been converted!"
 	#Remove the now converted .sam file
 	rm "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam
 	#Add run inputs to output summary file
-	echo $curSampleNoPath >> $inputOutFile
-	echo "hisat2 -p 8 --min-intronlen $2 --max-intronlen $3 -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
 	echo samtools view -@ 8 -bS "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam ">" "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam >> "$inputOutFile"
 done
 #Copy previous summaries

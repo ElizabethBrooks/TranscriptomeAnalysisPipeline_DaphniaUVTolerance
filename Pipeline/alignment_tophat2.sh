@@ -9,6 +9,7 @@
 #Note that a bowtie2 genome refernce build folder needs to be generated first
 #Usage: qsub alignment_tophat2.sh trimmedFolder minIntronLength maxIntronLength
 #Usage Ex: qsub alignment_tophat2.sh trimmed_run1 4 14239
+#Default usage Ex: qsub alignment_tophat2.sh trimmed_run1
 
 #Required modules for ND CRC servers
 module load bio
@@ -73,13 +74,22 @@ for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 	#Trim file path from current file name
 	curSampleNoPath=$(basename $f1)
 	curSampleNoEx=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
-	#Begin Tophat run for current sample
-	echo "Sample $curSampleNoEx is being aligned..."
-	tophat2 -p 8 -i $2 -I $3 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
+	#Determine if intron lengths were entered
+	if [[ -z "$2" || -z "$3" ]]; then #Arguments were not entered
+		#Run tophat2 with default settings
+		echo "Sample $curSampleNoEx is being aligned..."
+		tophat2 -p 8 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
+		#Add run inputs to output summary file
+		echo $curSampleNoPath >> $inputOutFile
+		echo "tophat2 -p 8 -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
+	else #Run tophat2 using input intron lengths
+		echo "Sample $curSampleNoEx is being aligned..."
+		tophat2 -p 8 -i $2 -I $3 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
+		#Add run inputs to output summary file
+		echo $curSampleNoPath >> $inputOutFile
+		echo "tophat2 -p 8 -i $2 -I $3 -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
+	fi
 	echo "Sample $curSampleNoEx has been aligned!"
-	#Add run inputs to output summary file
-	echo $curSampleNoPath >> $inputOutFile
-	echo "tophat2 -p 8 -i $2 -I $3 -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
 done
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
