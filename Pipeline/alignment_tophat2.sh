@@ -38,6 +38,7 @@ if [[ "$1"  == trimmed* ]]; then
 	buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 	#Retrieve alignment outputs absolute path
 	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+	trimmedFolder="$1"
 elif [[ "$1"  == *assembly* ]]; then
 	analysisInput="assembly"
 	#Retrieve reads input absolute path
@@ -48,15 +49,15 @@ elif [[ "$1"  == *assembly* ]]; then
 	buildFile="$assemblyPath"/"$1"/"Trinity.fasta"
 	#Retrieve alignment outputs absolute path
 	outputsPath="$assemblyPath"/"$1"
+	#Retrieve trimmed run folder name used for assembly
+	assemblyFolder=$(echo $1 | sed 's/trimmed_run.//')
+	trimmedFolder=$(echo $1 | sed "s/$assemblyFolder//")
 else
 	echo "ERROR: The input folder of trimmed or assembled files were not found... exiting"
 	exit 1
 fi
 #Retrieve reads input absolute path
 inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
-#Retrieve trimmed run folder name used for assembly
-assemblyFolder=$(echo $1 | sed 's/trimmed_run.//')
-trimmedFolder=$(echo $1 | sed "s/$assemblyFolder//")
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
 #Move to outputs directory
