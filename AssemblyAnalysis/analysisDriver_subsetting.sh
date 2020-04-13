@@ -15,8 +15,10 @@ for i in "$@"; do
 	#Skip first argument
 	if [ $counter -ge 1 ]; then
 		if [ "$1" == "hisat2" ]; then
+			qsub ../Pipeline/building_hisat2.sh "$i"
 			qsub ../Pipeline/alignment_hisat2.sh "$i"
 		elif [ "$1" == "tophat2" ]; then
+			qsub ../Pipeline/building_bowtie2.sh "$i"
 			qsub ../Pipeline/alignment_tophat2.sh "$i"
 		else
 			echo "ERROR: Input alignment method is not a valid option... exiting!"

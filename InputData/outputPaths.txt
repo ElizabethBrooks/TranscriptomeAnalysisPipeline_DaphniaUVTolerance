@@ -3,11 +3,11 @@ qc: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 trimming: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 assembling: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 decoding: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
-aligning: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
+aligningGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 sorting: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 assemblingWithGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 variantCalling: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
-building: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
+buildingGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 counting: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 statistics: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV
 alignmentAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV

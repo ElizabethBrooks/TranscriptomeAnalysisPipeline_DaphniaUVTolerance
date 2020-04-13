@@ -7,8 +7,9 @@
 #Script to perform tophat2 alignment of trimmed
 # paired end reads
 #Note that a bowtie2 genome refernce build folder needs to be generated first
-#Usage: qsub alignment_tophat2.sh trimmedFolder minIntronLength maxIntronLength
+#Usage: qsub alignment_tophat2.sh trimmedOrAssemblyFolder minIntronLength maxIntronLength
 #Usage Ex: qsub alignment_tophat2.sh trimmed_run1 4 14239
+#Alternate usage Ex: qsub alignment_tophat2.sh trimmed_run1E05_assemblyTrinity 20 14239
 #Default usage Ex: qsub alignment_tophat2.sh trimmed_run1
 
 #Required modules for ND CRC servers
@@ -28,16 +29,36 @@ if [[ "$1"  != trimmed* ]]; then
 	echo "ERROR: The "$1" folder of aligned bam files were not found... exiting"
 	exit 1
 fi
-#Retrieve trimmed reads input absolute path
+#Determine which analysis folder was input
+if [[ "$1"  == trimmed* ]]; then
+	analysisInput="trimmed"
+	#Retrieve build genome files absolute path
+	buildInputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
+	#Retrieve genome reference absolute path for alignment
+	buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+	#Retrieve alignment outputs absolute path
+	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+elif [[ "$1"  == *assembly* ]]; then
+	analysisInput="assembly"
+	#Retrieve reads input absolute path
+	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	#Retrieve build transcriptome files absolute path
+	buildInputsPath="$assemblyPath"/"$1"
+	#Retrieve transcriptome reference absolute path for alignment
+	buildFile="$assemblyPath"/"$1"/"Trinity.fasta"
+	#Retrieve alignment outputs absolute path
+	outputsPath="$assemblyPath"/"$1"
+else
+	echo "ERROR: The input folder of trimmed or assembled files were not found... exiting"
+	exit 1
+fi
+#Retrieve reads input absolute path
 inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
-#Retrieve build genome files absolute path
-buildInputsPath=$(grep "building:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
-#Retrieve genome reference absolute path for alignment
-buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+#Retrieve trimmed run folder name used for assembly
+assemblyFolder=$(echo $1 | sed 's/trimmed_run.//')
+trimmedFolder=$(echo $1 | sed "s/$assemblyFolder//")
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
-#Retrieve alignment outputs absolute path
-outputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
 #Move to outputs directory
 cd "$outputsPath"
 #Prepare for alignment
@@ -68,7 +89,7 @@ buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/')
 buildFileNoEx=$(echo $buildFileNoEx | sed 's/\.fa//')
 #Loop through all forward and reverse paired reads and run tophat2 on each pair
 # using 8 threads
-for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
+for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	#Trim extension from current file name
 	curSample=$(echo $f1 | sed 's/.pForward\.fq\.gz//')
 	#Trim file path from current file name
@@ -90,7 +111,17 @@ for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
 		echo "tophat2 -p 8 -i $2 -I $3 -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
 	fi
 	echo "Sample $curSampleNoEx has been aligned!"
+	#Clean up excess alignment files, if assemly was input
+	if [[ "$1"  == *assembly* ]]; then
+		rm "$outputFolder"/"$curSampleNoEx"/"accepted_hits.bam"
+		rm "$outputFolder"/"$curSampleNoEx"/"deletions.bed"
+		rm "$outputFolder"/"$curSampleNoEx"/"junctions.bed"
+		rm "$outputFolder"/"$curSampleNoEx"/"prep_reads.info"
+		rm "$outputFolder"/"$curSampleNoEx"/"insertions.bed"
+		rm -r "$outputFolder"/"$curSampleNoEx"/"logs"
+		rm "$outputFolder"/"$curSampleNoEx"/"unmapped.bam"
+	fi
 done
 #Copy previous summaries
-cp "$inputsPath"/"$1"/*.txt "$outputFolder"
+cp "$inputsPath"/"$trimmedFolder"/*.txt "$outputFolder"
 cp "$buildOut"/*.txt "$outputFolder"

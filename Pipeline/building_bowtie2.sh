@@ -5,18 +5,31 @@
 #$ -N building_bowtie2_jobOutput
 #$ -q debug
 #Script to generate a bowtie2 genome refernce build folder
-#Usage: qsub building_bowtie2.sh
-#Usage Ex: qsub building_bowtie2.sh
+#Usage: qsub building_bowtie2.sh analysisTarget
+#Usage Ex: qsub building_bowtie2.sh genome
+#Alternate usage Ex: qsub building_bowtie2.sh trimmed_run1E05_assemblyTrinity
 
 #Required modules for ND CRC servers
 module load bio
 #Prepare for alignment
 dirFlag=0
 runNum=1
-#Retrieve genome reference absolute path for alignment
-buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-#Retrieve build outputs absolute path
-outputsPath=$(grep "building:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
+#Determine which analysis folder was input
+if [[ "$1"  == "genome" ]]; then
+	#Retrieve genome reference absolute path for alignment
+	buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+	#Retrieve build outputs absolute path
+	outputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
+elif [[ "$1"  == *assembly* ]]; then
+	#Retrieve build outputs absolute path
+	outputsPath=$(grep "assembly:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
+	outputsPath="$outputsPath"/"$1"
+	#Retrieve transcriptome reference absolute path for alignment
+	buildFile="$outputsPath"/"$1"/"Trinity.fasta"
+else
+	echo "Input analysis target (genome or assembly folder) is not valid... exiting!"
+	exit 1
+fi
 #Move to outputs directory
 cd "$outputsPath"
 #Create output directory
