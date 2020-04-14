@@ -26,7 +26,7 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	exit 1
 fi
 #Determine which analysis folder was input
-if [[ "$1"  == trimmed* ]]; then
+if [[ "$1"  == *assembly* ]]; then
 	analysisInput="trimmed"
 	#Retrieve build genome files absolute path
 	buildInputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
@@ -35,7 +35,7 @@ if [[ "$1"  == trimmed* ]]; then
 	#Retrieve alignment outputs absolute path
 	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
 	trimmedFolder="$1"
-elif [[ "$1"  == *assembly* ]]; then
+elif [[ "$1"  == trimmed* ]]; then
 	analysisInput="assembly"
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")

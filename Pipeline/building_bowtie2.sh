@@ -5,8 +5,8 @@
 #$ -N building_bowtie2_jobOutput
 #$ -q debug
 #Script to generate a bowtie2 genome refernce build folder
-#Usage: qsub building_bowtie2.sh analysisTarget
-#Usage Ex: qsub building_bowtie2.sh genome
+#Usage: qsub building_bowtie2.sh trimmedOrAssemblyFolder
+#Usage Ex: qsub building_bowtie2.sh trimmed_run1
 #Alternate usage Ex: qsub building_bowtie2.sh trimmed_run1E05_assemblyTrinity
 
 #Required modules for ND CRC servers
@@ -15,12 +15,12 @@ module load bio
 dirFlag=0
 runNum=1
 #Determine which analysis folder was input
-if [[ "$1"  == "genome" ]]; then
+if [[ "$1"  == *assembly* ]]; then
 	#Retrieve genome reference absolute path for alignment
 	buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 	#Retrieve build outputs absolute path
 	outputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
-elif [[ "$1"  == *assembly* ]]; then
+elif [[ "$1"  == trimmed* ]]; then
 	#Retrieve build outputs absolute path
 	outputsPath=$(grep "assembly:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
 	outputsPath="$outputsPath"/"$1"
