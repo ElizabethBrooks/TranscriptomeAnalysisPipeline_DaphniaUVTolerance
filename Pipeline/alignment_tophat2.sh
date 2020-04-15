@@ -72,7 +72,7 @@ while [ $dirFlag -eq 0 ]; do
 	else
 		#Indicate that the folder was successfully made
 		dirFlag=1
-		echo "Creating folder for run $runNum of tophat2 alignment on "$1" data..."
+		echo "Creating folder for run $runNum of tophat2 alignment on $1 data..."
 	fi
 done
 #Name output file of inputs

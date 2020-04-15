@@ -27,7 +27,7 @@ if [[ "$2" == *\/* ]] || [[ "$2" == *\\* ]]; then
 fi
 #Determine if the correct analysis folder was input
 if [[ "$2"  != *assemblyTrinity ]]; then
-	echo "ERROR: The "$2" folder of trimmed fq.gz files were not found... exiting"
+	echo "ERROR: The $2 folder of trimmed fq.gz files were not found... exiting"
 	exit 1
 fi
 #Determine input database for blastp
@@ -60,7 +60,7 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1"_decodingTransdecoder_summary.txt
+inputOutFile="$outputFolder"/"$2"_decodingTransdecoder_summary.txt
 #Generate your best candidate open rading frame (ORF) predictions
 echo "Beginning decoding..."
 #Generate candidate ORFs
@@ -78,4 +78,4 @@ echo "blastp -query" "Trinity.fasta.transdecoder_dir/longest_orfs.pep -db" "$bla
 echo "hmmscan --cpu 8 --domtblout" "pfam.domtblout" "$pfamPath" "Trinity.fasta.transdecoder_dir/longest_orfs.pep" >> "$inputOutFile"
 echo "TransDecoder.Predict -t" "$multiFASTA" "--retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6" >> "$inputOutFile"
 #Copy previous summaries
-cp "$inputsPath"/"$1"/*.txt "$outputFolder"
+cp "$inputsPath"/"$2"/*.txt "$outputFolder"
