@@ -109,13 +109,13 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	echo "Sample $curSampleNoEx has been aligned!"
 	#Clean up excess alignment files, if assemly was input
 	if [[ "$1"  == *assembly* ]]; then
-		rm "$outputFolder"/"$curSampleNoEx"/"accepted_hits.bam"
-		rm "$outputFolder"/"$curSampleNoEx"/"deletions.bed"
-		rm "$outputFolder"/"$curSampleNoEx"/"junctions.bed"
-		rm "$outputFolder"/"$curSampleNoEx"/"prep_reads.info"
-		rm "$outputFolder"/"$curSampleNoEx"/"insertions.bed"
-		rm -r "$outputFolder"/"$curSampleNoEx"/"logs"
-		rm "$outputFolder"/"$curSampleNoEx"/"unmapped.bam"
+		rm "$outputFolder"/"$curSampleNoEx"/accepted_hits.bam
+		rm "$outputFolder"/"$curSampleNoEx"/deletions.bed
+		rm "$outputFolder"/"$curSampleNoEx"/junctions.bed
+		rm "$outputFolder"/"$curSampleNoEx"/prep_reads.info
+		rm "$outputFolder"/"$curSampleNoEx"/insertions.bed
+		rm -r "$outputFolder"/"$curSampleNoEx"/logs
+		rm "$outputFolder"/"$curSampleNoEx"/unmapped.bam
 	fi
 done
 #Copy previous summaries

@@ -110,7 +110,7 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	echo "Sample $curSampleNoPath has been aligned!"
 	#Convert or clean up bam files depending on analysis
 	if [[ "$1"  == *assembly* ]]; then #Clean up excess bam files, if assemly was input
-		rm "$outputFolder"/"$curSampleNoEx"/"accepted_hits.bam"
+		rm "$outputFolder"/"$curSampleNoEx"/accepted_hits.sam
 	else #Convert output sam files to bam format for downstream analysis
 		echo "Sample $curSampleNoPath is being converted..."
 		samtools view -@ 8 -bS "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam > "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam
