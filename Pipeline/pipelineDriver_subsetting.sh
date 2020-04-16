@@ -20,7 +20,7 @@ if [[ "$1" == assembly || "$1" == buildingTophat2 || "$1" == buildingHisat2 ]]; 
 			if [[ "$1" == assembly ]]; then
 				#Usage: qsub assembly_trinity.sh trimmedFolder genotype
 				qsub assembly_trinity.sh "$2" "$i"
-			elif [[ "$1" == buildingTophat2 ]]; then
+			elif [[ "$1" == buildingTophat2 || "$1" == buildingBowtie2 ]]; then
 				#Usage: qsub building_bowtie2.sh trimmedOrAssemblyFolder
 				qsub building_bowtie2.sh "$2""$i"_assemblyTrinity
 			elif [[ "$1" == buildingHisat2 ]]; then
