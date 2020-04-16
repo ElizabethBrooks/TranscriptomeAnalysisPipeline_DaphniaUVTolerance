@@ -6,8 +6,8 @@
 #$ -pe smp 8
 #Script to predict coding regions from a de novo assembled transcriptome fasta file
 # using Transdecoder
-#Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder
-#Usage Ex: qsub decoding_transdecoder.sh trimmed_run1Sierra_assemblyTrinity
+#Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder databaseSelection
+#Usage Ex: qsub decoding_transdecoder.sh trimmed_run1Sierra_assemblyTrinity uniprot
 #Note that the genome version input is for output file naming purposes only
 
 #Load necessary modules for ND CRC servers
@@ -21,20 +21,20 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Determine if the folder name was input in the correct format
-if [[ "$2" == *\/* ]] || [[ "$2" == *\\* ]]; then
+if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
 	exit 1
 fi
 #Determine if the correct analysis folder was input
-if [[ "$2"  != *assemblyTrinity ]]; then
+if [[ "$1"  != *assemblyTrinity ]]; then
 	echo "ERROR: The $2 folder of trimmed fq.gz files were not found... exiting"
 	exit 1
 fi
 #Determine input database for blastp
-if [[ "$1" == "ncbi" ]]; then
+if [[ "$2" == "ncbi" ]]; then
 	#Set slected database to ncbi
 	blastpPath=$(grep "ncbiDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/ncbiDB://g")
-elif [[ "$1" == "uniprot" ]]; then
+elif [[ "$2" == "uniprot" ]]; then
 	#Set slected database to uniprot
 	blastpPath=$(grep "uniprotDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/uniprotDB://g")
 else
@@ -46,11 +46,11 @@ fi
 inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Retrieve genome reference and features paths
 pfamPath=$(grep "pfamDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/pfamDB://g")
-multiFASTA=$(echo "$inputsPath"/"$2"/Trinity*.fasta)
-geneMap="$inputsPath"/"$2"/Trinity.fasta.gene_trans_map
+multiFASTA=$(echo "$inputsPath"/"$1"/Trinity*.fasta)
+geneMap="$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
 #Retrieve outputs absolute path
 outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
-outputFolder="$outputsPath"/decodedTransdecoder_"$2"
+outputFolder="$outputsPath"/decodedTransdecoder_"$1"
 mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -60,7 +60,7 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$2"_decodingTransdecoder_summary.txt
+inputOutFile="$outputFolder"/"$1"_decodingTransdecoder_summary.txt
 #Generate your best candidate open rading frame (ORF) predictions
 echo "Beginning decoding..."
 #Generate candidate ORFs
@@ -78,4 +78,4 @@ echo "blastp -query" "Trinity.fasta.transdecoder_dir/longest_orfs.pep -db" "$bla
 echo "hmmscan --cpu 8 --domtblout" "pfam.domtblout" "$pfamPath" "Trinity.fasta.transdecoder_dir/longest_orfs.pep" >> "$inputOutFile"
 echo "TransDecoder.Predict -t" "$multiFASTA" "--retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6" >> "$inputOutFile"
 #Copy previous summaries
-cp "$inputsPath"/"$2"/*.txt "$outputFolder"
+cp "$inputsPath"/"$1"/*.txt "$outputFolder"
