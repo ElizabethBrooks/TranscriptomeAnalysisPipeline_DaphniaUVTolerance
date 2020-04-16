@@ -26,7 +26,7 @@ outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " "
 outputsPath="$outputsPath"_"$1"_"$2"/GeneCountsAnalyzed
 mkdir $outputsPath
 echo "Creating folder for gene count analysis for a $2 of $1..."
-#Remove extra number tags from file names
+#Remove any extra number tags from file names
 for f0 in "$inputsPath"/"$1"/*/; do
 	newName=$(echo "$f0" | sed 's/UV1/UV/g')
 	newName=$(echo "$newName" | sed 's/VIS1/VIS/g')
