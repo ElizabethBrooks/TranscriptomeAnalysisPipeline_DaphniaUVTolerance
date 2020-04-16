@@ -90,32 +90,32 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	curSample=$(echo $f1 | sed 's/.pForward\.fq\.gz//')
 	#Trim file path from current file name
 	curSampleNoPath=$(basename $f1)
-	curSampleNoEx=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
+	curSampleNoPath=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
 	#Determine if intron lengths were entered
 	if [[ -z "$2" || -z "$3" ]]; then #Arguments were not entered
 		#Run tophat2 with default settings
-		echo "Sample $curSampleNoEx is being aligned..."
-		tophat2 -p 8 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
+		echo "Sample $curSampleNoPath is being aligned..."
+		tophat2 -p 8 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
 		#Add run inputs to output summary file
 		echo $curSampleNoPath >> $inputOutFile
-		echo "tophat2 -p 8 -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
+		echo "tophat2 -p 8 -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
 	else #Run tophat2 using input intron lengths
-		echo "Sample $curSampleNoEx is being aligned..."
-		tophat2 -p 8 -i $2 -I $3 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
+		echo "Sample $curSampleNoPath is being aligned..."
+		tophat2 -p 8 -i $2 -I $3 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
 		#Add run inputs to output summary file
 		echo $curSampleNoPath >> $inputOutFile
-		echo "tophat2 -p 8 -i $2 -I $3 -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoEx" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
+		echo "tophat2 -p 8 -i $2 -I $3 -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
 	fi
-	echo "Sample $curSampleNoEx has been aligned!"
+	echo "Sample $curSampleNoPath has been aligned!"
 	#Clean up excess alignment files, if assemly was input
 	if [[ "$1"  == *assembly* ]]; then
-		rm "$outputFolder"/"$curSampleNoEx"/accepted_hits.bam
-		rm "$outputFolder"/"$curSampleNoEx"/deletions.bed
-		rm "$outputFolder"/"$curSampleNoEx"/junctions.bed
-		rm "$outputFolder"/"$curSampleNoEx"/prep_reads.info
-		rm "$outputFolder"/"$curSampleNoEx"/insertions.bed
-		rm -r "$outputFolder"/"$curSampleNoEx"/logs
-		rm "$outputFolder"/"$curSampleNoEx"/unmapped.bam
+		rm "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam
+		rm "$outputFolder"/"$curSampleNoPath"/deletions.bed
+		rm "$outputFolder"/"$curSampleNoPath"/junctions.bed
+		rm "$outputFolder"/"$curSampleNoPath"/prep_reads.info
+		rm "$outputFolder"/"$curSampleNoPath"/insertions.bed
+		rm -r "$outputFolder"/"$curSampleNoPath"/logs
+		rm "$outputFolder"/"$curSampleNoPath"/unmapped.bam
 	fi
 done
 #Copy previous summaries
