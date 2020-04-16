@@ -16,16 +16,16 @@ dirFlag=0
 runNum=1
 #Determine which analysis folder was input
 if [[ "$1"  == *assembly* ]]; then
-	#Retrieve genome reference absolute path for alignment
-	buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 	#Retrieve build outputs absolute path
-	outputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
-elif [[ "$1"  == trimmed* ]]; then
-	#Retrieve build outputs absolute path
-	outputsPath=$(grep "assembly:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
+	outputsPath=$(grep "assembly:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembly://g")
 	outputsPath="$outputsPath"/"$1"
 	#Retrieve transcriptome reference absolute path for alignment
 	buildFile="$outputsPath"/"$1"/"Trinity.fasta"
+elif [[ "$1"  == trimmed* ]]; then
+	#Retrieve genome reference absolute path for alignment
+	buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+	#Retrieve build outputs absolute path
+	outputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/buildingGenome://g")
 else
 	echo "Input analysis target (genome or assembly folder) is not valid... exiting!"
 	exit 1

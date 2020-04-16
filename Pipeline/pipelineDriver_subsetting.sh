@@ -42,9 +42,13 @@ elif [[ "$1" == alignmentTophat2 || "$1" == alignmentHisat2 ]]; then #These are 
 		#Skip first 4 arguments
 		if [ $counter -ge 5 ]; then
 			if [[ "$1" == alignmentTophat2 ]]; then
+				#Usage: qsub building_bowtie2.sh trimmedOrAssemblyFolder
+				qsub building_bowtie2.sh "$2""$i"_assemblyTrinity
 				#Usage: qsub alignment_tophat2.sh trimmedOrAssemblyFolder minIntronLength maxIntronLength
 				qsub alignment_tophat2.sh "$2""$i"_assemblyTrinity "$3" "$4"
 			elif [[ "$1" == alignmentHisat2 ]]; then
+				#Usage: qsub building_hisat2.sh trimmedOrAssemblyFolder
+				qsub building_hisat2.sh "$2""$i"_assemblyTrinity
 				#Usage: qsub alignment_hisat2.sh trimmedOrAssemblyFolder minIntronLength maxIntronLength
 				qsub alignment_hisat2.sh "$2""$i"_assemblyTrinity "$3" "$4"
 			fi
