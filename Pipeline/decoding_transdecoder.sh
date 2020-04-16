@@ -7,7 +7,7 @@
 #Script to predict coding regions from a de novo assembled transcriptome fasta file
 # using Transdecoder
 #Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder databaseSelection
-#Usage Ex: qsub decoding_transdecoder.sh trimmed_run1Sierra_assemblyTrinity uniprot
+#Usage Ex: qsub decoding_transdecoder.sh trimmed_run1Sierra_assemblyTrinity ncbi
 #Note that the genome version input is for output file naming purposes only
 
 #Load necessary modules for ND CRC servers
@@ -64,14 +64,22 @@ inputOutFile="$outputFolder"/"$1"_decodingTransdecoder_summary.txt
 #Generate your best candidate open rading frame (ORF) predictions
 echo "Beginning decoding..."
 #Generate candidate ORFs
+echo "Beginning transdecoder open reading frame predictions..."
 TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
+echo "Finished generating transdecoder open reading frame predictions!"
 #Use BlastP to search a protein database
+echo "Beginning blastp protein database search..."
 blastp -query Trinity.fasta.transdecoder_dir/longest_orfs.pep -db "$blastpPath"  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 > blastp.outfmt6
+echo "Finished blastp protein database search!"
 #Search the peptides for protein domains using Pfam
+echo "Beginning hammscan search of peptides for protein domains..."
 hmmscan --cpu 8 --domtblout pfam.domtblout "$pfamPath" Trinity.fasta.transdecoder_dir/longest_orfs.pep
+echo "Finished hammscan search of peptides for protein domains!"
 #Combine the Blast and Pfam search results into coding region selection
+echo "Beginning transdecoder coding region selection..."
 TransDecoder.Predict -t "$multiFASTA" --retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6
-echo "Decoding finished!"
+echo "Finished transdecoder coding region selection!"
+echo "Decoding complete!"
 #Output run commands to summary file
 echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
 echo "blastp -query" "Trinity.fasta.transdecoder_dir/longest_orfs.pep -db" "$blastpPath"  "-max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 >" "blastp.outfmt6" >> "$inputOutFile"

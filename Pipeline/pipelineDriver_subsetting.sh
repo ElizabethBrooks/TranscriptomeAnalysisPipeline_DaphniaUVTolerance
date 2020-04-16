@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to perform specified analysis of all samples in an input set
 #Usage: bash pipelineDriver_subsetting.sh analysisMethod analysisArgs sampleList
-#Usage Ex: bash pipelineDriver_subsetting.sh decoding trimmed_run1 uniprot Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh decoding trimmed_run1 ncbi Y05 Y023_5 E05 R2 PA Sierra
 #Alternate usage Ex: bash pipelineDriver_subsetting.sh alignment trimmed_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
 
 #Check for input arguments of analysis method, data folder, and sample name(s)
