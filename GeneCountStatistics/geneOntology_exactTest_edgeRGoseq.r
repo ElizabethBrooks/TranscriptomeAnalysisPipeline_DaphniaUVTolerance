@@ -4,21 +4,28 @@
 #Usage: Rscript geneOntology_exactTest_edgeRGoseq.r countsFile.csv startColPos endColPos
 #Usage Ex: Rscript geneOntology_exactTest_edgeRGoseq.r geneCounts_merged_counted_htseqTophat2_run1_fullset_cleaned.csv 31 36
 
-#Install edgeR and goseq, this should only need to be done once
+#Install necessary libraries, this should only need to be done once
 #Since edgeR is already installed on the CRC this can be skipped if using the module
-#bioLite("edgeR")
 #if (!requireNamespace("BiocManager", quietly = TRUE))
-#    install.packages("BiocManager")
+#  install.packages("BiocManager")
+#BiocManager::install("edgeR")
 #BiocManager::install("goseq")
+#BiocManager::install("AnnotationForge")
 #Load the necessary libraries
 library("edgeR")
 library("goseq")
+library("AnnotationForge")
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 #Test if there is one input argument
 if (length(args)!=3) {
   stop("One file name and a range of columns must be supplied.n", call.=FALSE)
 }
+
+#Import GO annotations for Daphnia pulex from NCBI
+makeOrgPackageFromNCBI(version="", outputDir="/home/mae/Downloads/", 
+                       maintainer="", author="", tax_id="6669", 
+                       genus="Daphnia", species="pulex")
 
 #Import gene count data
 countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
