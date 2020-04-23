@@ -1,8 +1,12 @@
 #!/bin/bash
+#$ -M ebrooks5@nd.edu
+#$ -m abe
+#$ -r n
+#$ -N database_proteome_jobOutput
 #Script to Download the UniProt reference proteomes for all
 # organisms below the input taxonomy node ID in compressed FASTA format
-#Usage: bash buildDatabase_proteome.sh taxonID
-#Usage ex: bash buildDatabase_proteome.sh 7215
+#Usage: qsub buildDatabase_proteome.sh taxonID
+#Usage ex: qsub buildDatabase_proteome.sh 7215
 #Note that the taxonomy ID for the top node of an ogranism
 # may be retrieved from https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/
 
@@ -14,19 +18,19 @@ outputPath=$(grep "proteomeDB:" inputPaths.txt | tr -d " " | sed "s/proteomeDB:/
 outputPath=$(dirname "$outputPath")
 mkdir $outputPath
 #Check if the folder already exists
-if [ $? -ne 0 ]; then
+#if [ $? -ne 0 ]; then
 	#Error message
-	echo "Database directory for taxon $1 already exsists... exiting!"
-	exit 1
-fi
+	#echo "Database directory for taxon $1 already exsists... exiting!"
+	#exit 1
+#fi
 #Retrieve selected input database
-cd ../util
-perl referenceProteomes_byTaxon.pl $1
+#cd ../util
+#perl referenceProteomes_byTaxon.pl $1
 #Combine retrieved proteome fasta files
 dbFile="proteomesDB_taxon$1.fasta.gz"
-cat *.fasta.gz > $dbFile
+#cat *.fasta.gz > $dbFile
 #Move output fasta to DB folder
-mv $dbFile $outputPath
+#mv $dbFile $outputPath
 #Move to database directory
 cd $outputPath
 #Extract the database
