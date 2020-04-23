@@ -20,7 +20,7 @@ mkdir $outputPath
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
 	#Error message
-	echo "Database directory for $1 files already exsists... exiting!"
+	echo "Database directory for taxon $1 already exsists... exiting!"
 	exit 1
 fi
 #Retrieve selected input database

@@ -4,7 +4,7 @@ genomeReference: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/Daphnia
 genomeFeatures: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42.3.0.annotation.18440.gff
 geneOntology: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/gene.Blast2GO.merged.csv
 geneLengths: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/PA42.3.0.annotation.18440.genelength
-proteomeDB: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/databases/database_proteome/proteomesDB.fasta
+proteomeDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_proteome/proteomesDB.fasta
 ncbiDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_ncbi/nr
 uniprotDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_uniprot/uniref100.fasta
 pfamDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_pfam/Pfam-A.hmm
