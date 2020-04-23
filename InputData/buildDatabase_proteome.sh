@@ -1,12 +1,8 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N database_proteome_jobOutput
 #Script to Download the UniProt reference proteomes for all
 # organisms below the input taxonomy node ID in compressed FASTA format
-#Usage: qsub buildDatabase_proteome.sh taxonID
-#Usage ex: qsub buildDatabase_proteome.sh 7215
+#Usage: bash buildDatabase_proteome.sh taxonID
+#Usage ex: bash buildDatabase_proteome.sh 7215
 #Note that the taxonomy ID for the top node of an ogranism
 # may be retrieved from https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/
 
@@ -24,13 +20,17 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 #Retrieve selected input database
-perl ../util/referenceProteomes_byTaxon.pl $1
+cd ../util
+perl referenceProteomes_byTaxon.pl $1
+#Combine retrieved proteome fasta files
+dbFile="proteomesDB_taxon$1.fasta.gz"
+cat *.fasta.gz > $dbFile
 #Move output fasta to DB folder
-#dbFile=$(echo ./*.fasta.gz)
-#mv $dbFile $outputPath
+mv $dbFile $outputPath
+#Move to database directory
+cd $outputPath
 #Extract the database
-#dbFile=$(basename $dbAddress)
-#gunzip -v $dbFile
+gunzip -v $dbFile
 #Index the database for blastp
-#dbFileNoEx=$(echo $dbFile | sed 's/\.gz//')
-#makeblastdb -in $dbFileNoEx -dbtype prot
+dbFileNoEx=$(echo $dbFile | sed 's/\.gz//')
+makeblastdb -in $dbFileNoEx -dbtype prot
