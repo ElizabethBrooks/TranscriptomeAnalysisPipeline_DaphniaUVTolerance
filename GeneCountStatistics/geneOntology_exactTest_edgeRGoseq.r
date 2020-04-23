@@ -14,7 +14,7 @@
 #Load the necessary libraries
 library("edgeR")
 library("goseq")
-library("AnnotationForge")
+#library("AnnotationForge")
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 #Test if there is one input argument
@@ -23,9 +23,9 @@ if (length(args)!=3) {
 }
 
 #Import GO annotations for Daphnia pulex from NCBI
-makeOrgPackageFromNCBI(version="", outputDir="/home/mae/Downloads/", 
-                       maintainer="", author="", tax_id="6669", 
-                       genus="Daphnia", species="pulex")
+#makeOrgPackageFromNCBI(version="4.1", outputDir="/home/mae/Downloads/", 
+#                       maintainer="", author="", tax_id="6669", 
+#                       genus="Daphnia", species="pulex")
 
 #Import gene count data
 countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
