@@ -18,19 +18,19 @@ outputPath=$(grep "proteomeDB:" inputPaths.txt | tr -d " " | sed "s/proteomeDB:/
 outputPath=$(dirname "$outputPath")
 mkdir $outputPath
 #Check if the folder already exists
-#if [ $? -ne 0 ]; then
+if [ $? -ne 0 ]; then
 	#Error message
-	#echo "Database directory for taxon $1 already exsists... exiting!"
-	#exit 1
-#fi
+	echo "Database directory for taxon $1 already exsists... exiting!"
+	exit 1
+fi
 #Retrieve selected input database
-#cd ../util
-#perl referenceProteomes_byTaxon.pl $1
+cd ../util
+perl referenceProteomes_byTaxon.pl $1
 #Combine retrieved proteome fasta files
-dbFile="proteomesDB_taxon$1.fasta.gz"
-#cat *.fasta.gz > $dbFile
+dbFile="proteomeDB_taxon$1.fasta.gz"
+cat *.fasta.gz > $dbFile
 #Move output fasta to DB folder
-#mv $dbFile $outputPath
+mv $dbFile $outputPath
 #Move to database directory
 cd $outputPath
 #Extract the database
