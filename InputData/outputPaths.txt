@@ -13,3 +13,4 @@ statistics: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV
 alignmentAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 geneCountAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 geneTableAnalysis: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV
+proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
