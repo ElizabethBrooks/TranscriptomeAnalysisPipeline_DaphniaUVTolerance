@@ -23,6 +23,8 @@ if [[ "$1" == "ncbi" ]]; then
 elif [[ "$1" == "uniprot" ]]; then
 	#Set slected database to uniprot
 	dbPath=$(grep "uniprotDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/uniprotDB://g")
+elif [[ "$1" == "proteome" ]]; then
+	dbPath=$(grep "proteomeDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteomeDB://g")
 else
 	#Error message
 	echo "Invalid database selection entered (ncbi or uniprot only)... exiting!"
