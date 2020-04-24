@@ -12,6 +12,8 @@
 
 #Load necessary modules
 module load bio/blast+
+#Set selected taxon node proteome DB name
+dbFile="proteomeDB_taxon$1.fasta"
 #Set output reference proteome fasta path
 outputPath=$(grep "proteomeDB:" inputPaths.txt | tr -d " " | sed "s/proteomeDB://g")
 #Make output database directory
@@ -27,14 +29,12 @@ fi
 cd ../util
 perl referenceProteomes_byTaxon.pl $1
 #Combine retrieved proteome fasta files
-dbFile="proteomeDB_taxon$1.fasta.gz"
-cat *.fasta.gz > $dbFile
+cat *.fasta.gz > "$dbFile".gz
 #Move output fasta to DB folder
-mv $dbFile $outputPath
+mv "$dbFile".gz $outputPath
 #Move to database directory
 cd $outputPath
 #Extract the database
-gunzip -v $dbFile
+gunzip -v "$dbFile".gz
 #Index the database for blastp
-dbFileNoEx=$(echo $dbFile | sed 's/\.gz//')
-makeblastdb -in $dbFileNoEx -dbtype prot
+makeblastdb -in $dbFile -dbtype prot
