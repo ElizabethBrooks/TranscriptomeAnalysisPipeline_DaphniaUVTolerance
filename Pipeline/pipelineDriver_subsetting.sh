@@ -25,7 +25,7 @@ if [[ "$1" == assembly || "$1" == buildingTophat2 || "$1" == buildingHisat2 ]]; 
 				qsub building_bowtie2.sh "$2""$i"_assemblyTrinity
 			elif [[ "$1" == buildingHisat2 ]]; then
 				#Usage: qsub building_hisat2.sh trimmedOrAssemblyFolder
-				qsub building_hisat2.sh "$2""$i"_assemblyTrinity
+				bash building_hisat2.sh "$2""$i"_assemblyTrinity
 			fi
 		fi
 		counter=$(($counter+1))
