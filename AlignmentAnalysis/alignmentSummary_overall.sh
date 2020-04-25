@@ -2,41 +2,13 @@
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummary_overall.sh alignmentFolders
 #Usage Ex: bash alignmentSummary_overall.sh aligned_hisat2_run1 aligned_hisat2_run2 aligned_tophat2_run1 aligned_tophat2_run2 aligned_tophat2_run3
+#Alternate usage Ex: bash alignmentSummary_overall.sh trimmed_run1E05_assemblyTrinity/aligned_hisat2_run1 trimmed_run1R2_assemblyTrinity/aligned_hisat2_run1 trimmed_run1Y023_5_assemblyTrinity/aligned_hisat2_run1 trimmed_run1Y05_assemblyTrinity/aligned_hisat2_run1 trimmed_run1PA_assemblyTrinity/aligned_hisat2_run1 trimmed_run1Sierra_assemblyTrinity/aligned_hisat2_run1
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Determine which analysis folder was input
-if [[ "$1"  == *assembly* ]]; then
-	analysisInput="assembly"
-	#Retrieve reads input absolute path
-	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	#Retrieve build transcriptome files absolute path
-	buildInputsPath="$assemblyPath"/"$1"
-	#Retrieve transcriptome reference absolute path for alignment
-	buildFile="$assemblyPath"/"$1"/"Trinity.fasta"
-	#Retrieve alignment outputs absolute path
-	outputsPath="$assemblyPath"/"$1"
-	#Retrieve trimmed run folder name used for assembly
-	assemblyFolder=$(echo $1 | sed 's/trimmed_run.//')
-	trimmedFolder=$(echo $1 | sed "s/$assemblyFolder//")
-elif [[ "$1"  == trimmed* ]]; then
-	analysisInput="trimmed"
-	#Retrieve build genome files absolute path
-	buildInputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
-	#Retrieve genome reference absolute path for alignment
-	buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-	#Retrieve alignment outputs absolute path
-	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
-	trimmedFolder="$1"
-else
-	echo "ERROR: The input folder of trimmed or assembled files were not found... exiting"
-	exit 1
-fi
-#Retrieve input alignment summary absolute path
-#inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Set outputs directory
@@ -48,12 +20,27 @@ for f1 in $@; do
 		echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
 		exit 1
 	fi
+	#Determine which analysis folder was input
+	if [[ "$f1"  == *assembly* ]]; then
+		analysisInput="_assembly"
+		#Retrieve reads input absolute path
+		inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+		inputsPath="$inputsPath"/"$f1"
+		f1=$(basename "$inputsPath")
+	elif [[ "$f1"  == aligned* ]]; then
+		analysisInput=""
+		#Retrieve input alignment summary absolute path
+		inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+	else
+		echo "ERROR: The input folder of aligned or assembled files were not found... exiting"
+		exit 1
+	fi
 	#Determine what analysis method was used for the input folder of data
 	if [[ "$f1" == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		#Set output folder name
-		outputStats="$outDir"/alignmentSummarized_"$analysisMethod"
+		outputStats="$outDir"/alignmentSummarized"$analysisInput"_"$analysisMethod"
 		#Retrieve run number for input alignment folder
 		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_run//g")
 		#Set header of overall summary csv file
