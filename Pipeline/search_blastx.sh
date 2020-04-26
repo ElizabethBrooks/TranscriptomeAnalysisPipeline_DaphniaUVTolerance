@@ -2,12 +2,12 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N searchProteins_blastx_jobOutput
+#$ -N search_blastx_jobOutput
 #$ -pe smp 8
 #Script to use blastx to translate the nucleotide sequences of a reference genome
 # for searching a protein database
-#Usage: qsub searchProteins_blastx.sh databaseSelection optionalTaxonID
-#Usage Ex: qsub searchProteins_blastx.sh proteome 7215
+#Usage: qsub search_blastx.sh databaseSelection optionalTaxonID
+#Usage Ex: qsub search_blastx.sh proteome 7215
 
 #Load necessary modules for ND CRC servers
 module load bio/blast+
@@ -27,6 +27,9 @@ elif [[ "$1" == "proteome" ]]; then
 	#Set selected database to proteome by taxon ID
 	dbPath=$(grep "proteomeDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteomeDB://g")
 	dbPath=$(echo $dbPath | sed "s/taxonID/taxon$2/g")
+elif [[ "$1" == "reciprocal" ]]; then
+	#Set selected database to input
+	#TO-DO
 else
 	#Error message
 	echo "Invalid database selection entered (ncbi or uniprot only)... exiting!"
