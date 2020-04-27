@@ -8,6 +8,7 @@
 # for searching a protein database
 #Usage: qsub search_blastx.sh databaseSelection optionalTaxonID
 #Usage Ex: qsub search_blastx.sh proteome 7215
+#Alternate usage Ex: qsub search_blastx.sh reciprocal-proteome 7215
 
 #Load necessary modules for ND CRC servers
 module load bio/blast+
@@ -17,25 +18,22 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Determine input database for blastx
-if [[ "$1" == "ncbi" ]]; then
+if [[ "$1" == *"ncbi" ]]; then
 	#Set slected database to ncbi
 	dbPath=$(grep "ncbiDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/ncbiDB://g")
-elif [[ "$1" == "uniprot" ]]; then
+elif [[ "$1" == *"uniprot" ]]; then
 	#Set slected database to uniprot
 	dbPath=$(grep "uniprotDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/uniprotDB://g")
-elif [[ "$1" == "proteome" ]]; then
+elif [[ "$1" == *"proteome" ]]; then
 	#Set selected database to proteome by taxon ID
 	dbPath=$(grep "proteomeDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteomeDB://g")
 	dbPath=$(echo $dbPath | sed "s/taxonID/taxon$2/g")
-elif [[ "$1" == "reciprocal" ]]; then
-	#Set selected database to input
-	#TO-DO
 else
 	#Error message
 	echo "Invalid database selection entered (ncbi or uniprot only)... exiting!"
 	exit 1
 fi
-#Retrieve genome reference absolute path for alignment
+#Retrieve genome reference absolute path for querying
 inputsPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve outputs absolute path
 outputsPath=$(grep "proteinSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/proteinSearch://g")
@@ -56,3 +54,7 @@ blastx -query "$inputsPath" -db "$dbPath" -max_target_seqs 1 -outfmt 6 -evalue 1
 echo "Finished blastx protein database search!"
 #Output run commands to summary file
 echo "blastx -query" "$inputsPath" "-db" "$dbPath"  "-max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 >" "blastx.outfmt6" >> "$inputOutFile"
+#If reciprocal selected, perform another blast search
+#if [[ "$1" == "reciprocal"* ]]; then
+	#Switch query and search paths
+#TO-DO
