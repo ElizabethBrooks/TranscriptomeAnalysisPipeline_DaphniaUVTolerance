@@ -15,11 +15,6 @@ outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " "
 outDir="$outputsPath"/AlignmentsAnalyzed
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in $@; do
-	#Determine if the folder name was input in the correct format
-	if [[ "$f1" == *\/* ]] || [[ "$f1" == *\\* ]]; then
-		echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
-		exit 1
-	fi
 	#Determine which analysis folder was input
 	if [[ "$f1"  == *assembly* ]]; then
 		analysisInput="_assembly"
