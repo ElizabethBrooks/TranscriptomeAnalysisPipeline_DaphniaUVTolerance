@@ -20,7 +20,8 @@ for f1 in $@; do
 		analysisInput="_assembly"
 		#Retrieve reads input absolute path
 		inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-		inputsPath="$inputsPath"/"$f1"
+		inDir=$(dirname "$inputsPath")
+		inputsPath="$inputsPath"/"$inDir"
 		f1=$(basename "$inputsPath")
 	elif [[ "$f1"  == aligned* ]]; then
 		analysisInput=""
