@@ -2,6 +2,7 @@
 #Script to prepare alignment summary matrices
 #Usage: bash alignmentSummary_formatting.sh analysisMethod runNum
 #Usage Ex: bash alignmentSummary_formatting.sh tophat2 3 
+#Alternate usage Ex: bash alignmentSummary_formatting.sh assembly_tophat2 3 
 
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")

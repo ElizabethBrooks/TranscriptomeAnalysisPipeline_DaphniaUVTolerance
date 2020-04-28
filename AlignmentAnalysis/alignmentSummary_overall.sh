@@ -17,7 +17,7 @@ outDir="$outputsPath"/AlignmentsAnalyzed
 for f1 in $@; do
 	#Determine which analysis folder was input
 	if [[ "$f1"  == *assembly* ]]; then
-		analysisInput="_assembly"
+		analysisInput="assembly_"
 		#Retrieve reads input absolute path
 		basePath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 		inputsPath=$(dirname "$basePath"/"$f1")
@@ -35,7 +35,7 @@ for f1 in $@; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		#Set output folder name
-		outputStats="$outDir"/alignmentSummarized"$analysisInput"_"$analysisMethod"
+		outputStats="$outDir"/alignmentSummarized_"$analysisInput""$analysisMethod"
 		#Retrieve run number for input alignment folder
 		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_run//g")
 		#Set header of overall summary csv file
@@ -44,7 +44,7 @@ for f1 in $@; do
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"
 		#Set output folder name
-		outputStats="$outDir"/alignmentSummarized_"$analysisMethod"
+		outputStats="$outDir"/alignmentSummarized_"$analysisInput""$analysisMethod"
 		#Retrieve run number for input alignment folder
 		runNum=$(echo "$f1" | sed "s/aligned_"$analysisMethod"_run//g")
 		#Set header of overall summary csv file
@@ -59,7 +59,7 @@ for f1 in $@; do
 		#Retrieve sample name
 		sampleName=$(basename "$f2")
 		#Retrieve sample summary based on alignment method
-		bash alignmentSummary_"$analysisMethod"_sample.sh "$f2" "$analysisMethod" "$runNum"
+		bash alignmentSummary_"$analysisMethod"_sample.sh "$f2" "$analysisInput""$analysisMethod" "$runNum"
 		#Combine summaries into one csv file
 		cat "$outputStats"_combined_run"$runNum".csv >> "$outputStats"_run"$runNum".csv
 		rm "$outputStats"_combined_run"$runNum".csv
@@ -67,6 +67,6 @@ for f1 in $@; do
 	echo "Alignment summaries for $f1 have been merged!"
 	echo "Formatting $f1 merged alignment summary..."
 	#Run alignment summary formatting
-	bash alignmentSummary_formatting.sh "$analysisMethod" "$runNum"
+	bash alignmentSummary_formatting.sh "$analysisInput""$analysisMethod" "$runNum"
 	echo "Merged alignment summary for $f1 has been formatted!"
 done
