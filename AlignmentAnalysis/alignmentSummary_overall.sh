@@ -19,10 +19,9 @@ for f1 in $@; do
 	if [[ "$f1"  == *assembly* ]]; then
 		analysisInput="_assembly"
 		#Retrieve reads input absolute path
-		inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-		inDir=$(dirname "$inputsPath")
-		inputsPath="$inputsPath"/"$inDir"
-		f1=$(basename "$inputsPath"/$f1)
+		basePath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+		inputsPath=$(dirname "$basePath"/"$f1")
+		f1=$(basename "$basePath"/$f1)
 	elif [[ "$f1"  == aligned* ]]; then
 		analysisInput=""
 		#Retrieve input alignment summary absolute path
