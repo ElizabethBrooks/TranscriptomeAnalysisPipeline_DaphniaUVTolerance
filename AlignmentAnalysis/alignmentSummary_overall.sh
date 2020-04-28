@@ -22,7 +22,7 @@ for f1 in $@; do
 		inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 		inDir=$(dirname "$inputsPath")
 		inputsPath="$inputsPath"/"$inDir"
-		f1=$(basename "$inputsPath")
+		f1=$(basename "$inputsPath"/$f1)
 	elif [[ "$f1"  == aligned* ]]; then
 		analysisInput=""
 		#Retrieve input alignment summary absolute path
@@ -51,7 +51,7 @@ for f1 in $@; do
 		#Set header of overall summary csv file
 		echo "sample,leftMapped,rightMapped,overall,concordant" > "$outputStats"_run"$runNum".csv
 	else
-		echo "ERROR: The $f1 folder or bam files were not found... exiting"
+		echo "ERROR: The $f1 folder of bam files were not found... exiting"
 		exit 1
 	fi
 	echo "Merging $f1 alignment summaries..."
