@@ -49,3 +49,5 @@ if [[ "$1" == "tophat2" ]]; then
 	cut -d, -f2-3 --complement "$outFile" > "$outFileTmp"
 	mv "$outFileTmp" "$outFile" 
 fi
+#Clean up 
+rm "$outFileTmp"
