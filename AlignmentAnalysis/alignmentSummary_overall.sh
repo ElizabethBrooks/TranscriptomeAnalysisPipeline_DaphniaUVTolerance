@@ -36,7 +36,6 @@ for f1 in $@; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		analysisArg=$analysisInput"_"$analysisMethod
-		echo "Analysis input: $analysisInput & Analysis arg: $analysisArg"
 		#Set output folder name
 		outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 		#Retrieve run number for input alignment folder
@@ -71,7 +70,6 @@ for f1 in $@; do
 	echo "Alignment summaries for "$analysisInput"/"$f1" have been merged!"
 	echo "Formatting "$analysisInput"/"$f1" merged alignment summary..."
 	#Run alignment summary formatting
-	echo "alignmentSummary_formatting.sh" "$analysisArg" "$runNum"
 	bash alignmentSummary_formatting.sh "$analysisArg" "$runNum"
 	echo "Merged alignment summary for "$analysisInput"/"$f1" has been formatted!"
 done
