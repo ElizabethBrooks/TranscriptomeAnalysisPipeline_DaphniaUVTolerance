@@ -2,7 +2,7 @@
 #Script to generate venn diagrams from edgeR stats
 #Usage: bash generateBarPlotsDriver_binnedCompare.sh twoAlingmentSummaryFiles 
 #Usage Ex: bash generateBarPlotsDriver_binnedCompare.sh alignmentSummarized_hisat2_run1_formatted.csv alignmentSummarized_tophat2_run2_formatted.csv
-#Alternate usage Ex: bash generateBarPlotsDriver_binnedCompare.sh alignmentSummarized_trimmed_run1E05_trinity_hisat2_run1.csv alignmentSummarized_hisat2_run1.csv
+#Alternate usage Ex: bash generateBarPlotsDriver_binnedCompare.sh alignmentSummarized_trimmed_run1E05_trinity_hisat2_run1_formatted.csv alignmentSummarized_hisat2_run1_formatted.csv
 
 #Load module necessary for crc servers
 module load bio/R/
@@ -17,11 +17,14 @@ inOutputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d "
 inOutDir="$inOutputsPath"/AlignmentsAnalyzed
 echo "Plotting $1 and $2 alignment summaries..."
 #Determine what software was used for inputs
-if [[ "$1" == *"tophat2"* && "$2" == *"tophat2"* ]]; then
-	#Plot alignment data using min intron length binned bar plots
+if [[ "$1" == *"assembly"* && "$2" != *"assembly"* ]]; then
+	#Plot alignment data using method (assembly vs aligned) binned bar plots
+	Rscript alignmentSummary_barPlot_binnedCompareMethod.r "$inOutDir"/"$1" "$inOutDir"/"$2"
+elif [[ "$1" == *"tophat2"* && "$2" == *"tophat2"* ]]; then
+	#Plot alignment data using run binned bar plots
 	Rscript alignmentSummary_barPlot_binnedCompareRun.r "$inOutDir"/"$1" "$inOutDir"/"$2"
 elif [[ "$1" == *"hisat2"* && "$2" == *"hisat2"* ]]; then
-	#Plot alignment data using min intron length binned bar plots
+	#Plot alignment data using run binned bar plots
 	Rscript alignmentSummary_barPlot_binnedCompareRun.r "$inOutDir"/"$1" "$inOutDir"/"$2"
 else
 	#Plot alignment data using software binned bar plots

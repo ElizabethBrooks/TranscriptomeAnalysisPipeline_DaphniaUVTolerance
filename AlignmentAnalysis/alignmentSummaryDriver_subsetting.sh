@@ -37,7 +37,7 @@ for f1 in $@; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		analysisArg=$analysisInput""$analysisMethod
-		analysisArg=$(echo "$analysisArg" | sed "s/assemblyTrinity/trinity/g")
+		analysisArg=$(echo "$analysisArg" | sed "s/assemblyTrinity/trinity/g" | sed "s/trimmed_run.//g")
 		#Set output folder name
 		outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 		#Retrieve run number for input alignment folder
@@ -48,7 +48,7 @@ for f1 in $@; do
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"
 		analysisArg=$analysisInput""$analysisMethod
-		analysisArg=$(echo "$analysisArg" | sed "s/assemblyTrinity/trinity/g")
+		analysisArg=$(echo "$analysisArg" | sed "s/assemblyTrinity/trinity/g" | sed "s/trimmed_run.//g")
 		#Set output folder name
 		outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 		#Retrieve run number for input alignment folder

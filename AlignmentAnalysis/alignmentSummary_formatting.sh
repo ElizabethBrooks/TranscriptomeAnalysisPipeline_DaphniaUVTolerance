@@ -2,7 +2,7 @@
 #Script to prepare alignment summary matrices
 #Usage: bash alignmentSummary_formatting.sh analysisMethod runNum
 #Usage Ex: bash alignmentSummary_formatting.sh tophat2 3 
-#Alternate usage Ex: bash alignmentSummary_formatting.sh assembly_tophat2 3 
+#Alternate usage Ex: bash alignmentSummary_formatting.sh trimmed_run1E05_trinity_hisat2 1 
 
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
@@ -39,15 +39,28 @@ sed -i "s/Pool3_//g" "$outFileTmp"
 #Separate header for sorting
 head -1 "$outFileTmp" > "$outFile"
 tail -n +2 "$outFileTmp" | sort -k1 -n -t, >> "$outFile"
-#Add method and run number tag to each sample
-sed -i "s/$/,$1,run$2/" "$outFile"
+#Determine analysis method used
+if [[ "$1" == *trinity* ]]; then
+	method="assembly"
+else
+	method="aligned"
+fi
+#Determine alignment software used
+if [[ "$1" == *hisat2* ]]; then
+	software="hisat2"
+else
+	software="tophat2"
+fi
+#Add method, alignment software and run number tag to each sample
+sed -i "s/$/,$method,$software,run$2/" "$outFile"
 #Add method tag header
-sed -i "s/concordant,$1,run$2/concordant,software,run/" "$outFile"
+sed -i "s/concordant,$method,$software,run$2/concordant,method,software,run/" "$outFile"
 #Determine if tophat2 data was input
-if [[ "$1" == "tophat2" ]]; then
+if [[ "$2" == "tophat2" ]]; then
 	#Remove extra columns from tophat2 data
 	cut -d, -f2-3 --complement "$outFile" > "$outFileTmp"
 	mv "$outFileTmp" "$outFile" 
+else
+	#Clean up hisat2 tmp file
+	rm "$outFileTmp"
 fi
-#Clean up 
-rm "$outFileTmp"
