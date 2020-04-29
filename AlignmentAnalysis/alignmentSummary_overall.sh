@@ -24,7 +24,6 @@ for f1 in $@; do
 		#Retrieve directory name from input folder path
 		dirName=$(basename "$inputsPath")
 		analysisInput="$dirName_"
-		echo "Preparing $dirName alignment summary..."
 	elif [[ "$f1"  == aligned* ]]; then
 		#Retrieve input alignment summary absolute path
 		inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
@@ -56,7 +55,7 @@ for f1 in $@; do
 		echo "ERROR: The $f1 folder of bam files were not found... exiting"
 		exit 1
 	fi
-	echo "Merging $f1 alignment summaries..."
+	echo "Merging $analysisInput_$f1 alignment summaries..."
 	#Retrieve summaries for each aligned sample
 	for f2 in "$inputsPath"/"$f1"/*/; do
 		#Retrieve sample name
@@ -67,9 +66,10 @@ for f1 in $@; do
 		cat "$outputStats"_combined_run"$runNum".csv >> "$outputStats"_run"$runNum".csv
 		rm "$outputStats"_combined_run"$runNum".csv
 	done
-	echo "Alignment summaries for $f1 have been merged!"
-	echo "Formatting $f1 merged alignment summary..."
+	echo "Alignment summaries for $analysisInput_$f1 have been merged!"
+	echo "Formatting $analysisInput_$f1 merged alignment summary..."
 	#Run alignment summary formatting
+	echo "alignmentSummary_formatting.sh" "$analysisInput""$analysisMethod" "$runNum"
 	bash alignmentSummary_formatting.sh "$analysisInput""$analysisMethod" "$runNum"
-	echo "Merged alignment summary for $f1 has been formatted!"
+	echo "Merged alignment summary for $analysisInput_$f1 has been formatted!"
 done
