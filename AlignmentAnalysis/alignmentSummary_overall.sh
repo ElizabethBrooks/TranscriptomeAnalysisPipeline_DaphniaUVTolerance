@@ -24,6 +24,7 @@ for f1 in $@; do
 		#Retrieve directory name from input folder path
 		dirName=$(basename "$inputsPath")
 		analysisInput="$dirName_"
+		echo "Preparing $dirName alignment summary..."
 	elif [[ "$f1"  == aligned* ]]; then
 		#Retrieve input alignment summary absolute path
 		inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
