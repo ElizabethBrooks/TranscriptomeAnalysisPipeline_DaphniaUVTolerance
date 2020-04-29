@@ -18,7 +18,7 @@ for f1 in $@; do
 	#Determine which analysis folder was input
 	if [[ "$f1"  == aligned* ]]; then
 		#Retrieve input alignment summary absolute path
-		inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+		inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 		analysisInput=""
 	elif [[ "$f1"  == *assembly* ]]; then
 		#Retrieve reads input absolute path

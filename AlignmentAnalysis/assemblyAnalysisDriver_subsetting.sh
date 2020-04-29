@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to perform specified alignment of all assembly folders in an input set
-#Usage: bash analysisDriver_subsetting.sh alignmentSoftware assemblyFolderList
-#Usage Ex: bash analysisDriver_subsetting.sh hisat2 trimmed_run1E05_assemblyTrinity trimmed_run1PA_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Sierra_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1Y05_assemblyTrinity
+#Usage: bash assemblyAnalysisDriver_subsetting.sh alignmentSoftware assemblyFolderList
+#Usage Ex: bash assemblyAnalysisDriver_subsetting.sh hisat2 trimmed_run1E05_assemblyTrinity trimmed_run1PA_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Sierra_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1Y05_assemblyTrinity
 
 #Check for input arguments of analysis method and sample names
 if [ $# -eq 0 ]; then
