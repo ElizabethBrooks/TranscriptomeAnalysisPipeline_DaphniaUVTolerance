@@ -1,8 +1,8 @@
 #!/bin/bash
 #Bash script to retrieve mapping stats
-#Usage: bash alignmentSummary_overall.sh alignmentFolders
-#Usage Ex: bash alignmentSummary_overall.sh aligned_hisat2_run1 aligned_hisat2_run2 aligned_tophat2_run1 aligned_tophat2_run2 aligned_tophat2_run3
-#Alternate usage Ex: bash alignmentSummary_overall.sh trimmed_run1E05_assemblyTrinity/aligned_hisat2_run1 trimmed_run1R2_assemblyTrinity/aligned_hisat2_run1 trimmed_run1Y023_5_assemblyTrinity/aligned_hisat2_run1 trimmed_run1Y05_assemblyTrinity/aligned_hisat2_run1 trimmed_run1PA_assemblyTrinity/aligned_hisat2_run1 trimmed_run1Sierra_assemblyTrinity/aligned_hisat2_run1
+#Usage: bash alignmentSummaryDriver_subsetting.sh alignmentFolders
+#Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_hisat2_run1 aligned_hisat2_run2 aligned_tophat2_run1 aligned_tophat2_run2 aligned_tophat2_run3
+#Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh trimmed_run1E05_assemblyTrinity/aligned_hisat2_run1 trimmed_run1R2_assemblyTrinity/aligned_hisat2_run1 trimmed_run1Y023_5_assemblyTrinity/aligned_hisat2_run1 trimmed_run1Y05_assemblyTrinity/aligned_hisat2_run1 trimmed_run1PA_assemblyTrinity/aligned_hisat2_run1 trimmed_run1Sierra_assemblyTrinity/aligned_hisat2_run1
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -36,6 +36,7 @@ for f1 in $@; do
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
 		analysisArg=$analysisInput"_"$analysisMethod
+		analysisArg=$(echo "$analysisArg" | sed "s/assemblyTrinity/trinity/g")
 		#Set output folder name
 		outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 		#Retrieve run number for input alignment folder
@@ -46,6 +47,7 @@ for f1 in $@; do
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"
 		analysisArg=$analysisInput"_"$analysisMethod
+		analysisArg=$(echo "$analysisArg" | sed "s/assemblyTrinity/trinity/g")
 		#Set output folder name
 		outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 		#Retrieve run number for input alignment folder
