@@ -27,6 +27,7 @@ for f1 in $@; do
 		f1=$(basename "$basePath"/$f1)
 		#Retrieve directory name from input folder path
 		analysisInput=$(basename "$inputsPath")
+		analysisInput=$analysisInput"_"
 	else
 		echo "ERROR: The input folder of aligned or assembled files were not found... exiting"
 		exit 1
@@ -35,7 +36,7 @@ for f1 in $@; do
 	if [[ "$f1" == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
-		analysisArg=$analysisInput"_"$analysisMethod
+		analysisArg=$analysisInput""$analysisMethod
 		analysisArg=$(echo "$analysisArg" | sed "s/assemblyTrinity/trinity/g")
 		#Set output folder name
 		outputStats="$outDir"/alignmentSummarized_"$analysisArg"
@@ -46,7 +47,7 @@ for f1 in $@; do
 	elif [[ "$f1" == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"
-		analysisArg=$analysisInput"_"$analysisMethod
+		analysisArg=$analysisInput""$analysisMethod
 		analysisArg=$(echo "$analysisArg" | sed "s/assemblyTrinity/trinity/g")
 		#Set output folder name
 		outputStats="$outDir"/alignmentSummarized_"$analysisArg"
@@ -58,7 +59,7 @@ for f1 in $@; do
 		echo "ERROR: The $f1 folder of bam files were not found... exiting"
 		exit 1
 	fi
-	echo "Merging "$analysisInput"/"$f1" alignment summaries..."
+	echo "Merging $analysisInput""$f1 alignment summaries..."
 	#Retrieve summaries for each aligned sample
 	for f2 in "$inputsPath"/"$f1"/*/; do
 		#Retrieve sample name
@@ -69,9 +70,9 @@ for f1 in $@; do
 		cat "$outputStats"_combined_run"$runNum".csv >> "$outputStats"_run"$runNum".csv
 		rm "$outputStats"_combined_run"$runNum".csv
 	done
-	echo "Alignment summaries for "$analysisInput"/"$f1" have been merged!"
-	echo "Formatting "$analysisInput"/"$f1" merged alignment summary..."
+	echo "Alignment summaries for $analysisInput""$f1 have been merged!"
+	echo "Formatting $analysisInput""$f1 merged alignment summary..."
 	#Run alignment summary formatting
 	bash alignmentSummary_formatting.sh "$analysisArg" "$runNum"
-	echo "Merged alignment summary for "$analysisInput"/"$f1" has been formatted!"
+	echo "Merged alignment summary for $analysisInput""$f1 has been formatted!"
 done
