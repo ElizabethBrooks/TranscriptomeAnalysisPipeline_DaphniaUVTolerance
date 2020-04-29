@@ -56,7 +56,7 @@ sed -i "s/$/,$method,$software,run$2/" "$outFile"
 #Add method tag header
 sed -i "s/concordant,$method,$software,run$2/concordant,method,software,run/" "$outFile"
 #Determine if tophat2 data was input
-if [[ "$2" == "tophat2" ]]; then
+if [[ "$1" == "tophat2" ]]; then
 	#Remove extra columns from tophat2 data
 	cut -d, -f2-3 --complement "$outFile" > "$outFileTmp"
 	mv "$outFileTmp" "$outFile" 
