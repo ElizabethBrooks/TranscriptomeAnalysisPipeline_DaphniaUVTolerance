@@ -16,7 +16,11 @@ outDir="$outputsPath"/AlignmentsAnalyzed
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in $@; do
 	#Determine which analysis folder was input
-	if [[ "$f1"  == *assembly* ]]; then
+	if [[ "$f1"  == aligned* ]]; then
+		#Retrieve input alignment summary absolute path
+		inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+		analysisInput=""
+	elif [[ "$f1"  == *assembly* ]]; then
 		#Retrieve reads input absolute path
 		basePath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 		inputsPath=$(dirname "$basePath"/"$f1")
@@ -24,10 +28,6 @@ for f1 in $@; do
 		#Retrieve directory name from input folder path
 		dirName=$(basename "$inputsPath")
 		analysisInput="$dirName_"
-	elif [[ "$f1"  == aligned* ]]; then
-		#Retrieve input alignment summary absolute path
-		inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
-		analysisInput=""
 	else
 		echo "ERROR: The input folder of aligned or assembled files were not found... exiting"
 		exit 1
