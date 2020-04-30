@@ -36,7 +36,7 @@ elif [[ "$1" == genomeAssembly || "$1" == decoding ]]; then #These are analysis 
 	for i in "$@"; do
 		#Skip first three arguments
 		if [ $counter -ge 4 ]; then
-			if [ "$1" == assemblyGenome ]; then
+			if [ "$1" == genomeAssembly ]; then
 				#Usage: qsub assembly_genomeGuided_trinity.sh sortedFolder genotype maxIntronLength
 				qsub assembly_genomeGuided_trinity.sh "$2" "$i" "$3"
 			elif [[ "$1" == decoding ]]; then
