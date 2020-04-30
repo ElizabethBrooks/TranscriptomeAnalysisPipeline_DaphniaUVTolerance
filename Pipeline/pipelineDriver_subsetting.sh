@@ -2,6 +2,7 @@
 #Script to perform specified analysis of all samples in an input set
 #Usage: bash pipelineDriver_subsetting.sh analysisMethod analysisArgs sampleList
 #Usage Ex: bash pipelineDriver_subsetting.sh decoding trimmed_run1 ncbi Y05 Y023_5 E05 R2 PA Sierra
+#Alternate usage Ex: bash pipelineDriver_subsetting.sh genomeAssembly sortedCoordinate_samtoolsHisat2_run1 14239 Y05 Y023_5 E05 R2 PA Sierra
 #Alternate usage Ex: bash pipelineDriver_subsetting.sh buildingHisat2 trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Alternate usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 trimmed_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
 
@@ -30,7 +31,7 @@ if [[ "$1" == assembly || "$1" == buildingTophat2 || "$1" == buildingHisat2 ]]; 
 		fi
 		counter=$(($counter+1))
 	done
-elif [[ "$1" == assemblyGenome || "$1" == decoding ]]; then #These are analysis methods that require two additional input args
+elif [[ "$1" == genomeAssembly || "$1" == decoding ]]; then #These are analysis methods that require two additional input args
 	#Loop through all input sets of treatments and perform selected analsysis
 	for i in "$@"; do
 		#Skip first three arguments
