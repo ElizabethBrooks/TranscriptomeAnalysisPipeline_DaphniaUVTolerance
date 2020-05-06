@@ -53,12 +53,10 @@ elif [[ "$1" == alignmentTophat2 || "$1" == alignmentHisat2 ]]; then #These are 
 		#Skip first 4 arguments
 		if [ $counter -ge 5 ]; then
 			#Determine what type of data folder was input
-			if [[ "$2" == trimmed* && "$2" == *assembly* ]]; then
+			if [[ "$2" == trimmed* ]]; then
 				inputFolder=$(echo "$2""$i"_assemblyTrinity)
-			elif [[ "$2" == sorted* && "$2" == *assembly* ]]; then
+			elif [[ "$2" == sorted* ]]; then
 				inputFolder=$(echo "$2""$i"_assemblyGenomeTrinity)
-			elif [[ "$2" == trimmed* ]]; then
-				inputFolder="$2"
 			else
 				echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 				exit 1
