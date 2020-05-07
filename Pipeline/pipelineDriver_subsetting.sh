@@ -5,8 +5,8 @@
 #Alternate usage Ex: bash pipelineDriver_subsetting.sh genomeAssembly sortedCoordinate_samtoolsHisat2_run1 14239 Y05 Y023_5 E05 R2 PA Sierra
 #Alternate usage Ex: bash pipelineDriver_subsetting.sh buildingHisat2 trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Alternate usage Ex: bash pipelineDriver_subsetting.sh buildingHisat2 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Alternate usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 trimmed_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
-#Alternate usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 sortedCoordinate_samtoolsHisat2_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
+#Alternate usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 trimmed_run1 trimmed_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
+#Alternate usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 trimmed_run1 sortedCoordinate_samtoolsHisat2_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
 
 #Check for input arguments of analysis method, data folder, and sample name(s)
 if [ $# -lt 3 ]; then
@@ -75,25 +75,25 @@ elif [[ "$1" == alignmentTophat2 || "$1" == alignmentHisat2 ]]; then #These are 
 	#Loop through all input sets of treatments and perform selected analsysis
 	for i in "$@"; do
 		#Determine what type of data folder was input
-		if [[ "$2" == trimmed* ]]; then
-			inputFolder=$(echo "$2""$i"_assemblyTrinity)
-		elif [[ "$2" == sorted* ]]; then
-			inputFolder=$(echo "$2""$i"_assemblyGenomeTrinity)
+		if [[ "$3" == trimmed* ]]; then
+			inputFolder=$(echo "$3""$i"_assemblyTrinity)
+		elif [[ "$3" == sorted* ]]; then
+			inputFolder=$(echo "$3""$i"_assemblyGenomeTrinity)
 		else
 			echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 			exit 1
 		fi
-		#Skip first 4 arguments
-		if [ $counter -ge 5 ]; then
+		#Skip first 5 arguments
+		if [ $counter -ge 6 ]; then
 			#Run slected alignment software
 			if [[ "$1" == alignmentTophat2 ]]; then
-				echo "Running alignment_tophat2.sh $inputFolder $3 $4"
-				#Usage: qsub alignment_tophat2.sh trimmedOrAssemblyFolder minIntronLength maxIntronLength
-				qsub alignment_tophat2.sh assembly "$inputFolder" "$3" "$4"
+				echo "Running alignment_tophat2.sh assembly $2 $inputFolder $4 $5"
+				#Usage: qsub alignment_tophat2.sh alignmentTarget trimmedFolder assemblyFolder minIntronLength maxIntronLength
+				qsub alignment_tophat2.sh assembly "$2" "$inputFolder" "$4" "$5"
 			elif [[ "$1" == alignmentHisat2 ]]; then
-				echo "Running alignment_hisat2.sh $inputFolder $3 $4"
-				#Usage: qsub alignment_hisat2.sh trimmedOrAssemblyFolder minIntronLength maxIntronLength
-				qsub alignment_hisat2.sh assembly "$inputFolder" "$3" "$4"
+				echo "Running alignment_hisat2.sh assembly $2 $inputFolder $4 $5"
+				#Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder assemblyFolder minIntronLength maxIntronLength
+				qsub alignment_hisat2.sh assembly "$2" "$inputFolder" "$4" "$5"
 			fi
 		fi
 		counter=$(($counter+1))
