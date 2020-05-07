@@ -7,10 +7,10 @@
 #Script to perform hisat2 alignment of trimmed
 # paired end reads
 #Note that a hisat2 genome refernce build folder needs to be generated first
-#Usage: qsub alignment_hisat2.sh trimmedOrAssemblyFolder minIntronLength maxIntronLength
-#Usage Ex: qsub alignment_hisat2.sh trimmed_run1 20 14239
-#Alternate usage Ex: qsub alignment_hisat2.sh trimmed_run1E05_assemblyTrinity 20 14239
-#Default usage Ex: qsub alignment_hisat2.sh trimmed_run1
+#Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder minIntronLength maxIntronLength
+#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 20 14239
+#Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 trimmed_run1E05_assemblyTrinity 20 14239
+#Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
 
 #Required modules for ND CRC servers
 module load bio
@@ -20,26 +20,26 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Determine if the folder name was input in the correct format
-if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
-	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
-	exit 1
-fi
 #Determine which analysis folder was input
-if [[ "$1"  == *assembly* ]]; then
+if [[ "$1"  == assembly ]]; then
 	analysisInput="assembly"
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	#Retrieve build transcriptome files absolute path
-	buildInputsPath="$assemblyPath"/"$1"
+	buildInputsPath="$assemblyPath"/"$3"
 	#Retrieve transcriptome reference absolute path for alignment
-	buildFile="$assemblyPath"/"$1"/"Trinity.fasta"
+	buildFile="$assemblyPath"/"$3"/"Trinity.fasta"
 	#Retrieve alignment outputs absolute path
-	outputsPath="$assemblyPath"/"$1"
-	#Retrieve trimmed run folder name used for assembly
-	assemblyFolder=$(echo $1 | sed 's/trimmed_run.//')
-	trimmedFolder=$(echo $1 | sed "s/$assemblyFolder//")
-elif [[ "$1"  == trimmed* ]]; then
+	outputsPath="$assemblyPath"/"$3"
+	#Determine if intron lengths were entered
+	if [[ -z "$4" || -z "$5" ]]; then #Arguments were not entered
+		minIntron=$4
+		maxIntron=$5
+	else
+		minIntron=-1
+		maxIntron=-1
+	fi
+elif [[ "$1"  == genome ]]; then
 	analysisInput="trimmed"
 	#Retrieve build genome files absolute path
 	buildInputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
@@ -47,13 +47,21 @@ elif [[ "$1"  == trimmed* ]]; then
 	buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 	#Retrieve alignment outputs absolute path
 	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
-	trimmedFolder="$1"
+	#Determine if intron lengths were entered
+	if [[ -z "$3" || -z "$4" ]]; then #Arguments were not entered
+		minIntron=$3
+		maxIntron=$4
+	else
+		minIntron=-1
+		maxIntron=-1
+	fi
 else
 	echo "ERROR: The input folder of trimmed or assembled files were not found... exiting"
 	exit 1
 fi
 #Retrieve reads input absolute path
 inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
+trimmedFolder="$2"
 #Move to outputs directory
 cd "$outputsPath"
 #Prepare for mapping
@@ -71,7 +79,7 @@ while [ $dirFlag -eq 0 ]; do
 	else
 		#Indicate that the folder was successfully made
 		dirFlag=1
-		echo "Creating folder for run $runNum of hisat2 alignment on $1 data..."
+		echo "Creating folder for run $runNum of hisat2 $1 alignment on $2 data..."
 	fi
 done
 #Name output file of inputs
@@ -93,7 +101,7 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	#Create directory for current sample outputs
 	mkdir "$outputFolder"/"$curSampleNoPath"
 	#Determine if intron lengths were entered
-	if [[ -z "$2" || -z "$3" ]]; then #Arguments were not entered
+	if [[ $minIntron == -1 || $maxIntron == -1 ]]; then #Arguments were not entered
 		#Run hisat2 with default settings
 		echo "Sample $curSampleNoPath is being aligned using default settings..."
 		hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
@@ -102,14 +110,14 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 		echo "hisat2 -p 8 -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
 	else #Run hisat2 using input intron lengths
 		echo "Sample $curSampleNoPath is being aligned using input intron lengths..."
-		hisat2 -p 8 --min-intronlen $2 --max-intronlen $3 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
+		hisat2 -p 8 --min-intronlen $minIntron --max-intronlen $maxIntron -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
 		#Add run inputs to output summary file
 		echo $curSampleNoPath >> $inputOutFile
-		echo "hisat2 -p 8 --min-intronlen $2 --max-intronlen $3 -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
+		echo "hisat2 -p 8 --min-intronlen $minIntron --max-intronlen $maxIntron -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
 	fi
 	echo "Sample $curSampleNoPath has been aligned!"
 	#Convert or clean up bam files depending on analysis
-	if [[ "$1"  == *assembly* ]]; then #Clean up excess bam files, if assemly was input
+	if [[ "$1"  == assembly ]]; then #Clean up excess bam files, if assemly was input
 		rm "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam
 	else #Convert output sam files to bam format for downstream analysis
 		echo "Sample $curSampleNoPath is being converted..."
