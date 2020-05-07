@@ -7,10 +7,10 @@
 #Script to perform tophat2 alignment of trimmed
 # paired end reads
 #Note that a bowtie2 genome refernce build folder needs to be generated first
-#Usage: qsub alignment_tophat2.sh trimmedOrAssemblyFolder minIntronLength maxIntronLength
-#Usage Ex: qsub alignment_tophat2.sh trimmed_run1 4 14239
-#Alternate usage Ex: qsub alignment_tophat2.sh trimmed_run1E05_assemblyTrinity 20 14239
-#Default usage Ex: qsub alignment_tophat2.sh trimmed_run1
+#Usage: qsub alignment_tophat2.sh alignmentTarger trimmedFolder optionalAssemblyFolder minIntronLength maxIntronLength
+#Usage Ex: qsub alignment_tophat2.sh genome trimmed_run1 4 14239
+#Alternate usage Ex: qsub alignment_tophat2.sh assembly trimmed_run1E05_assemblyTrinity 20 14239
+#Default usage Ex: qsub alignment_tophat2.sh genome trimmed_run1
 
 #Required modules for ND CRC servers
 module load bio
@@ -19,26 +19,26 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Determine if the folder name was input in the correct format
-if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
-	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
-	exit 1
-fi
 #Determine which analysis folder was input
-if [[ "$1"  == *assembly* ]]; then
+if [[ "$1"  == assembly ]]; then
 	analysisInput="assembly"
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	#Retrieve build transcriptome files absolute path
-	buildInputsPath="$assemblyPath"/"$1"
+	buildInputsPath="$assemblyPath"/"$3"
 	#Retrieve transcriptome reference absolute path for alignment
-	buildFile="$assemblyPath"/"$1"/"Trinity.fasta"
+	buildFile="$assemblyPath"/"$3"/"Trinity.fasta"
 	#Retrieve alignment outputs absolute path
-	outputsPath="$assemblyPath"/"$1"
-	#Retrieve trimmed run folder name used for assembly
-	assemblyFolder=$(echo $1 | sed 's/trimmed_run.//')
-	trimmedFolder=$(echo $1 | sed "s/$assemblyFolder//")
-elif [[ "$1"  == trimmed* ]]; then
+	outputsPath="$assemblyPath"/"$3"
+	#Determine if intron lengths were entered
+	if [[ -z "$4" || -z "$5" ]]; then #Arguments were not entered
+		minIntron=$3
+		maxIntron=$4
+	else
+		minIntron=-1
+		maxIntron=-1
+	fi
+elif [[ "$1"  == genome ]]; then
 	analysisInput="trimmed"
 	#Retrieve build genome files absolute path
 	buildInputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
@@ -46,7 +46,14 @@ elif [[ "$1"  == trimmed* ]]; then
 	buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 	#Retrieve alignment outputs absolute path
 	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
-	trimmedFolder="$1"
+	#Determine if intron lengths were entered
+	if [[ -z "$3" || -z "$4" ]]; then #Arguments were not entered
+		minIntron=$3
+		maxIntron=$4
+	else
+		minIntron=-1
+		maxIntron=-1
+	fi
 else
 	echo "ERROR: The input folder of trimmed or assembled files were not found... exiting"
 	exit 1
@@ -77,6 +84,7 @@ while [ $dirFlag -eq 0 ]; do
 done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
+trimmedFolder="$2"
 #Build output directory for Tophat reference
 buildOut="$buildInputsPath"/"reference_bowtie2_build"
 #Trim .fa file extension from build file
@@ -92,7 +100,7 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	curSampleNoPath=$(basename $f1)
 	curSampleNoPath=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
 	#Determine if intron lengths were entered
-	if [[ -z "$2" || -z "$3" ]]; then #Arguments were not entered
+	if [[ $minIntron == -1 || $maxIntron == -1 ]]; then #Arguments were not entered
 		#Run tophat2 with default settings
 		echo "Sample $curSampleNoPath is being aligned..."
 		tophat2 -p 8 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
@@ -101,14 +109,14 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 		echo "tophat2 -p 8 -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
 	else #Run tophat2 using input intron lengths
 		echo "Sample $curSampleNoPath is being aligned..."
-		tophat2 -p 8 -i $2 -I $3 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
+		tophat2 -p 8 -i $minIntron -I $maxIntron -G "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
 		#Add run inputs to output summary file
 		echo $curSampleNoPath >> $inputOutFile
-		echo "tophat2 -p 8 -i $2 -I $3 -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
+		echo "tophat2 -p 8 -i $minIntron -I $maxIntron -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
 	fi
 	echo "Sample $curSampleNoPath has been aligned!"
 	#Clean up excess alignment files, if assemly was input
-	if [[ "$1"  == *assembly* ]]; then
+	if [[ "$1"  == assembly ]]; then
 		rm "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam
 		rm "$outputFolder"/"$curSampleNoPath"/deletions.bed
 		rm "$outputFolder"/"$curSampleNoPath"/junctions.bed
