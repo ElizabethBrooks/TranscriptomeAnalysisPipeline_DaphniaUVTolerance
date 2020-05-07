@@ -48,6 +48,15 @@ if [[ "$1" == assembly || "$1" == buildingTophat2 || "$1" == buildingHisat2 ]]; 
 elif [[ "$1" == genomeAssembly || "$1" == decoding ]]; then #These are analysis methods that require two additional input args
 	#Loop through all input sets of treatments and perform selected analsysis
 	for i in "$@"; do
+		#Determine what type of data folder was input
+		if [[ "$2" == trimmed* ]]; then
+			inputFolder=$(echo "$2""$i"_assemblyTrinity)
+		elif [[ "$2" == sorted* ]]; then
+			inputFolder=$(echo "$2""$i"_assemblyGenomeTrinity)
+		else
+			echo "ERROR: Input folder for analysis is not a valid option... exiting!"
+			exit 1
+		fi
 		#Skip first three arguments
 		if [ $counter -ge 4 ]; then
 			if [ "$1" == genomeAssembly ]; then
@@ -65,6 +74,15 @@ elif [[ "$1" == genomeAssembly || "$1" == decoding ]]; then #These are analysis 
 elif [[ "$1" == alignmentTophat2 || "$1" == alignmentHisat2 ]]; then #These are analysis methods that require three additional input args
 	#Loop through all input sets of treatments and perform selected analsysis
 	for i in "$@"; do
+		#Determine what type of data folder was input
+		if [[ "$2" == trimmed* ]]; then
+			inputFolder=$(echo "$2""$i"_assemblyTrinity)
+		elif [[ "$2" == sorted* ]]; then
+			inputFolder=$(echo "$2""$i"_assemblyGenomeTrinity)
+		else
+			echo "ERROR: Input folder for analysis is not a valid option... exiting!"
+			exit 1
+		fi
 		#Skip first 4 arguments
 		if [ $counter -ge 5 ]; then
 			#Run slected alignment software
