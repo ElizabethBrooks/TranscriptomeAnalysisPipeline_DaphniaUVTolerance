@@ -30,17 +30,17 @@ if [[ "$1" == assembly || "$1" == buildingTophat2 || "$1" == buildingHisat2 ]]; 
 		#Skip first two arguments
 		if [ $counter -ge 3 ]; then
 			if [[ "$1" == assembly ]]; then
+				echo "Running assembly_trinity.sh $2 $i"
 				#Usage: qsub assembly_trinity.sh trimmedFolder genotype
 				qsub assembly_trinity.sh "$2" "$i"
-				echo "Running assembly_trinity.sh $2 $i"
 			elif [[ "$1" == buildingTophat2 || "$1" == buildingBowtie2 ]]; then
+				echo "Running building_bowtie2.sh $inputFolder"
 				#Usage: qsub building_bowtie2.sh trimmedOrAssemblyFolder
 				qsub building_bowtie2.sh "$inputFolder"
-				echo "Running building_bowtie2.sh $inputFolder"
 			elif [[ "$1" == buildingHisat2 ]]; then
+				echo "Running building_hisat2.sh $inputFolder"
 				#Usage: qsub building_hisat2.sh trimmedOrAssemblyFolder
 				bash building_hisat2.sh "$inputFolder"
-				echo "Running building_hisat2.sh $inputFolder"
 			fi
 		fi
 		counter=$(($counter+1))
@@ -60,13 +60,13 @@ elif [[ "$1" == genomeAssembly || "$1" == decoding ]]; then #These are analysis 
 		#Skip first three arguments
 		if [ $counter -ge 4 ]; then
 			if [ "$1" == genomeAssembly ]; then
+				echo "Running assembly_genomeGuided_trinity.sh $2 $i $3"
 				#Usage: qsub assembly_genomeGuided_trinity.sh sortedFolder genotype maxIntronLength
 				qsub assembly_genomeGuided_trinity.sh "$2" "$i" "$3"
-				echo "Running assembly_genomeGuided_trinity.sh $2 $i $3"
 			elif [[ "$1" == decoding ]]; then
+				echo "Running decoding_transdecoder.sh $inputFolder $3"
 				#Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder databaseSelection
 				qsub decoding_transdecoder.sh "$inputFolder" "$3"
-				echo "Running decoding_transdecoder.sh $inputFolder $3"
 			fi
 		fi
 		counter=$(($counter+1))
@@ -87,13 +87,13 @@ elif [[ "$1" == alignmentTophat2 || "$1" == alignmentHisat2 ]]; then #These are 
 		if [ $counter -ge 5 ]; then
 			#Run slected alignment software
 			if [[ "$1" == alignmentTophat2 ]]; then
-				#Usage: qsub alignment_tophat2.sh trimmedOrAssemblyFolder minIntronLength maxIntronLength
-				qsub alignment_tophat2.sh "$inputFolder" "$3" "$4"
 				echo "Running alignment_tophat2.sh $inputFolder $3 $4"
+				#Usage: qsub alignment_tophat2.sh trimmedOrAssemblyFolder minIntronLength maxIntronLength
+				qsub alignment_tophat2.sh assembly "$inputFolder" "$3" "$4"
 			elif [[ "$1" == alignmentHisat2 ]]; then
-				#Usage: qsub alignment_hisat2.sh trimmedOrAssemblyFolder minIntronLength maxIntronLength
-				qsub alignment_hisat2.sh "$inputFolder" "$3" "$4"
 				echo "Running alignment_hisat2.sh $inputFolder $3 $4"
+				#Usage: qsub alignment_hisat2.sh trimmedOrAssemblyFolder minIntronLength maxIntronLength
+				qsub alignment_hisat2.sh assembly "$inputFolder" "$3" "$4"
 			fi
 		fi
 		counter=$(($counter+1))
