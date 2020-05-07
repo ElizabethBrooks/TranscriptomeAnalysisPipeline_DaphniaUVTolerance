@@ -56,7 +56,7 @@ elif [[ "$1"  == genome ]]; then
 		maxIntron=-1
 	fi
 else
-	echo "ERROR: The input folder of trimmed or assembled files were not found... exiting"
+	echo "ERROR: The input alignment target is not valid... exiting!"
 	exit 1
 fi
 #Retrieve reads input absolute path
