@@ -81,5 +81,8 @@ rm "$outputFolder"/sorted.bam*
 rm "$outputFolder"/partitions.ok
 rm "$outputFolder"/read_files.list*
 rm "$outputFolder"/trinity_GG.cmds*
+#Re-name selected output files
+mv "$outputFolder"/Trinity-GG.fasta.gene_trans_map "$outputFolder"/Trinity.fasta.gene_trans_map
+mv "$outputFolder"/Trinity-GG.fasta "$outputFolder"/Trinity.fasta
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
