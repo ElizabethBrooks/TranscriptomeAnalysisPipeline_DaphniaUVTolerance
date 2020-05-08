@@ -3,6 +3,8 @@
 #Usage: bash alignmentSummaryDriver_subsetting.sh alignmentFolders
 #Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_hisat2_run1 aligned_hisat2_run2 aligned_tophat2_run1 aligned_tophat2_run2 aligned_tophat2_run3
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh trimmed_run1E05_assemblyTrinity/aligned_hisat2_run1 trimmed_run1R2_assemblyTrinity/aligned_hisat2_run1 trimmed_run1Y023_5_assemblyTrinity/aligned_hisat2_run1 trimmed_run1Y05_assemblyTrinity/aligned_hisat2_run1 trimmed_run1PA_assemblyTrinity/aligned_hisat2_run1 trimmed_run1Sierra_assemblyTrinity/aligned_hisat2_run1
+#Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyGenomeTrinity/aligned_hisat2_run1 sortedCoordinate_samtoolsHisat2_run1R2_assemblyGenomeTrinity/aligned_hisat2_run1 sortedCoordinate_samtoolsHisat2_run1Y023_5_assemblyGenomeTrinity/aligned_hisat2_run1 sortedCoordinate_samtoolsHisat2_run1Y05_assemblyGenomeTrinity/aligned_hisat2_run1 sortedCoordinate_samtoolsHisat2_run1PA_assemblyGenomeTrinity/aligned_hisat2_run1 sortedCoordinate_samtoolsHisat2_run1Sierra_assemblyGenomeTrinity/aligned_hisat2_run1
+#Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsTophat2_run1E05_assemblyGenomeTrinity/aligned_hisat2_run1 sortedCoordinate_samtoolsTophat2_run1R2_assemblyGenomeTrinity/aligned_hisat2_run1 sortedCoordinate_samtoolsTophat2_run1Y023_5_assemblyGenomeTrinity/aligned_hisat2_run1 sortedCoordinate_samtoolsTophat2_run1Y05_assemblyGenomeTrinity/aligned_hisat2_run1 sortedCoordinate_samtoolsTophat2_run1PA_assemblyGenomeTrinity/aligned_hisat2_run1 sortedCoordinate_samtoolsTophat2_run1Sierra_assemblyGenomeTrinity/aligned_hisat2_run1
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -27,7 +29,12 @@ for f1 in $@; do
 		f1=$(basename "$basePath"/$f1)
 		#Retrieve directory name from input folder path
 		analysisInput=$(basename "$inputsPath")
-		analysisInput=$analysisInput"_"
+		#Determine assembly method
+		if [[ "$f1"  == *assemblyGenome* ]]; then
+			analysisInput=$(echo "$analysisInput" | sed "s/assemblyGenomeTrinity/trinity/g" | sed "s/sortedCoordinate_samtoolsTophat2//g")
+		else
+			analysisInput=$(echo "$analysisInput" | sed "s/assemblyTrinity/trinity/g" | sed "s/trimmed//g")
+		fi
 	else
 		echo "ERROR: The input folder of aligned or assembled files were not found... exiting"
 		exit 1
@@ -36,8 +43,7 @@ for f1 in $@; do
 	if [[ "$f1" == *"hisat2"*  ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="hisat2"
-		analysisArg=$analysisInput""$analysisMethod
-		analysisArg=$(echo "$analysisArg" | sed "s/assemblyTrinity/trinity/g" | sed "s/trimmed_run.//g")
+		analysisArg=$analysisInput$analysisMethod
 		#Set output folder name
 		outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 		#Retrieve run number for input alignment folder
@@ -47,8 +53,7 @@ for f1 in $@; do
 	elif [[ "$f1" == *"tophat2"* ]]; then
 		#Set analysis method for folder naming
 		analysisMethod="tophat2"
-		analysisArg=$analysisInput""$analysisMethod
-		analysisArg=$(echo "$analysisArg" | sed "s/assemblyTrinity/trinity/g" | sed "s/trimmed_run.//g")
+		analysisArg=$analysisInput$analysisMethod
 		#Set output folder name
 		outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 		#Retrieve run number for input alignment folder
@@ -59,7 +64,7 @@ for f1 in $@; do
 		echo "ERROR: The $f1 folder of bam files were not found... exiting"
 		exit 1
 	fi
-	echo "Merging $analysisInput""$f1 alignment summaries..."
+	echo "Merging $analysisArg""$f1 alignment summaries..."
 	#Retrieve summaries for each aligned sample
 	for f2 in "$inputsPath"/"$f1"/*/; do
 		#Retrieve sample name
@@ -70,9 +75,9 @@ for f1 in $@; do
 		cat "$outputStats"_combined_run"$runNum".csv >> "$outputStats"_run"$runNum".csv
 		rm "$outputStats"_combined_run"$runNum".csv
 	done
-	echo "Alignment summaries for $analysisInput""$f1 have been merged!"
-	echo "Formatting $analysisInput""$f1 merged alignment summary..."
+	echo "Alignment summaries for $analysisArg""$f1 have been merged!"
+	echo "Formatting $analysisArg""$f1 merged alignment summary..."
 	#Run alignment summary formatting
 	bash alignmentSummary_formatting.sh "$analysisArg" "$runNum"
-	echo "Merged alignment summary for $analysisInput""$f1 has been formatted!"
+	echo "Merged alignment summary for $analysisArg""$f1 has been formatted!"
 done
