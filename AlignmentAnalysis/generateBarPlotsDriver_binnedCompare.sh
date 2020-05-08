@@ -2,7 +2,8 @@
 #Script to generate venn diagrams from edgeR stats
 #Usage: bash generateBarPlotsDriver_binnedCompare.sh twoAlingmentSummaryFiles 
 #Usage Ex: bash generateBarPlotsDriver_binnedCompare.sh alignmentSummarized_hisat2_run1_formatted.csv alignmentSummarized_tophat2_run2_formatted.csv
-#Alternate usage Ex: bash generateBarPlotsDriver_binnedCompare.sh alignmentSummarized_E05_trinity_hisat2_run1_formatted.csv alignmentSummarized_hisat2_run1_formatted.csv
+#Alternate usage Ex: bash generateBarPlotsDriver_binnedCompare.sh alignmentSummarized_trimmed_run1E05_assemblyTrinity_hisat2_run1_formatted.csv alignmentSummarized_hisat2_run1_formatted.csv
+#Alternate usage Ex: bash generateBarPlotsDriver_binnedCompare.sh alignmentSummarized_sortedCoordinate_samtoolsHisat2_run1E05_assemblyGenomeTrinity_hisat2_run1_formatted.csv alignmentSummarized_hisat2_run1_formatted.csv
 
 #Load module necessary for crc servers
 module load bio/R/
