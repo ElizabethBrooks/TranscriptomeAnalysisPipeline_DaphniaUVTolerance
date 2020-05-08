@@ -41,9 +41,9 @@ head -1 "$outFileTmp" > "$outFile"
 tail -n +2 "$outFileTmp" | sort -k1 -n -t, >> "$outFile"
 #Determine analysis method used
 if [[ "$1" == *Trinity* ]]; then
-	method="assembly"
+	method="transcriptome"
 else
-	method="aligned"
+	method="genome"
 fi
 #Determine alignment software used
 if [[ "$1" == *hisat2* ]]; then
