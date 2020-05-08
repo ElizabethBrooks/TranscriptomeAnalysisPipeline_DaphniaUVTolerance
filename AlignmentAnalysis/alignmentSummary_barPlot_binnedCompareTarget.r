@@ -25,7 +25,7 @@ subsetNames <- rownames(aStats)[1:subsetLength]
 fullsetNames <- c(subsetNames,subsetNames)
 fullsetNames <- as.numeric(fullsetNames)
 #Create data frame of compined alignment stats
-counts <- data.frame(fullsetNames, aStats$overall, aStats$concordant, aStats$method)
+counts <- data.frame(fullsetNames, aStats$overall, aStats$concordant, aStats$target)
 #Create matrix for multiple plots
 par(mfrow=c(2,1))
 #Set the plot titles
@@ -37,26 +37,26 @@ plotTitle2 <- str_remove(plotTitle2, "alignmentSummarized_")
 plotTitle2 <- str_remove(plotTitle2, "_formatted.csv")
 plotTitle <- paste(plotTitle1, plotTitle2, sep=" vs ")
 #Generate grouped and colored bar plot
-plotOverall <- ggplot(counts, aes(factor(fullsetNames), aStats.overall, fill=aStats.method)) + 
+plotOverall <- ggplot(counts, aes(factor(fullsetNames), aStats.overall, fill=aStats.target)) + 
   geom_bar(stat="identity", position="dodge") +
   ggtitle(plotTitle) +
   xlab("Sample Number") +
   ylab("Overall Percent") +
   theme(plot.title = element_text(hjust = 0.5)) +
   scale_fill_brewer(palette="Set1")
-plotOverall <- plotOverall + guides(fill=guide_legend(title="Method"))
+plotOverall <- plotOverall + guides(fill=guide_legend(title="Target"))
 #Save overall percentages plot as a jpg
 outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", sep="/")
 ggsave(outFile)
 #Generate second grouped and colored bar plot
-plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aStats.method)) + 
+plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aStats.target)) + 
   geom_bar(stat="identity", position="dodge") + 
   ggtitle(plotTitle) +
   xlab("Sample Number") +
   ylab("Concordant Percent") +
   theme(plot.title = element_text(hjust = 0.5)) +
   scale_fill_brewer(palette="Set1")
-plotConc <- plotConc + guides(fill=guide_legend(title="Method"))
+plotConc <- plotConc + guides(fill=guide_legend(title="target"))
 #Save concordant percentages plot as a jpg
 outFile <- paste(normalizePath(dirname(args[1])), "plotConcordantPercentages.jpg", sep="/")
 ggsave(outFile)
