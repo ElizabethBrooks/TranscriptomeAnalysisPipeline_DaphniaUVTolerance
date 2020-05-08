@@ -2,7 +2,7 @@
 #Script to prepare alignment summary matrices
 #Usage: bash alignmentSummary_formatting.sh analysisMethod runNum
 #Usage Ex: bash alignmentSummary_formatting.sh tophat2 3 
-#Alternate usage Ex: bash alignmentSummary_formatting.sh trimmed_run1E05_trinity_hisat2 1 
+#Alternate usage Ex: bash alignmentSummary_formatting.sh trimmed_run1E05_genomeTrinity_hisat2_run1 1 
 
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
@@ -40,7 +40,7 @@ sed -i "s/Pool3_//g" "$outFileTmp"
 head -1 "$outFileTmp" > "$outFile"
 tail -n +2 "$outFileTmp" | sort -k1 -n -t, >> "$outFile"
 #Determine analysis method used
-if [[ "$1" == *trinity* ]]; then
+if [[ "$1" == *Trinity* ]]; then
 	method="assembly"
 else
 	method="aligned"
