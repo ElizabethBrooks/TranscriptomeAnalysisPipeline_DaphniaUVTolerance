@@ -2,15 +2,15 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N alignment_tophat2_jobOutput
+#$ -N alignment_genomeFeatures_tophat2_jobOutput
 #$ -pe smp 8
 #Script to perform tophat2 alignment of trimmed
 # paired end reads
 #Note that a bowtie2 genome refernce build folder needs to be generated first
-#Usage: qsub alignment_tophat2.sh alignmentTarger trimmedFolder optionalAssemblyFolder minIntronLength maxIntronLength
-#Usage Ex: qsub alignment_tophat2.sh genome trimmed_run1 4 14239
-#Alternate usage Ex: qsub alignment_tophat2.sh assembly trimmed_run1E05_assemblyTrinity 20 14239
-#Default usage Ex: qsub alignment_tophat2.sh genome trimmed_run1
+#Usage: qsub alignment_genomeFeatures_tophat2.sh alignmentTarger trimmedFolder optionalAssemblyFolder minIntronLength maxIntronLength
+#Usage Ex: qsub alignment_genomeFeatures_tophat2.sh genome trimmed_run1 4 14239
+#Alternate usage Ex: qsub alignment_genomeFeatures_tophat2.sh assembly trimmed_run1E05_assemblyTrinity 20 14239
+#Default usage Ex: qsub alignment_genomeFeatures_tophat2.sh genome trimmed_run1
 
 #Required modules for ND CRC servers
 module load bio
@@ -64,8 +64,6 @@ inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/
 genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
 #Move to outputs directory
 cd "$outputsPath"
-#Generate tronscriptome index files
-tophat -G "$genomeFile" --transcriptome-index="$outputsPath"/transcriptome_data/known pa42
 #Prepare for alignment
 dirFlag=0
 runNum=1
@@ -105,16 +103,16 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	if [[ $minIntron == -1 || $maxIntron == -1 ]]; then #Arguments were not entered
 		#Run tophat2 with default settings
 		echo "Sample $curSampleNoPath is being aligned..."
-		tophat2 -p 8 --transcriptome-index="$outputsPath"/transcriptome_data/known pa42 -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
+		tophat2 -p 8 -G "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
 		#Add run inputs to output summary file
 		echo $curSampleNoPath >> $inputOutFile
-		echo "tophat2 -p 8 --transcriptome-index=$outputsPath/transcriptome_data/known pa42 -o $outputFolder/$curSampleNoPath $buildOut/$buildFileNoEx $f1 $curSample_pReverse.fq.gz" >> "$inputOutFile"
+		echo "tophat2 -p 8 -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
 	else #Run tophat2 using input intron lengths
 		echo "Sample $curSampleNoPath is being aligned..."
-		tophat2 -p 8 --transcriptome-index="$outputsPath"/transcriptome_data/known pa42 -i $minIntron -I $maxIntron -G "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
+		tophat2 -p 8 -i $minIntron -I $maxIntron -G "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
 		#Add run inputs to output summary file
 		echo $curSampleNoPath >> $inputOutFile
-		echo "tophat2 -p 8 --transcriptome-index=$outputsPath/transcriptome_data/known pa42 -i $minIntron -I $maxIntron -G $genomeFile -o $outputFolder/$curSampleNoPath $buildOut/$buildFileNoEx $f1 $curSample_pReverse.fq.gz" >> "$inputOutFile"
+		echo "tophat2 -p 8 -i $minIntron -I $maxIntron -G" "$genomeFile" -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz >> $inputOutFile
 	fi
 	echo "Sample $curSampleNoPath has been aligned!"
 	#Clean up excess alignment files, if assemly was input
