@@ -19,8 +19,8 @@ inOutDir="$inOutputsPath"/AlignmentsAnalyzed
 echo "Plotting $1 and $2 alignment summaries..."
 #Determine what software was used for inputs
 if [[ "$1" == *"Trinity"* && "$2" != *"Trinity"* ]]; then
-	#Plot alignment data using method (assembly vs aligned) binned bar plots
-	Rscript alignmentSummary_barPlot_binnedCompareMethod.r "$inOutDir"/"$1" "$inOutDir"/"$2"
+	#Plot alignment data using target (assembly vs aligned) binned bar plots
+	Rscript alignmentSummary_barPlot_binnedCompareTarget.r "$inOutDir"/"$1" "$inOutDir"/"$2"
 elif [[ "$1" == *"tophat2"* && "$2" == *"tophat2"* ]]; then
 	#Plot alignment data using run binned bar plots
 	Rscript alignmentSummary_barPlot_binnedCompareRun.r "$inOutDir"/"$1" "$inOutDir"/"$2"

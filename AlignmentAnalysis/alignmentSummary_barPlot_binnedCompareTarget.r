@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-#Usage: Rscript alignmentSummary_barPlot_binnedCompareMethod.r alignmentSummaryFiles
-#Usage Ex: Rscript alignmentSummary_barPlot_binnedCompareMethod.r alignmentSummarized_hisat2_run1_formatted.csv alignmentSummarized_tophat2_run2_formatted.csv
+#Usage: Rscript alignmentSummary_barPlot_binnedCompareTarget.r alignmentSummaryFiles
+#Usage Ex: Rscript alignmentSummary_barPlot_binnedCompareTarget.r alignmentSummarized_hisat2_run1_formatted.csv alignmentSummarized_tophat2_run2_formatted.csv
 #R script to generate grouped and colored bar plots
 
 #Installations need to be performed once
