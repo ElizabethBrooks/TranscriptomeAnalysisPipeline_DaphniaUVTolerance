@@ -18,7 +18,7 @@ inOutputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d "
 inOutDir="$inOutputsPath"/AlignmentsAnalyzed
 echo "Plotting $1 and $2 alignment summaries..."
 #Determine what software was used for inputs
-if [[ "$1" == *"trinity"* && "$2" != *"trinity"* ]]; then
+if [[ "$1" == *"Trinity"* && "$2" != *"Trinity"* ]]; then
 	#Plot alignment data using method (assembly vs aligned) binned bar plots
 	Rscript alignmentSummary_barPlot_binnedCompareMethod.r "$inOutDir"/"$1" "$inOutDir"/"$2"
 elif [[ "$1" == *"tophat2"* && "$2" == *"tophat2"* ]]; then
