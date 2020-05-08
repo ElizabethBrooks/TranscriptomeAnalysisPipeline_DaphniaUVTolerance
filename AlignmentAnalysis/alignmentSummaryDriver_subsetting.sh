@@ -29,12 +29,7 @@ for f1 in $@; do
 		f1=$(basename "$basePath"/$f1)
 		#Retrieve directory name from input folder path
 		analysisInput=$(basename "$inputsPath")
-		#Determine assembly method
-		if [[ "$f1"  == *assemblyGenome* ]]; then
-			analysisInput=$(echo "$analysisInput" | sed "s/assemblyGenomeTrinity/trinity/g" | sed "s/sortedCoordinate_samtoolsTophat2//g")
-		else
-			analysisInput=$(echo "$analysisInput" | sed "s/assemblyTrinity/trinity/g" | sed "s/trimmed//g")
-		fi
+		analysisInput=$analysisInput"_"
 	else
 		echo "ERROR: The input folder of aligned or assembled files were not found... exiting"
 		exit 1
