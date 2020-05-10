@@ -9,9 +9,6 @@
 #Usage: qsub uniqueMerge_fasta.sh sortedFolder genotype mergeBy
 #Usage Ex: qsub uniqueMerge_fasta.sh sortedCoordinate_samtoolsHisat2_run1 Sierra sequence
 
-#Required modules for ND CRC servers
-module load bio/2.0
-module load bio/samtools
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -59,8 +56,20 @@ inputOutFile="$outputFolder"/"$1""$2"_assemblyGenomeTrinity_summary.txt
 #Merge and re-coordinate sort the set of bam files
 readFiles=$(echo "$inputsPath"/"$1"/*_"$2"_*/*.bam)
 echo "Beginning merging..."
-samtools merge -@ 8 merged.bam $readFiles
-echo "Merging complete! Beginning sorting..."
-samtools sort -@ 8 -o sorted.bam merged.bam
-echo "Sorting complete!"
-rm merged.bam
+#TODO: Add input check
+#First part of sequence name identical merge
+awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
+	(FNR==1){next}
+	{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
+	{ key=substr(name,1,index(s,"|")) }
+	!(seen[key]++){ print ">" $0 }' file1.fasta file2.fasta file3.fasta ...
+#Sequence identical merge
+awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
+	(FNR==1){next}
+	{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
+	!(seen[seq]++){ print ">" $0 }' file1.fasta file2.fasta file3.fasta ...
+#Sequence name and sequence identical merge
+awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
+	(FNR==1){next}
+	{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
+	!(seen[name,seq]++){ print ">" $0 }' file1.fasta file2.fasta file3.fasta ...
