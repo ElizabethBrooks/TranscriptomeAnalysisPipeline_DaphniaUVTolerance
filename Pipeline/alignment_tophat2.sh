@@ -9,6 +9,7 @@
 #Note that a bowtie2 genome refernce build folder needs to be generated first
 #Usage: qsub alignment_tophat2.sh alignmentTarger trimmedFolder optionalAssemblyFolder minIntronLength maxIntronLength
 #Usage Ex: qsub alignment_tophat2.sh genome trimmed_run1 4 14239
+#Usage Ex: qsub alignment_tophat2.sh genome trimmed_run1 20 14239
 #Alternate usage Ex: qsub alignment_tophat2.sh assembly trimmed_run1E05_assemblyTrinity 20 14239
 #Default usage Ex: qsub alignment_tophat2.sh genome trimmed_run1
 
