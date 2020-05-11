@@ -39,6 +39,8 @@ else
 fi
 #Retrieve aligned reads input absolute path
 inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+#Retrieve genome reference absolute path for alignment
+genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve assembly outputs absolute path
 outputsPath=$(grep "assemblingWithGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingWithGenome://g")
 #Create output directory
@@ -49,12 +51,8 @@ if [ $? -ne 0 ]; then
 	echo "The $outputFolder directory already exsists... please remove before proceeding."
 	exit 1
 fi
-#Retrieve genome features absolute path for alignment
-genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
 #Move to outputs directory
 cd "$outputFolder"
-#Generate tronscriptome index files
-tophat -G "$genomeFile" --transcriptome-index="$outputsPath"/transcriptome_data/known pa42
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assemblyGenomeTrinity_summary.txt
 #Merge and re-coordinate sort the set of bam files
