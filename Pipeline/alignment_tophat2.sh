@@ -11,6 +11,7 @@
 #Usage Ex: qsub alignment_tophat2.sh genome trimmed_run1 4 14239
 #Usage Ex: qsub alignment_tophat2.sh genome trimmed_run1 20 14239
 #Alternate usage Ex: qsub alignment_tophat2.sh assembly trimmed_run1E05_assemblyTrinity 20 14239
+#Alternate usage Ex: qsub alignment_tophat2.sh assemblyStats trimmed_run1E05_assemblyTrinity 20 14239
 #Default usage Ex: qsub alignment_tophat2.sh genome trimmed_run1
 
 #Required modules for ND CRC servers
@@ -115,7 +116,7 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	fi
 	echo "Sample $curSampleNoPath has been aligned!"
 	#Clean up excess alignment files, if assemly was input
-	if [[ "$1"  == assembly ]]; then
+	if [[ "$1"  == *Stats ]]; then
 		rm "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam
 		rm "$outputFolder"/"$curSampleNoPath"/deletions.bed
 		rm "$outputFolder"/"$curSampleNoPath"/junctions.bed

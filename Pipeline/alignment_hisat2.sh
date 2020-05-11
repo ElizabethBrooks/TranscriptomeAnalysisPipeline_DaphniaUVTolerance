@@ -10,6 +10,7 @@
 #Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder minIntronLength maxIntronLength
 #Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 20 14239
 #Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 trimmed_run1E05_assemblyTrinity 20 14239
+#Alternate usage Ex: qsub alignment_hisat2.sh assemblyStats trimmed_run1 trimmed_run1E05_assemblyTrinity 20 14239
 #Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
 
 #Required modules for ND CRC servers
@@ -117,7 +118,7 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	fi
 	echo "Sample $curSampleNoPath has been aligned!"
 	#Convert or clean up bam files depending on analysis
-	if [[ "$1"  == assembly ]]; then #Clean up excess bam files, if assemly was input
+	if [[ "$1"  == *Stats ]]; then #Clean up excess bam files, if assemly was input
 		rm "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam
 	else #Convert output sam files to bam format for downstream analysis
 		echo "Sample $curSampleNoPath is being converted..."
