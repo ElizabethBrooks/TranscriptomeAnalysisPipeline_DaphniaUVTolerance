@@ -43,11 +43,11 @@ if [[ "$1"  == assembly ]]; then
 elif [[ "$1"  == genome ]]; then
 	analysisInput="trimmed"
 	#Retrieve build genome files absolute path
-	buildInputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/building://g")
+	buildInputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/buildingGenome://g")
 	#Retrieve genome reference absolute path for alignment
 	buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 	#Retrieve alignment outputs absolute path
-	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	#Determine if intron lengths were entered
 	if [[ -z "$3" || -z "$4" ]]; then #Arguments were not entered
 		minIntron=$3
