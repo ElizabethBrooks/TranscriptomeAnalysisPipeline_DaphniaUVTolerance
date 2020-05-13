@@ -35,7 +35,8 @@ for i in "$@"; do
 	counter=$(($counter+1))
 done
 #Create output directory
-outputFolder="$outputFolder/$2$genotypeList""_assemblyGenomeTrinity_multiFasta"
+outputFolder="$outputsPath"
+multiFastaFile="$outputFolder/$2$genotypeList""_assemblyGenomeTrinity_multiFasta.fasta"
 #Move to outputs directory
 cd "$outputFolder"
 #Merge the set of fasta files
