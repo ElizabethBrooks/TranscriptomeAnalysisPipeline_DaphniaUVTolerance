@@ -11,19 +11,8 @@
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
-   	echo "No folder name(s) supplied... exiting"
+   	echo "No folder inputs supplied... exiting"
    	exit 1
-fi
-#Determine what analysis method was used for the input folder of data
-if [[ "$1" == *"Hisat2"*  ]]; then
-	#Set analysis method for folder naming
-	analysisMethod="Hisat2"
-elif [[ "$1" == *"Tophat2"* ]]; then
-	#Set analysis method for folder naming
-	analysisMethod="Tophat2"
-else
-	echo "ERROR: The sorted "$1" folder of fasta files were not found... exiting"
-	exit 1
 fi
 #Retrieve aligned reads input absolute path
 inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
