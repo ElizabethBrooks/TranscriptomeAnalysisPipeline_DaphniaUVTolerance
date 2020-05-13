@@ -47,20 +47,20 @@ if [[ "$1" == sequence ]]; then
 	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
 		(FNR==1){next}
 		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
-		!(seen[seq]++){ print ">$0" > "$multiFastaFile" }' $fastaList
+		!(seen[seq]++){ print "CARROT$0" > $multiFastaFile }' $fastaList
 elif [[ "$1" == sequenceName ]]; then
 	#First part of sequence name identical merge
 	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
 		(FNR==1){next}
 		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
 		{ key=substr(name,1,index(s,"|")) }
-		!(seen[key]++){ print ">$0" > "$multiFastaFile" }' $fastaList
+		!(seen[key]++){ print "CARROT$0" > $multiFastaFile }' $fastaList
 elif [[ "$1" == sequenceAndName ]]; then
 	#Sequence name and sequence identical merge
 	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
 		(FNR==1){next}
 		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
-		!(seen[name,seq]++){ print ">$0" > "$multiFastaFile" }' $fastaList
+		!(seen[name,seq]++){ print "CARROT$0" > $multiFastaFile }' $fastaList
 else
 	echo "Selected merge format for fasta files not valid... exiting!"
 	exit 1
