@@ -1,13 +1,8 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N uniqueMerge_fasta_jobOutput
-#$ -pe smp 8
 #Script to perform merge multifasta files and retain only
 #the specified unique data (by sequence, ID, or both)
-#Usage: qsub uniqueMerge_fasta.sh mergeBy sortedFolder genotypes
-#Usage Ex: qsub uniqueMerge_fasta.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage: bash uniqueMerge_fasta.sh mergeBy sortedFolder genotypes
+#Usage Ex: bash uniqueMerge_fasta.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -47,20 +42,20 @@ if [[ "$1" == sequence ]]; then
 	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
 		(FNR==1){next}
 		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
-		!(seen[seq]++){ print "CARROT$0" > $multiFastaFile }' $fastaList
+		!(seen[seq]++){ print > $0 }' $fastaList > $multiFastaFile
 elif [[ "$1" == sequenceName ]]; then
 	#First part of sequence name identical merge
 	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
 		(FNR==1){next}
 		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
 		{ key=substr(name,1,index(s,"|")) }
-		!(seen[key]++){ print "CARROT$0" > $multiFastaFile }' $fastaList
+		!(seen[key]++){ print > $0 }' $fastaList > $multiFastaFile
 elif [[ "$1" == sequenceAndName ]]; then
 	#Sequence name and sequence identical merge
 	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
 		(FNR==1){next}
 		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
-		!(seen[name,seq]++){ print "CARROT$0" > $multiFastaFile }' $fastaList
+		!(seen[name,seq]++){ print > $0 }' $fastaList > $multiFastaFile
 else
 	echo "Selected merge format for fasta files not valid... exiting!"
 	exit 1
