@@ -26,10 +26,10 @@ genotypeList=""
 for i in "$@"; do
 	#Skip first two arguments
 	if [[ $counter -eq $# ]]; then
-		fastaList="$fastaList$inputsPath/$2$i_assemblyGenomeTrinity/Trinity.fasta"
+		fastaList="$fastaList$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta"
 		genotypeList="$genotypeList$i"
 	elif [[ $counter -ge 3 ]]; then
-		fastaList="$fastaList$inputsPath/$2$i_assemblyGenomeTrinity/Trinity.fasta "
+		fastaList="$fastaList$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta "
 		genotypeList="$genotypeList$i "
 	fi
 	counter=$(($counter+1))
@@ -41,7 +41,7 @@ outputFolder="$outputsPath"
 #Move to outputs directory
 cd "$outputFolder"
 #Name output file and folder
-multiFastaFile="$outputFolder/$2$genotypeList_assemblyGenomeTrinity_multiFasta.fasta"
+multiFastaFile="$outputFolder/$2$genotypeList""_assemblyGenomeTrinity_multiFasta.fasta"
 #Merge the set of fasta files
 #echo "Beginning merging..."
 #Determine which method to merge fasta files by
