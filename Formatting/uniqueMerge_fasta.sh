@@ -14,16 +14,6 @@ if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Determine if the folder name was input in the correct format
-if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
-	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
-	exit 1
-fi
-#Determine if the correct analysis folder was input
-if [[ "$1"  != sortedCoordinate* ]]; then
-	echo "ERROR: The "$1" folder of aligned bam files were not found... exiting"
-	exit 1
-fi
 #Determine what analysis method was used for the input folder of data
 if [[ "$1" == *"Hisat2"*  ]]; then
 	#Set analysis method for folder naming
