@@ -30,7 +30,7 @@ for i in "$@"; do
 		genotypeList="$genotypeList$i"
 	elif [[ $counter -ge 3 ]]; then
 		fastaList="$fastaList$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta "
-		genotypeList="$genotypeList$i "
+		genotypeList="$genotypeList$i"
 	fi
 	counter=$(($counter+1))
 done
