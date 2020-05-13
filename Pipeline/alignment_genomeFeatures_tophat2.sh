@@ -33,6 +33,8 @@ if [[ "$1"  == assembly ]]; then
 	#Retrieve alignment outputs absolute path
 	outputsPath="$assemblyPath"/"$3"
 	#Determine if intron lengths were entered
+	minIntron=0
+	maxIntron=0
 	if [[ -z "$4" || -z "$5" ]]; then #Arguments were not entered
 		minIntron=$3
 		maxIntron=$4
@@ -49,6 +51,8 @@ elif [[ "$1"  == genome ]]; then
 	#Retrieve alignment outputs absolute path
 	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	#Determine if intron lengths were entered
+	minIntron=0
+	maxIntron=0
 	if [[ -z "$3" || -z "$4" ]]; then #Arguments were not entered
 		minIntron=$3
 		maxIntron=$4
@@ -104,7 +108,7 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	curSampleNoPath=$(basename $f1)
 	curSampleNoPath=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
 	#Determine if intron lengths were entered
-	if [[ $minIntron == -1 || $maxIntron == -1 ]]; then #Arguments were not entered
+	if [[ $minIntron -eq -1 || $maxIntron -eq -1 ]]; then #Arguments were not entered
 		#Run tophat2 with default settings
 		echo "Sample $curSampleNoPath is being aligned..."
 		tophat2 -p 8 --transcriptome-index="$outputsPath"/transcriptome_data/known pa42 -o "$outputFolder"/"$curSampleNoPath" "$buildOut"/"$buildFileNoEx" "$f1" "$curSample"_pReverse.fq.gz
