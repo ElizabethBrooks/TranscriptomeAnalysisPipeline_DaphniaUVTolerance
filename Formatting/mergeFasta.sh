@@ -35,17 +35,13 @@ if [[ "$2" == sorted* ]]; then
 			fastaFile="$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta"
 			fastaList="$fastaList$fastaFile"
 			#Copy fasta to output folder
-			touch $outputFolder/$2$i"_assemblyGenomeTrinity.fasta"
-			cp $fastaFile $outputFolder/$2$i"_assemblyGenomeTrinity.fasta"
-			mv $outputFolder/$2$i"_assemblyGenomeTrinity.fasta" $outputFolder/$2$i"_assemblyGenomeTrinity.fasta"
+			cat $fastaFile > $outputFolder/$2$i"_assemblyGenomeTrinity.fasta"
 		elif [[ $counter -ge 3 ]]; then
 			#Add fasta file to list
 			fastaFile="$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta "
 			fastaList="$fastaList$fastaFile "
 			#Copy fasta to output folder
-			touch $outputFolder/$2$i"_assemblyGenomeTrinity.fasta"
-			cp $fastaFile $outputFolder/$2$i"_assemblyGenomeTrinity.fasta"
-			mv $outputFolder/$2$i"_assemblyGenomeTrinity.fasta" $outputFolder/$2$i"_assemblyGenomeTrinity.fasta"
+			cat $fastaFile > $outputFolder/$2$i"_assemblyGenomeTrinity.fasta"
 		fi
 		counter=$(($counter+1))
 	done
@@ -61,17 +57,13 @@ elif [[ "$2" == trimmed* ]]; then
 			fastaFile="$inputsPath/$2$i""_assemblyTrinity/Trinity.fasta"
 			fastaList="$fastaList$fastaFile"
 			#Copy fasta to output folder
-			touch $outputFolder/$2$i"_assemblyTrinity.fasta"
-			cp $fastaFile $outputFolder/$2$i"_assemblyTrinity.fasta"
-			mv $outputFolder/$2$i"_assemblyTrinity.fasta" $outputFolder/$2$i"_assemblyTrinity.fasta"
+			cat $fastaFile > $outputFolder/$2$i"_assemblyTrinity.fasta"
 		elif [[ $counter -ge 3 ]]; then
 			#Add fasta file to list
 			fastaFile="$inputsPath/$2$i""_assemblyTrinity/Trinity.fasta "
 			fastaList="$fastaList$fastaFile "
 			#Copy fasta to output folder
-			touch $outputFolder/$2$i"_assemblyTrinity.fasta"
-			cp $fastaFile $outputFolder/$2$i"_assemblyTrinity.fasta"
-			mv $outputFolder/$2$i"_assemblyTrinity.fasta" $outputFolder/$2$i"_assemblyTrinity.fasta"
+			cat $fastaFile > $outputFolder/$2$i"_assemblyTrinity.fasta"
 		fi
 		counter=$(($counter+1))
 	done
