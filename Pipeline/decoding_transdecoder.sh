@@ -35,10 +35,10 @@ fi
 inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Retrieve genome reference and features paths
 multiFASTA=$(echo "$inputsPath"/"$1"/Trinity.fasta)
-geneMap="$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
-#Retrieve outputs absolute path
-outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
-outputFolder="$outputsPath"/decodedTransdecoder_"$1"
+geneMap=$inputsPath/$1/"Trinity.fasta.gene_trans_map"
+#Set outputs absolute path
+outputsPath=$inputsPath/$1
+outputFolder=$outputsPath/"decodedTransdecoder"
 mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then

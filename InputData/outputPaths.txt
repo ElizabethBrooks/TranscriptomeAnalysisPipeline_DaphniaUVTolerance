@@ -2,7 +2,6 @@ multiFASTA: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 qc: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 trimming: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 assembling: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
-decoding: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 aligningGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 sorting: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 variantCalling: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq

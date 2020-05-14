@@ -49,9 +49,9 @@ inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "
 pfamPath=$(grep "pfamDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/pfamDB://g")
 multiFASTA=$(echo "$inputsPath"/"$1"/Trinity.fasta)
 geneMap="$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
-#Retrieve outputs absolute path
-outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
-outputFolder="$outputsPath"/decodedTransdecoder_"$1"
+#Set outputs absolute path
+outputsPath=$inputsPath/$1
+outputFolder=$outputsPath/"decodedTransdecoderPfamBlastp"
 mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
