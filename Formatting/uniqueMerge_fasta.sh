@@ -3,7 +3,8 @@
 #the specified unique data (by sequence, ID, or both)
 #Usage: bash uniqueMerge_fasta.sh mergeBy sortedFolder genotypes
 #Usage Ex: bash uniqueMerge_fasta.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash uniqueMerge_fasta.sh sequence assemblyTrinity_all
+#Usage Ex: bash uniqueMerge_fasta.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Default usage Ex: bash uniqueMerge_fasta.sh sequence assemblyTrinity_all
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -96,3 +97,5 @@ fi
 echo "Fasta file merging complete!"
 #Write list of fasta files to the summary file
 echo "Fasta list: $fastaList" > $summaryFile
+#Write fasta stats to the summary file
+bash fastaStats.sh $fastaList $multiFastaFile >> $summaryFile
