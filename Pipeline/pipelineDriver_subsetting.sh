@@ -18,7 +18,7 @@ if [ $# -lt 3 ]; then
 fi
 #Initialize variables
 counter=1
-if [[ "$1" == assembly || "$1" == buildingTophat2 || "$1" == buildingHisat2 ]]; then #These are analysis methods that require one additional input args
+if [[ "$1" == assembly || "$1" == buildingTophat2 || "$1" == buildingHisat2 || "$1" == decoding ]]; then #These are analysis methods that require one additional input args
 	#Loop through all input sets of treatments and perform selected analsysis
 	for i in "$@"; do
 		#Determine what type of data folder was input
@@ -52,7 +52,7 @@ if [[ "$1" == assembly || "$1" == buildingTophat2 || "$1" == buildingHisat2 ]]; 
 		fi
 		counter=$(($counter+1))
 	done
-elif [[ "$1" == genomeAssembly || "$1" == decoding ]]; then #These are analysis methods that require two additional input args
+elif [[ "$1" == genomeAssembly || "$1" == decodingPB ]]; then #These are analysis methods that require two additional input args
 	#Loop through all input sets of treatments and perform selected analsysis
 	for i in "$@"; do
 		#Determine what type of data folder was input
