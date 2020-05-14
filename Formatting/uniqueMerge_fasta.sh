@@ -80,8 +80,6 @@ if [ $? -ne 0 ]; then
 	echo "The $outputFolder directory already exsists... please remove before proceeding."
 	exit 1
 fi
-#Move to outputs directory
-cd "$outputFolder"
 #Merge the set of fasta files
 echo "Beginning fasta file merging..."
 #Determine which method to merge fasta files by
