@@ -14,11 +14,11 @@ fi
 #Initialize variables
 counter=1
 fastaList=""
-genotypeList=""
 #Retrieve fasta output absolute path
 outputsPath=$(grep "multiFASTA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/multiFASTA://g")
-#Determine input folder type
-if [[ "$2" == *assembly* ]]; then
+#Determine input folder source
+#Determine assembly target
+if [[ "$2" == sorted* ]]; then
 	#Retrieve fasta file path
 	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	#Retrieve selected fasta files
@@ -27,27 +27,35 @@ if [[ "$2" == *assembly* ]]; then
 		#Skip first two arguments
 		if [[ $counter -eq $# ]]; then
 			fastaList="$fastaList$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta"
-			genotypeList="$genotypeList$i"
 		elif [[ $counter -ge 3 ]]; then
 			fastaList="$fastaList$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta "
-			genotypeList="$genotypeList$i""_"
 		fi
 		counter=$(($counter+1))
 	done
-	#Determine assembly target
-	if [[ "$2" == sorted* ]]; then
-		#Create output directory
-		outputFolder="$outputsPath/$2$genotypeList""_assemblyGenomeTrinity_multiFasta"
-		#Set merged fasta file name
-		multiFastaFile="$outputFolder/assemblyGenomeTrinity_multiFasta.fasta"
-		summaryFile="$outputFolder/$2$genotypeList""_assemblyGenomeTrinity_multiFasta_summary.txt"
-	else
-		#Create output directory
-		outputFolder="$outputsPath/$2$genotypeList""_assemblyTrinity_multiFasta"
-		#Set merged fasta file name
-		multiFastaFile="$outputFolder/assemblyTrinity_multiFasta.fasta"
-		summaryFile="$outputFolder/$2$genotypeList""_assemblyTrinity_multiFasta_summary.txt"
-	fi
+	#Create output directory
+	outputFolder="$outputsPath/$2""_assemblyGenomeTrinity_multiFasta"
+	#Set merged fasta file name
+	multiFastaFile="$outputFolder/assemblyGenomeTrinity_multiFasta.fasta"
+	summaryFile="$outputFolder/$2""_assemblyGenomeTrinity_multiFasta_summary.txt"
+elif [[ "$2" == trimmed* ]]; then
+	#Retrieve fasta file path
+	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	#Retrieve selected fasta files
+	#Loop through all input genotypes and merge fasta files
+	for i in "$@"; do
+		#Skip first two arguments
+		if [[ $counter -eq $# ]]; then
+			fastaList="$fastaList$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta"
+		elif [[ $counter -ge 3 ]]; then
+			fastaList="$fastaList$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta "
+		fi
+		counter=$(($counter+1))
+	done
+	#Create output directory
+	outputFolder="$outputsPath/$2""_assemblyTrinity_multiFasta"
+	#Set merged fasta file name
+	multiFastaFile="$outputFolder/assemblyTrinity_multiFasta.fasta"
+	summaryFile="$outputFolder/$2""_assemblyTrinity_multiFasta_summary.txt"
 else #Default accept a list of full file paths
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
