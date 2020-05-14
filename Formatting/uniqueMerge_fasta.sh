@@ -66,6 +66,12 @@ else #Default accept a list of full file paths
 	multiFastaFile="$outputFolder/$2""_multiFasta.fasta"
 	summaryFile="$outputFolder/$2""_multiFasta_summary.txt"
 fi
+#Check if the folder already exists
+mkdir "$outputFolder"
+if [ $? -ne 0 ]; then
+	echo "The $outputFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
 #Move to outputs directory
 cd "$outputFolder"
 #Merge the set of fasta files
