@@ -42,7 +42,7 @@ inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/s
 #Retrieve genome reference absolute path for alignment
 genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve assembly outputs absolute path
-outputsPath=$(grep "assemblingWithGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingWithGenome://g")
+outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Create output directory
 outputFolder="$outputsPath"/"$1""$2"_assemblyGenomeTrinity
 mkdir "$outputFolder"
