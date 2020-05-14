@@ -1,10 +1,10 @@
 #!/bin/bash
 #Script to perform merge multifasta files and retain only
 #the specified unique data (by sequence, ID, or both)
-#Usage: bash uniqueMerge_fasta.sh mergeBy sortedFolder genotypes
-#Usage Ex: bash uniqueMerge_fasta.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash uniqueMerge_fasta.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Default usage Ex: bash uniqueMerge_fasta.sh sequence assemblyTrinity_all
+#Usage: bash mergeFasta.sh mergeBy sortedFolder genotypes
+#Usage Ex: bash mergeFasta.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash mergeFasta.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Default usage Ex: bash mergeFasta.sh sequence assemblyTrinity_all
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -21,22 +21,32 @@ outputsPath=$(grep "multiFASTA:" ../InputData/outputPaths.txt | tr -d " " | sed 
 if [[ "$2" == sorted* ]]; then
 	#Retrieve fasta file path
 	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	#Retrieve selected fasta files
-	#Loop through all input genotypes and merge fasta files
-	for i in "$@"; do
-		#Skip first two arguments
-		if [[ $counter -eq $# ]]; then
-			fastaList="$fastaList$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta"
-		elif [[ $counter -ge 3 ]]; then
-			fastaList="$fastaList$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta "
-		fi
-		counter=$(($counter+1))
-	done
 	#Create output directory
 	outputFolder="$outputsPath/$2""_assemblyGenomeTrinity_multiFasta"
 	#Set merged fasta file name
 	multiFastaFile="$outputFolder/assemblyGenomeTrinity_multiFasta.fasta"
 	summaryFile="$outputFolder/$2""_assemblyGenomeTrinity_multiFasta_summary.txt"
+	#Retrieve selected fasta files
+	#Loop through all input genotypes and merge fasta files
+	for i in "$@"; do
+		#Skip first two arguments
+		if [[ $counter -eq $# ]]; then
+			#Add fasta file to list
+			fastaFile="$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta"
+			fastaList="$fastaList$fastaFile"
+			#Copy fasta to output folder
+			cp $fastaFile $outputFolder
+			mv $outputFolder/$fastaFile $outputFolder/$2$i"_assemblyGenomeTrinity.fasta"
+		elif [[ $counter -ge 3 ]]; then
+			#Add fasta file to list
+			fastaFile="$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta "
+			fastaList="$fastaList$fastaFile "
+			#Copy fasta to output folder
+			cp $fastaFile $outputFolder
+			mv $outputFolder/$fastaFile $outputFolder/$2$i"_assemblyGenomeTrinity.fasta"
+		fi
+		counter=$(($counter+1))
+	done
 elif [[ "$2" == trimmed* ]]; then
 	#Retrieve fasta file path
 	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
@@ -45,9 +55,19 @@ elif [[ "$2" == trimmed* ]]; then
 	for i in "$@"; do
 		#Skip first two arguments
 		if [[ $counter -eq $# ]]; then
-			fastaList="$fastaList$inputsPath/$2$i""_assemblyTrinity/Trinity.fasta"
+			#Add fasta file to list
+			fastaFile="$inputsPath/$2$i""_assemblyTrinity/Trinity.fasta"
+			fastaList="$fastaList$fastaFile"
+			#Copy fasta to output folder
+			cp $fastaFile $outputFolder
+			mv $outputFolder/$fastaFile $outputFolder/$2$i"_assemblyTrinity.fasta"
 		elif [[ $counter -ge 3 ]]; then
-			fastaList="$fastaList$inputsPath/$2$i""_assemblyTrinity/Trinity.fasta "
+			#Add fasta file to list
+			fastaFile="$inputsPath/$2$i""_assemblyTrinity/Trinity.fasta "
+			fastaList="$fastaList$fastaFile "
+			#Copy fasta to output folder
+			cp $fastaFile $outputFolder
+			mv $outputFolder/$fastaFile $outputFolder/$2$i"_assemblyTrinity.fasta"
 		fi
 		counter=$(($counter+1))
 	done
