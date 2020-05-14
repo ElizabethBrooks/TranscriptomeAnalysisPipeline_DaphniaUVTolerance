@@ -1,8 +1,10 @@
 #!/bin/bash
 #Script to perform specified analysis of all samples in an input set
 #Usage: bash pipelineDriver_subsetting.sh analysisMethod analysisArgs sampleList
-#Usage Ex: bash pipelineDriver_subsetting.sh decoding trimmed_run1 ncbi Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash pipelineDriver_subsetting.sh decoding sortedCoordinate_samtoolsHisat2_run1 ncbi Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh decodingPB trimmed_run1 ncbi Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh decodingPB sortedCoordinate_samtoolsHisat2_run1 ncbi Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh decoding trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh decoding sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash pipelineDriver_subsetting.sh genomeAssembly sortedCoordinate_samtoolsHisat2_run1 14239 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash pipelineDriver_subsetting.sh buildingHisat2 trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash pipelineDriver_subsetting.sh buildingHisat2 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
@@ -42,6 +44,10 @@ if [[ "$1" == assembly || "$1" == buildingTophat2 || "$1" == buildingHisat2 ]]; 
 				echo "Running building_hisat2.sh $inputFolder"
 				#Usage: qsub building_hisat2.sh trimmedOrAssemblyFolder
 				bash building_hisat2.sh "$inputFolder"
+			elif [[ "$1" == decoding ]]; then
+				echo "Running decoding_transdecoder.sh $inputFolder"
+				#Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder
+				qsub decoding_transdecoder.sh "$inputFolder"
 			fi
 		fi
 		counter=$(($counter+1))
@@ -64,10 +70,10 @@ elif [[ "$1" == genomeAssembly || "$1" == decoding ]]; then #These are analysis 
 				echo "Running assembly_genomeGuided_trinity.sh $2 $i $3"
 				#Usage: qsub assembly_genomeGuided_trinity.sh sortedFolder genotype maxIntronLength
 				qsub assembly_genomeGuided_trinity.sh "$2" "$i" "$3"
-			elif [[ "$1" == decoding ]]; then
-				echo "Running decoding_transdecoder.sh $inputFolder $3"
-				#Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder databaseSelection
-				qsub decoding_transdecoder.sh "$inputFolder" "$3"
+			elif [[ "$1" == decodingPB ]]; then
+				echo "Running decoding_transdecoderPfamBlastp.sh $inputFolder $3"
+				#Usage: qsub decoding_transdecoderPfamBlastp.sh deNovoAssembledTranscriptomeFolder databaseSelection
+				qsub decoding_transdecoderPfamBlastp.sh "$inputFolder" "$3"
 			fi
 		fi
 		counter=$(($counter+1))
