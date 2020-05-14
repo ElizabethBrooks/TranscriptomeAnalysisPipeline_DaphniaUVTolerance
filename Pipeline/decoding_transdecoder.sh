@@ -38,7 +38,7 @@ multiFASTA=$(echo "$inputsPath"/"$1"/Trinity.fasta)
 geneMap=$inputsPath/$1/"Trinity.fasta.gene_trans_map"
 #Set outputs absolute path
 outputsPath=$inputsPath/$1
-outputFolder=$outputsPath/"decodedTransdecoder"
+outputFolder=$outputsPath/"decoded_transdecoder"
 mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -48,7 +48,7 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1"_decodingTransdecoder_summary.txt
+inputOutFile="$outputFolder"/"$1"_"$outputFolder"_summary.txt
 #Generate your best candidate open rading frame (ORF) predictions
 echo "Beginning decoding..."
 #Generate candidate ORFs
