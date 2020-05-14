@@ -2,11 +2,12 @@
 #Script to perform specified analysis of all samples in an input set
 #Usage: bash pipelineDriver_subsetting.sh analysisMethod analysisArgs sampleList
 #Usage Ex: bash pipelineDriver_subsetting.sh decoding trimmed_run1 ncbi Y05 Y023_5 E05 R2 PA Sierra
-#Alternate usage Ex: bash pipelineDriver_subsetting.sh genomeAssembly sortedCoordinate_samtoolsHisat2_run1 14239 Y05 Y023_5 E05 R2 PA Sierra
-#Alternate usage Ex: bash pipelineDriver_subsetting.sh buildingHisat2 trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Alternate usage Ex: bash pipelineDriver_subsetting.sh buildingHisat2 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Alternate usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 trimmed_run1 trimmed_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
-#Alternate usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 trimmed_run1 sortedCoordinate_samtoolsHisat2_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh decoding sortedCoordinate_samtoolsHisat2_run1 ncbi Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh genomeAssembly sortedCoordinate_samtoolsHisat2_run1 14239 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh buildingHisat2 trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh buildingHisat2 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 trimmed_run1 trimmed_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 trimmed_run1 sortedCoordinate_samtoolsHisat2_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
 
 #Check for input arguments of analysis method, data folder, and sample name(s)
 if [ $# -lt 3 ]; then

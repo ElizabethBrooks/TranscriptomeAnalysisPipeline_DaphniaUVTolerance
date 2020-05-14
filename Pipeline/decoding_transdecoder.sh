@@ -3,11 +3,13 @@
 #$ -m abe
 #$ -r n
 #$ -N decoding_transdecoder_jobOutput
-#$ -pe smp 8
+#$ -pe smp 24
 #Script to predict coding regions from a de novo assembled transcriptome fasta file
 # using Transdecoder
 #Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder databaseSelection
 #Usage Ex: qsub decoding_transdecoder.sh trimmed_run1Sierra_assemblyTrinity ncbi
+#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run1Sierra_assemblyGenomeTrinity ncbi
+#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsTophat2_run1Sierra_assemblyGenomeTrinity ncbi
 #Note that the genome version input is for output file naming purposes only
 
 #Load necessary modules for ND CRC servers
@@ -26,8 +28,8 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	exit 1
 fi
 #Determine if the correct analysis folder was input
-if [[ "$1"  != *assemblyTrinity ]]; then
-	echo "ERROR: The $2 folder of trimmed fq.gz files were not found... exiting"
+if [[ "$1"  != *assembly* ]]; then
+	echo "ERROR: The $1 folder of assembly files were not found... exiting"
 	exit 1
 fi
 #Determine input database for blastp
@@ -39,14 +41,14 @@ elif [[ "$2" == "uniprot" ]]; then
 	blastpPath=$(grep "uniprotDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/uniprotDB://g")
 else
 	#Error message
-	echo "Invalid database selection entered (ncbi or uniprot only)... exiting!"
+	echo "Invalid database selection of $2 entered (ncbi or uniprot only)... exiting!"
 	exit 1
 fi
 #Retrieve input assembly path
 inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Retrieve genome reference and features paths
 pfamPath=$(grep "pfamDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/pfamDB://g")
-multiFASTA=$(echo "$inputsPath"/"$1"/Trinity*.fasta)
+multiFASTA=$(echo "$inputsPath"/"$1"/Trinity.fasta)
 geneMap="$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
 #Retrieve outputs absolute path
 outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
@@ -69,11 +71,11 @@ TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
 echo "Finished generating transdecoder open reading frame predictions!"
 #Use BlastP to search a protein database
 echo "Beginning blastp protein database search..."
-blastp -query Trinity.fasta.transdecoder_dir/longest_orfs.pep -db "$blastpPath"  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 > blastp.outfmt6
+blastp -query Trinity.fasta.transdecoder_dir/longest_orfs.pep -db "$blastpPath"  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 > blastp.outfmt6
 echo "Finished blastp protein database search!"
 #Search the peptides for protein domains using Pfam
 echo "Beginning hammscan search of peptides for protein domains..."
-hmmscan --cpu 8 --domtblout pfam.domtblout "$pfamPath" Trinity.fasta.transdecoder_dir/longest_orfs.pep
+hmmscan --cpu 24 --domtblout pfam.domtblout "$pfamPath" Trinity.fasta.transdecoder_dir/longest_orfs.pep
 echo "Finished hammscan search of peptides for protein domains!"
 #Combine the Blast and Pfam search results into coding region selection
 echo "Beginning transdecoder coding region selection..."
@@ -82,8 +84,8 @@ echo "Finished transdecoder coding region selection!"
 echo "Decoding complete!"
 #Output run commands to summary file
 echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
-echo "blastp -query" "Trinity.fasta.transdecoder_dir/longest_orfs.pep -db" "$blastpPath"  "-max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 >" "blastp.outfmt6" >> "$inputOutFile"
-echo "hmmscan --cpu 8 --domtblout" "pfam.domtblout" "$pfamPath" "Trinity.fasta.transdecoder_dir/longest_orfs.pep" >> "$inputOutFile"
+echo "blastp -query" "Trinity.fasta.transdecoder_dir/longest_orfs.pep -db" "$blastpPath"  "-max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 >" "blastp.outfmt6" >> "$inputOutFile"
+echo "hmmscan --cpu 24 --domtblout" "pfam.domtblout" "$pfamPath" "Trinity.fasta.transdecoder_dir/longest_orfs.pep" >> "$inputOutFile"
 echo "TransDecoder.Predict -t" "$multiFASTA" "--retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6" >> "$inputOutFile"
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
