@@ -45,9 +45,9 @@ elif [[ "$2" == trimmed* ]]; then
 	for i in "$@"; do
 		#Skip first two arguments
 		if [[ $counter -eq $# ]]; then
-			fastaList="$fastaList$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta"
+			fastaList="$fastaList$inputsPath/$2$i""_assemblyTrinity/Trinity.fasta"
 		elif [[ $counter -ge 3 ]]; then
-			fastaList="$fastaList$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta "
+			fastaList="$fastaList$inputsPath/$2$i""_assemblyTrinity/Trinity.fasta "
 		fi
 		counter=$(($counter+1))
 	done
