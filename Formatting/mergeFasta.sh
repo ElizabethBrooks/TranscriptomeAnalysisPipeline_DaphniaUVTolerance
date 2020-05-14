@@ -97,7 +97,7 @@ if [[ "$1" == sequence ]]; then
 		(FNR==1){next}
 		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
 		!(seen[seq]++){ print ">" $0 }' $fastaList > $multiFastaFile
-elif [[ "$1" == sequenceName ]]; then
+elif [[ "$1" == name ]]; then
 	#First part of sequence name identical merge
 	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
 		(FNR==1){next}
