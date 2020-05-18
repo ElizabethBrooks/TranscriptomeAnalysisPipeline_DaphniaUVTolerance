@@ -26,6 +26,16 @@ fullsetNames <- c(subsetNames,subsetNames)
 fullsetNames <- as.numeric(fullsetNames)
 #Create data frame of compined alignment stats
 counts <- data.frame(fullsetNames, aStats$overall, aStats$concordant, aStats$run)
+#Calculate row median values for each genotype
+for (i in ncol(counts)) {
+  #Use a sliding window of 6 for my data set
+  max=i+5
+  curCols=i:max
+  #Calulate row medians for eah genotype column set
+  curMedians <- rowMedians(counts, rows=NULL, cols=curCols, na.rm=FALSE, dim.=dim(x))
+  #Add latest medians to final matrix
+  finalMedians <- Merge(finalMedians, curMedians, by=NULL)
+}
 #Create matrix for multiple plots
 par(mfrow=c(2,1))
 #Set the plot titles
@@ -37,8 +47,9 @@ plotTitle2 <- str_remove(plotTitle2, "alignmentSummarized_")
 plotTitle2 <- str_remove(plotTitle2, "_formatted.csv")
 plotTitle <- paste(plotTitle1, plotTitle2, sep=" vs ")
 #Generate grouped and colored bar plot
-plotOverall <- ggplot(counts, aes(factor(fullsetNames), aStats.overall, fill=aStats.run)) + 
+plotOverall <- ggplot(finalMedians, aes(x=factor(fullsetNames), y=finalMedians.overall, fill=finalMedians.run)) + 
   geom_bar(stat="identity", position="dodge") +
+  geom_errorbar(aes(ymin=finalMedians.overall-sd, ymax=finalMedians.overall+sd), width=.2, position=position_dodge(.9)) +
   ggtitle(plotTitle) +
   xlab("Sample Number") +
   ylab("Overall Percent") +
@@ -49,8 +60,9 @@ plotOverall <- plotOverall + guides(fill=guide_legend(title="Run Number"))
 outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", sep="/")
 ggsave(outFile)
 #Generate second grouped and colored bar plot
-plotConc <- ggplot(counts, aes(factor(fullsetNames), aStats.concordant, fill=aStats.run)) + 
+plotConc <- ggplot(finalMedians, aes(x=factor(fullsetNames), y=finalMedians.concordant, fill=finalMedians.run)) + 
   geom_bar(stat="identity", position="dodge") + 
+  geom_errorbar(aes(ymin=finalMedians.concordant-sd, ymax=finalMedians.concordant+sd), width=.2, position=position_dodge(.9)) +
   ggtitle(plotTitle) +
   xlab("Sample Number") +
   ylab("Concordant Percent") +
