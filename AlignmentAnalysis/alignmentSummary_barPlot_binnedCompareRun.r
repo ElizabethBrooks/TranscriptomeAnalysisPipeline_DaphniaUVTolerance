@@ -10,6 +10,7 @@
 #Import librarys
 library(ggplot2)
 library(stringr)
+library(matrixStats)
 #Retrieve input file name of gene counts
 args=commandArgs(trailingOnly=TRUE)
 numArgs=length(args)
@@ -29,12 +30,14 @@ counts <- data.frame(fullsetNames, aStats$overall, aStats$concordant, aStats$run
 #Calculate row median values for each genotype
 for (i in ncol(counts)) {
   #Use a sliding window of 6 for my data set
-  max=i+5
-  curCols=i:max
+  max <- i+5
+  curCols <- i:max
   #Calulate row medians for eah genotype column set
-  curMedians <- rowMedians(counts, rows=NULL, cols=curCols, na.rm=FALSE, dim.=dim(x))
+  curMedians <- rowMedians(counts, cols=curCols, na.rm=FALSE, dim.=dim(counts))
   #Add latest medians to final matrix
   finalMedians <- Merge(finalMedians, curMedians, by=NULL)
+  #Move the sliding window
+  i <- i+5
 }
 #Create matrix for multiple plots
 par(mfrow=c(2,1))
