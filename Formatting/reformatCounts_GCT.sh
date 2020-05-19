@@ -1,5 +1,4 @@
 #!/bin/bash
-#!/bin/bash
 #Script to re-format merged count tables to Gene Cluster Text file format (*.gct)
 #Usage: bash reformatCounts_GCT.sh countsFile
 #Usage Ex: bash reformatCounts_GCT.sh GeneCountsAnalyzed_countedCoordinate_htseqHisat2_run1_fullset_run1

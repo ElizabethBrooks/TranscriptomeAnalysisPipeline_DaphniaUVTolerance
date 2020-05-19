@@ -6,7 +6,7 @@
 #Alternate usage Ex: bash generateBarPlotsDriver_binnedCompare.sh alignmentSummarized_sortedCoordinate_samtoolsHisat2_run1E05_assemblyGenomeTrinity_hisat2_run1_formatted.csv alignmentSummarized_hisat2_run1_formatted.csv
 
 #Load module necessary for crc servers
-module load bio/R/
+#module load bio/R/
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"

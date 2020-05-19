@@ -28,50 +28,20 @@ fullsetNames <- as.numeric(fullsetNames)
 #Create data frame of compined alignment stats
 counts <- data.frame(fullsetNames, aStats$overall, aStats$concordant, aStats$run)
 #Calculate row median values for each genotype
-for (i in ncol(counts)) {
+curCols <- 2:3
+for (i in nrow(counts)) {
   #Use a sliding window of 6 for my data set
   max <- i+5
-  curCols <- i:max
-  #Calulate row medians for eah genotype column set
-  curMedians <- rowMedians(counts, cols=curCols, na.rm=FALSE, dim.=dim(counts))
+  curRows <- i:max
+  curRows
+  counts[curRows,curCols]
+  #Calulate row medians for each genotype column set
+  #curMedians <- rowMedians(counts[curCols], rows=curRows, na.rm=FALSE, dim.=dim(counts))
+  #curMedians
   #Add latest medians to final matrix
-  finalMedians <- Merge(finalMedians, curMedians, by=NULL)
+  #finalMedians <- Merge(finalMedians, curMedians, by=NULL)
+  #finalMedians
   #Move the sliding window
   i <- i+5
 }
-#Create matrix for multiple plots
-par(mfrow=c(2,1))
-#Set the plot titles
-plotTitle1 <- basename(args[1])
-plotTitle1 <- str_remove(plotTitle1, "alignmentSummarized_")
-plotTitle1 <- str_remove(plotTitle1, "_formatted.csv")
-plotTitle2 <- basename(args[2])
-plotTitle2 <- str_remove(plotTitle2, "alignmentSummarized_")
-plotTitle2 <- str_remove(plotTitle2, "_formatted.csv")
-plotTitle <- paste(plotTitle1, plotTitle2, sep=" vs ")
-#Generate grouped and colored bar plot
-plotOverall <- ggplot(finalMedians, aes(x=factor(fullsetNames), y=finalMedians.overall, fill=finalMedians.run)) + 
-  geom_bar(stat="identity", position="dodge") +
-  geom_errorbar(aes(ymin=finalMedians.overall-sd, ymax=finalMedians.overall+sd), width=.2, position=position_dodge(.9)) +
-  ggtitle(plotTitle) +
-  xlab("Sample Number") +
-  ylab("Overall Percent") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  scale_fill_brewer(palette="Set1")
-plotOverall <- plotOverall + guides(fill=guide_legend(title="Run Number"))
-#Save overall percentages plot as a jpg
-outFile <- paste(normalizePath(dirname(args[1])), "plotOverallPercentages.jpg", sep="/")
-ggsave(outFile)
-#Generate second grouped and colored bar plot
-plotConc <- ggplot(finalMedians, aes(x=factor(fullsetNames), y=finalMedians.concordant, fill=finalMedians.run)) + 
-  geom_bar(stat="identity", position="dodge") + 
-  geom_errorbar(aes(ymin=finalMedians.concordant-sd, ymax=finalMedians.concordant+sd), width=.2, position=position_dodge(.9)) +
-  ggtitle(plotTitle) +
-  xlab("Sample Number") +
-  ylab("Concordant Percent") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  scale_fill_brewer(palette="Set1")
-plotConc <- plotConc + guides(fill=guide_legend(title="Run Number"))
-#Save concordant percentages plot as a jpg
-outFile <- paste(normalizePath(dirname(args[1])), "plotConcordantPercentages.jpg", sep="/")
-ggsave(outFile)
+
