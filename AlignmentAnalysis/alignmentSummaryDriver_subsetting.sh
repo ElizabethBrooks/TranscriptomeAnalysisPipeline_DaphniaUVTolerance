@@ -61,7 +61,7 @@ for i in "$@"; do
 			#Set output folder name
 			outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 			#Retrieve run number for input alignment folder
-			runNum=$(echo "$fileName" | sed "s/aligned_"$analysisMethod"_run//g")
+			runNum=$(echo "$fileName" | sed "s/aligned"$analysisMethod"_run//g")
 			#Set header of overall summary csv file
 			echo "sample,overall,concordant" > "$outputStats"_run"$runNum".csv
 		elif [[ "$fileName" == *"tophat2"* ]]; then
@@ -71,7 +71,7 @@ for i in "$@"; do
 			#Set output folder name
 			outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 			#Retrieve run number for input alignment folder
-			runNum=$(echo "$fileName" | sed "s/aligned_"$analysisMethod"_run//g")
+			runNum=$(echo "$fileName" | sed "s/aligned"$analysisMethod"_run//g")
 			#Set header of overall summary csv file
 			echo "sample,leftMapped,rightMapped,overall,concordant" > "$outputStats"_run"$runNum".csv
 		else
@@ -84,7 +84,6 @@ for i in "$@"; do
 			#Retrieve sample name
 			sampleName=$(basename "$f1")
 			#Retrieve sample summary based on alignment method
-			echo alignmentSummary"$analysisMethod"_sample.sh "$f1" "$analysisArg" "$runNum"
 			bash alignmentSummary"$analysisMethod"_sample.sh "$f1" "$analysisArg" "$runNum"
 			#Combine summaries into one csv file
 			cat "$outputStats"_combined_run"$runNum".csv >> "$outputStats"_run"$runNum".csv
