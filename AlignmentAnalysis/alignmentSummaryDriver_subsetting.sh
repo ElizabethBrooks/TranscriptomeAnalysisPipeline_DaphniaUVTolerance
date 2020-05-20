@@ -2,6 +2,7 @@
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummaryDriver_subsetting.sh alignmentFolder optionalAssemblyFolder genotypeList optionalRunList
 #Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_hisat2 PA42 run1 run2
+#Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_tophat2 PA42 run1 run2 run3
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh trimmed_run1 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsHisat2_run1 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsTophat2_run1 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
@@ -15,19 +16,18 @@ fi
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Set outputs directory
 outDir="$outputsPath"/AlignmentsAnalyzed
+analysisInput=$1"_"
 #Set number of genotypes
 numGenotypes=6
 #Determine which analysis folder was input
 if [[ "$1"  == aligned* ]]; then
 	#Retrieve input alignment summary absolute path
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-	analysisInput=""
 	fileName="$1"
 elif [[ "$1"  == sorted* || "$1"  == trimmed* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	#Retrieve directory name from input folder path
-	analysisInput=$1"_"
 	fileName="$2"
 else
 	echo "ERROR: The input folder of aligned or assembled files were not found... exiting"
