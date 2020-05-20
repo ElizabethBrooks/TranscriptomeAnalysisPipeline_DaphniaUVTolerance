@@ -56,8 +56,8 @@ for i in "$@"; do
 		#Determine what analysis method was used for the input folder of data
 		if [[ "$fileName" == *"hisat2"*  ]]; then
 			#Set analysis method for folder naming
-			analysisMethod="_hisat2"
-			analysisArg=$analysisInput$i$analysisMethod
+			analysisMethod="hisat2"
+			analysisArg=$analysisInput$i_$analysisMethod
 			#Set output folder name
 			outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 			#Retrieve run number for input alignment folder
@@ -66,8 +66,8 @@ for i in "$@"; do
 			echo "sample,overall,concordant" > "$outputStats"_run"$runNum".csv
 		elif [[ "$fileName" == *"tophat2"* ]]; then
 			#Set analysis method for folder naming
-			analysisMethod="_tophat2"
-			analysisArg=$analysisInput$i$analysisMethod
+			analysisMethod="tophat2"
+			analysisArg=$analysisInput$i_$analysisMethod
 			#Set output folder name
 			outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 			#Retrieve run number for input alignment folder
