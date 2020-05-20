@@ -20,7 +20,7 @@ if (length(args)!=2) {
 #Retrieve alignment stats
 aStats <- do.call(rbind,lapply(args,read.csv))
 #Create data frame of compined alignment stats
-counts <- data.frame(aStats$genotype, aStats$overallMedian, aStats$concordantMedian, aStats$overallSd, aStats$concordantSd, aStats$run)
+counts <- data.frame(aStats$genotype, aStats$overallMedian, aStats$concordantMedian, aStats$overallSd, aStats$concordantSd, aStats$targetGenotype)
 #Create matrix for multiple plots
 par(mfrow=c(2,1))
 #Set the plot titles
@@ -32,7 +32,7 @@ plotTitle2 <- str_remove(plotTitle2, "alignmentSummarized_")
 plotTitle2 <- str_remove(plotTitle2, "_medians.csv")
 plotTitle <- paste(plotTitle1, plotTitle2, sep=" vs ")
 #Generate grouped and colored bar plot
-plotOverall <- ggplot(counts, aes(x=aStats.genotype, y=aStats.overallMedian, fill=aStats.genotype)) +
+plotOverall <- ggplot(counts, aes(x=aStats.genotype, y=aStats.overallMedian, fill=aStats.targetGenotype)) +
   geom_bar(stat="identity", position="dodge") +
   geom_errorbar(aes(x=aStats.genotype, ymin=aStats.overallMedian-aStats.overallSd, ymax=aStats.overallMedian+aStats.overallSd), width=.2, position=position_dodge(.9)) +
   ggtitle(plotTitle) +
@@ -40,12 +40,12 @@ plotOverall <- ggplot(counts, aes(x=aStats.genotype, y=aStats.overallMedian, fil
   ylab("Overall Median Percent") +
   theme(plot.title = element_text(hjust = 0.5)) +
   scale_fill_brewer(palette="Set1")
-plotOverall <- plotOverall + guides(fill=guide_legend(title="Genotype"))
+plotOverall <- plotOverall + guides(fill=guide_legend(title="Target Genotype"))
 #Save overall percentages plot as a jpg
 outFile <- paste(normalizePath(dirname(args[1])), "plotOverallMedianPercentages.jpg", sep="/")
 ggsave(outFile)
 #Generate second grouped and colored bar plot
-plotConc <- ggplot(counts, aes(x=aStats.genotype, y=aStats.concordantMedian, fill=aStats.genotype)) +
+plotConc <- ggplot(counts, aes(x=aStats.genotype, y=aStats.concordantMedian, fill=aStats.targetGenotype)) +
   geom_bar(stat="identity", position="dodge") + 
   geom_errorbar(aes(x=aStats.genotype, ymin=aStats.concordantMedian-aStats.concordantSd, ymax=aStats.concordantMedian+aStats.concordantSd), width=.2, position=position_dodge(.9)) +
   ggtitle(plotTitle) +
@@ -53,7 +53,7 @@ plotConc <- ggplot(counts, aes(x=aStats.genotype, y=aStats.concordantMedian, fil
   ylab("Overall Median Percent") +
   theme(plot.title = element_text(hjust = 0.5)) +
   scale_fill_brewer(palette="Set1")
-plotConc <- plotConc + guides(fill=guide_legend(title="Genotype"))
+plotConc <- plotConc + guides(fill=guide_legend(title="Target Genotype"))
 #Save concordant percentages plot as a jpg
 outFile <- paste(normalizePath(dirname(args[1])), "plotConcordantMedianPercentages.jpg", sep="/")
 ggsave(outFile)
