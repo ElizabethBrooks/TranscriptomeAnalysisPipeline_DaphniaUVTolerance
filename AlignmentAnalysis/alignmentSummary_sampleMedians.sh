@@ -30,7 +30,7 @@ for i in $(seq 1 $3); do
 	start=$((($i-1)*$numSamples+2))
 	end=$(($start+$numSamples-1))
 	#Set current genotype tmp file
-	currTmp="$outDir"/tmp"$start".txt
+	currTmp="$outDir"/tmp"$start".csv
 	#Retrieve current genotype data subset
 	genotypeChunk=$(cat $inFile | awk "NR >= $start && NR <= $end { print }")
 	echo $genotypeChunk > $currTmp
@@ -48,4 +48,5 @@ for i in $(seq 1 $3); do
 	endCols=$(tail -1 $currTmp | cut -d "," -f4-6)
 	echo $startCol","$overallMedian","$concordantMedian","$overallSd","$concordantSd","$endCols >> $outFile
 done
-cat $outFile
+#Clean up
+rm tmp*.csv

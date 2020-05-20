@@ -15,6 +15,8 @@ fi
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Set outputs directory
 outDir="$outputsPath"/AlignmentsAnalyzed
+#Set number of genotypes
+numGenotypes=6
 #Retrieve folders to analyze from the input arguments to the script
 for f1 in $@; do
 	#Determine which analysis folder was input
@@ -74,5 +76,6 @@ for f1 in $@; do
 	echo "Formatting $analysisArg"/"$f1 merged alignment summary..."
 	#Run alignment summary formatting
 	bash alignmentSummary_formatting.sh "$analysisArg" "$runNum"
+	bash alignmentSummary_sampleMedians.sh "$analysisArg" "$runNum" $numGenotypes
 	echo "Merged alignment summary for $analysisArg"/"$f1 has been formatted!"
 done
