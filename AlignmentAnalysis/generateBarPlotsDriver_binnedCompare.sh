@@ -35,9 +35,22 @@ if [ $# -ge 3 ]; then
 			fi
 			counter=$((counter+1))
 		done
+		#Check input file type
+		# and set plot title
+		if [[ "$2" == sorted*Hisat2* ]]; then
+			plotTitle="Hisat2_Guided_Assembly_&_PA42_Genome"
+		elif [[ "$2" == sorted*Tophat2* ]]; then
+			plotTitle="Tophat2_Guided_Assembly_&_PA42_Genome"
+		elif [[ "$2" == trimmed* ]]; then
+			plotTitle="de_Novo_Trans_&_PA42_Genome"
+		else
+			echo "Invalid $2 entered... exiting!"
+			exit 1
+		fi
+		#Set output files
 		addAnalysis=$inOutDir/alignmentSummarized_"$1"_medians.csv
 		fileList="$fileList$addAnalysis"
-		outFile="$1"_vs_"$2"TargetGenotypes_"$3"
+		outFile="$1"_"$2"_"$3"
 	else
 		#Generate file list
 		for i in "$@"; do
@@ -49,10 +62,23 @@ if [ $# -ge 3 ]; then
 			fi
 			counter=$((counter+1))
 		done
-		outFile="$1"TargetGenotypes_"$2"
+		#Check input file type
+		# and set plot title
+		if [[ "$1" == sorted*Hisat2* ]]; then
+			plotTitle="Hisat2_Guided_Assembly"
+		elif [[ "$1" == sorted*Tophat2* ]]; then
+			plotTitle="Tophat2_Guided_Assembly"
+		elif [[ "$1" == trimmed* ]]; then
+			plotTitle="de_Novo_Trans"
+		else
+			echo "Invalid $1 entered... exiting!"
+			exit 1
+		fi
+		#Set output file
+		outFile="$1"_"$2"
 	fi
 	#Plot alignment data using software binned bar plots
-	Rscript alignmentSummary_barPlotMedians_binnedCompareGenotype.r $fileList
+	Rscript alignmentSummary_barPlotMedians_binnedCompareGenotype.r $plotTitle $fileList
 	#Rename produced pdf of plots
 	mv "$inOutDir"/plotMedianOverallPercentages.jpg "$inOutDir"/alignmentSummarized_"$outFile"_medianOverallPercentages.jpg
 	mv "$inOutDir"/plotMedianConcordantPercentages.jpg "$inOutDir"/alignmentSummarized_"$outFile"_medianConcordantPercentages.jpg

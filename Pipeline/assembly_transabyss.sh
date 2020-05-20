@@ -58,13 +58,11 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Loop through all forward and reverse paired reads and
 # store the file names in an array list
 #Set the flag for paired-end sample input to transabyss
-SARRAY[counter]="--pe"
+sampleList="--pe"
 let counter=$counter+1
 for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
-	#Store current sample file name in a temp txt file
-	SARRAY[counter]=" $f1"
-	#Incrememnt counter
-	let counter=$counter+1
+	#Store current sample file name
+	sampleList="$sampleList $f1"
 done
 #Begin transabyss assembly
 transabyss --threads 8 $sampleList --SS --name "$2" --outdir "$outputFolder"
