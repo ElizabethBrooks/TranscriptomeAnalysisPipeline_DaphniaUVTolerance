@@ -2,7 +2,7 @@
 #Script to prepare alignment summary matrices
 #Usage: bash alignmentSummary_formatting.sh analysisTarget runNum targetGenotype
 #Usage Ex: bash alignmentSummary_formatting.sh tophat2 3 PA42
-#Alternate usage Ex: bash alignmentSummary_formatting.sh trimmed_run1E05_genomeTrinity_hisat2_run1 1 E05
+#Alternate usage Ex: bash alignmentSummary_formatting.sh trimmed_run1E05_hisat2_run1 1 E05
 
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")

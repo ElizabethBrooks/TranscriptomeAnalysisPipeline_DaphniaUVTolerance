@@ -27,7 +27,7 @@ elif [[ "$1"  == sorted* || "$1"  == trimmed* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	#Retrieve directory name from input folder path
-	analysisInput="$1"_
+	analysisInput=$1"_"
 	fileName="$2"
 else
 	echo "ERROR: The input folder of aligned or assembled files were not found... exiting"
@@ -84,6 +84,7 @@ for i in "$@"; do
 			#Retrieve sample name
 			sampleName=$(basename "$f1")
 			#Retrieve sample summary based on alignment method
+			echo alignmentSummary"$analysisMethod"_sample.sh "$f1" "$analysisArg" "$runNum"
 			bash alignmentSummary"$analysisMethod"_sample.sh "$f1" "$analysisArg" "$runNum"
 			#Combine summaries into one csv file
 			cat "$outputStats"_combined_run"$runNum".csv >> "$outputStats"_run"$runNum".csv
@@ -92,7 +93,9 @@ for i in "$@"; do
 		echo "Alignment summaries have been merged!"
 		echo "Formatting $inputFolder merged alignment summary..."
 		#Run alignment summary formatting
+		echo alignmentSummary_formatting.sh "$analysisArg" "$runNum" "$genotype"
 		bash alignmentSummary_formatting.sh "$analysisArg" "$runNum" "$genotype"
+		echo alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" $numGenotypes "$genotype"
 		bash alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" $numGenotypes "$genotype"
 		echo "Merged alignment summary has been formatted!"
 	fi
