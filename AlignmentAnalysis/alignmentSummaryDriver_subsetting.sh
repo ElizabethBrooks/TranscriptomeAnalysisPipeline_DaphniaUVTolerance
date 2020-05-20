@@ -57,9 +57,9 @@ for i in "$@"; do
 		if [[ "$fileName" == *"hisat2"*  ]]; then
 			#Set analysis method for folder naming
 			analysisMethod="hisat2"
-			analysisArg=$analysisInput$i_$analysisMethod
+			analysisArg=$analysisInput$analysisMethod
 			#Set output folder name
-			outputStats="$outDir"/alignmentSummarized_"$analysisArg"
+			outputStats="$outDir"/alignmentSummarized_$analysisInput$i_$analysisMethod
 			#Retrieve run number for input alignment folder
 			runNum=$(echo "$fileName" | sed "s/aligned_"$analysisMethod"_run//g")
 			#Set header of overall summary csv file
@@ -67,9 +67,9 @@ for i in "$@"; do
 		elif [[ "$fileName" == *"tophat2"* ]]; then
 			#Set analysis method for folder naming
 			analysisMethod="tophat2"
-			analysisArg=$analysisInput$i_$analysisMethod
+			analysisArg=$analysisInput$analysisMethod
 			#Set output folder name
-			outputStats="$outDir"/alignmentSummarized_"$analysisArg"
+			outputStats="$outDir"/alignmentSummarized_$analysisInput$i_$analysisMethod
 			#Retrieve run number for input alignment folder
 			runNum=$(echo "$fileName" | sed "s/aligned_"$analysisMethod"_run//g")
 			#Set header of overall summary csv file
