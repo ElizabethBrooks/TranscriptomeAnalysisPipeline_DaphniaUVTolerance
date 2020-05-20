@@ -4,7 +4,7 @@
 #Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_hisat2 PA42 run1 run2
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh trimmed_run1 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsHisat2_run1 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
-#Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsTophat2 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
+#Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsTophat2_run1 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -49,6 +49,7 @@ for i in "$@"; do
 		elif [[ "$1" == aligned* ]]; then
 			inputFolder="$inputsPath"/"$1"_"$i"
 			genotype="$2"
+			fileName="$fileName"_"$i"
 		else
 			echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 			exit 1
@@ -93,9 +94,7 @@ for i in "$@"; do
 		echo "Formatting $inputFolder merged alignment summary..."
 		#Run alignment summary formatting
 		echo alignmentSummary_formatting.sh "$analysisArg" "$runNum" "$genotype"
-		bash alignmentSummary_formatting.sh "$analysisArg" "$runNum" "$genotype"
 		echo alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" $numGenotypes "$genotype"
-		bash alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" $numGenotypes "$genotype"
 		echo "Merged alignment summary has been formatted!"
 	fi
 	counter=$(($counter+1))
