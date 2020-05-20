@@ -40,7 +40,7 @@ sed -i "s/Pool3_//g" "$outFileTmp"
 head -1 "$outFileTmp" > "$outFile"
 tail -n +2 "$outFileTmp" | sort -k1 -n -t, >> "$outFile"
 #Determine aligment target used
-if [[ "$1" == *Trinity* ]]; then
+if [[ "$1" == trimmed* || "$1" == sorted* ]]; then
 	target="transcriptome"
 else
 	target="genome"
