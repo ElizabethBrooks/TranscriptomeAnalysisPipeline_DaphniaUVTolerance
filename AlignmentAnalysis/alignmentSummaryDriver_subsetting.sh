@@ -49,7 +49,7 @@ for i in "$@"; do
 		elif [[ "$1" == aligned* ]]; then
 			inputFolder="$inputsPath"/"$1"_"$i"
 			genotype="$2"
-			fileName="$fileName"_"$i"
+			fileName="$1"_"$i"
 		else
 			echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 			exit 1
@@ -58,7 +58,7 @@ for i in "$@"; do
 		if [[ "$fileName" == *"hisat2"*  ]]; then
 			#Set analysis method for folder naming
 			analysisMethod="_hisat2"
-			analysisArg=$analysisInput$i$analysisMethod
+			analysisArg=$analysisInput$genotype$analysisMethod
 			#Set output folder name
 			outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 			#Retrieve run number for input alignment folder
@@ -68,7 +68,7 @@ for i in "$@"; do
 		elif [[ "$fileName" == *"tophat2"* ]]; then
 			#Set analysis method for folder naming
 			analysisMethod="_tophat2"
-			analysisArg=$analysisInput$i$analysisMethod
+			analysisArg=$analysisInput$genotype$analysisMethod
 			#Set output folder name
 			outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 			#Retrieve run number for input alignment folder
