@@ -56,22 +56,20 @@ for i in "$@"; do
 		#Determine what analysis method was used for the input folder of data
 		if [[ "$fileName" == *"hisat2"*  ]]; then
 			#Set analysis method for folder naming
-			analysisMethod="hisat2"
-			analysisArg=$analysisInput$analysisMethod
-			analysisOut=$analysisInput$i"_"$analysisMethod
+			analysisMethod="_hisat2"
+			analysisArg=$analysisInput$i$analysisMethod
 			#Set output folder name
-			outputStats="$outDir"/alignmentSummarized_"$analysisOut"
+			outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 			#Retrieve run number for input alignment folder
 			runNum=$(echo "$fileName" | sed "s/aligned_"$analysisMethod"_run//g")
 			#Set header of overall summary csv file
 			echo "sample,overall,concordant" > "$outputStats"_run"$runNum".csv
 		elif [[ "$fileName" == *"tophat2"* ]]; then
 			#Set analysis method for folder naming
-			analysisMethod="tophat2"
-			analysisArg=$analysisInput$analysisMethod
-			analysisOut=$analysisInput$i"_"$analysisMethod
+			analysisMethod="_tophat2"
+			analysisArg=$analysisInput$i$analysisMethod
 			#Set output folder name
-			outputStats="$outDir"/alignmentSummarized_"$analysisOut"
+			outputStats="$outDir"/alignmentSummarized_"$analysisArg"
 			#Retrieve run number for input alignment folder
 			runNum=$(echo "$fileName" | sed "s/aligned_"$analysisMethod"_run//g")
 			#Set header of overall summary csv file
@@ -86,7 +84,7 @@ for i in "$@"; do
 			#Retrieve sample name
 			sampleName=$(basename "$f1")
 			#Retrieve sample summary based on alignment method
-			bash alignmentSummary_"$analysisMethod"_sample.sh "$f1" "$analysisArg" "$runNum"
+			bash alignmentSummary"$analysisMethod"_sample.sh "$f1" "$analysisArg" "$runNum"
 			#Combine summaries into one csv file
 			cat "$outputStats"_combined_run"$runNum".csv >> "$outputStats"_run"$runNum".csv
 			rm "$outputStats"_combined_run"$runNum".csv
