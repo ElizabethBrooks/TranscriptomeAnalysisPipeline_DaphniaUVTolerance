@@ -49,4 +49,4 @@ for i in $(seq 1 $3); do
 	echo $startCol","$overallMedian","$concordantMedian","$overallSd","$concordantSd","$endCols >> $outFile
 done
 #Clean up
-rm tmp*.csv
+rm "$outDir"/tmp*.csv
