@@ -59,7 +59,7 @@ for i in "$@"; do
 			analysisMethod="hisat2"
 			analysisArg=$analysisInput$analysisMethod
 			#Set output folder name
-			outputStats="$outDir"/alignmentSummarized_$analysisInput$i_$analysisMethod
+			outputStats="$outDir"/alignmentSummarized"_"$analysisInput$i"_"$analysisMethod
 			#Retrieve run number for input alignment folder
 			runNum=$(echo "$fileName" | sed "s/aligned_"$analysisMethod"_run//g")
 			#Set header of overall summary csv file
@@ -69,7 +69,7 @@ for i in "$@"; do
 			analysisMethod="tophat2"
 			analysisArg=$analysisInput$analysisMethod
 			#Set output folder name
-			outputStats="$outDir"/alignmentSummarized_$analysisInput$i_$analysisMethod
+			outputStats="$outDir"/alignmentSummarized"_"$analysisInput$i"_"$analysisMethod
 			#Retrieve run number for input alignment folder
 			runNum=$(echo "$fileName" | sed "s/aligned_"$analysisMethod"_run//g")
 			#Set header of overall summary csv file
