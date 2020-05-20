@@ -16,7 +16,6 @@ fi
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
 #Set outputs directory
 outDir="$outputsPath"/AlignmentsAnalyzed
-analysisInput=$1"_"
 #Set number of genotypes
 numGenotypes=6
 #Determine which analysis folder was input
@@ -24,11 +23,13 @@ if [[ "$1"  == aligned* ]]; then
 	#Retrieve input alignment summary absolute path
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	fileName="$1"
+	analysisInput=""
 elif [[ "$1"  == sorted* || "$1"  == trimmed* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	#Retrieve directory name from input folder path
 	fileName="$2"
+	analysisInput=$1"_"
 else
 	echo "ERROR: The input folder of aligned or assembled files were not found... exiting"
 	exit 1
