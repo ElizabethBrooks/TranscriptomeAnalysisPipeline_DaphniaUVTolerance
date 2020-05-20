@@ -58,8 +58,9 @@ for i in "$@"; do
 			#Set analysis method for folder naming
 			analysisMethod="hisat2"
 			analysisArg=$analysisInput$analysisMethod
+			analysisOut=$analysisInput$i"_"$analysisMethod
 			#Set output folder name
-			outputStats="$outDir"/alignmentSummarized"_"$analysisInput$i"_"$analysisMethod
+			outputStats="$outDir"/alignmentSummarized_"$analysisOut"
 			#Retrieve run number for input alignment folder
 			runNum=$(echo "$fileName" | sed "s/aligned_"$analysisMethod"_run//g")
 			#Set header of overall summary csv file
@@ -68,8 +69,9 @@ for i in "$@"; do
 			#Set analysis method for folder naming
 			analysisMethod="tophat2"
 			analysisArg=$analysisInput$analysisMethod
+			analysisOut=$analysisInput$i"_"$analysisMethod
 			#Set output folder name
-			outputStats="$outDir"/alignmentSummarized"_"$analysisInput$i"_"$analysisMethod
+			outputStats="$outDir"/alignmentSummarized_"$analysisOut"
 			#Retrieve run number for input alignment folder
 			runNum=$(echo "$fileName" | sed "s/aligned_"$analysisMethod"_run//g")
 			#Set header of overall summary csv file
