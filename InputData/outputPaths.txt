@@ -8,7 +8,7 @@ variantCalling: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 buildingGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 counting: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 statistics: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV
-alignmentAnalysis: /home/mae/Documents/RNASeq_Workshop_ND
+alignmentAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 geneCountAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 geneTableAnalysis: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
