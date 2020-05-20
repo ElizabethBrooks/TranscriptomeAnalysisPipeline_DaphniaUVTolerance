@@ -1,8 +1,8 @@
 #!/bin/bash
 #Script to prepare alignment summary matrices
-#Usage: bash alignmentSummary_formatting.sh analysisTarget runNum
-#Usage Ex: bash alignmentSummary_formatting.sh tophat2 3 
-#Alternate usage Ex: bash alignmentSummary_formatting.sh trimmed_run1E05_genomeTrinity_hisat2_run1 1 
+#Usage: bash alignmentSummary_formatting.sh analysisTarget runNum targetGenotype
+#Usage Ex: bash alignmentSummary_formatting.sh tophat2 3 PA42
+#Alternate usage Ex: bash alignmentSummary_formatting.sh trimmed_run1E05_genomeTrinity_hisat2_run1 1 E05
 
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
@@ -52,9 +52,9 @@ else
 	software="tophat2"
 fi
 #Add target, alignment software and run number tag to each sample
-sed -i "s/$/,$target,$software,run$2/" "$outFile"
+sed -i "s/$/,$target,$3,$software,run$2/" "$outFile"
 #Add target tag header
-sed -i "s/concordant,$target,$software,run$2/concordant,target,software,run/" "$outFile"
+sed -i "s/concordant,$target,$3,$software,run$2/concordant,target,targetGenotype,software,run/" "$outFile"
 #Determine if tophat2 data was input
 if [[ "$1" == "tophat2" ]]; then
 	#Remove extra columns from tophat2 data

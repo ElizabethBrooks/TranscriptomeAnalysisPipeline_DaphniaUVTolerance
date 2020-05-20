@@ -16,7 +16,7 @@ inFile="$outDir"/alignmentSummarized_"$1"_run"$2"_formatted.csv
 head -1 $inFile | sed 's/sample/genotype/g' > $outFile
 #Insert new fields
 startCol=$(cat $outFile | cut -d "," -f1)
-endCols=$(cat $outFile | cut -d "," -f4-6)
+endCols=$(cat $outFile | cut -d "," -f4-7)
 echo $startCol",overallMedian,concordantMedian,overallSd,concordantSd,"$endCols > $outFile
 #Determine the number of lines in the input file
 numLines=0
@@ -45,7 +45,7 @@ for i in $(seq 1 $3); do
 	concordantSd=$(cut -d "," -f3 $currTmp | sed 's/%//g' | sort -n | awk -f ../util/sd.awk)
 	#Output current genotype info
 	startCol=$(head -1 $currTmp | cut -d "," -f1 | cut -d "_" -f1)
-	endCols=$(tail -1 $currTmp | cut -d "," -f4-6)
+	endCols=$(tail -1 $currTmp | cut -d "," -f4-7)
 	echo $startCol","$overallMedian","$concordantMedian","$overallSd","$concordantSd","$endCols >> $outFile
 done
 #Clean up
