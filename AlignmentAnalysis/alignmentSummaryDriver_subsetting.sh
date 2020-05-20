@@ -27,7 +27,7 @@ elif [[ "$1"  == sorted* || "$1"  == trimmed* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	#Retrieve directory name from input folder path
-	analysisInput="$2"_
+	analysisInput="$1"_
 	fileName="$2"
 else
 	echo "ERROR: The input folder of aligned or assembled files were not found... exiting"
