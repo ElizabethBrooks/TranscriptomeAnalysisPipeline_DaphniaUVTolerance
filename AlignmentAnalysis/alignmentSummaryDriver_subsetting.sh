@@ -40,14 +40,14 @@ for i in "$@"; do
 	#Skip first two arguments
 	if [ $counter -ge 3 ]; then
 		#Determine what type of data folder was input
-		if [[ "$fileName" == trimmed* ]]; then
+		if [[ "$1" == trimmed* ]]; then
 			inputFolder="$inputsPath"/"$1""$i"_assemblyTrinity/"$fileName"
 			genotype="$i"
-		elif [[ "$fileName" == sorted* ]]; then
+		elif [[ "$1" == sorted* ]]; then
 			inputFolder="$inputsPath"/"$1""$i"_assemblyGenomeTrinity/"$fileName"
 			genotype="$i"
-		elif [[ "$fileName" == aligned* ]]; then
-			inputFolder="$inputsPath"/"$fileName"_"$i"
+		elif [[ "$1" == aligned* ]]; then
+			inputFolder="$inputsPath"/"$1"_"$i"
 			genotype="$2"
 		else
 			echo "ERROR: Input folder for analysis is not a valid option... exiting!"
