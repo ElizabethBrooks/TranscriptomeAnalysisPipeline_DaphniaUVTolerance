@@ -76,6 +76,6 @@ for f1 in $@; do
 	echo "Formatting $analysisArg"/"$f1 merged alignment summary..."
 	#Run alignment summary formatting
 	bash alignmentSummary_formatting.sh "$analysisArg" "$runNum"
-	bash alignmentSummary_sampleMedians.sh "$analysisArg" "$runNum" $numGenotypes
+	bash alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" $numGenotypes
 	echo "Merged alignment summary for $analysisArg"/"$f1 has been formatted!"
 done

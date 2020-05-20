@@ -1,8 +1,8 @@
 #!/bin/bash
 #Script to prepare alignment summary matrices
-#Usage: bash alignmentSummary_sampleMedians.sh analysisTarget runNum
-#Usage Ex: bash alignmentSummary_sampleMedians.sh tophat2 3 numGenotypes
-#Alternate usage Ex: bash alignmentSummary_sampleMedians.sh hisat2_run1 1 6
+#Usage: bash alignmentSummary_genotypeMedians.sh analysisTarget runNum
+#Usage Ex: bash alignmentSummary_genotypeMedians.sh tophat2 3 numGenotypes
+#Alternate usage Ex: bash alignmentSummary_genotypeMedians.sh hisat2_run1 1 6
 
 #Retrieve alignment analysis outputs absolute path
 outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
