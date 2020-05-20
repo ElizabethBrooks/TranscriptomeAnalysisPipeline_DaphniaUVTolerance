@@ -93,8 +93,8 @@ for i in "$@"; do
 		echo "Alignment summaries have been merged!"
 		echo "Formatting $inputFolder merged alignment summary..."
 		#Run alignment summary formatting
-		echo alignmentSummary_formatting.sh "$analysisArg" "$runNum" "$genotype"
-		echo alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" $numGenotypes "$genotype"
+		bash alignmentSummary_formatting.sh "$analysisArg" "$runNum" "$genotype"
+		bash alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" $numGenotypes "$genotype"
 		echo "Merged alignment summary has been formatted!"
 	fi
 	counter=$(($counter+1))
