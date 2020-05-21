@@ -5,8 +5,8 @@
 #$ -N assembly_transabyss_jobOutput
 #$ -pe smp 8
 #Script to perform de novo transcriptome assembly using Transabyss
-#Usage: qsub assembly_transabyss.sh trimmedFolder genomeVersion
-#Usage Ex: qsub assembly_transabyss.sh trimmed_run1 PA42_v3.0
+#Usage: qsub assembly_transabyss.sh trimmedFolder genotype
+#Usage Ex: qsub assembly_transabyss.sh trimmed_run1 E05
 #Note that the genome version input is for output file naming purposes only
 
 #Required modules for ND CRC servers
@@ -32,27 +32,17 @@ inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/
 #Retrieve outputs path
 outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 #Move to outputs directory
+outputFolder="$outputsPath"/"$1""$2"_assemblyTrinity
+mkdir "$outputFolder"
+#Re-set reads file paths using input genotype tag
+sed "s/GENEOTYPE/$2/g" "$samplesPath" > "$outputFolder"/tmpSamplesFile.txt
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
 cd "$outputsPath"
 #TO DO: Need igraph (pip install python-igraph)
-#Prepare for alignment
-dirFlag=0
-runNum=1
-counter=0
-#Make a new directory for each alignment run
-while [ $dirFlag -eq 0 ]; do
-	#Tophat output directory name
-	outputFolder="assembled_transabyss_run$runNum"
-	mkdir "$outputFolder"
-	#Check if the folder already exists
-	if [ $? -ne 0 ]; then
-		#Increment the folder name
-		let runNum+=1
-	else
-		#Indicate that the folder was successfully made
-		dirFlag=1
-		echo "Creating folder for run $runNum of transabyss assembly on $1 data..."
-	fi
-done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Loop through all forward and reverse paired reads and
@@ -60,7 +50,7 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Set the flag for paired-end sample input to transabyss
 sampleList="--pe"
 let counter=$counter+1
-for f1 in "$inputsPath"/"$1"/*pForward.fq.gz; do
+for f1 in "$inputsPath"/"$1"/*"$2"*pForward.fq.gz; do
 	#Store current sample file name
 	sampleList=$sampleList" "$f1
 done

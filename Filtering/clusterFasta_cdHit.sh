@@ -1,10 +1,10 @@
 #!/bin/bash
 #Script to perform merge multifasta files and retain only
 #the specified unique data (by sequence, ID, or both)
-#Usage: bash clsuterFasta_cdHit.sh mergeBy sortedFolder genotypes
-#Usage Ex: bash clsuterFasta_cdHit.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash clsuterFasta_cdHit.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Default usage Ex: bash clsuterFasta_cdHit.sh sequence assemblyTrinity_all
+#Usage: bash clusterFasta_cdHit.sh mergeBy sortedFolder genotypes
+#Usage Ex: bash clusterFasta_cdHit.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash clusterFasta_cdHit.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Default usage Ex: bash clusterFasta_cdHit.sh sequence assemblyTrinity_all
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
