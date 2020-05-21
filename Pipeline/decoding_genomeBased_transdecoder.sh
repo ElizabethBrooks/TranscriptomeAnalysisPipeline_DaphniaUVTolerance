@@ -13,13 +13,12 @@ module load bio/2.0
 #Retrieve genome reference and features paths
 #genomeRef=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 genomeFeat=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
-multiFASTAPath=$(grep "multiFASTA:" ../InputData/inputPaths.txt | tr -d " " | sed "s/multiFASTA://g")
-multiFASTA="$multiFASTAPath"/"$1"_multiFASTA.fa
+multiFASTA=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve TransDecoder software path
 softPath=$(grep "transdecoder:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transdecoder://g")
 #Retrieve outputs absolute path
-outputsPath=$(grep "decoding:" ../InputData/outputPaths.txt | tr -d " " | sed "s/decoding://g")
-outFolder="$outputsPath"/decoded_genomeBased_"$2"
+inOutputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+outFolder="$inOutputsPath"/"$2"/decoded_transdecoder_genomeBased
 mkdir "$outFolder"
 #Move to output folder
 cd "$outFolder"
@@ -28,4 +27,9 @@ cd "$outFolder"
 #Generate your best candidate open rading frame (ORF) predictions
 TransDecoder.LongOrfs -t "$multiFASTA"
 #Optionally, identify peptides with homology to known proteins
-#TransDecoder.Predict -t transcripts.fasta [ homology options ]
+TransDecoder.Predict -t "$multiFASTA"
+#Generate a genome-based coding region annotation file
+../util/cdna_alignment_orf_to_genome_orf.pl \
+     transcripts.fasta.transdecoder.gff3 \
+     "$genomeFeat" \
+     "$multiFASTA" > transcripts.fasta.transdecoder.genome.gff3
