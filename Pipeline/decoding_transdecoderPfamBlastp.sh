@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N decoding_transdecoderPfamBlastp_jobOutput
-#$ -pe smp 24
+#$ -pe smp 12
 #Script to predict coding regions from a de novo assembled transcriptome fasta file
 # using Transdecoder in conjunction with Pfam and Blastp results
 #Usage: qsub decoding_transdecoderPfamBlastp.sh deNovoAssembledTranscriptomeFolder databaseSelection
@@ -70,11 +70,11 @@ TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
 echo "Finished generating transdecoder open reading frame predictions!"
 #Use BlastP to search a protein database
 echo "Beginning blastp protein database search..."
-blastp -query Trinity.fasta.transdecoder_dir/longest_orfs.pep -db "$blastpPath"  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 > blastp.outfmt6
+blastp -query Trinity.fasta.transdecoder_dir/longest_orfs.pep -db "$blastpPath"  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 12 > blastp.outfmt6
 echo "Finished blastp protein database search!"
 #Search the peptides for protein domains using Pfam
 echo "Beginning hammscan search of peptides for protein domains..."
-hmmscan --cpu 24 --domtblout pfam.domtblout "$pfamPath" Trinity.fasta.transdecoder_dir/longest_orfs.pep
+hmmscan --cpu 12 --domtblout pfam.domtblout "$pfamPath" Trinity.fasta.transdecoder_dir/longest_orfs.pep
 echo "Finished hammscan search of peptides for protein domains!"
 #Combine the Blast and Pfam search results into coding region selection
 echo "Beginning transdecoder coding region selection..."
@@ -83,8 +83,8 @@ echo "Finished transdecoder coding region selection!"
 echo "Decoding complete!"
 #Output run commands to summary file
 echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
-echo "blastp -query" "Trinity.fasta.transdecoder_dir/longest_orfs.pep -db" "$blastpPath"  "-max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 >" "blastp.outfmt6" >> "$inputOutFile"
-echo "hmmscan --cpu 24 --domtblout" "pfam.domtblout" "$pfamPath" "Trinity.fasta.transdecoder_dir/longest_orfs.pep" >> "$inputOutFile"
+echo "blastp -query" "Trinity.fasta.transdecoder_dir/longest_orfs.pep -db" "$blastpPath"  "-max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 12 >" "blastp.outfmt6" >> "$inputOutFile"
+echo "hmmscan --cpu 12 --domtblout" "pfam.domtblout" "$pfamPath" "Trinity.fasta.transdecoder_dir/longest_orfs.pep" >> "$inputOutFile"
 echo "TransDecoder.Predict -t" "$multiFASTA" "--retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6" >> "$inputOutFile"
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
