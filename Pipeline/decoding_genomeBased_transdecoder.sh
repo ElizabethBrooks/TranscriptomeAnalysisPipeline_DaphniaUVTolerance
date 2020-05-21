@@ -9,7 +9,7 @@
 #Usage Ex: qsub decoding_genomeBased_transdecoder.sh aligned_tophat2_run2 PA42_v3.0
 
 #Load necessary modules for ND CRC servers
-module load bio/transdecoder
+module load bio/2.0
 #Retrieve genome reference and features paths
 #genomeRef=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 genomeFeat=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")

@@ -42,7 +42,7 @@ if [ $# -ge 3 ]; then
 		elif [[ "$2" == sorted*Tophat2* ]]; then
 			plotTitle="Tophat2_Guided_Assembly_&_PA42_Genome"
 		elif [[ "$2" == trimmed* ]]; then
-			plotTitle="de_Novo_Trans_&_PA42_Genome"
+			plotTitle="de_Novo_Assembly_&_PA42_Genome"
 		else
 			echo "Invalid $2 entered... exiting!"
 			exit 1
@@ -69,7 +69,7 @@ if [ $# -ge 3 ]; then
 		elif [[ "$1" == sorted*Tophat2* ]]; then
 			plotTitle="Tophat2_Guided_Assembly"
 		elif [[ "$1" == trimmed* ]]; then
-			plotTitle="de_Novo_Trans"
+			plotTitle="de_Novo_Assembly"
 		else
 			echo "Invalid $1 entered... exiting!"
 			exit 1

@@ -12,7 +12,7 @@
 #Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsTophat2_run1Sierra_assemblyGenomeTrinity
 
 #Load necessary modules for ND CRC servers
-module load bio/transdecoder
+module load bio/2.0
 module load bio/blast+
 module load bio/hmmer
 module load bio/cufflinks
