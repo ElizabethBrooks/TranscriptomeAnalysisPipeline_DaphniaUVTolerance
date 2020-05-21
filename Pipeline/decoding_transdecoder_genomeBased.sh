@@ -7,6 +7,7 @@
 # using Transdecoder with genome reference and features files
 #Usage: qsub decoding_transdecoder_genomeBased.sh alignedSequencesFolder
 #Usage Ex: qsub decoding_transdecoder_genomeBased.sh aligned_tophat2_run2
+#Usage Ex: qsub decoding_transdecoder_genomeBased.sh aligned_hisat2_run1
 
 #Load necessary modules for ND CRC servers
 module load bio/2.0
