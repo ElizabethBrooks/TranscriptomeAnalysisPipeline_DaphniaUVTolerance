@@ -2,11 +2,11 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N decoding_genomeBased_transdecoder_jobOutput
+#$ -N decoding_transdecoder_genomeBased_jobOutput
 #Script to predict coding regions from a transcript fasta file
 # using Transdecoder with genome reference and features files
-#Usage: qsub decoding_genomeBased_transdecoder.sh alignedSequencesFolder
-#Usage Ex: qsub decoding_genomeBased_transdecoder.sh aligned_tophat2_run2
+#Usage: qsub decoding_transdecoder_genomeBased.sh alignedSequencesFolder
+#Usage Ex: qsub decoding_transdecoder_genomeBased.sh aligned_tophat2_run2
 
 #Load necessary modules for ND CRC servers
 module load bio/2.0
@@ -17,7 +17,7 @@ multiFASTA=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | s
 #Retrieve TransDecoder software path
 softPath=$(grep "transdecoder:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transdecoder://g")
 #Retrieve outputs absolute path
-inOutputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+inOutputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 outputFolder="$inOutputsPath"/"$1"/decoded_transdecoder_genomeBased
 mkdir "$outputFolder"
 #Check if the folder already exists
