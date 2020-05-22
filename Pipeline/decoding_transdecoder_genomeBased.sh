@@ -11,14 +11,17 @@
 
 #Load necessary modules for ND CRC servers
 module load bio/2.0
+#Check for input arguments of folder names
+if [ $# -eq 0 ]; then
+   	echo "ERROR: No folder name(s) supplied... exiting"
+   	exit 1
+fi
 #Determine current directory path
 currPath=$(dirname $PWD)
 #Retrieve genome reference and features paths
 #genomeRef=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 genomeFeat=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
 multiFASTA=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-#Retrieve TransDecoder software path
-softPath=$(grep "transdecoder:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transdecoder://g")
 #Retrieve outputs absolute path
 inOutputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 outputFolder="$inOutputsPath"/"$1"/decoded_transdecoder_genomeBased
