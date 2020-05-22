@@ -17,8 +17,6 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Determine current directory path
-currPath=$(dirname $PWD)
 #Determine which analysis folder was input
 if [[ "$1"  == *assembly* ]]; then
 	#Retrieve assembly absolute path
@@ -32,6 +30,8 @@ else
 	echo "ERROR: The input alignment target is not valid... exiting!"
 	exit 1
 fi
+#Retrieve sanspanz software package path
+softsPath=$(grep "packageSanspanz:" ../InputData/inputPaths.txt | tr -d " " | sed "s/packageSanspanz://g")
 #Set outputs absolute path
 inOutsPath="$inOutsPath"/"$1"
 #Set outputs folder
@@ -45,5 +45,5 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Run sanspanz for functional annotation
-python "$currPath"/util/runsanspanz.py -R -m SANS -s "$species" -i "$inOutsPath"/transcripts.fasta.transdecoder.pep -o sans.tab
-python "$currPath"/util/runsanspanz.py -R -m Pannzer -i sans.tab -f tab -o ",DE.out1,GO.out1,anno.out1"
+python "$softsPath"/runsanspanz.py -R -m SANS -s "$species" -i "$inOutsPath"/transcripts.fasta.transdecoder.pep -o sans.tab
+python "$softsPath"/runsanspanz.py -R -m Pannzer -i sans.tab -f tab -o ",DE.out1,GO.out1,anno.out1"
