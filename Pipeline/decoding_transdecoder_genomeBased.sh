@@ -11,6 +11,8 @@
 
 #Load necessary modules for ND CRC servers
 module load bio/2.0
+#Determine current directory path
+currPath=$(dirname $PWD)
 #Retrieve genome reference and features paths
 #genomeRef=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 genomeFeat=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
@@ -35,7 +37,7 @@ TransDecoder.LongOrfs -t "$multiFASTA"
 #Optionally, identify peptides with homology to known proteins
 TransDecoder.Predict -t "$multiFASTA"
 #Generate a genome-based coding region annotation file
-../util/cdna_alignment_orf_to_genome_orf.pl \
+"$currPath"/util/cdna_alignment_orf_to_genome_orf.pl \
      transcripts.fasta.transdecoder.gff3 \
      "$genomeFeat" \
      "$multiFASTA" > transcripts.fasta.transdecoder.genome.gff3
