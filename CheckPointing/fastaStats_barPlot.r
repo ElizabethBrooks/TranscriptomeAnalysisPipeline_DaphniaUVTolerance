@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 #Usage: Rscript fastaStats_barPlot.r statsSummaryFile
 #Usage Ex: Rscript fastaStats_barPlot.r /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/trimmed_run1_assemblyTrinity_mergedFasta/trimmed_run1_assemblyTrinity_mergedFasta_summary.csv
-#R script to generate grouped and colored bar plots
+#R script to generate bar plots of file stats
 
 #Installations need to be performed once
 #The easiest way to get ggplot2 is to install the whole tidyverse
