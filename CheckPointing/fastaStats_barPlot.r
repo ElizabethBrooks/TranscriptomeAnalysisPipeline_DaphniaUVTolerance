@@ -33,7 +33,7 @@ par(mfrow=c(2,1))
 plotTitle <- "File Statistics"
 
 #Generate grouped bar plot
-plotOverall <- ggplot(counts, aes(x=aStats.file, y=aStats.sequences)) + 
+plotSeqs <- ggplot(counts, aes(x=aStats.file, y=aStats.sequences)) + 
   geom_bar(stat="identity", position="dodge") +
   ggtitle(plotTitle) +
   xlab("File Name") +
@@ -45,7 +45,7 @@ outFile <- paste(normalizePath(dirname(args[1])), "plotSequences.jpg", sep="/")
 ggsave(outFile)
 
 #Generate second grouped bar plot
-plotConc <- ggplot(counts, aes(x=aStats.file, y=aStats.lines) + 
+plotLines <- ggplot(counts, aes(x=aStats.file, y=aStats.lines) + 
   geom_bar(stat="identity", position="dodge") + 
   ggtitle(plotTitle) +
   xlab("File Name") +
@@ -57,7 +57,7 @@ outFile <- paste(normalizePath(dirname(args[1])), "plotLines.jpg", sep="/")
 ggsave(outFile)
 
 #Generate second grouped bar plot
-plotConc <- ggplot(counts, aes(x=aStats.file, y=aStats.bytes) + 
+plotBytes <- ggplot(counts, aes(x=aStats.file, y=aStats.bytes) + 
   geom_bar(stat="identity", position="dodge") + 
   ggtitle(plotTitle) +
   xlab("File Name") +
