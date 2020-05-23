@@ -15,7 +15,6 @@ library(stringr)
 #Retrieve input file name of gene counts
 args=commandArgs(trailingOnly=TRUE)
 numArgs=length(args)
-
 #Test if there is one input argument
 if (numArgs!=1) {
   stop("A file name must be supplied.n", call.=FALSE)
