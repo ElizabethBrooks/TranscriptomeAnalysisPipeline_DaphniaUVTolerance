@@ -18,7 +18,7 @@ numArgs=length(args)
 
 #Test if there is one input argument
 if (numArgs!=1) {
-  stop("A file name must be supplied... exiting.n", call.=FALSE)
+  stop("A file name must be supplied.n", call.=FALSE)
 }
 
 #Retrieve file stats
