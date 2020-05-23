@@ -84,8 +84,7 @@ else #Default accept a list of full file paths
 	mergedFastaFile="$outputFolder/$1""_mergedFasta.fasta"
 	summaryFile="$outputFolder/$1""_mergedFasta_summary.txt"
 fi
-echo $mergedFastaFile
-echo $summaryFile
+
 #Write list of fasta files to the summary file
 echo "File list:" #> $summaryFile
 printf '%s\n' "${fastaList[@]}" #>> $summaryFile
@@ -94,8 +93,8 @@ printf '%s\n' "${fastaList[@]}" #>> $summaryFile
 #bash fastaStats.sh $fastaList $mergedFastaFile >> $summaryFile
 
 #Write fasta stats to the summary file
-#summaryFileCSV=$(echo $summaryFile | sed 's/\.txt/\.csv/g')
-#bash fastaStats_csvFormatted.sh $fastaList $mergedFastaFile >> $summaryFileCSV
+summaryFileCSV=$(echo $summaryFile | sed 's/\.txt/\.csv/g')
+bash fastaStats_csvFormatted.sh $fastaList $mergedFastaFile >> $summaryFileCSV
 
 #Plot fasta stats from summary file
-#Rscript fastaStats_barPlot.r $summaryFileCSV
+Rscript fastaStats_barPlot.r $summaryFileCSV
