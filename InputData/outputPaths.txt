@@ -1,4 +1,4 @@
-multiFASTA: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
+mergedFASTA: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 qc: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 trimming: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 assembling: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
