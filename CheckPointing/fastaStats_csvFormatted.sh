@@ -29,4 +29,4 @@ for i in "$@"; do
 done
 
 #Output total file stats
-echo "totalStats, $seqsTotal, $linesTotal, $bytesTotal"
+echo "total, $seqsTotal, $linesTotal, $bytesTotal"
