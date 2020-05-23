@@ -17,7 +17,7 @@ args=commandArgs(trailingOnly=TRUE)
 numArgs=length(args)
 
 #Test if there is one input argument
-if (numArgs!12) {
+if (numArgs!=1) {
   stop("A file name must be supplied... exiting.n", call.=FALSE)
 }
 

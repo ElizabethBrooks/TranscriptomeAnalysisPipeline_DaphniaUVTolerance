@@ -87,14 +87,15 @@ fi
 
 #Write list of fasta files to the summary file
 echo "File list:" > $summaryFile
-echo "$fastaList" | tr " " "\n" >> $summaryFile
+echo "$fastaList" >> $summaryFile
 echo "$mergedFastaFile" >> $summaryFile
 #Write fasta stats to the summary file
 bash fastaStats.sh $fastaList $mergedFastaFile >> $summaryFile
 
 #Write fasta stats to the csv formatted summary file
 summaryFileCSV=$(basename $summaryFile | sed 's/\.txt/\.csv/g')
+echo $summaryFileCSV
 bash fastaStats_csvFormatted.sh $fastaList $mergedFastaFile > $summaryFileCSV
 
 #Plot fasta stats from summary file
-Rscript fastaStats_barPlot.r $summaryFileCSV
+#Rscript fastaStats_barPlot.r $summaryFileCSV
