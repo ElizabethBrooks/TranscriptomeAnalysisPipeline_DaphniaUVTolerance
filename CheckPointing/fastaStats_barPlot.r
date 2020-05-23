@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 #Usage: Rscript fastaStats_barPlot.r statsSummaryFile
-#Usage Ex: Rscript fastaStats_barPlot.r mergedFasta_summary.csv
+#Usage Ex: Rscript fastaStats_barPlot.r /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/trimmed_run1_assemblyTrinity_mergedFasta/trimmed_run1_assemblyTrinity_mergedFasta_summary.csv
 #R script to generate grouped and colored bar plots
 
 #Installations need to be performed once
@@ -27,7 +27,7 @@ aStats <- read.csv(file=args[1])
 counts <- data.frame(aStats$file, aStats$sequences, aStats$lines, aStats$bytes)
 
 #Create matrix for multiple plots
-par(mfrow=c(2,1))
+par(mfrow=c(3,1))
 
 #Set the plot titles
 plotTitle <- "File Statistics"
