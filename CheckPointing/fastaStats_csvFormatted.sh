@@ -13,9 +13,9 @@ bytesTotal=0
 
 #Loop over input files and retrieve stats
 for i in "$@"; do
-	seqs=$(grep ">" $i | wc -l); echo "$seqs $i"
-	lines=$(wc -l $i)
-	bytes=$(wc -c $i)
+	seqs=$(grep ">" $i | wc -l)
+	lines=$(wc -l $i | cut -d " " -f1)
+	bytes=$(wc -c $i | cut -d " " -f1)
 	#Output current file name and stats
 	echo "file$counter, $seqs, $lines, $bytes"
 
