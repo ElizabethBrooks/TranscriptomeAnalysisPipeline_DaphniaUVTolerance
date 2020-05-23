@@ -1,9 +1,10 @@
 #!/bin/bash
-#Script to perform merge multifasta files and retain only
+#Script to perform merge mergedfasta files and retain only
 #the specified unique data (by sequence, ID, or both)
 #Usage: bash mergeFasta.sh mergeBy sortedFolder genotypes
 #Usage Ex: bash mergeFasta.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash mergeFasta.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash mergeFasta.sh sequence sortedCoordinate_samtoolsTophat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash mergeFasta.sh sequence trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Default usage Ex: bash mergeFasta.sh sequence assemblyTrinity_all
 
 #Check for input arguments of folder names
@@ -11,21 +12,23 @@ if [ $# -eq 0 ]; then
    	echo "No folder inputs supplied... exiting"
    	exit 1
 fi
+
 #Initialize variables
 counter=1
 fastaList=""
+
 #Retrieve fasta output absolute path
-outputsPath=$(grep "multiFASTA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/multiFASTA://g")
-#Determine input folder source
+outputsPath=$(grep "mergedFASTA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/mergedFASTA://g")
+
 #Determine assembly target
 if [[ "$2" == sorted* ]]; then
 	#Retrieve fasta file path
 	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	#Create output directory
-	outputFolder="$outputsPath/$2""_assemblyGenomeTrinity_multiFasta"
+	outputFolder="$outputsPath/$2""_assemblyGenomeTrinity_mergedFasta"
 	#Set merged fasta file name
-	multiFastaFile="$outputFolder/assemblyGenomeTrinity_multiFasta.fasta"
-	summaryFile="$outputFolder/$2""_assemblyGenomeTrinity_multiFasta_summary.txt"
+	mergedFastaFile="$outputFolder/assemblyGenomeTrinity_mergedFasta.fasta"
+	summaryFile="$outputFolder/$2""_assemblyGenomeTrinity_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
 	for i in "$@"; do
@@ -60,10 +63,10 @@ elif [[ "$2" == trimmed* ]]; then
 		counter=$(($counter+1))
 	done
 	#Create output directory
-	outputFolder="$outputsPath/$2""_assemblyTrinity_multiFasta"
+	outputFolder="$outputsPath/$2""_assemblyTrinity_mergedFasta"
 	#Set merged fasta file name
-	multiFastaFile="$outputFolder/assemblyTrinity_multiFasta.fasta"
-	summaryFile="$outputFolder/$2""_assemblyTrinity_multiFasta_summary.txt"
+	mergedFastaFile="$outputFolder/assemblyTrinity_mergedFasta.fasta"
+	summaryFile="$outputFolder/$2""_assemblyTrinity_mergedFasta_summary.txt"
 else #Default accept a list of full file paths
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
@@ -77,10 +80,10 @@ else #Default accept a list of full file paths
 		counter=$(($counter+1))
 	done
 	#Create output directory
-	outputFolder="$outputsPath/$2_multiFasta"
+	outputFolder="$outputsPath/$2_mergedFasta"
 	#Set merged fasta file name
-	multiFastaFile="$outputFolder/$2""_multiFasta.fasta"
-	summaryFile="$outputFolder/$2""_multiFasta_summary.txt"
+	mergedFastaFile="$outputFolder/$2""_mergedFasta.fasta"
+	summaryFile="$outputFolder/$2""_mergedFasta_summary.txt"
 fi
 #Check if the folder already exists
 mkdir "$outputFolder"
@@ -88,6 +91,7 @@ if [ $? -ne 0 ]; then
 	echo "The $outputFolder directory already exsists... please remove before proceeding."
 	exit 1
 fi
+
 #Merge the set of fasta files
 echo "Beginning fasta file merging..."
 #Determine which method to merge fasta files by
@@ -96,26 +100,36 @@ if [[ "$1" == sequence ]]; then
 	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
 		(FNR==1){next}
 		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
-		!(seen[seq]++){ print ">" $0 }' $fastaList > $multiFastaFile
+		!(seen[seq]++){ print ">" $0 }' $fastaList > $mergedFastaFile
 elif [[ "$1" == name ]]; then
 	#First part of sequence name identical merge
 	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
 		(FNR==1){next}
 		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
 		{ key=substr(name,1,index(s,"|")) }
-		!(seen[key]++){ print ">" $0 }' $fastaList > $multiFastaFile
+		!(seen[key]++){ print ">" $0 }' $fastaList > $mergedFastaFile
 elif [[ "$1" == sequenceAndName ]]; then
 	#Sequence name and sequence identical merge
 	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
 		(FNR==1){next}
 		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
-		!(seen[name,seq]++){ print ">" $0 }' $fastaList > $multiFastaFile
+		!(seen[name,seq]++){ print ">" $0 }' $fastaList > $mergedFastaFile
 else
 	echo "Selected merge format for fasta files not valid... exiting!"
 	exit 1
 fi
 echo "Fasta file merging complete!"
+
 #Write list of fasta files to the summary file
-echo "Fasta list: $fastaList" > $summaryFile
+echo "File list:" > $summaryFile
+printf '%s\n' "${fastaList[@]}" >> $summaryFile
+
 #Write fasta stats to the summary file
-bash fastaStats.sh $fastaList $multiFastaFile >> $summaryFile
+bash fastaStats.sh $fastaList $mergedFastaFile >> $summaryFile
+
+#Write fasta stats to the summary file
+summaryFileCSV=$(echo $summaryFile | sed 's/\.txt/\.csv/g')
+bash fastaStats_csvFormatted.sh $fastaList $mergedFastaFile >> $summaryFileCSV
+
+#Plot fasta stats from summary file
+Rscript fastaStats_barPlot.r $summaryFileCSV
