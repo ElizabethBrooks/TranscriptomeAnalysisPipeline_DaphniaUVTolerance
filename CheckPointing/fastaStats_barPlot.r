@@ -31,39 +31,37 @@ par(mfrow=c(3,1))
 
 #Set the plot titles
 plotTitle <- "File Statistics"
-print(plotTitle)
+
 #Generate grouped bar plot
 plotSeqs <- ggplot(counts, aes(x=aStats.file, y=aStats.sequences)) + 
-  geom_bar(stat="identity", position="dodge") +
+  geom_bar(stat="identity", fill="steelblue") +
+  theme_minimal() +
   ggtitle(plotTitle) +
   xlab("File Name") +
-  ylab("Number of Sequences") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  scale_fill_brewer(palette="Set1")
+  ylab("Number of Sequences")
 #Save sequence stats plot as a jpg
 outFile <- paste(normalizePath(dirname(args[1])), "plotSequences.jpg", sep="/")
+print(outFile)
 ggsave(outFile)
 
 #Generate second grouped bar plot
 plotLines <- ggplot(counts, aes(x=aStats.file, y=aStats.lines) + 
-  geom_bar(stat="identity", position="dodge") + 
+  geom_bar(stat="identity", fill="steelblue") +
+  theme_minimal() + 
   ggtitle(plotTitle) +
   xlab("File Name") +
-  ylab("Number of Lines") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  scale_fill_brewer(palette="Set1")
+  ylab("Number of Lines")
 #Save line stats plot as a jpg
 outFile <- paste(normalizePath(dirname(args[1])), "plotLines.jpg", sep="/")
 ggsave(outFile)
 
 #Generate second grouped bar plot
 plotBytes <- ggplot(counts, aes(x=aStats.file, y=aStats.bytes) + 
-  geom_bar(stat="identity", position="dodge") + 
+  geom_bar(stat="identity", fill="steelblue")+
+  theme_minimal() + 
   ggtitle(plotTitle) +
   xlab("File Name") +
-  ylab("Number of Bytes") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  scale_fill_brewer(palette="Set1")
+  ylab("Number of Bytes")
 #Save bytes stats plot as a jpg
 outFile <- paste(normalizePath(dirname(args[1])), "plotBytes.jpg", sep="/")
 ggsave(outFile)
