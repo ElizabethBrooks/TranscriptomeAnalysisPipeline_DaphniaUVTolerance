@@ -6,8 +6,6 @@
 #Installations need to be performed once
 #The easiest way to get ggplot2 is to install the whole tidyverse
 #install.packages("tidyverse")
-#install.packages("stringr")
-#install.packages("egg")
 #install.packages("ggpubr")
 
 #Import librarys

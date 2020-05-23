@@ -17,7 +17,7 @@ for i in "$@"; do
 	seqs=$(grep ">" $i | wc -l)
 	lines=$(wc -l $i | cut -d " " -f1)
 	bytes=$(wc -c $i | cut -d " " -f1)
-	mBytes=$(($bytes*0.000001))
+	mBytes=$(ls -l --block-size=1MB $i | cut -d " " -f5)
 
 	#Output file name tags and stats
 	if [[ "$i" == *merged* ]]; then

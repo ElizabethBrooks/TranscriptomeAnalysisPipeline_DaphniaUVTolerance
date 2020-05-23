@@ -14,7 +14,7 @@ if [ $# -eq 0 ]; then
 fi
 
 #Load module necessary for crc servers
-#module load R
+module load R
 
 #Initialize variables
 counter=1

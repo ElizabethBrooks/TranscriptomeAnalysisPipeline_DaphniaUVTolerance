@@ -9,8 +9,7 @@ inputsPath=$(dirname "$1")
 #Determine the number of pieces to split the file into
 chunkSize=$2 #Max number of MB for each chunk
 #Determine the size of the input fasta file
-ls -l --block-size=1MB "$1" > tmp.txt
-fastaSize=$(cut -d " " -f 5 tmp.txt)
+fastaSize=$(ls -l --block-size=1MB intronDataDriver_fromGFF3.sh | cut -d " " -f5)
 chunkNum=$((($fastaSize+($chunkSize-1))/$chunkSize)) #Round up
 #Determine the number of sequences to include in each chunk
 seqsNum=$(grep ">" "$1" | wc -l)
@@ -22,5 +21,3 @@ inFileNoEx=$(echo $inFileNoEx | sed 's/\.fasta//')
 outFile="$inputsPath"/"$inFileNoEx"
 #Loop through the input fasta file and split by sequence chunks
 awk 'BEGIN {n_seq=0;} /^>/ {if(n_seq%$seqsNum==0){file=sprintf("myseq%d.fasta",n_seq);} print >> file; n_seq++; next;} { print >> file; }' < "$1"
-#Clean up
-rm tmp.txt
