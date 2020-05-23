@@ -84,7 +84,8 @@ else #Default accept a list of full file paths
 	mergedFastaFile="$outputFolder/$1""_mergedFasta.fasta"
 	summaryFile="$outputFolder/$1""_mergedFasta_summary.txt"
 fi
-
+echo $mergedFastaFile
+echo $summaryFile
 #Write list of fasta files to the summary file
 echo "File list:" #> $summaryFile
 printf '%s\n' "${fastaList[@]}" #>> $summaryFile
