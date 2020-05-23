@@ -29,7 +29,7 @@ counts <- data.frame(aStats$file, aStats$sequences, aStats$lines, aStats$MB)
 par(mfrow=c(3,1))
 
 #Set the plot titles
-plotTitle <- "File Statistics"
+plotTitle <- args[2]" File Statistics"
 
 #Generate grouped bar plot
 plotSeqs <- ggplot(counts, aes(x=aStats.file, y=aStats.sequences)) + 
