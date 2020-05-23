@@ -97,4 +97,4 @@ summaryFileCSV=$(echo $summaryFile | sed 's/\.txt/\.csv/g')
 bash fastaStats_csvFormatted.sh $fastaList $mergedFastaFile >> $summaryFileCSV
 
 #Plot fasta stats from summary file
-Rscript fastaStats_barPlot.r $summaryFileCSV
+#Rscript fastaStats_barPlot.r $summaryFileCSV

@@ -5,8 +5,11 @@
 #Create header for csv
 echo "file, sequences, lines, bytes"
 
-#Initialize file tag counter
+#Initialize counters
 counter=1
+seqsTotal=0
+linesTotal=0
+bytesTotal=0
 
 #Loop over input files and retrieve stats
 for i in "$@"; do
