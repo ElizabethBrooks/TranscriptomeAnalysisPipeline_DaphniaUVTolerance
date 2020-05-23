@@ -31,7 +31,7 @@ par(mfrow=c(3,1))
 
 #Set the plot titles
 plotTitle <- "File Statistics"
-
+print(plotTitle)
 #Generate grouped bar plot
 plotSeqs <- ggplot(counts, aes(x=aStats.file, y=aStats.sequences)) + 
   geom_bar(stat="identity", position="dodge") +
