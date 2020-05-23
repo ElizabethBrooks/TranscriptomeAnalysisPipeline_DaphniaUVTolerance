@@ -14,7 +14,7 @@ if [ $# -eq 0 ]; then
 fi
 
 #Load module necessary for crc servers
-module load R
+#module load R
 
 #Initialize variables
 counter=1
@@ -25,54 +25,65 @@ inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "
 
 #Determine assembly target
 if [[ "$1" == sorted* ]]; then
-	#Set output directory
-	outputFolder="$inputsPath"/"$1"_assemblyGenomeTrinity_mergedFasta
+	#Create output directory
+	outputFolder="$inputsPath/$1""_assemblyGenomeTrinity_mergedFasta"
 	#Set merged fasta file name
-	mergedFastaFile="$outputFolder"/assemblyGenomeTrinity_mergedFasta.fasta
-	summaryFile="$outputFolder"/"$1"_assemblyGenomeTrinity_mergedFasta_summary.txt
+	mergedFastaFile="$outputFolder/assemblyGenomeTrinity_mergedFasta.fasta"
+	summaryFile="$outputFolder/$1""_assemblyGenomeTrinity_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
 	for i in "$@"; do
 		#Skip first two arguments
 		if [[ $counter -eq $# ]]; then
 			#Add fasta file to list
-			fastaFile="$inputsPath"/"$1$i"_assemblyGenomeTrinity/Trinity.fasta
+			fastaFile="$inputsPath/$1$i""_assemblyGenomeTrinity/Trinity.fasta"
 			fastaList="$fastaList$fastaFile"
 		elif [[ $counter -ge 3 ]]; then
 			#Add fasta file to list
-			fastaFile="$inputsPath"/"$1$i""_assemblyGenomeTrinity/Trinity.fasta "
+			fastaFile="$inputsPath/$1$i""_assemblyGenomeTrinity/Trinity.fasta "
 			fastaList="$fastaList$fastaFile "
 		fi
 		counter=$(($counter+1))
 	done
 elif [[ "$1" == trimmed* ]]; then
-	#Set output directory
-	outputFolder="$inputsPath"/"$1"_assemblyTrinity_mergedFasta
+	#Create output directory
+	outputFolder="$inputsPath/$1""_assemblyTrinity_mergedFasta"
 	#Set merged fasta file name
-	mergedFastaFile="$outputFolder"/assemblyTrinity_mergedFasta.fasta
-	summaryFile="$outputFolder"/"$1"_assemblyTrinity_mergedFasta_summary.txt
+	mergedFastaFile="$outputFolder/assemblyTrinity_mergedFasta.fasta"
+	summaryFile="$outputFolder/$1""_assemblyTrinity_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
 	for i in "$@"; do
 		#Skip first two arguments
 		if [[ $counter -eq $# ]]; then
 			#Add fasta file to list
-			fastaFile="$inputsPath"/"$1$i"_assemblyTrinity/Trinity.fasta
+			fastaFile="$inputsPath/$1$i""_assemblyTrinity/Trinity.fasta"
 			fastaList="$fastaList$fastaFile"
 		elif [[ $counter -ge 3 ]]; then
 			#Add fasta file to list
-			fastaFile="$inputsPath"/"$1$i""_assemblyTrinity/Trinity.fasta "
+			fastaFile="$inputsPath/$1$i""_assemblyTrinity/Trinity.fasta "
 			fastaList="$fastaList$fastaFile "
 		fi
 		counter=$(($counter+1))
 	done
-else 
-	echo "Invalid $1 entered... exiting!"
-	exit 1
+else #Default accept a list of full file paths
+	#Retrieve selected fasta files
+	#Loop through all input genotypes and merge fasta files
+	for i in "$@"; do
+		#Skip first two arguments
+		if [[ $counter -eq $# ]]; then
+			fastaList="$fastaList$i"
+		elif [[ $counter -ge 3 ]]; then
+			fastaList="$fastaList$i "
+		fi
+		counter=$(($counter+1))
+	done
+	#Create output directory
+	outputFolder="$inputsPath/$1_mergedFasta"
+	#Set merged fasta file name
+	mergedFastaFile="$outputFolder/$1""_mergedFasta.fasta"
+	summaryFile="$outputFolder/$1""_mergedFasta_summary.txt"
 fi
-
-#Create output directory
-mkdir $outputFolder
 
 #Write list of fasta files to the summary file
 echo "File list:" #> $summaryFile
