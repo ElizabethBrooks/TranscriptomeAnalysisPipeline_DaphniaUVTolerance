@@ -7,10 +7,12 @@
 #The easiest way to get ggplot2 is to install the whole tidyverse
 #install.packages("tidyverse")
 #install.packages("stringr")
+#install.packages("egg")
+#install.packages("ggpubr")
 
 #Import librarys
 library(ggplot2)
-library(stringr)
+library(ggpubr)
 
 #Retrieve input file name of gene counts
 args=commandArgs(trailingOnly=TRUE)
@@ -35,32 +37,32 @@ plotTitle <- "File Statistics"
 plotSeqs <- ggplot(counts, aes(x=aStats.file, y=aStats.sequences)) + 
   geom_bar(stat="identity", fill="steelblue") +
   theme_minimal() +
-  ggtitle(plotTitle) +
-  xlab("File Name") +
-  ylab("Number of Sequences")
-#Save sequence stats plot as a jpg
-outFile <- paste(normalizePath(dirname(args[1])), "plotSequences.jpg", sep="/")
-print(outFile)
-ggsave(outFile)
+  geom_text(aes(label=aStats.sequences), vjust=1.6, color="white", size=3.5) +
+  xlab("File") +
+  ylab("Sequences")
 
 #Generate second grouped bar plot
-plotLines <- ggplot(counts, aes(x=aStats.file, y=aStats.lines) + 
+plotLines <- ggplot(counts, aes(x=aStats.file, y=aStats.lines)) + 
   geom_bar(stat="identity", fill="steelblue") +
   theme_minimal() + 
-  ggtitle(plotTitle) +
-  xlab("File Name") +
-  ylab("Number of Lines")
-#Save line stats plot as a jpg
-outFile <- paste(normalizePath(dirname(args[1])), "plotLines.jpg", sep="/")
-ggsave(outFile)
+  geom_text(aes(label=aStats.lines), vjust=1.6, color="white", size=3.5) +
+  xlab("File") +
+  ylab("Lines")
 
 #Generate second grouped bar plot
-plotBytes <- ggplot(counts, aes(x=aStats.file, y=aStats.bytes) + 
+plotMBytes <- ggplot(counts, aes(x=aStats.file, y=aStats.bytes)) + 
   geom_bar(stat="identity", fill="steelblue")+
-  theme_minimal() + 
-  ggtitle(plotTitle) +
-  xlab("File Name") +
-  ylab("Number of Bytes")
-#Save bytes stats plot as a jpg
-outFile <- paste(normalizePath(dirname(args[1])), "plotBytes.jpg", sep="/")
-ggsave(outFile)
+  theme_minimal() +
+  geom_text(aes(label=aStats.bytes), vjust=1.6, color="white", size=3.5) +
+  xlab("File") +
+  ylab("MB")
+
+#Arrange stats plots on grid
+finalPlot <- ggarrange(plotSeqs, plotLines, plotMBytes, nrow=3)
+#Add plot title
+finalPlot <- annotate_figure(finalPlot,
+  top=text_grob(plotTitle, color="black", face="bold", size=14))
+
+#Save file stats plots as a jpg
+outFile <- paste(normalizePath(dirname(args[1])), "fileStats.jpg", sep="/")
+ggexport(finalPlot, filename=outFile)
