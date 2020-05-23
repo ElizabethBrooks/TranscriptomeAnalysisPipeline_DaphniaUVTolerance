@@ -23,7 +23,7 @@ if (numArgs!=1) {
 #Retrieve file stats
 aStats <- read.csv(file=args[1])
 #Create data frame of combined file stats
-counts <- data.frame(aStats$file, aStats$sequences, aStats$lines, aStats$bytes)
+counts <- data.frame(aStats$file, aStats$sequences, aStats$lines, aStats$MB)
 
 #Create matrix for multiple plots
 par(mfrow=c(3,1))
@@ -48,15 +48,15 @@ plotLines <- ggplot(counts, aes(x=aStats.file, y=aStats.lines)) +
   ylab("Lines")
 
 #Generate second grouped bar plot
-plotMBytes <- ggplot(counts, aes(x=aStats.file, y=aStats.bytes)) + 
+plotMB <- ggplot(counts, aes(x=aStats.file, y=aStats.MB)) + 
   geom_bar(stat="identity", fill="steelblue")+
   theme_minimal() +
-  geom_text(aes(label=aStats.bytes), vjust=1.6, color="white", size=3.5) +
+  geom_text(aes(label=aStats.MB), vjust=1.6, color="white", size=3.5) +
   xlab("File") +
   ylab("MB")
 
 #Arrange stats plots on grid
-finalPlot <- ggarrange(plotSeqs, plotLines, plotMBytes, nrow=3)
+finalPlot <- ggarrange(plotSeqs, plotLines, plotMB, nrow=3)
 #Add plot title
 finalPlot <- annotate_figure(finalPlot,
   top=text_grob(plotTitle, color="black", face="bold", size=14))
