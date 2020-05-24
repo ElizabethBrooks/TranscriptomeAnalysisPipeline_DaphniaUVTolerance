@@ -22,37 +22,57 @@ if (numArgs!=2) {
 
 #Retrieve file stats
 aStats <- read.csv(file=args[1])
+totalIndex <- length(rownames(aStats))
+endFiles <- totalIndex-2
+
 #Create data frame of combined file stats
-counts <- data.frame(aStats$file, aStats$sequences, aStats$lines, aStats$MB)
+statsMerged <- data.frame(aStats$file, aStats$sequences, aStats$lines, aStats$MB)
+statsFiles <- statsMerged[1:endFiles,]
 
 #Create matrix for multiple plots
 par(mfrow=c(3,1))
 
-#Set the plot titles
+#Set the plot titles and output file
 plotTitle1 <- args[2]
 plotTitle2 <- "File Stats"
-plotOut <- "fileStats.jpg"
 plotTitle <- paste(plotTitle1, plotTitle2, sep=" ")
-plotFile <- paste(plotTitle1, plotOut, sep="_")
 
-#Generate grouped bar plot
-plotSeqs <- ggplot(counts, aes(x=aStats.file, y=aStats.sequences)) + 
+#Generate sequences bar plots
+plotSeqsMerged <- ggplot(statsMerged, aes(x=aStats.file, y=aStats.sequences)) + 
+  geom_bar(stat="identity", fill="steelblue") +
+  theme_minimal() +
+  geom_text(aes(label=aStats.sequences), vjust=1.6, color="white", size=3.5) +
+  ylab("Sequences") +
+  theme(axis.title.x = element_blank())
+plotSeqsFiles <- ggplot(statsFiles, aes(x=aStats.file, y=aStats.sequences)) + 
   geom_bar(stat="identity", fill="steelblue") +
   theme_minimal() +
   geom_text(aes(label=aStats.sequences), vjust=1.6, color="white", size=3.5) +
   ylab("Sequences") +
   theme(axis.title.x = element_blank())
 
-#Generate second grouped bar plot
-plotLines <- ggplot(counts, aes(x=aStats.file, y=aStats.lines)) + 
+#Generate lines bar plots
+plotLinesMerged <- ggplot(statsMerged, aes(x=aStats.file, y=aStats.lines)) + 
+  geom_bar(stat="identity", fill="steelblue") +
+  theme_minimal() + 
+  geom_text(aes(label=aStats.lines), vjust=1.6, color="white", size=3.5) +
+  ylab("Lines") +
+  theme(axis.title.x = element_blank())
+plotLinesFiles <- ggplot(statsFiles, aes(x=aStats.file, y=aStats.lines)) + 
   geom_bar(stat="identity", fill="steelblue") +
   theme_minimal() + 
   geom_text(aes(label=aStats.lines), vjust=1.6, color="white", size=3.5) +
   ylab("Lines") +
   theme(axis.title.x = element_blank())
 
-#Generate second grouped bar plot
-plotMB <- ggplot(counts, aes(x=aStats.file, y=aStats.MB)) + 
+#Generate MB bar plots
+plotMBMerged <- ggplot(statsMerged, aes(x=aStats.file, y=aStats.MB)) + 
+  geom_bar(stat="identity", fill="steelblue")+
+  theme_minimal() +
+  geom_text(aes(label=aStats.MB), vjust=1.6, color="white", size=3.5) +
+  ylab("MB") +
+  theme(axis.title.x = element_blank())
+plotMBFiles <- ggplot(statsFiles, aes(x=aStats.file, y=aStats.MB)) + 
   geom_bar(stat="identity", fill="steelblue")+
   theme_minimal() +
   geom_text(aes(label=aStats.MB), vjust=1.6, color="white", size=3.5) +
@@ -60,12 +80,25 @@ plotMB <- ggplot(counts, aes(x=aStats.file, y=aStats.MB)) +
   theme(axis.title.x = element_blank())
 
 #Arrange stats plots on grid
-finalPlot <- ggarrange(plotSeqs, plotLines, plotMB, nrow=3)
-#Add plot title
-finalPlot <- annotate_figure(finalPlot,
+finalMergedPlot <- ggarrange(plotSeqsMerged, plotLinesMerged, plotMBMerged, nrow=3)
+finalFilesPlot <- ggarrange(plotSeqsFiles, plotLinesFiles, plotMBFiles, nrow=3)
+#Add plot title and x-axis label
+finalMergedPlot <- annotate_figure(finalMergedPlot,
+  top=text_grob(plotTitle, color="black", face="bold", size=14),
+  bottom=text_grob("File Number", color="black", size=12))
+finalFilesPlot <- annotate_figure(finalFilesPlot,
   top=text_grob(plotTitle, color="black", face="bold", size=14),
   bottom=text_grob("File Number", color="black", size=12))
 
+#Set output file names
+plotMergedOut <- "mergedStats.jpg"
+plotFilesOut <- "fileStats.jpg"
+plotMergedFile <- paste(plotTitle1, plotMergedOut, sep="_")
+plotFilesFile <- paste(plotTitle1, plotFilesOut, sep="_")
+#Set output path to the input file path
+outMergedFile <- paste(normalizePath(dirname(args[1])), plotMergedFile, sep="/")
+outFilesFile <- paste(normalizePath(dirname(args[1])), plotFilesFile, sep="/")
+
 #Save file stats plots as a jpg
-outFile <- paste(normalizePath(dirname(args[1])), plotFile, sep="/")
-ggexport(finalPlot, filename=outFile)
+ggexport(finalMergedPlot, filename=outMergedFile)
+ggexport(finalFilesPlot, filename=outFilesFile)

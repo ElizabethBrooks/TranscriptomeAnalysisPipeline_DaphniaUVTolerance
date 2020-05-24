@@ -9,7 +9,7 @@ linesTotal=0
 mBytesTotal=0
 
 #Output file list with tags
-printf "\nFile list:\n"
+printf "File list:\n"
 for i in "$@"; do
 	echo "file$counter $i"
 	#Increment counter
@@ -25,7 +25,6 @@ for i in "$@"; do
 	seqs=$(grep ">" $i | wc -l); echo "$seqs $i"
 	#Calculate running total of un-merged file stats
 	if [[ $counter -lt $# ]]; then
-		seqs=$(grep ">" $i | wc -l)
 		seqsTotal=$(($seqsTotal+$seqs))
 	fi
 	#Increment counter
@@ -39,10 +38,9 @@ counter=1
 printf "\nNumber of lines:\n"
 for i in "$@"; do
 	#Calculate current file stats
-	wc -l $i
+	lines=$(wc -l $i | awk '{print $1}'); echo "$lines $i"
 	#Calculate running total of un-merged file stats
 	if [[ $counter -lt $# ]]; then
-		lines=$(wc -l $i | awk '{print $1}')
 		linesTotal=$(($linesTotal+$lines))
 	fi
 	#Increment counter
@@ -53,13 +51,12 @@ echo "$linesTotal un-merged file total"
 counter=1
 
 #Check file sizes
-printf "\nFile sizes (bytes):\n"
+printf "\nFile sizes (MB):\n"
 for i in "$@"; do
 	#Calculate current file stats
-	ls -l --block-size=1MB $i | cut -d " " -f5; echo "$mBytes $i"
+	mBytes=$(ls -l --block-size=1MB $i | cut -d " " -f5); echo "$mBytes $i"
 	#Calculate running total of un-merged file stats
 	if [[ $counter -lt $# ]]; then
-		mBytes=$(ls -l --block-size=1MB $i | cut -d " " -f5)
 		mBytesTotal=$(($mBytesTotal+$mBytes))
 	fi
 	#Increment counter
