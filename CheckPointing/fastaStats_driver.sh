@@ -90,7 +90,7 @@ echo "File list:" > $summaryFile
 echo "$fastaList" >> $summaryFile
 echo "$mergedFastaFile" >> $summaryFile
 #Write fasta stats to the summary file
-bash fastaStats.sh $fastaList $mergedFastaFile >> $summaryFile
+#bash fastaStats.sh $fastaList $mergedFastaFile >> $summaryFile
 
 #Write fasta stats to the csv formatted summary file
 summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')

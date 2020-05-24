@@ -9,7 +9,7 @@ linesTotal=0
 mBytesTotal=0
 
 #Check number of sequences
-printf "\nNumber of sequences:"
+printf "\nNumber of sequences:\n"
 for i in "$@"; do
 	if [[ $counter -lt $# ]]; then
 		#Calculate running total of un-merged file stats
@@ -27,7 +27,7 @@ echo "$seqsTotal un-merged file total"
 #Re-set counter
 counter=1
 #Check number of lines
-printf "\nNumber of lines:"
+printf "\nNumber of lines:\n"
 for i in "$@"; do
 	if [[ $counter -lt $# ]]; then
 		#Calculate running total of un-merged file stats
@@ -45,7 +45,7 @@ echo "$linesTotal un-merged file total"
 #Re-set counter
 counter=1
 #Check file sizes
-printf "\nFile sizes (bytes):"
+printf "\nFile sizes (bytes):\n"
 for i in "$@"; do
 	if [[ $counter -lt $# ]]; then
 		#Calculate running total of un-merged file stats
