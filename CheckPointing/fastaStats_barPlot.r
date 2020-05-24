@@ -38,7 +38,6 @@ plotSeqs <- ggplot(counts, aes(x=aStats.file, y=aStats.sequences)) +
   geom_bar(stat="identity", fill="steelblue") +
   theme_minimal() +
   geom_text(aes(label=aStats.sequences), vjust=1.6, color="white", size=3.5) +
-  xlab("File") +
   ylab("Sequences")
 
 #Generate second grouped bar plot
@@ -46,7 +45,6 @@ plotLines <- ggplot(counts, aes(x=aStats.file, y=aStats.lines)) +
   geom_bar(stat="identity", fill="steelblue") +
   theme_minimal() + 
   geom_text(aes(label=aStats.lines), vjust=1.6, color="white", size=3.5) +
-  xlab("File") +
   ylab("Lines")
 
 #Generate second grouped bar plot
@@ -54,14 +52,14 @@ plotMB <- ggplot(counts, aes(x=aStats.file, y=aStats.MB)) +
   geom_bar(stat="identity", fill="steelblue")+
   theme_minimal() +
   geom_text(aes(label=aStats.MB), vjust=1.6, color="white", size=3.5) +
-  xlab("File") +
   ylab("MB")
 
 #Arrange stats plots on grid
 finalPlot <- ggarrange(plotSeqs, plotLines, plotMB, nrow=3)
 #Add plot title
 finalPlot <- annotate_figure(finalPlot,
-  top=text_grob(plotTitle, color="black", face="bold", size=14))
+  top=text_grob(plotTitle, color="black", face="bold", size=14)
+  bottom=text_grob("File Number", color="black", face="bold", size=12))
 
 #Save file stats plots as a jpg
 outFile <- paste(normalizePath(dirname(args[1])), "fileStats.jpg", sep="/")

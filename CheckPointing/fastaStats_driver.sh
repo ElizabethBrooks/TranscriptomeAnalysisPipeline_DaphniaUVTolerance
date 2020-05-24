@@ -98,3 +98,6 @@ bash fastaStats_csvFormatted.sh $fastaList > $summaryFileCSV
 
 #Plot fasta stats from summary file
 Rscript fastaStats_barPlot.r $summaryFileCSV $1
+
+#Clean up
+rm Rplots.pdf
