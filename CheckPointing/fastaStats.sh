@@ -26,6 +26,8 @@ for i in "$@"; do
 done
 echo "$seqsTotal un-merged file total"
 
+#Re-set counter
+counter=1
 #Check number of lines
 printf "\nNumber of lines:"
 for i in "$@"; do
@@ -42,6 +44,8 @@ for i in "$@"; do
 done
 echo "$linesTotal un-merged file total"
 
+#Re-set counter
+counter=1
 #Check file sizes
 printf "\nFile sizes (bytes):"
 for i in "$@"; do
