@@ -33,12 +33,12 @@ if [[ "$1" == sorted* ]]; then
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
 	for i in "$@"; do
-		#Skip first two arguments
+		#Skip first argument
 		if [[ $counter -eq $# ]]; then
 			#Add fasta file to list
 			fastaFile="$inputsPath/$1$i""_assemblyGenomeTrinity/Trinity.fasta"
 			fastaList="$fastaList$fastaFile"
-		elif [[ $counter -ge 3 ]]; then
+		elif [[ $counter -ge 2 ]]; then
 			#Add fasta file to list
 			fastaFile="$inputsPath/$1$i""_assemblyGenomeTrinity/Trinity.fasta "
 			fastaList="$fastaList$fastaFile "
@@ -54,12 +54,12 @@ elif [[ "$1" == trimmed* ]]; then
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
 	for i in "$@"; do
-		#Skip first two arguments
+		#Skip first argument
 		if [[ $counter -eq $# ]]; then
 			#Add fasta file to list
 			fastaFile="$inputsPath/$1$i""_assemblyTrinity/Trinity.fasta"
 			fastaList="$fastaList$fastaFile"
-		elif [[ $counter -ge 3 ]]; then
+		elif [[ $counter -ge 2 ]]; then
 			#Add fasta file to list
 			fastaFile="$inputsPath/$1$i""_assemblyTrinity/Trinity.fasta "
 			fastaList="$fastaList$fastaFile "
@@ -70,10 +70,10 @@ else #Default accept a list of full file paths
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
 	for i in "$@"; do
-		#Skip first two arguments
+		#Skip first argument
 		if [[ $counter -eq $# ]]; then
 			fastaList="$fastaList$i"
-		elif [[ $counter -ge 3 ]]; then
+		elif [[ $counter -ge 2 ]]; then
 			fastaList="$fastaList$i "
 		fi
 		counter=$(($counter+1))
@@ -85,20 +85,15 @@ else #Default accept a list of full file paths
 	summaryFile="$outputFolder/$1""_mergedFasta_summary.txt"
 fi
 
-#Write list of fasta files to the summary file
-echo "File list:" > $summaryFile
-echo "$fastaList" >> $summaryFile
-echo "$mergedFastaFile" >> $summaryFile
 #Write fasta stats to the summary file
-#bash fastaStats.sh $fastaList $mergedFastaFile >> $summaryFile
+bash fastaStats.sh $fastaList $mergedFastaFile >> $summaryFile
 
 #Write fasta stats to the csv formatted summary file
 summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
 bash fastaStats_csvFormatted.sh $fastaList > $summaryFileCSV
-echo "fastaStats_csvFormatted.sh $fastaList > $summaryFileCSV"
 
 #Plot fasta stats from summary file
-#Rscript fastaStats_barPlot.r $summaryFileCSV $1
+Rscript fastaStats_barPlot.r $summaryFileCSV $1
 
 #Clean up
-#rm Rplots.pdf
+rm Rplots.pdf

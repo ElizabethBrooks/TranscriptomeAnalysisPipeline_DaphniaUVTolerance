@@ -8,8 +8,18 @@ seqsTotal=0
 linesTotal=0
 mBytesTotal=0
 
+#Output file list with tags
+printf "\nFile list:\n"
+for i in "$@"; do
+	echo "file$counter $i"
+	#Increment counter
+	counter=$(($counter+1))
+done
+#Re-set counter
+counter=1
+
 #Check number of sequences
-printf "\nNumber of sequences:"
+printf "\nNumber of sequences:\n"
 for i in "$@"; do
 	if [[ $counter -lt $# ]]; then
 		#Calculate running total of un-merged file stats
@@ -23,11 +33,11 @@ for i in "$@"; do
 	counter=$(($counter+1))
 done
 echo "$seqsTotal un-merged file total"
-
 #Re-set counter
 counter=1
+
 #Check number of lines
-printf "\nNumber of lines:"
+printf "\nNumber of lines:\n"
 for i in "$@"; do
 	if [[ $counter -lt $# ]]; then
 		#Calculate running total of un-merged file stats
@@ -41,11 +51,11 @@ for i in "$@"; do
 	counter=$(($counter+1))
 done
 echo "$linesTotal un-merged file total"
-
 #Re-set counter
 counter=1
+
 #Check file sizes
-printf "\nFile sizes (bytes):"
+printf "\nFile sizes (bytes):\n"
 for i in "$@"; do
 	if [[ $counter -lt $# ]]; then
 		#Calculate running total of un-merged file stats
