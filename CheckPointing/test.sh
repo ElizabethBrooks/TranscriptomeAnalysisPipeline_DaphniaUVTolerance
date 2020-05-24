@@ -1,8 +1,8 @@
 #!/bin/bash
 #Script to merge multiple fasta files and retain only
 #the specified unique data (by sequence, name, or sequenceAndName)
-#Usage: bash mergeFasta.sh mergeBy fastaFilePaths
-#Usage Ex: bash mergeFasta.sh sequence ~/trimmed_run1/Trinity.fasta ~/trimmed_run2/Trinity.fasta
+#Usage: bash test.sh mergeBy fastaFilePaths
+#Usage Ex: bash test.sh sequence ~/trimmed_run1/Trinity.fasta ~/trimmed_run2/Trinity.fasta
 
 #Check for input arguments of fasta files
 if [ $# -eq 0 ]; then
@@ -20,33 +20,17 @@ done
 outputFastaFile="./Trinity.fasta"
 summaryFile="./mergedFasta_summary.txt"
 
-#Merge a set of fasta files
-echo "Beginning fasta file merging..."
-#Determine which method to merge fasta files by
-if [[ "$1" == sequence ]]; then
-	#Sequence identical merge
-	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
-		(FNR==1){next}
-		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
-		!(seen[seq]++){ print ">" $0 }' $fastaList > $outputFastaFile
-elif [[ "$1" == name ]]; then
-	#First part of sequence name identical merge
-	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
-		(FNR==1){next}
-		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
-		{ key=substr(name,1,index(s,"|")) }
-		!(seen[key]++){ print ">" $0 }' $fastaList > $outputFastaFile
-elif [[ "$1" == sequenceAndName ]]; then
-	#Sequence name and sequence identical merge
-	awk 'BEGIN{RS=">"; FS="\n"; ORS=""}
-		(FNR==1){next}
-		{ name=$1; seq=$0; gsub(/(^[^\n]*|)\n/,"",seq) }
-		!(seen[name,seq]++){ print ">" $0 }' $fastaList > $outputFastaFile
-else
-	echo "Selected merge format for fasta files not valid... exiting!"
-	exit 1
-fi
-echo "Fasta file merging complete!"
+
 
 #Write fasta stats to the summary file
 bash fastaStats.sh $fastaList $outputFastaFile > $summaryFile
+
+#Write fasta stats to the csv formatted summary file
+summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
+bash fastaStats_csvFormatted.sh $fastaList $outputFastaFile > $summaryFileCSV
+
+#Plot fasta stats from summary file
+Rscript fastaStats_barPlot.r $summaryFileCSV $1
+
+#Clean up
+rm Rplots.pdf
