@@ -8,8 +8,9 @@ echo "file, sequences, lines, MB"
 #Initialize counters
 counter=1
 
+echo 
 #Loop over input files and retrieve stats
-for i in "$@"; do
+for i; do
 	echo "Calculating stats for file $i..."
 	#Calculate current file stats
 	seqs=$(grep ">" $i | wc -l)

@@ -13,16 +13,16 @@ printf "\nNumber of sequences:"
 for i in "$@"; do
 	if [[ $counter -lt $# ]]; then
 		#Calculate running total of un-merged file stats
-		seqs=$(grep ">" $i | wc -l); printf "\n$seqs $i"
+		seqs=$(grep ">" $i | wc -l); echo "$seqs $i"
 		seqsTotal=$(($seqsTotal+$seqs))
 	else
 		#Calculate current file stats
-		seqs=$(grep ">" $i | wc -l); printf "\n$seqs $i"
+		seqs=$(grep ">" $i | wc -l); echo "$seqs $i"
 	fi
 	#Increment counter
 	counter=$(($counter+1))
 done
-printf "\n$seqsTotal un-merged file total"
+echo "$seqsTotal un-merged file total"
 
 #Re-set counter
 counter=1
@@ -40,7 +40,7 @@ for i in "$@"; do
 	#Increment counter
 	counter=$(($counter+1))
 done
-printf "\n$linesTotal un-merged file total"
+echo "$linesTotal un-merged file total"
 
 #Re-set counter
 counter=1
@@ -53,9 +53,9 @@ for i in "$@"; do
 		mBytesTotal=$(($mBytesTotal+$mBytes))
 	else
 		#Calculate current file stats
-		mBytes=$(ls -l --block-size=1MB $i | cut -d " " -f5); printf "\n$mBytes $i"
+		mBytes=$(ls -l --block-size=1MB $i | cut -d " " -f5); echo "$mBytes $i"
 	fi
 	#Increment counter
 	counter=$(($counter+1))
 done
-printf "\n$mBytesTotal un-merged file total"
+echo "$mBytesTotal un-merged file total"
