@@ -91,7 +91,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #Merge the set of fasta files
-bash fastaMerge_driver.sh $1 $mergedFastaFile $fastaList
+bash fastaMerge.sh $1 $mergedFastaFile $fastaList
 
 #Write fasta stats to the summary file
 bash fastaStats.sh $mergedFastaFile $fastaList > $summaryFile

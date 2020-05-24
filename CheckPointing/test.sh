@@ -19,18 +19,18 @@ for i in "${@:2}"; do
 done
 
 #Set output file paths
-outputFastaFile="./Trinity.fasta"
-summaryFile="./mergedFasta_summary.txt"
+outputFastaFile="./merged"$1"_Trinity.fasta"
+summaryFile="./merged"$1"Fasta_summary.txt"
 
 #Merge the set of fasta files
-bash fastaMerge_driver.sh $1 $outputFastaFile $fastaList
+bash fastaMerge.sh $1 $outputFastaFile $fastaList
 
 #Write fasta stats to the summary file
-bash fastaStats.sh $outputFastaFile $fastaList > $summaryFile
+bash fastaStats.sh $fastaList $outputFastaFile > $summaryFile
 
 #Write fasta stats to the csv formatted summary file
 summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
-bash fastaStats_csvFormatted.sh $outputFastaFile $fastaList > $summaryFileCSV
+bash fastaStats_csvFormatted.sh $fastaList $outputFastaFile > $summaryFileCSV
 
 #Plot fasta stats from summary file
 Rscript fastaStats_barPlot.r $1 $summaryFileCSV

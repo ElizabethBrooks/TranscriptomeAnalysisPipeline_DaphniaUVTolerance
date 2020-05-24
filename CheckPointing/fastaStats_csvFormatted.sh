@@ -1,6 +1,6 @@
 #!/bin/bash
 #Script to retrieve stats for an input list of files
-#Usage: bash fastaStats_csvFormatted.sh fastaFilePaths
+#Usage: bash fastaStats_csvFormatted.sh fastaFilePaths mergedFile
 
 #Create header for csv
 echo "file, sequences, lines, MB"
@@ -21,12 +21,11 @@ for i; do
 	echo "file$counter, $seqs, $lines, $mBytes"
 
 	#Calculate running total of un-merged file stats
-	if [[ $counter -gt 1 ]]; then
+	if [[ $counter -lt $# ]]; then
 		seqsTotal=$(($seqsTotal+$seqs))
 		linesTotal=$(($linesTotal+$lines))
 		mBytesTotal=$(($mBytesTotal+$mBytes))
 	fi
-
 	#Increment counter
 	counter=$(($counter+1))
 done

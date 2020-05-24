@@ -1,6 +1,6 @@
 #!/bin/bash
 #Script to retrieve stats for an input list of files
-#Usage: bash fastaStats.sh fileList
+#Usage: bash fastaStats.sh fastaFilePaths mergedFile
 
 #Initialize counters
 counter=1
@@ -24,7 +24,7 @@ for i in "$@"; do
 	#Calculate current file stats
 	seqs=$(grep ">" $i | wc -l); echo "$seqs $i"
 	#Calculate running total of un-merged file stats
-	if [[ $counter -gt 1 ]]; then
+	if [[ $counter -lt $# ]]; then
 		seqsTotal=$(($seqsTotal+$seqs))
 	fi
 	#Increment counter
@@ -40,7 +40,7 @@ for i in "$@"; do
 	#Calculate current file stats
 	lines=$(wc -l $i | awk '{print $1}'); echo "$lines $i"
 	#Calculate running total of un-merged file stats
-	if [[ $counter -gt 1 ]]; then
+	if [[ $counter -lt $# ]]; then
 		linesTotal=$(($linesTotal+$lines))
 	fi
 	#Increment counter
@@ -56,7 +56,7 @@ for i in "$@"; do
 	#Calculate current file stats
 	mBytes=$(ls -l --block-size=1MB $i | cut -d " " -f5); echo "$mBytes $i"
 	#Calculate running total of un-merged file stats
-	if [[ $counter -gt 1 ]]; then
+	if [[ $counter -lt $# ]]; then
 		mBytesTotal=$(($mBytesTotal+$mBytes))
 	fi
 	#Increment counter

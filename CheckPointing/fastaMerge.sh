@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to perform merge mergedfasta files and retain only
 #the specified unique data (by sequence, ID, or both)
-#Usage: bash fastaMerge_driver.sh mergeBy mergeFileName sortedFolderList
+#Usage: bash fastaMerge.sh mergeBy mergeFileName sortedFolderList
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
