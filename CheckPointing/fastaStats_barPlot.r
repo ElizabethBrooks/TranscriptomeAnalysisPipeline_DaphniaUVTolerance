@@ -62,7 +62,7 @@ finalPlot <- ggarrange(plotSeqs, plotLines, plotMB, nrow=3)
 #Add plot title
 finalPlot <- annotate_figure(finalPlot,
   top=text_grob(plotTitle, color="black", face="bold", size=14),
-  bottom=text_grob("File Number", color="black", face="bold", size=12))
+  bottom=text_grob("File Number", color="black", size=12))
 
 #Save file stats plots as a jpg
 outFile <- paste(normalizePath(dirname(args[1])), "fileStats.jpg", sep="/")
