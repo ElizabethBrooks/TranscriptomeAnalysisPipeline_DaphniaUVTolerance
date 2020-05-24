@@ -31,7 +31,9 @@ par(mfrow=c(3,1))
 #Set the plot titles
 plotTitle1 <- args[2]
 plotTitle2 <- "File Stats"
+plotOut <- "fileStats.jpg"
 plotTitle <- paste(plotTitle1, plotTitle2, sep=" ")
+plotFile <- paste(plotTitle1, plotOut, sep="_")
 
 #Generate grouped bar plot
 plotSeqs <- ggplot(counts, aes(x=aStats.file, y=aStats.sequences)) + 
@@ -65,5 +67,5 @@ finalPlot <- annotate_figure(finalPlot,
   bottom=text_grob("File Number", color="black", size=12))
 
 #Save file stats plots as a jpg
-outFile <- paste(normalizePath(dirname(args[1])), "fileStats.jpg", sep="/")
+outFile <- paste(normalizePath(dirname(args[1])), plotFile, sep="/")
 ggexport(finalPlot, filename=outFile)

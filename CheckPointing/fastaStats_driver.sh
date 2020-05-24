@@ -25,10 +25,9 @@ inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "
 
 #Determine assembly target
 if [[ "$1" == sorted* ]]; then
-	#Create output directory
+	#Set output directory
 	outputFolder="$inputsPath/$1""_assemblyGenomeTrinity_mergedFasta"
-	#Set merged fasta file name
-	mergedFastaFile="$outputFolder/assemblyGenomeTrinity_mergedFasta.fasta"
+	#Set output summary file name
 	summaryFile="$outputFolder/$1""_assemblyGenomeTrinity_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
@@ -46,10 +45,9 @@ if [[ "$1" == sorted* ]]; then
 		counter=$(($counter+1))
 	done
 elif [[ "$1" == trimmed* ]]; then
-	#Create output directory
+	#Set output directory
 	outputFolder="$inputsPath/$1""_assemblyTrinity_mergedFasta"
-	#Set merged fasta file name
-	mergedFastaFile="$outputFolder/assemblyTrinity_mergedFasta.fasta"
+	#Set output summary file name
 	summaryFile="$outputFolder/$1""_assemblyTrinity_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
@@ -67,6 +65,10 @@ elif [[ "$1" == trimmed* ]]; then
 		counter=$(($counter+1))
 	done
 else #Default accept a list of full file paths
+	#Set output directory
+	outputFolder="$inputsPath/$1_mergedFasta"
+	#Set output summary file name
+	summaryFile="$outputFolder/$1""_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
 	for i in "$@"; do
@@ -78,15 +80,7 @@ else #Default accept a list of full file paths
 		fi
 		counter=$(($counter+1))
 	done
-	#Create output directory
-	outputFolder="$inputsPath/$1_mergedFasta"
-	#Set merged fasta file name
-	mergedFastaFile="$outputFolder/$1""_mergedFasta.fasta"
-	summaryFile="$outputFolder/$1""_mergedFasta_summary.txt"
 fi
-
-#Write fasta stats to the summary file
-bash fastaStats.sh $fastaList $mergedFastaFile >> $summaryFile
 
 #Write fasta stats to the csv formatted summary file
 summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')

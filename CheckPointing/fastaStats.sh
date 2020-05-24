@@ -39,7 +39,7 @@ counter=1
 #Check number of lines
 printf "\nNumber of lines:\n"
 for i in "$@"; do
-	if [[ $counter -lt $# ]]; then
+	if [[ $counter == $# ]]; then
 		#Calculate running total of un-merged file stats
 		lines=$(wc -l $i | awk '{print $1}')
 		linesTotal=$(($linesTotal+$lines))
@@ -57,13 +57,13 @@ counter=1
 #Check file sizes
 printf "\nFile sizes (bytes):\n"
 for i in "$@"; do
-	if [[ $counter -lt $# ]]; then
+	if [[ $counter == $# ]]; then
 		#Calculate running total of un-merged file stats
 		mBytes=$(ls -l --block-size=1MB $i | cut -d " " -f5)
 		mBytesTotal=$(($mBytesTotal+$mBytes))
 	else
 		#Calculate current file stats
-		mBytes=$(ls -l --block-size=1MB $i | cut -d " " -f5); echo "$mBytes $i"
+		ls -l --block-size=1MB $i | cut -d " " -f5; echo "$mBytes $i"
 	fi
 	#Increment counter
 	counter=$(($counter+1))
