@@ -16,8 +16,8 @@ library(ggpubr)
 args=commandArgs(trailingOnly=TRUE)
 numArgs=length(args)
 #Test if there is one input argument
-if (numArgs!=1) {
-  stop("A file name must be supplied.n", call.=FALSE)
+if (numArgs!=2) {
+  stop("A file name and plot title must be supplied.n", call.=FALSE)
 }
 
 #Retrieve file stats
@@ -29,7 +29,9 @@ counts <- data.frame(aStats$file, aStats$sequences, aStats$lines, aStats$MB)
 par(mfrow=c(3,1))
 
 #Set the plot titles
-plotTitle <- args[2]" File Statistics"
+plotTitle1 <- args[2]
+plotTitle2 <- "File Stats"
+plotTitle <- paste(plotTitle1, plotTitle2, sep=" ")
 
 #Generate grouped bar plot
 plotSeqs <- ggplot(counts, aes(x=aStats.file, y=aStats.sequences)) + 
