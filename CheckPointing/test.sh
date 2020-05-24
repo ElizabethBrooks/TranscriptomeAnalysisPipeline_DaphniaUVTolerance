@@ -33,7 +33,7 @@ summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
 bash fastaStats_csvFormatted.sh $fastaList $outputFastaFile > $summaryFileCSV
 
 #Plot fasta stats from summary file
-Rscript fastaStats_barPlot.r $1 $summaryFileCSV
+Rscript fastaStats_barPlots.r $1 $summaryFileCSV
 
 #Clean up
 rm Rplots.pdf

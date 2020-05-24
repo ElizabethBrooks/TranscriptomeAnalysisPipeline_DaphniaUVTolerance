@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-#Usage: Rscript fastaStats_barPlot.r title statsSummaryFile
+#Usage: Rscript fastaStats_barPlots.r title statsSummaryFile
 #R script to generate bar plots of file stats
 
 #Installations need to be performed once
