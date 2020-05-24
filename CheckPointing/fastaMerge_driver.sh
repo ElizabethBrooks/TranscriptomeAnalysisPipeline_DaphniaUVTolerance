@@ -119,4 +119,4 @@ fi
 echo "Fasta file merging complete!"
 
 #Write fasta stats to the summary file
-bash fastaStats.sh $fastaList $mergedFastaFile >> $summaryFile
+bash fastaStats.sh $fastaList $mergedFastaFile > $summaryFile
