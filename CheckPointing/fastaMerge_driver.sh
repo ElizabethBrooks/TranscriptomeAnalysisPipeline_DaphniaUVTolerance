@@ -19,15 +19,15 @@ fastaList=""
 
 #Retrieve fasta output absolute path
 outputsPath=$(grep "mergedFASTA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/mergedFASTA://g")
+#Retrieve fasta file path
+inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 
 #Determine assembly target
 if [[ "$2" == sorted* ]]; then
-	#Retrieve fasta file path
-	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	#Create output directory
 	outputFolder="$outputsPath/$2""_assemblyGenomeTrinity_mergedFasta"
-	#Set merged fasta file name
-	mergedFastaFile="$outputFolder/assemblyGenomeTrinity_mergedFasta.fasta"
+	#Set output file names
+	mergedFastaFile="$outputFolder/Trinity.fasta"
 	summaryFile="$outputFolder/$2""_assemblyGenomeTrinity_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
@@ -45,8 +45,11 @@ if [[ "$2" == sorted* ]]; then
 		counter=$(($counter+1))
 	done
 elif [[ "$2" == trimmed* ]]; then
-	#Retrieve fasta file path
-	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	#Create output directory
+	outputFolder="$outputsPath/$2""_assemblyTrinity_mergedFasta"
+	#Set output file names
+	mergedFastaFile="$outputFolder/Trinity.fasta"
+	summaryFile="$outputFolder/$2""_assemblyTrinity_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
 	for i in "$@"; do
@@ -62,12 +65,12 @@ elif [[ "$2" == trimmed* ]]; then
 		fi
 		counter=$(($counter+1))
 	done
-	#Create output directory
-	outputFolder="$outputsPath/$2""_assemblyTrinity_mergedFasta"
-	#Set merged fasta file name
-	mergedFastaFile="$outputFolder/assemblyTrinity_mergedFasta.fasta"
-	summaryFile="$outputFolder/$2""_assemblyTrinity_mergedFasta_summary.txt"
 else #Default accept a list of full file paths
+	#Create output directory
+	outputFolder="$outputsPath/$2_mergedFasta"
+	#Set output file names
+	mergedFastaFile="$outputFolder/Trinity.fasta"
+	summaryFile="$outputFolder/$2""_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
 	for i in "$@"; do
@@ -79,11 +82,6 @@ else #Default accept a list of full file paths
 		fi
 		counter=$(($counter+1))
 	done
-	#Create output directory
-	outputFolder="$outputsPath/$2_mergedFasta"
-	#Set merged fasta file name
-	mergedFastaFile="$outputFolder/$2""_mergedFasta.fasta"
-	summaryFile="$outputFolder/$2""_mergedFasta_summary.txt"
 fi
 #Check if the folder already exists
 mkdir "$outputFolder"

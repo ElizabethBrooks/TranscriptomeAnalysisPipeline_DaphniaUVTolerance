@@ -27,7 +27,8 @@ inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "
 if [[ "$1" == sorted* ]]; then
 	#Set output directory
 	outputFolder="$inputsPath/$1""_assemblyGenomeTrinity_mergedFasta"
-	#Set output summary file name
+	#Set output file names
+	mergedFastaFile="$outputFolder/Trinity.fasta"
 	summaryFile="$outputFolder/$1""_assemblyGenomeTrinity_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
@@ -47,7 +48,8 @@ if [[ "$1" == sorted* ]]; then
 elif [[ "$1" == trimmed* ]]; then
 	#Set output directory
 	outputFolder="$inputsPath/$1""_assemblyTrinity_mergedFasta"
-	#Set output summary file name
+	#Set output file names
+	mergedFastaFile="$outputFolder/Trinity.fasta"
 	summaryFile="$outputFolder/$1""_assemblyTrinity_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
@@ -67,7 +69,8 @@ elif [[ "$1" == trimmed* ]]; then
 else #Default accept a list of full file paths
 	#Set output directory
 	outputFolder="$inputsPath/$1_mergedFasta"
-	#Set output summary file name
+	#Set output file names
+	mergedFastaFile="$outputFolder/Trinity.fasta"
 	summaryFile="$outputFolder/$1""_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and merge fasta files
@@ -84,7 +87,7 @@ fi
 
 #Write fasta stats to the csv formatted summary file
 summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
-bash fastaStats_csvFormatted.sh $fastaList > $summaryFileCSV
+bash fastaStats_csvFormatted.sh $fastaList $mergedFastaFile > $summaryFileCSV
 
 #Plot fasta stats from summary file
 Rscript fastaStats_barPlot.r $summaryFileCSV $1
