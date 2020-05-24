@@ -7,14 +7,14 @@
 #Usage Ex: bash fastaStats_driver.sh trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Default usage Ex: bash fastaStats_driver.sh assemblyTrinity_all
 
+#Load module necessary for crc servers
+module load R
+
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder inputs supplied... exiting"
    	exit 1
 fi
-
-#Load module necessary for crc servers
-module load R
 
 #Initialize variables
 counter=1
