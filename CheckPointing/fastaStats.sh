@@ -7,8 +7,6 @@ counter=1
 seqsTotal=0
 linesTotal=0
 mBytesTotal=0
-lines=0
-bytes=0
 
 #Check number of sequences
 printf "\nNumber of sequences:"
@@ -33,7 +31,7 @@ printf "\nNumber of lines:"
 for i in "$@"; do
 	if [[ $counter -lt $# ]]; then
 		#Calculate running total of un-merged file stats
-		lines=$(wc -l $i)
+		lines=$(wc -l $i | awk '{print $1}')
 		linesTotal=$(($linesTotal+$lines))
 	else
 		#Calculate current file stats
