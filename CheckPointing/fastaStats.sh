@@ -24,7 +24,7 @@ for i in "$@"; do
 	#Calculate current file stats
 	seqs=$(grep ">" $i | wc -l); echo "$seqs $i"
 	#Calculate running total of un-merged file stats
-	if [[ $counter -lt $# ]]; then
+	if [[ $counter -gt 1 ]]; then
 		seqsTotal=$(($seqsTotal+$seqs))
 	fi
 	#Increment counter
@@ -40,7 +40,7 @@ for i in "$@"; do
 	#Calculate current file stats
 	lines=$(wc -l $i | awk '{print $1}'); echo "$lines $i"
 	#Calculate running total of un-merged file stats
-	if [[ $counter -lt $# ]]; then
+	if [[ $counter -gt 1 ]]; then
 		linesTotal=$(($linesTotal+$lines))
 	fi
 	#Increment counter
@@ -56,7 +56,7 @@ for i in "$@"; do
 	#Calculate current file stats
 	mBytes=$(ls -l --block-size=1MB $i | cut -d " " -f5); echo "$mBytes $i"
 	#Calculate running total of un-merged file stats
-	if [[ $counter -lt $# ]]; then
+	if [[ $counter -gt 1 ]]; then
 		mBytesTotal=$(($mBytesTotal+$mBytes))
 	fi
 	#Increment counter

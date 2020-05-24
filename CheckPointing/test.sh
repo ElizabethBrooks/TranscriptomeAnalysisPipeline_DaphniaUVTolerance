@@ -22,17 +22,18 @@ done
 outputFastaFile="./Trinity.fasta"
 summaryFile="./mergedFasta_summary.txt"
 
-
+#Merge the set of fasta files
+bash fastaMerge_driver.sh $1 $outputFastaFile $fastaList
 
 #Write fasta stats to the summary file
-#bash fastaStats.sh $fastaList $outputFastaFile > $summaryFile
+bash fastaStats.sh $outputFastaFile $fastaList > $summaryFile
 
 #Write fasta stats to the csv formatted summary file
 summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
-#bash fastaStats_csvFormatted.sh $fastaList $outputFastaFile > $summaryFileCSV
+bash fastaStats_csvFormatted.sh $outputFastaFile $fastaList > $summaryFileCSV
 
 #Plot fasta stats from summary file
-Rscript fastaStats_barPlot.r $summaryFileCSV $1
+Rscript fastaStats_barPlot.r $1 $summaryFileCSV
 
 #Clean up
 rm Rplots.pdf

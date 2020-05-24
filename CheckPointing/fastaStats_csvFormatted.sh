@@ -21,12 +21,12 @@ for i; do
 	echo "file$counter, $seqs, $lines, $mBytes"
 
 	#Calculate running total of un-merged file stats
-	if [[ $counter -lt $# ]]; then
+	if [[ $counter -gt 1 ]]; then
 		seqsTotal=$(($seqsTotal+$seqs))
 		linesTotal=$(($linesTotal+$lines))
 		mBytesTotal=$(($mBytesTotal+$mBytes))
 	fi
-	
+
 	#Increment counter
 	counter=$(($counter+1))
 done

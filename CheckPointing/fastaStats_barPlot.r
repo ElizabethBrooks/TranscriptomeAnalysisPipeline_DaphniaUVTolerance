@@ -1,6 +1,5 @@
 #!/usr/bin/env Rscript
-#Usage: Rscript fastaStats_barPlot.r statsSummaryFile title
-#Usage Ex: Rscript fastaStats_barPlot.r /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/trimmed_run1_assemblyTrinity_mergedFasta/trimmed_run1_assemblyTrinity_mergedFasta_summary.csv trimmed_run1_assemblyTrinity
+#Usage: Rscript fastaStats_barPlot.r title statsSummaryFile
 #R script to generate bar plots of file stats
 
 #Installations need to be performed once
@@ -21,7 +20,7 @@ if (numArgs!=2) {
 }
 
 #Retrieve file stats
-aStats <- read.csv(file=args[1])
+aStats <- read.csv(file=args[2])
 totalIndex <- length(rownames(aStats))
 endFiles <- totalIndex-2
 
@@ -33,7 +32,7 @@ statsFiles <- statsMerged[1:endFiles,]
 par(mfrow=c(3,1))
 
 #Set the plot titles and output file
-plotTitle1 <- args[2]
+plotTitle1 <- args[1]
 plotTitle2 <- "File Stats"
 plotTitle <- paste(plotTitle1, plotTitle2, sep=" ")
 
@@ -96,8 +95,8 @@ plotFilesOut <- "fileStats.jpg"
 plotMergedFile <- paste(plotTitle1, plotMergedOut, sep="_")
 plotFilesFile <- paste(plotTitle1, plotFilesOut, sep="_")
 #Set output path to the input file path
-outMergedFile <- paste(normalizePath(dirname(args[1])), plotMergedFile, sep="/")
-outFilesFile <- paste(normalizePath(dirname(args[1])), plotFilesFile, sep="/")
+outMergedFile <- paste(normalizePath(dirname(args[2])), plotMergedFile, sep="/")
+outFilesFile <- paste(normalizePath(dirname(args[2])), plotFilesFile, sep="/")
 
 #Save file stats plots as a jpg
 ggexport(finalMergedPlot, filename=outMergedFile)
