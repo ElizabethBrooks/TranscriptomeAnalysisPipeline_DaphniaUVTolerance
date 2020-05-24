@@ -39,7 +39,7 @@ plotSeqs <- ggplot(counts, aes(x=aStats.file, y=aStats.sequences)) +
   theme_minimal() +
   geom_text(aes(label=aStats.sequences), vjust=1.6, color="white", size=3.5) +
   ylab("Sequences") +
-  axis.title.x = element_blank()
+  theme(axis.title.x = element_blank())
 
 #Generate second grouped bar plot
 plotLines <- ggplot(counts, aes(x=aStats.file, y=aStats.lines)) + 
@@ -47,7 +47,7 @@ plotLines <- ggplot(counts, aes(x=aStats.file, y=aStats.lines)) +
   theme_minimal() + 
   geom_text(aes(label=aStats.lines), vjust=1.6, color="white", size=3.5) +
   ylab("Lines") +
-  axis.title.x = element_blank()
+  theme(axis.title.x = element_blank())
 
 #Generate second grouped bar plot
 plotMB <- ggplot(counts, aes(x=aStats.file, y=aStats.MB)) + 
@@ -55,7 +55,7 @@ plotMB <- ggplot(counts, aes(x=aStats.file, y=aStats.MB)) +
   theme_minimal() +
   geom_text(aes(label=aStats.MB), vjust=1.6, color="white", size=3.5) +
   ylab("MB") +
-  axis.title.x = element_blank()
+  theme(axis.title.x = element_blank())
 
 #Arrange stats plots on grid
 finalPlot <- ggarrange(plotSeqs, plotLines, plotMB, nrow=3)
