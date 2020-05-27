@@ -91,16 +91,20 @@ if [ $? -ne 0 ]; then
 fi
 
 #Merge the set of fasta files
+echo "Beginning fasta file merging..."
 bash fastaMerge.sh $1 $mergedFastaFile $fastaList
 
 #Write fasta stats to the summary file
+echo "Beginning file statistics summarizing..."
 bash fastaStats.sh $mergedFastaFile $fastaList > $summaryFile
 
 #Write fasta stats to the csv formatted summary file
+echo "Beginning file statistics formatting..."
 summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
 bash fastaStats_csvFormatted.sh $mergedFastaFile $fastaList > $summaryFileCSV
 
 #Plot fasta stats from summary file
+echo "Beginning file statistics plotting..."
 Rscript fastaStats_barPlots.r $1 $summaryFileCSV
 
 #Clean up

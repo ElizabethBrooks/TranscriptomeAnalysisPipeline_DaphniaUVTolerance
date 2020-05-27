@@ -1,6 +1,6 @@
 #!/bin/bash
 #Script to perform merge mergedfasta files and retain only
-#the specified unique data (by sequence, ID, or both)
+#the specified unique data (by sequence, name, or sequenceAndName)
 #Usage: bash fastaMerge.sh mergeBy mergeFileName sortedFolderList
 
 #Check for input arguments of folder names
@@ -15,8 +15,6 @@ for i in "${@:3}"; do
     fastaList="$fastaList$i "
 done
 
-#Merge the set of fasta files
-echo "Beginning fasta file merging..."
 #Determine which method to merge fasta files by
 if [[ "$1" == *equence ]]; then
 	#Sequence identical merge
@@ -41,4 +39,3 @@ else
 	echo "Selected merge format for fasta files not valid... exiting!"
 	exit 1
 fi
-echo "Fasta file merged to $2"
