@@ -17,7 +17,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Determine current directory path
-currPath=$(dirname $PWD)
+softsPath=$(grep "packageTransdecoder:" ../InputData/inputPaths.txt | tr -d " " | sed "s/packageTransdecoder://g")
 #Retrieve genome reference and features paths
 #genomeRef=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 genomeFeat=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
@@ -40,7 +40,7 @@ cd "$outputFolder"
 #Optionally, identify peptides with homology to known proteins
 #TransDecoder.Predict -t "$multiFASTA"
 #Generate a genome-based coding region annotation file
-perl "$currPath"/util/cdna_alignment_orf_to_genome_orf.pl \
+perl "$softsPath"/util/cdna_alignment_orf_to_genome_orf.pl \
      transcripts.fasta.transdecoder.gff3 \
      "$genomeFeat" \
      "$multiFASTA" > transcripts.fasta.transdecoder.genome.gff3

@@ -9,3 +9,4 @@ ncbiDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/datab
 uniprotDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_uniprot/uniref100.fasta
 pfamDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_pfam/Pfam-A.hmm
 packageSanspanz: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/SANSPANZ.3
+packageTransdecoder: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/TransDecoder-master
