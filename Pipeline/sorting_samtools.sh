@@ -83,11 +83,12 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Loop through all reads and sort sam/bam files for input to samtools
 for f1 in "$inputsPath"/"$2"/*/; do
 	#Determine what extension the files have
-	curSampleHits=$(echo "$f1"*)
-	curSampleHits=$(basename "$curSampleHits")
-	extension=${curSampleHits##*.}
+	#curSampleHits=$(echo "$f1"*)
+	#curSampleHits=$(basename "$curSampleHits")
+	#extension=${curSampleHits##*.}
 	#Name of aligned file
-	curAlignedSample="$f1"accepted_hits."$extension"
+	#curAlignedSample="$f1"accepted_hits."$extension"
+	curAlignedSample="$f1"accepted_hits.bam
 	#Trim file path from current folder name
 	curSampleNoPath=$(basename "$f1")
 	#Create directory for current sample outputs
