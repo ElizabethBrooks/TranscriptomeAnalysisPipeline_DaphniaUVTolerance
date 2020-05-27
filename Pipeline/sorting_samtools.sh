@@ -89,7 +89,7 @@ for f1 in "$inputsPath"/"$2"/*/; do
 	#Name of aligned file
 	curAlignedSample="$f1"accepted_hits."$extension"
 	#Trim file path from current folder name
-	curSampleNoPath=$(echo "$f1")
+	curSampleNoPath=$(basename "$f1")
 	#Create directory for current sample outputs
 	mkdir "$outputFolder"/"$curSampleNoPath"
 	#Output current sample name to summary file
