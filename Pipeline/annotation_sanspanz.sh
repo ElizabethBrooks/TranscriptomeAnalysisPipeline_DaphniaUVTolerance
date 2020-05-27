@@ -9,6 +9,7 @@
 #Usage Ex: qsub annotation_sanspanz.sh aligned_hisat2_run1/decoded_transdecoder_genomeBased
 #Usage Ex: qsub annotation_sanspanz.sh trimmed_run1E05_assemblyTrinity/decoded_transdecoder E05
 #Usage Ex: qsub annotation_sanspanz.sh sortedCoordinate_samtoolsTophat2_run1E05_assemblyGenomeTrinity/decoded_transdecoder E05
+#Usage Ex: qsub annotation_sanspanz.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyGenomeTrinity/decoded_transdecoder E05
 
 #Load necessary modules for ND CRC servers
 module load bio/2.0

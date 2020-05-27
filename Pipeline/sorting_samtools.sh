@@ -6,22 +6,23 @@
 #$ -pe smp 8
 #Script to perform samtools sorting of trimmed, then aligned
 # paired end reads
-#Usage: qsub sorting_samtools.sh -sortingMethod alignedFolder
-#Usage Ex: qsub sorting_samtools.sh -name aligned_tophat2_run1
+#Usage: qsub sorting_samtools.sh sortingTarget alignedFolder optionalAssembledFolder sortingMethod
+#Usage Ex: qsub sorting_samtools.sh genome aligned_tophat2_run1 name
+#Usage Ex: qsub sorting_samtools.sh assembly aligned_hisat2_run1 sortedCoordinate_samtoolsTophat2_run1E05_assemblyGenomeTrinity name
 
 #Required modules for ND CRC servers
-module load bio
+module load bio/2.0
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
 #Retrieve sorting method flags from input
-if [[ "$1" == "-name" || "$1" == "-Name" || "$1" == "-n" || "$1" == "-N" ]]; then
+if [[ "$4" == "name" || "$4" == "Name" || "$4" == "n" || "$4" == "N" ]]; then
 	#Name sorted flag with num threads flag
 	flags="-@ 8 -n"
 	methodTag="Name"
-elif [[ "$1" == "-coordinate" || "$1" == "-Coordinate" || "$1" == "-c" || "$1" == "-C" ]]; then
+elif [[ "$4" == "coordinate" || "$4" == "Coordinate" || "$4" == "c" || "$4" == "C" ]]; then
 	#Coordinate sorted with num threads flag
 	flags="-@ 8"
 	methodTag="Coordinate"
@@ -30,14 +31,20 @@ else
 	echo "ERROR: a flag for sorting method (name or coordiante) is expected... exiting"
 	exit 1
 fi
-#Determine if the folder name was input in the correct format
-if [[ "$2" == *\/* ]] || [[ "$2" == *\\* ]]; then
-	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
-	exit 1
-fi
-#Determine if the correct analysis folder was input
-if [[ "$2"  != aligned* ]]; then
-	echo "ERROR: The "$2" folder of aligned bam files were not found... exiting"
+#Determine which analysis folder was input
+if [[ "$1"  == assembly ]]; then
+	#inputsPath reads input absolute path
+	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	inputsPath="$inputsPath"/"$3"
+	#Retrieve alignment outputs absolute path
+	outputsPath="$inputsPath"
+elif [[ "$1"  == genome ]]; then
+	#Retrieve aligned reads input absolute path
+	inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+	#Retrieve sorting outputs absolute path
+	outputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+else
+	echo "ERROR: The input alignment target is not valid... exiting!"
 	exit 1
 fi
 #Determine what analysis method was used for the input folder of data
@@ -51,14 +58,8 @@ else
 	echo "ERROR: The "$2" folder of files were not found... exiting"
 	exit 1
 fi
-#Retrieve aligned reads input absolute path
-inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
-#Retrieve sorting outputs absolute path
-outputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
 #Move to outputs directory
 cd "$outputsPath"
-#module load bio/python/2.7.14
-#module load bio/htseq/0.11.2
 #Prepare for analysis
 dirFlag=0
 runNum=1

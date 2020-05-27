@@ -10,6 +10,7 @@
 #Usage Ex: bash pipelineDriver_subsetting.sh buildingHisat2 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 trimmed_run1 trimmed_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 trimmed_run1 sortedCoordinate_samtoolsHisat2_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh sorting aligned_hisat2_run1 sortedCoordinate_samtoolsTophat2_run1E05_assemblyGenomeTrinity name Y05 Y023_5 E05 R2 PA Sierra
 
 #Check for input arguments of analysis method, data folder, and sample name(s)
 if [ $# -lt 3 ]; then
@@ -75,6 +76,25 @@ elif [[ "$1" == genomeAssembly || "$1" == decodingPB ]]; then #These are analysi
 				#Usage: qsub decoding_transdecoderPfamBlastp.sh deNovoAssembledTranscriptomeFolder databaseSelection
 				qsub decoding_transdecoderPfamBlastp.sh "$inputFolder" "$3"
 			fi
+		fi
+		counter=$(($counter+1))
+	done
+elif [[ "$1" == sorting ]]; then #These are analysis methods that require three additional input args
+	#Loop through all input sets of treatments and perform selected analsysis
+	for i in "$@"; do
+		#Determine what type of data folder was input
+		if [[ "$3" == trimmed* ]]; then
+			inputFolder=$(echo "$3""$i"_assemblyTrinity)
+		elif [[ "$3" == sorted* ]]; then
+			inputFolder=$(echo "$3""$i"_assemblyGenomeTrinity)
+		else
+			echo "ERROR: Input folder for analysis is not a valid option... exiting!"
+			exit 1
+		fi
+		#Skip first 4 arguments
+		if [ $counter -ge 5 ]; then
+			#Usage: qsub sorting_samtools.sh sortingTarget alignedFolder assembledFolder sortingMethod
+			qsub sorting_samtools.sh assembly "$2" "$inputFolder" "$4"
 		fi
 		counter=$(($counter+1))
 	done
