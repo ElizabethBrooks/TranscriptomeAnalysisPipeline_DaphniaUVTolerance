@@ -39,8 +39,10 @@ cd "$outputFolder"
 #TransDecoder.LongOrfs -t "$multiFASTA"
 #Optionally, identify peptides with homology to known proteins
 #TransDecoder.Predict -t "$multiFASTA"
+#Retrieve genome reference name
+refName=$(basename "$multiFASTA")
 #Generate a genome-based coding region annotation file
 perl "$softsPath"/util/cdna_alignment_orf_to_genome_orf.pl \
-     transcripts.fasta.transdecoder.gff3 \
+     "$outputFolder"/"$refName".transdecoder.gff3 \
      "$genomeFeat" \
-     "$multiFASTA" > transcripts.fasta.transdecoder.genome.gff3
+     "$multiFASTA" > "$outputFolder"/"$refName".transdecoder.genome.gff3

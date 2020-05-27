@@ -45,5 +45,5 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Run sanspanz for functional annotation
-python "$softsPath"/runsanspanz.py -R -m SANS -s "$species" -i "$inOutsPath"/transcripts.fasta.transdecoder.pep -o sans.tab
+python "$softsPath"/runsanspanz.py -R -m SANS -s "$species" -i "$inOutsPath"/Trinity.fasta.transdecoder.pep -o sans.tab
 python "$softsPath"/runsanspanz.py -R -m Pannzer -i sans.tab -f tab -o ",DE.out1,GO.out1,anno.out1"
