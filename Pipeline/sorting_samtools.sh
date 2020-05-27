@@ -127,5 +127,6 @@ for f1 in "$inputsPath"/"$2"/*/; do
 		#Add run inputs to output summary file
 		echo samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam.bam >> "$inputOutFile"
 	fi
+done
 #Copy previous summaries
 cp "$inputsPath"/"$2"/*.txt "$outputFolder"
