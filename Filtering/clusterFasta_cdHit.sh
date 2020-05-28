@@ -14,6 +14,8 @@ fi
 #Initialize variables
 counter=1
 fastaList=""
+#Retrieve cd-hit software package path
+softsPath=$(grep "packageCdhit:" ../InputData/inputPaths.txt | tr -d " " | sed "s/packageCdhit://g")
 #Retrieve fasta output absolute path
 outputsPath=$(grep "multiFASTA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/multiFASTA://g")
 #Perform stringent clustering of sequences
@@ -35,7 +37,7 @@ if [[ "$2" == sorted* ]]; then
 		if [[ $counter -ge 3 ]]; then
 			#Set current fasta file path
 			fastaFile="$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta "
-			cd-hit-est -o "$outputFolder"/cdhit -c 0.98 -i "$fastaFile" -p 1 -d 0 -b 3 -T 10
+			./"$softsPath"/cd-hit-est -o "$outputFolder"/cdhit -c 0.98 -i "$fastaFile" -p 1 -d 0 -b 3 -T 10
 		fi
 		counter=$(($counter+1))
 	done
@@ -54,7 +56,7 @@ elif [[ "$2" == trimmed* ]]; then
 		if [[ $counter -ge 3 ]]; then
 			#Set current fasta file path
 			fastaFile="$inputsPath/$2$i""_assemblyTrinity/Trinity.fasta "
-			cd-hit-est -o "$outputFolder"/cdhit -c 0.98 -i "$fastaFile" -p 1 -d 0 -b 3 -T 10
+			./"$softsPath"/cd-hit-est -o "$outputFolder"/cdhit -c 0.98 -i "$fastaFile" -p 1 -d 0 -b 3 -T 10
 		fi
 		counter=$(($counter+1))
 	done
@@ -69,7 +71,7 @@ else #Default accept a list of full file paths
 	for i in "$@"; do
 		#Set current fasta file path
 		if [[ $counter -ge 3 ]]; then
-			cd-hit-est -o "$outputFolder"/cdhit -c 0.98 -i "$i" -p 1 -d 0 -b 3 -T 10
+			./"$softsPath"/cd-hit-est -o "$outputFolder"/cdhit -c 0.98 -i "$i" -p 1 -d 0 -b 3 -T 10
 		fi
 		counter=$(($counter+1))
 	done
