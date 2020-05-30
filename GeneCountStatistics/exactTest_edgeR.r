@@ -104,3 +104,9 @@ dev.off()
 jpeg("plotMA.jpg")
 plotSmear(tested)
 dev.off()
+
+#Format the DE genes into a vector suitable for use with goseq
+genes=as.integer(p.adjust(tested$table$PValue[tested$table$logFC!=0],method="BH")<.05)
+names(genes)=row.names(tested$table[tested$table$logFC!=0,])
+table(genes)
+
