@@ -2,8 +2,8 @@
 #Script to perform merge multifasta files and retain only
 #the specified unique data (by sequence, ID, or both)
 #Usage: bash clusterFasta_cdHit.sh mergeBy sortedFolder genotypes
-#Usage Ex: bash clusterFasta_cdHit.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash clusterFasta_cdHit.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash clusterFasta_cdHit.sh sequence sortedCoordinate_samtoolsHisat2_run1Y05
+#Usage Ex: bash clusterFasta_cdHit.sh sequence sortedCoordinate_samtoolsHisat2_run1Y05
 #Default usage Ex: bash clusterFasta_cdHit.sh sequence assemblyTrinity_all
 
 #Check for input arguments of folder names

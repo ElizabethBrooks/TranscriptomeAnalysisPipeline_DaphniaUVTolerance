@@ -4,9 +4,14 @@
 #Usage: bash splitFasta_pyFasta.sh numPieces
 #Alternate usage: bash splitFasta_pyFasta.sh 4
 
+#Retrieve input fasta absolute path
+inputsPath=$(dirname "$1")
+#Move to inputs directory
+cd $inputsPath
+
 #Split fasta into the user input number of pieces,
 # keeping whole seqs
-pyfasta split -n $1 Daphnia_pulex_PA42_v3.0.fasta
+pyfasta split -n $2 "$1"
 
 #Check number of sequences
 totalSeqs=0
