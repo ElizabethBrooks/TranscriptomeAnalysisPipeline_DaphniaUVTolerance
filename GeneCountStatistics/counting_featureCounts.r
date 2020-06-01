@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-#Usage: Rscript generateCounts_featureCounts.r readPath
-#Usage Ex: Rscript generateCounts_featureCounts.r /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/aligned_hisat2_run1
+#Usage: Rscript counting_featureCounts.r readPath genomeFeaturesFile
+#Usage Ex: Rscript counting_featureCounts.r /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/aligned_hisat2_run1 /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42.3.0.annotation.18440.gff
 
 #R script to perform analysis of aliged paired-end reads and generate gene count tables
 #Install Rsubread using BiocManager, this should only need to be done once
@@ -22,13 +22,13 @@ bam.files <- list.files(path=args[1], pattern="accepted_hits.bam", full.names=TR
 # and input gtf/gff file, paired end reads, and 8 threads
 fc <- featureCounts(bam.files, annot.ext=args[2], isGTFAnnotationFile=TRUE, GTF.attrType="ID", 
 	isPairedEnd=TRUE, autosort=TRUE, nthreads=8)
-# See what slots are stored in fc
+#See what slots are stored in fc
 names(fc)
-## Take a look at the featurecounts stats
+#Take a look at the featurecounts stats
 fc$stat
-## Take a look at the dimensions to see the number of genes for samples
+#Take a look at the dimensions to see the number of genes for samples
 dim(fc$counts)
-## Take a look at the first 6 lines
+#Take a look at the first 6 lines
 head(fc$counts)
 #The annotation slot shows the annotation information that featureCounts used to summarise reads over genes
 head(fc$annotation)

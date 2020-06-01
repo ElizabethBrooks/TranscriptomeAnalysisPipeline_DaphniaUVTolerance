@@ -80,6 +80,6 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Count reads using featureCounts via an R script
 Rscript generateCounts_featureCounts.r "$inputsPath"/"$1" "$genomeFile"
 #Add run to summary file
-echo Rscript generateCounts_featureCounts.r >> "$inputOutFile"
+echo Rscript generateCounts_featureCounts.r > "$inputOutFile"
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputsPath"/"$outputFolder"
