@@ -6,9 +6,9 @@
 #$ -pe smp 8
 #Script to perform samtools sorting of trimmed, then aligned
 # paired end reads
-#Usage: qsub sorting_samtools.sh sortingTarget alignedFolder optionalAssembledFolder sortingMethod
-#Usage Ex: qsub sorting_samtools.sh genome aligned_tophat2_run1 name
-#Usage Ex: qsub sorting_samtools.sh assembly aligned_hisat2_run1 sortedCoordinate_samtoolsTophat2_run1E05_assemblyGenomeTrinity name
+#Usage: qsub sorting_samtools.sh sortingTarget sortingMethod alignedFolder optionalAssembledFolder
+#Usage Ex: qsub sorting_samtools.sh genome name aligned_tophat2_run1
+#Usage Ex: qsub sorting_samtools.sh assembly name aligned_hisat2_run1 sortedCoordinate_samtoolsTophat2_run1E05_assemblyGenomeTrinity
 
 #Required modules for ND CRC servers
 module load bio/2.0
@@ -18,11 +18,11 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve sorting method flags from input
-if [[ "$4" == "name" || "$4" == "Name" || "$4" == "n" || "$4" == "N" ]]; then
+if [[ "$2" == "name" || "$2" == "Name" || "$2" == "n" || "$2" == "N" ]]; then
 	#Name sorted flag with num threads flag
 	flags="-@ 8 -n"
 	methodTag="Name"
-elif [[ "$4" == "coordinate" || "$4" == "Coordinate" || "$4" == "c" || "$4" == "C" ]]; then
+elif [[ "$2" == "coordinate" || "$2" == "Coordinate" || "$2" == "c" || "$2" == "C" ]]; then
 	#Coordinate sorted with num threads flag
 	flags="-@ 8"
 	methodTag="Coordinate"
@@ -35,7 +35,7 @@ fi
 if [[ "$1"  == assembly ]]; then
 	#inputsPath reads input absolute path
 	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	inputsPath="$inputsPath"/"$3"
+	inputsPath="$inputsPath"/"$4"
 	#Retrieve alignment outputs absolute path
 	outputsPath="$inputsPath"
 elif [[ "$1"  == genome ]]; then
@@ -48,14 +48,14 @@ else
 	exit 1
 fi
 #Determine what analysis method was used for the input folder of data
-if [[ "$2" == *"hisat2"*  ]]; then
+if [[ "$3" == *"hisat2"*  ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Hisat2"
-elif [[ "$2" == *"tophat2"* ]]; then
+elif [[ "$3" == *"tophat2"* ]]; then
 	#Set analysis method for folder naming
 	analysisMethod="Tophat2"
 else
-	echo "ERROR: The "$2" folder of files were not found... exiting"
+	echo "ERROR: The "$3" folder of files were not found... exiting"
 	exit 1
 fi
 #Move to outputs directory
@@ -75,13 +75,13 @@ while [ $dirFlag -eq 0 ]; do
 	else
 		#Indicate that the folder was successfully made
 		dirFlag=1
-		echo "Creating folder for run $runNum of Samtools sorting of "$2" data..."
+		echo "Creating folder for run $runNum of Samtools sorting of "$3" data..."
 	fi
 done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Loop through all reads and sort sam/bam files for input to samtools
-for f1 in "$inputsPath"/"$2"/*/; do
+for f1 in "$inputsPath"/"$3"/*/; do
 	#Determine what extension the files have
 	#curSampleHits=$(echo "$f1"*)
 	#curSampleHits=$(basename "$curSampleHits")
@@ -130,4 +130,4 @@ for f1 in "$inputsPath"/"$2"/*/; do
 	fi
 done
 #Copy previous summaries
-cp "$inputsPath"/"$2"/*.txt "$outputFolder"
+cp "$inputsPath"/"$3"/*.txt "$outputFolder"

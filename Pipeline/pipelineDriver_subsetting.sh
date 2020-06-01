@@ -10,8 +10,8 @@
 #Usage Ex: bash pipelineDriver_subsetting.sh buildingHisat2 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 trimmed_run1 trimmed_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash pipelineDriver_subsetting.sh alignmentHisat2 trimmed_run1 sortedCoordinate_samtoolsHisat2_run1 20 14239 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash pipelineDriver_subsetting.sh sorting aligned_hisat2_run2 sortedCoordinate_samtoolsTophat2_run1 name Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash pipelineDriver_subsetting.sh sorting aligned_hisat2_run2 trimmed_run1 name Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh sorting name aligned_hisat2_run2 sortedCoordinate_samtoolsTophat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash pipelineDriver_subsetting.sh sorting name aligned_hisat2_run2 trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 
 #Check for input arguments of analysis method, data folder, and sample name(s)
 if [ $# -lt 3 ]; then
@@ -84,18 +84,18 @@ elif [[ "$1" == sorting ]]; then #These are analysis methods that require three 
 	#Loop through all input sets of treatments and perform selected analsysis
 	for i in "$@"; do
 		#Determine what type of data folder was input
-		if [[ "$3" == trimmed* ]]; then
-			inputFolder=$(echo "$3""$i"_assemblyTrinity)
-		elif [[ "$3" == sorted* ]]; then
-			inputFolder=$(echo "$3""$i"_assemblyGenomeTrinity)
+		if [[ "$4" == trimmed* ]]; then
+			inputFolder=$(echo "$4""$i"_assemblyTrinity)
+		elif [[ "$4" == sorted* ]]; then
+			inputFolder=$(echo "$4""$i"_assemblyGenomeTrinity)
 		else
 			echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 			exit 1
 		fi
 		#Skip first 4 arguments
 		if [ $counter -ge 5 ]; then
-			#Usage: qsub sorting_samtools.sh sortingTarget alignedFolder assembledFolder sortingMethod
-			qsub sorting_samtools.sh assembly "$2" "$inputFolder" "$4"
+			#Usage: qsub sorting_samtools.sh sortingTarget sortingMethod alignedFolder assembledFolder
+			qsub sorting_samtools.sh assembly "$2" "$3" "$inputFolder"
 		fi
 		counter=$(($counter+1))
 	done
