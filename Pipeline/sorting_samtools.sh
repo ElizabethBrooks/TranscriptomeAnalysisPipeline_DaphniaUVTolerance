@@ -7,7 +7,7 @@
 #Script to perform samtools sorting of trimmed, then aligned
 # paired end reads
 #Usage: qsub sorting_samtools.sh sortingTarget sortingMethod alignedFolder optionalAssembledFolder
-#Usage Ex: qsub sorting_samtools.sh genome name aligned_tophat2_run1
+#Usage Ex: qsub sorting_samtools.sh genome name aligned_hisat2_run1
 #Usage Ex: qsub sorting_samtools.sh assembly name aligned_hisat2_run1 sortedCoordinate_samtoolsTophat2_run1E05_assemblyGenomeTrinity
 
 #Required modules for ND CRC servers
@@ -40,7 +40,7 @@ if [[ "$1"  == assembly ]]; then
 	outputsPath="$inputsPath"
 elif [[ "$1"  == genome ]]; then
 	#Retrieve aligned reads input absolute path
-	inputsPath=$(grep "aligning:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligning://g")
+	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	#Retrieve sorting outputs absolute path
 	outputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
 else
