@@ -29,7 +29,7 @@ fi
 #Retrieve genome reference absolute path for querying
 dbPath=$(grep "transcriptomeDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
 #Retrieve outputs absolute path
-outputsPath=$(grep "proteinSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/proteinSearch://g")
+outputsPath=$(grep "transcriptSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/transcriptSearch://g")
 outputFolder="$outputsPath"/searchedTranscripts_"$1"
 mkdir "$outputFolder"
 #Check if the folder already exists
