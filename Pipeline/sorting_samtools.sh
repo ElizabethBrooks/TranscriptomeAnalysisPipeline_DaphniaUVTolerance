@@ -113,20 +113,20 @@ for f1 in "$inputsPath"/"$3"/*/; do
 		#Run samtools to prepare mapped reads for sorting by coordinate
 		#using 8 threads
 		echo "Sample $curSampleNoPath is being sorted..."
-		samtools sort "$flags" -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam.bam -T /tmp/"$curSampleNoPath".sorted.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam
+		samtools sort "$flags" -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam -T /tmp/"$curSampleNoPath".sorted.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam
 		echo "Sample $curSampleNoPath has been sorted!"
 		rm "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam
 		#Add run inputs to output summary file
 		echo samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam >> "$inputOutFile"
-		echo samtools sort "$flags" -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam.bam -T /tmp/"$curSampleNoPath".sorted.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam >> "$inputOutFile"
+		echo samtools sort "$flags" -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam -T /tmp/"$curSampleNoPath".sorted.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam >> "$inputOutFile"
 	else
 		#Run fixmate to update paired-end flags for singletons
 		echo "Sample $curSampleNoPath singleton flags are being updated..."
-		samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam.bam
+		samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam
 		echo "Sample $curSampleNoPath singleton flags have been updated!"
 		rm "$outputFolder"/"$curSampleNoPath"/sortedName.bam
 		#Add run inputs to output summary file
-		echo samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam.bam >> "$inputOutFile"
+		echo samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam >> "$inputOutFile"
 	fi
 	#Clean up bam files depending on analysis
 	if [[ "$1"  == assembly ]]; then #Clean up excess bam files, if assemly was input
