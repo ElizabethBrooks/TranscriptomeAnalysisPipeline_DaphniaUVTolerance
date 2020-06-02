@@ -23,10 +23,18 @@ genes3=$(wc -l "$outFileMerged" | cut -d ' ' -f 1); echo "Merged: $genes3"
 genes4=$(wc -l "$outFileCleaned" | cut -d ' ' -f 1); echo "No Duplicates: $genes4"
 genes5=$(($genes3-$genes4)); echo "Number of Duplicates: $genes5"
 
-#Check number of uniqe geneIDs with GOIDs
+#Check number of uniqe geneIDs
 printf "\nNumber of gene IDs...\n"
-genes1=$(sort -k1 -n "$1" | uniq -u | wc -l); echo "File1: $genes1"
-genes2=$(sort -k1 -n "$2" | uniq -u | wc -l); echo "File2: $genes2"
-genes3=$(sort -k1 -n "$outFileMerged" | uniq -u | wc -l); echo "Merged: $genes3"
-genes4=$(sort -k1 -n "$outFileCleaned" | uniq -u | wc -l); echo "No Duplicates: $genes4"
+genes1=$(cut -f 1 "$1" | uniq -u | wc -l); echo "File1: $genes1"
+genes2=$(cut -f 1 "$2" | uniq -u | wc -l); echo "File2: $genes2"
+genes3=$(cut -f 1 "$outFileMerged" | uniq -u | wc -l); echo "Merged: $genes3"
+genes4=$(cut -f 1 "$outFileCleaned" | uniq -u | wc -l); echo "No Duplicates: $genes4"
+genes5=$(($genes3-$genes4)); echo "Number of Duplicates: $genes5"
+
+#Check number of uniqe GOIDs
+printf "\nNumber of GO IDs...\n"
+genes1=$(cut -f 2 "$1" | uniq -u | wc -l); echo "File1: $genes1"
+genes2=$(cut -f 2 "$2" | uniq -u | wc -l); echo "File2: $genes2"
+genes3=$(cut -f 2 "$outFileMerged" | uniq -u | wc -l); echo "Merged: $genes3"
+genes4=$(cut -f 2 "$outFileCleaned" | uniq -u | wc -l); echo "No Duplicates: $genes4"
 genes5=$(($genes3-$genes4)); echo "Number of Duplicates: $genes5"
