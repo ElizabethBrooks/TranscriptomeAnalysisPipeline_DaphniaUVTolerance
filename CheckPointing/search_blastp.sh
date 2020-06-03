@@ -16,6 +16,11 @@ if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
+#Retrieve genome reference absolute path for querying
+dbPath=$(grep "transcriptomeDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
+#Retrieve outputs absolute path
+outputsPath=$(grep "transcriptSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/transcriptSearch://g")
+outputFolder="$outputsPath"/searchedTranscripts_"$1"
 #Determine input database for blastp
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
@@ -31,11 +36,7 @@ else
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
-#Retrieve genome reference absolute path for querying
-dbPath=$(grep "transcriptomeDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
-#Retrieve outputs absolute path
-outputsPath=$(grep "transcriptSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/transcriptSearch://g")
-outputFolder="$outputsPath"/searchedTranscripts_"$1"
+#Make output directory
 mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
