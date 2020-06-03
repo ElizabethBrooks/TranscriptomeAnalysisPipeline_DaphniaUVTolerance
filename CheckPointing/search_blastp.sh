@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N search_blastp_jobOutput
-#$ -pe smp 8
+#$ -pe smp 24
 #Script to use blastp to translate the nucleotide sequences of a reference genome
 # for searching a protein database
 #Usage: qsub search_blastp.sh transcriptomeFasta
@@ -48,13 +48,13 @@ cd "$outputFolder"
 inputOutFile="$outputFolder"/searchedTranscripts_"$1"_summary.txt
 #Use blastp to search a database
 echo "Beginning blastp database search..."
-blastp -query "$inputsPath" -db "$dbPath" -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 > blastp.outfmt6
+blastp -query "$inputsPath" -db "$dbPath" -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 > blastp.outfmt6
 echo "Finished blastp database search!"
 #Output run commands to summary file
-echo "blastp -query $inputsPath -db $dbPath  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 > blastp.outfmt6" >> "$inputOutFile"
+echo "blastp -query $inputsPath -db $dbPath  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 > blastp.outfmt6" >> "$inputOutFile"
 #Switch query and search paths for reciprocal search
 echo "Beginning reciprocal blastp database search..."
-blastp -query "$dbPath" -db "$inputsPath" -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 > blastp.outfmt6
+blastp -query "$dbPath" -db "$inputsPath" -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 > blastp.outfmt6
 echo "Finished reciprocal blastp database search!"
 #Output run commands to summary file
-echo "blastp -query $dbPath -db $inputsPath  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 > blastp.outfmt6" >> "$inputOutFile"
+echo "blastp -query $dbPath -db $inputsPath  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 > blastp.outfmt6" >> "$inputOutFile"
