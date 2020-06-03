@@ -22,6 +22,8 @@ bam.files <- list.files(path=args[1], pattern="accepted_hits.bam", full.names=TR
 # and input gtf/gff file, paired end reads, and 8 threads
 fc <- featureCounts(bam.files, annot.ext=args[2], isGTFAnnotationFile=TRUE,
 	GTF.attrType="ID", isPairedEnd=TRUE, nthreads=8)
+#Write gene counts to csv
+write.table(fc, file="counts.csv", sep=",", row.names=TRUE)
 #See what slots are stored in fc
 names(fc)
 #Take a look at the featurecounts stats

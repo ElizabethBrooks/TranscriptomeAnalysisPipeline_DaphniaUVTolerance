@@ -54,7 +54,7 @@ echo "Finished blastp database search!"
 echo "blastp -query $inputsPath -db $dbPath  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 > blastp.outfmt6" >> "$inputOutFile"
 #Switch query and search paths for reciprocal search
 echo "Beginning reciprocal blastp database search..."
-blastp -query "$dbPath" -db "$inputsPath" -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 > blastp.outfmt6
+blastp -query "$dbPath" -db "$inputsPath" -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 > blastp_reciprocal.outfmt6
 echo "Finished reciprocal blastp database search!"
 #Output run commands to summary file
-echo "blastp -query $dbPath -db $inputsPath  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 > blastp.outfmt6" >> "$inputOutFile"
+echo "blastp -query $dbPath -db $inputsPath  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 > blastp_reciprocal.outfmt6" >> "$inputOutFile"
