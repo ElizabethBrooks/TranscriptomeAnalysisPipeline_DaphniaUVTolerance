@@ -18,17 +18,16 @@ if [ $# -eq 0 ]; then
 fi
 #Retrieve genome reference absolute path for querying
 dbPath=$(grep "transcriptomeDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
-#Retrieve outputs absolute path
-outputsPath=$(grep "transcriptSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/transcriptSearch://g")
-outputFolder="$outputsPath"/searchedTranscripts_"$1"
 #Determine input database for blastp
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
-	inputDB=Trinity.fasta.transdecoder.pep
+	#Set outputs absolute path
+	outputFolder="$assemblyPath"/"$1"/searchedTranscripts_blastp
 	#Make blastable DB of transcriptome
 	cd $inputsPath
+	inputDB=Trinity.fasta.transdecoder.pep
 	makeblastdb -in $inputDB -dbtype prot
 	inputsPath="$inputsPath"/"$inputDB"
 else
