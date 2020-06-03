@@ -13,28 +13,52 @@ tail -n +2 "$2" | cut -f 1,3 >> "$outFileCleaned"
 unexpand -a "$outFileCleaned" > "$outFileMerged"
 
 #Sort and remove duplicate lines
-sort "$outFileMerged" | uniq -u > "$outFileCleaned"
+#sort "$outFileMerged" | uniq -u > "$outFileCleaned"
 
 #Check number of lines
-echo "Number of lines..."
-genes1=$(wc -l "$1" | cut -d ' ' -f 1); echo "File1: $genes1"
-genes2=$(wc -l "$2" | cut -d ' ' -f 1); echo "File2: $genes2"
-genes3=$(wc -l "$outFileMerged" | cut -d ' ' -f 1); echo "Merged: $genes3"
-genes4=$(wc -l "$outFileCleaned" | cut -d ' ' -f 1); echo "No Duplicates: $genes4"
-genes5=$(($genes3-$genes4)); echo "Number of Duplicates: $genes5"
+echo "Number of Entries"
+echo "File, Total, Unique, Duplicates"
+genes1a=$(wc -l "$1" | cut -d ' ' -f 1)
+genes1b=$(sort "$1" | uniq -u | wc -l)
+genes1c=$(($genes1a-$genes1b))
+echo "File1, $genes1a, $genes1b, $genes1c"
+genes2a=$(wc -l "$2" | cut -d ' ' -f 1)
+genes2b=$(sort "$2" | uniq -u | wc -l)
+genes2c=$(($genes2a-$genes2b))
+echo "File2, $genes2a, $genes2b, $genes2c"
+genes3a=$(wc -l "$outFileMerged" | cut -d ' ' -f 1)
+genes3b=$(sort "$outFileMerged" | uniq -u | wc -l)
+genes3c=$(($genes3a-$genes3b))
+echo "Merged, $genes3a, $genes3b, $genes3c"
 
-#Check number of uniqe geneIDs
-printf "\nNumber of gene IDs...\n"
-genes1=$(cut -f 1 "$1" | uniq -u | wc -l); echo "File1: $genes1"
-genes2=$(cut -f 1 "$2" | uniq -u | wc -l); echo "File2: $genes2"
-genes3=$(cut -f 1 "$outFileMerged" | uniq -u | wc -l); echo "Merged: $genes3"
-genes4=$(cut -f 1 "$outFileCleaned" | uniq -u | wc -l); echo "No Duplicates: $genes4"
-genes5=$(($genes3-$genes4)); echo "Number of Duplicates: $genes5"
+#Check number of geneIDs
+printf "\nNumber of Gene IDs\n"
+echo "File, Total, Unique, Duplicates"
+genes1a=$(cut -f 1 "$1" | wc -l)
+genes1b=$(cut -f 1 "$1" | uniq -u | wc -l)
+genes1c=$(($genes1a-$genes1b))
+echo "File1, $genes1a, $genes1b, $genes1c"
+genes2a=$(cut -f 1 "$2" | wc -l)
+genes2b=$(cut -f 1 "$2" | uniq -u | wc -l)
+genes2c=$(($genes2a-$genes2b))
+echo "File2, $genes2a, $genes2b, $genes2c"
+genes3a=$(cut -f 1 "$outFileMerged" | wc -l)
+genes3b=$(cut -f 1 "$outFileCleaned" | uniq -u | wc -l)
+genes3c=$(($genes3a-$genes3b))
+echo "Merged, $genes3a, $genes3b, $genes3c"
 
-#Check number of uniqe GOIDs
-printf "\nNumber of GO IDs...\n"
-genes1=$(cut -f 2 "$1" | uniq -u | wc -l); echo "File1: $genes1"
-genes2=$(cut -f 2 "$2" | uniq -u | wc -l); echo "File2: $genes2"
-genes3=$(cut -f 2 "$outFileMerged" | uniq -u | wc -l); echo "Merged: $genes3"
-genes4=$(cut -f 2 "$outFileCleaned" | uniq -u | wc -l); echo "No Duplicates: $genes4"
-genes5=$(($genes3-$genes4)); echo "Number of Duplicates: $genes5"
+#Check number of GOIDs
+printf "\nNumber of GO IDs\n"
+echo "File, Total, Unique, Duplicates"
+genes1a=$(cut -f 2 "$1" | wc -l)
+genes1b=$(cut -f 2 "$1" | uniq -u | wc -l)
+genes3c=$(($genes1a-$genes1b))
+echo "File1, $genes1a, $genes1b, $genes1c"
+genes2a=$(cut -f 2 "$2" | wc -l)
+genes2b=$(cut -f 2 "$2" | uniq -u | wc -l)
+genes3c=$(($genes2a-$genes2b))
+echo "File2, $genes2a, $genes2b, $genes2c"
+genes3a=$(cut -f 2 "$outFileMerged" | wc -l)
+genes3b=$(cut -f 2 "$outFileCleaned" | uniq -u | wc -l)
+genes3c=$(($genes3a-$genes3b))
+echo "Merged, $genes3a, $genes3b, $genes3c"

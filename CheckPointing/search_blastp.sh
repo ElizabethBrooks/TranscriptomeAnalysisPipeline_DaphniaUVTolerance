@@ -20,7 +20,12 @@ fi
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	inputsPath="$assemblyPath"/"$1"
+	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
+	inputDB=Trinity.fasta.transdecoder.pep
+	#Make blastable DB of transcriptome
+	cd $inputsPath
+	makeblastdb -in $inputDB -dbtype prot
+	inputsPath="$inputsPath"/"$inputDB"
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
