@@ -104,10 +104,11 @@ summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
 bash fastaStats_csvFormatted.sh $mergedFastaFile $fastaList > $summaryFileCSV
 #Fix file tags
 genotypeList=$(echo "${@:3}")
-echo "GENOTYPES: $genotypeList"
 counter=1
 for i in $genotypeList; do
-	sed -i "s/genotype$counter/$i/g" $summaryFileCSV
+	genotypeTag="genotype"$counter
+	echo "GENOTYPE: $genotypeTag, $i"
+	sed -i "s/$genotypeTag/$i/g" $summaryFileCSV
 	counter=$(($counter+1))
 done
 #Re-set header
