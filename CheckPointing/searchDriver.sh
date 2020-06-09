@@ -25,17 +25,21 @@ for i in "$@"; do
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 		exit 1
 	fi
+	#Set merged summary file name
+	if [[ "$1" == merge ]]; then
+		#Set output file name
+		outFile="$outPath"/"$2""_blastp_summary.txt"
+		#Add header to output summary file
+		echo "query,db,queryHits,reciprocalHits,bestHits" > "$outFile"
+	fi
 	#Skip first two arguments
 	if [ $counter -ge 2 ]; then
 		#Check input option
 		if [[ "$1" == search ]]; then
 			#Usage: qsub search_blastp.sh transcriptomeFastaFolder
+			echo "Searching $i transcriptome with blastp for $2..."
 			qsub search_blastp.sh "$inputFolder"
-		elif [[ "$1" == merge* ]]; then
-			#Set output file name
-			outFile="$outPath"/"$2""_blastp_summary.txt"
-			#Add header to output summary file
-			echo "query,db,queryHits,reciprocalHits,bestHits" > "$outFile"
+		elif [[ "$1" == merge ]]; then
 			#Usage: bash mergeSearches_blastp.sh transcriptomeFastaFolder
 			echo "Merging $i blastp result for $2..."
 			bash mergeSearches_blastp.sh "$inputFolder" "$i" >> "$outFile"
