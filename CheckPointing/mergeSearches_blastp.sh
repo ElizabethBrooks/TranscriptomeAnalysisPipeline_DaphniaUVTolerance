@@ -25,7 +25,7 @@ fi
 cd "$outputFolder"
 
 #Merge blast search results
-outFileResults="$outputFolder"/"blastp_merged_summary.txt"
+#outFileResults="$outputFolder"/"blastp_merged_summary.txt"
 outFileMerged="$outputFolder"/"blastp_merged.txt"
 outFileCleaned="$outputFolder"/"blastp_noDuplicates.txt"
 cut -f 1,2 "$inputDBPath" > "$outFileCleaned"
@@ -43,5 +43,5 @@ awk 'seen[$0]++' "$outFileMerged" >  "$outFileCleaned"
 genes1a=$(wc -l "$inputDBPath" | cut -d ' ' -f 1)
 genes2a=$(wc -l "$inputRDBPath" | cut -d ' ' -f 1)
 genes3b=$(wc -l "$outFileCleaned" | cut -d ' ' -f 1)
-echo "$2"",PA42,$genes1a,$genes2a,$genes3b" >> "$outFileResults"
+echo "$2"",PA42,$genes1a,$genes2a,$genes3b"
 #echo "Number of entries recorded!"
