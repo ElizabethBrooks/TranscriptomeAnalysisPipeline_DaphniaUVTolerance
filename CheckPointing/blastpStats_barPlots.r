@@ -68,7 +68,7 @@ finalPlot <- ggarrange(plotBest, plotQuery, plotReciprocal, nrow=3)
 #Add plot title and x-axis label
 finalPlot <- annotate_figure(finalPlot,
   top=text_grob(plotTitle, color="black", face="bold", size=14),
-  bottom=text_grob("File Number", color="black", size=12))
+  bottom=text_grob("Transcriptome Genotype", color="black", size=12))
 
 #Set output file names
 plotOut1 <- args[1]

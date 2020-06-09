@@ -1,9 +1,9 @@
 #!/bin/bash
 #Script to perform t-test analysis of all samples in an input set
-#Usage: bash searchDriver.sh assembledFolder sampleList
-#Usage Ex: bash searchDriver.sh search trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash searchDriver.sh merge trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash searchDriver.sh plot trimmed_run1
+#Usage: bash search_driver.sh assembledFolder sampleList
+#Usage Ex: bash search_driver.sh search trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh merge trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh plot trimmed_run1
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
