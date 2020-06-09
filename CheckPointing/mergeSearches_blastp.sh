@@ -30,8 +30,8 @@ cd "$outputFolder"
 outFileResults="$outputFolder"/"blastp_merged_summary.txt"
 outFileMerged="$outputFolder"/"blastp_merged.txt"
 outFileCleaned="$outputFolder"/"blastp_noDuplicates.txt"
-cut -f 1,2 "$1" > "$outFileCleaned"
-awk '{print $2 " " $1}' "$2" > "$outFileCleaned"
+cut -f 1,2 "$inputDBPath" > "$outFileCleaned"
+awk '{print $2 " " $1}' "$inputRDBPath" > "$outFileCleaned"
 
 #Remove extra tabs
 unexpand -a "$outFileCleaned" > "$outFileMerged"
@@ -42,12 +42,12 @@ awk 'seen[$0]++' "$outFileMerged" >  "$outFileCleaned"
 #Check number of lines
 echo "Recodring number of entries..."
 echo "File, Total, Unique, Duplicates" > "$outFileResults"
-genes1a=$(wc -l "$1")
-genes1b=$(sort "$1" | uniq -u | wc -l)
+genes1a=$(wc -l "$inputDBPath")
+genes1b=$(sort "$inputDBPath" | uniq -u | wc -l)
 genes1c=$(($genes1a-$genes1b))
 echo "File1, $genes1a, $genes1b, $genes1c" >> "$outFileResults"
-genes2a=$(wc -l "$2")
-genes2b=$(sort "$2" | uniq -u | wc -l)
+genes2a=$(wc -l "$inputRDBPath")
+genes2b=$(sort "$inputRDBPath" | uniq -u | wc -l)
 genes2c=$(($genes2a-$genes2b))
 echo "File2, $genes2a, $genes2b, $genes2c" >> "$outFileResults"
 genes3a=$(wc -l "$outFileMerged")
