@@ -1,6 +1,6 @@
 #!/bin/bash
 #Script to retrieve stats for an input list of files
-#Usage: bash fastaStats_csvFormatted.sh fastaFilePaths mergedFile
+#Usage: bash fastaStats_csvFormatted.sh mergedFile fastaFilePaths
 
 #Create header for csv
 echo "file,sequences,lines,MB"
@@ -32,3 +32,14 @@ done
 
 #Output total stats
 echo "fileTotal,$seqsTotal,$linesTotal,$mBytesTotal"
+
+#Calculate merged file stats
+seqsMerged=$(grep ">" $1 | wc -l)
+linesMerged=$(wc -l $1 | cut -d " " -f1)
+mBytesMerged=$(ls -l --block-size=1MB $1 | cut -d " " -f5)
+#Calculate duplicates stats
+seqsDup=$(($seqsTotal-$seqsMerged))
+linesDup=$(($linesTotal-$linesMerged))
+mBytesDup=$(($mBytesTotal-$mBytesMerged))
+#Output duplicates stats
+echo "fileDuplicates,$seqsDup,$linesDup,$mBytesDup"

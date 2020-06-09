@@ -101,25 +101,25 @@ echo "Beginning file statistics summarizing..."
 #Write fasta stats to the csv formatted summary file
 echo "Beginning file statistics formatting..."
 summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
-#bash fastaStats_csvFormatted.sh $mergedFastaFile $fastaList > $summaryFileCSV
+bash fastaStats_csvFormatted.sh $mergedFastaFile $fastaList > $summaryFileCSV
 #Fix file tags
-#genotypeList=$(echo "${@:3}")
-#genotypeList="Merged "$genotypeList
-#counter=1
-#for i in $genotypeList; do
-#	genotypeTag="file"$counter
-#	replaceTag=$genotypeTag","$i
-#	sed -i "s/$genotypeTag/$replaceTag/g" $summaryFileCSV
-#	counter=$(($counter+1))
-#done
-#sed -i 's/fileTotal,/fileTotal,Total,/g' $summaryFileCSV
+genotypeList=$(echo "${@:3}")
+genotypeList="Merged "$genotypeList
+counter=1
+for i in $genotypeList; do
+	genotypeTag="file"$counter
+	replaceTag=$genotypeTag","$i
+	sed -i "s/$genotypeTag/$replaceTag/g" $summaryFileCSV
+	counter=$(($counter+1))
+done
+sed -i 's/fileTotal,/fileTotal,Total,/g' $summaryFileCSV
 #Re-set header
-#sed -i 's/file,/file,genotype,/g' $summaryFileCSV
+sed -i 's/file,/file,genotype,/g' $summaryFileCSV
 
 #Plot fasta stats from summary file
 echo "Beginning file statistics plotting..."
 egrep -v "Merged|Total" $summaryFileCSV > tmp.csv
 Rscript fastaStats_barPlots.r $1 tmp.csv
 #Clean up
-rm tmp.csv
+#rm tmp.csv
 
