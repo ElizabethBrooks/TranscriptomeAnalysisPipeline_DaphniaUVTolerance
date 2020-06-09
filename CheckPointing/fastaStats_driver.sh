@@ -104,10 +104,10 @@ summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
 bash fastaStats_csvFormatted.sh $mergedFastaFile $fastaList > $summaryFileCSV
 #Fix file tags
 genotypeList=$(echo "${@:3}")
+genotypeList=$genotypeList" Merged"
 counter=1
 for i in $genotypeList; do
 	genotypeTag="file"$counter
-	echo "GENOTYPE: $genotypeTag, $i"
 	sed -i "s/$genotypeTag/$i/g" $summaryFileCSV
 	counter=$(($counter+1))
 done
@@ -116,5 +116,5 @@ sed -i 's/file/genotype/g' $summaryFileCSV
 
 #Plot fasta stats from summary file
 echo "Beginning file statistics plotting..."
-#Rscript fastaStats_barPlots.r $1 $summaryFileCSV
+Rscript fastaStats_barPlots.r $1 $summaryFileCSV
 
