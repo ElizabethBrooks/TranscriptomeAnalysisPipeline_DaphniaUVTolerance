@@ -97,6 +97,13 @@ bash fastaMerge.sh $1 $mergedFastaFile $fastaList
 #Write fasta stats to the summary file
 echo "Beginning file statistics summarizing..."
 bash fastaStats.sh $mergedFastaFile $fastaList > $summaryFile
+#Fix file tags
+genotypeList=$(echo "${@:3}")
+counter=1
+for i in $genotypeList; do
+	sed -i 's/file"$counter"/"$i"/g' $summaryFile
+	counter=$(($counter+1))
+done
 
 #Write fasta stats to the csv formatted summary file
 echo "Beginning file statistics formatting..."
