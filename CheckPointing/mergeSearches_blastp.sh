@@ -42,16 +42,16 @@ awk 'seen[$0]++' "$outFileMerged" >  "$outFileCleaned"
 #Check number of lines
 echo "Recodring number of entries..."
 echo "File, Total, Unique, Duplicates" > "$outFileResults"
-genes1a=$(wc -l "$inputDBPath")
+genes1a=$(wc -l "$inputDBPath" | cut -d ' ' -f 1)
 genes1b=$(sort "$inputDBPath" | uniq -u | wc -l)
 genes1c=$(($genes1a-$genes1b))
 echo "File1, $genes1a, $genes1b, $genes1c" >> "$outFileResults"
-genes2a=$(wc -l "$inputRDBPath")
+genes2a=$(wc -l "$inputRDBPath" | cut -d ' ' -f 1)
 genes2b=$(sort "$inputRDBPath" | uniq -u | wc -l)
 genes2c=$(($genes2a-$genes2b))
 echo "File2, $genes2a, $genes2b, $genes2c" >> "$outFileResults"
-genes3a=$(wc -l "$outFileMerged")
-genes3b=$(wc -l "$outFileCleaned")
+genes3a=$(wc -l "$outFileMerged" | cut -d ' ' -f 1)
+genes3b=$(wc -l "$outFileCleaned" | cut -d ' ' -f 1)
 genes3c=$(($genes3a-$genes3b))
 echo "Merged, $genes3a, $genes3c, $genes3b" >> "$outFileResults"
 echo "Number of entries recorded!"
