@@ -113,13 +113,13 @@ for i in $genotypeList; do
 	counter=$(($counter+1))
 done
 sed -i 's/fileTotal,/fileTotal,Total,/g' $summaryFileCSV
+sed -i 's/fileDuplicates,/fileDuplicates,Duplicates,/g' $summaryFileCSV
 #Re-set header
 sed -i 's/file,/file,genotype,/g' $summaryFileCSV
 
 #Plot fasta stats from summary file
 echo "Beginning file statistics plotting..."
 egrep -v "Merged|Total" $summaryFileCSV > tmp.csv
-Rscript fastaStats_barPlots.r $1 tmp.csv
+Rscript fastaStats_barPlots.r tmp.csv
 #Clean up
-#rm tmp.csv
-
+rm tmp.csv
