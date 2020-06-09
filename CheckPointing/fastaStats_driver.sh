@@ -119,7 +119,7 @@ done
 
 #Plot fasta stats from summary file
 echo "Beginning file statistics plotting..."
-egrep -v "Merged|Total" $2 $summaryFileCSV > tmp.csv
-Rscript fastaStats_barPlots.r tmp.csv
+egrep -v "Merged|Total" $summaryFileCSV > tmp.csv
+Rscript fastaStats_barPlots.r $2 tmp.csv
 #Clean up
 rm tmp.csv
