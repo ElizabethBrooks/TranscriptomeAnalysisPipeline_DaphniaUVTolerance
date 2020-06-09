@@ -96,8 +96,8 @@ plotFilesOut <- "fastaStats.jpg"
 #plotMergedFile <- paste(outTitle, plotMergedOut, sep="_")
 plotFilesFile <- paste(outTitle, plotFilesOut, sep="_")
 #Set output path to the input file path
-#outMergedFile <- paste(normalizePath(dirname(args[2])), plotMergedFile, sep="/")
-outFilesFile <- paste(normalizePath(dirname(args[2])), plotFilesFile, sep="/")
+#outMergedFile <- paste(normalizePath(dirname(args[3])), plotMergedFile, sep="/")
+outFilesFile <- paste(normalizePath(dirname(args[3])), plotFilesFile, sep="/")
 
 #Save file stats plots as a jpg
 #ggexport(finalMergedPlot, filename=outMergedFile)

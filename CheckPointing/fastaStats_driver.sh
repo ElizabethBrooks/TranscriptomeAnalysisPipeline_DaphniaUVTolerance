@@ -24,10 +24,10 @@ inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "
 #Determine assembly target
 if [[ "$2" == sorted* ]]; then
 	#Create output directory
-	outputFolder="$outputsPath/$2""_assemblyGenomeTrinity_merged"$1"Fasta"
+	outputFolder="$outputsPath/$2""_assemblyGenomeTrinity_"$1"_mergedFasta"
 	#Set output file names
 	mergedFastaFile="$outputFolder/merged_Trinity.fasta"
-	summaryFile="$outputFolder/$2""_assemblyGenomeTrinity_merged"$1"Fasta_summary.txt"
+	summaryFile="$outputFolder/$2""_assemblyGenomeTrinity_"$1"_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and add fasta files to a list
 	for i in "${@:3}"; do #Skip first two arguments
@@ -49,10 +49,10 @@ if [[ "$2" == sorted* ]]; then
 	done
 elif [[ "$2" == trimmed* ]]; then
 	#Create output directory
-	outputFolder="$outputsPath/$2""_assemblyTrinity_merged"$1"Fasta"
+	outputFolder="$outputsPath/$2""_assemblyTrinity_"$1"_mergedFasta"
 	#Set output file names
 	mergedFastaFile="$outputFolder/merged_Trinity.fasta"
-	summaryFile="$outputFolder/$2""_assemblyTrinity_merged"$1"Fasta_summary.txt"
+	summaryFile="$outputFolder/$2""_assemblyTrinity_"$1"_mergedFasta_summary.txt"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and add fasta files to a list
 	for i in "${@:3}"; do #Skip first two arguments
@@ -74,10 +74,10 @@ elif [[ "$2" == trimmed* ]]; then
 	done
 else #Default accept a list of full file paths
 	#Create output directory
-	outputFolder="$outputsPath/$2_merged"$1"Fasta"
+	outputFolder="$outputsPath"/"$2"_"$1"_mergedFasta
 	#Set output file names
-	mergedFastaFile="$outputFolder/merged_Trinity.fasta"
-	summaryFile="$outputFolder/$2""_merged"$1"Fasta_summary.txt"
+	mergedFastaFile="$outputFolder"/merged_Trinity.fasta
+	summaryFile="$outputFolder"/"$2""$1"_mergedFasta_summary.txt
 	plotTitle="Input"
 	#Retrieve selected fasta files
 	#Loop through all input genotypes and add fasta files to a list
