@@ -43,7 +43,7 @@ echo "Query, Total, Unique, Duplicates" > "$outFileResults"
 genes1a=$(wc -l "$inputDBPath" | cut -d ' ' -f 1)
 genes1b=$(sort "$inputDBPath" | uniq -u | wc -l)
 genes1c=$(($genes1a-$genes1b))
-echo "$3"", $genes1a, $genes1b, $genes1c" >> "$outFileResults"
+echo "$2"", $genes1a, $genes1b, $genes1c" >> "$outFileResults"
 genes2a=$(wc -l "$inputRDBPath" | cut -d ' ' -f 1)
 genes2b=$(sort "$inputRDBPath" | uniq -u | wc -l)
 genes2c=$(($genes2a-$genes2b))
