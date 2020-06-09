@@ -55,6 +55,6 @@ if [ "$1" == plot ]; then
 	outFile="$outPath"/"$2""_blastp_summary.txt"
 	#Usage: Rscript blastpStats_barPlots.r title blastpSummaryFile
 	echo "Plotting blastp results for $2..."
-	Rscript blastpStats_barPlots.r "$2" "$outFile"
+	Rscript blastpStats_barPlots.r "Transcriptome" "$outFile"
 	echo "Blastp results for $2 have been plotted!"
 fi
