@@ -58,3 +58,4 @@ if [ "$1" == plot ]; then
 	Rscript blastpStats_barPlots.r "$2" "$outFile"
 	echo "Blastp results for $2 have been plotted!"
 fi
+echo "DONE"
