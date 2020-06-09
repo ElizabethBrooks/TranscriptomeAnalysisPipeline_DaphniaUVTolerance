@@ -12,7 +12,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #set output summary file path
-outPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
+outPath=$(grep "assemblyAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblyAnalysis://g")
 #Initialize variables
 counter=0
 #Loop through all input sets of treatments and perform t-test analsysis
