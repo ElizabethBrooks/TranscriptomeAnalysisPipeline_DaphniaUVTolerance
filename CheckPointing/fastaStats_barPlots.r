@@ -91,7 +91,7 @@ finalFilesPlot <- annotate_figure(finalFilesPlot,
 
 #Set output file names
 outTitle1 <- args[1]
-outTitle <- paste(plotTitle1, outTitle1, sep="_")
+outTitle <- paste(outTitle1, plotTitle1, sep="_")
 #plotMergedOut <- "mergedFastaStats.jpg"
 plotFilesOut <- "fastaStats.jpg"
 #plotMergedFile <- paste(outTitle, plotMergedOut, sep="_")

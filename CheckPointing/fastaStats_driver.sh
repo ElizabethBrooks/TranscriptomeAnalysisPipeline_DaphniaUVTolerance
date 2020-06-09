@@ -94,16 +94,16 @@ fi
 
 #Merge the set of fasta files
 echo "Beginning fasta file merging..."
-#bash fastaMerge.sh $1 $mergedFastaFile $fastaList
+bash fastaMerge.sh $1 $mergedFastaFile $fastaList
 
 #Write fasta stats to the summary file
 echo "Beginning file statistics summarizing..."
-#bash fastaStats.sh $mergedFastaFile $fastaList > $summaryFile
+bash fastaStats.sh $mergedFastaFile $fastaList > $summaryFile
 
 #Write fasta stats to the csv formatted summary file
 echo "Beginning file statistics formatting..."
 summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
-#bash fastaStats_csvFormatted.sh $mergedFastaFile $fastaList > $summaryFileCSV
+bash fastaStats_csvFormatted.sh $mergedFastaFile $fastaList > $summaryFileCSV
 #Fix file tags
 genotypeList=$(echo "${@:3}")
 genotypeList="Merged "$genotypeList
@@ -111,13 +111,13 @@ counter=1
 for i in $genotypeList; do
 	genotypeTag="file"$counter
 	replaceTag=$genotypeTag","$i
-	#sed -i "s/$genotypeTag/$replaceTag/g" $summaryFileCSV
+	sed -i "s/$genotypeTag/$replaceTag/g" $summaryFileCSV
 	counter=$(($counter+1))
 done
-#sed -i 's/fileTotal,/fileTotal,Total,/g' $summaryFileCSV
-#sed -i 's/fileDuplicates,/fileDuplicates,Duplicates,/g' $summaryFileCSV
+sed -i 's/fileTotal,/fileTotal,Total,/g' $summaryFileCSV
+sed -i 's/fileDuplicates,/fileDuplicates,Duplicates,/g' $summaryFileCSV
 #Re-set header
-#sed -i 's/file,/file,genotype,/g' $summaryFileCSV
+sed -i 's/file,/file,genotype,/g' $summaryFileCSV
 
 #Plot fasta stats from summary file
 echo "Beginning file statistics plotting..."
