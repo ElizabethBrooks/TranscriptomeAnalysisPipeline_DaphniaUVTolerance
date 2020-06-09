@@ -32,7 +32,7 @@ statsMerged <- data.frame(aStats$query, aStats$queryHits, aStats$reciprocalHits,
 par(mfrow=c(3,1))
 
 #Set the plot titles and output file
-plotTitle1 <- args[1]
+plotTitle1 <- "Transcriptome"
 plotTitle2 <- "Blastp Hits to"
 plotTitle3 <- aStats$db[1]
 plotTitle4 <- paste(plotTitle1, plotTitle2, sep=" ")
@@ -71,9 +71,10 @@ finalPlot <- annotate_figure(finalPlot,
   bottom=text_grob("File Number", color="black", size=12))
 
 #Set output file names
-plotOut <- "blastpStats.jpg"
-plotFile1 <- paste(plotTitle1, plotTitle3, sep="_")
-plotFile <- paste(plotFile1, plotOut, sep="_")
+plotOut1 <- args[1]
+plotOut2 <- "blastpStats.jpg"
+plotFile1 <- paste(plotOut1, plotTitle3, sep="_")
+plotFile <- paste(plotFile1, plotOut2, sep="_")
 #Set output path to the input file path
 outFile <- paste(normalizePath(dirname(args[2])), plotFile, sep="/")
 
