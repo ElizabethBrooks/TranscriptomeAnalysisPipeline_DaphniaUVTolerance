@@ -20,7 +20,7 @@ if (numArgs!=1) {
 }
 
 #Retrieve file stats
-aStats <- read.csv(file=args[2])
+aStats <- read.csv(file=args[1])
 totalIndex <- length(rownames(aStats))
 endFiles <- totalIndex-2
 
