@@ -38,18 +38,10 @@ unexpand -a "$outFileCleaned" > "$outFileMerged"
 awk 'seen[$0]++' "$outFileMerged" >  "$outFileCleaned"
 
 #Check number of lines
-echo "Recodring number of entries..."
-echo "Query, Total, Unique, Duplicates" > "$outFileResults"
+#echo "Recodring number of entries..."
+#echo "query,db,queryHits,reciprocalHits,bestHits" > "$outFileResults"
 genes1a=$(wc -l "$inputDBPath" | cut -d ' ' -f 1)
-genes1b=$(sort "$inputDBPath" | uniq -u | wc -l)
-genes1c=$(($genes1a-$genes1b))
-echo "$2"", $genes1a, $genes1b, $genes1c" >> "$outFileResults"
 genes2a=$(wc -l "$inputRDBPath" | cut -d ' ' -f 1)
-genes2b=$(sort "$inputRDBPath" | uniq -u | wc -l)
-genes2c=$(($genes2a-$genes2b))
-echo "Pulex, $genes2a, $genes2b, $genes2c" >> "$outFileResults"
-genes3a=$(wc -l "$outFileMerged" | cut -d ' ' -f 1)
 genes3b=$(wc -l "$outFileCleaned" | cut -d ' ' -f 1)
-genes3c=$(($genes3a-$genes3b))
-echo "Merged, $genes3a, $genes3c, $genes3b" >> "$outFileResults"
-echo "Number of entries recorded!"
+echo "$2"",PA42,$genes1a,$genes2a,$genes3b" >> "$outFileResults"
+#echo "Number of entries recorded!"

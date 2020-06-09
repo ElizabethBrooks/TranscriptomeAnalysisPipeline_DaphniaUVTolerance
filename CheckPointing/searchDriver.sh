@@ -3,11 +3,15 @@
 #Usage: bash searchDriver.sh assembledFolder sampleList
 #Usage Ex: bash searchDriver.sh search trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash searchDriver.sh merge trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash searchDriver.sh mergePlot trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash searchDriver.sh plot trimmed_run1
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
+#set output summary file path
+outPath=$(grep "proteinSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/proteinSearch://g")
 #Initialize variables
 counter=0
 #Loop through all input sets of treatments and perform t-test analsysis
@@ -28,9 +32,20 @@ for i in "$@"; do
 			#Usage: qsub search_blastp.sh transcriptomeFastaFolder
 			qsub search_blastp.sh "$inputFolder"
 		elif [[ "$1" == merge ]]; then
+			#Set output file name
+			outFile="$outPath"/"$2""_blastp_summary.txt"
+			#Add header to output summary file
+			echo "query,db,queryHits,reciprocalHits,bestHits" > "$outFile"
 			#Usage: bash mergeSearches_blastp.sh transcriptomeFastaFolder
-			bash mergeSearches_blastp.sh "$inputFolder" "$i"
+			bash mergeSearches_blastp.sh "$inputFolder" "$i" >> "$outFile"
 		fi
 	fi
 	counter=$(($counter+1))
 done
+#Check if plotting was selected
+if [ "$1" == *lot ]; then
+	#Retrieve output file name
+	outFile="$outPath"/"$2""_blastp_summary.txt"
+	#Usage: Rscript blastpStats_barPlots.r title blastpSummaryFile
+	Rscript blastpStats_barPlots.r "$2" "$outFile"
+fi
