@@ -15,24 +15,26 @@ library(ggpubr)
 args=commandArgs(trailingOnly=TRUE)
 numArgs=length(args)
 #Test if there is one input argument
-if (numArgs!=1) {
-  stop("A file name must be supplied.n", call.=FALSE)
+if (numArgs!=2) {
+  stop("A plot title and file name must be supplied.n", call.=FALSE)
 }
 
 #Retrieve file stats
-aStats <- read.csv(file=args[1])
+aStats <- read.csv(file=args[2])
 totalIndex <- length(rownames(aStats))
 endFiles <- totalIndex-2
 
 #Create data frame of combined file stats
-statsFiles <- data.frame(aStats$genotype, aStats$sequences, aStats$lines, aStats$MB)
+statsMerged <- data.frame(aStats$genotype, aStats$sequences, aStats$lines, aStats$MB)
 #statsFiles <- statsMerged[1:endFiles,]
 
 #Create matrix for multiple plots
 par(mfrow=c(3,1))
 
 #Set the plot titles and output file
-plotTitle <- "Fasta Stats"
+plotTitle1 <- args[1]
+plotTitle2 <- "Fasta Stats"
+plotTitle <- paste(plotTitle1, plotTitle2, sep=" ")
 
 #Generate sequences bar plots
 #plotSeqsMerged <- ggplot(statsMerged, aes(x=aStats.genotype, y=aStats.sequences)) + 
