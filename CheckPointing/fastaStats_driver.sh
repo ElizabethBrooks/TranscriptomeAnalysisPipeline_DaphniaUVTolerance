@@ -120,6 +120,6 @@ sed -i 's/file,/file,genotype,/g' $summaryFileCSV
 #Plot fasta stats from summary file
 echo "Beginning file statistics plotting..."
 egrep -v "Merged|Total|Duplicates" $summaryFileCSV > "$outputFolder"/tmp.csv
-Rscript fastaStats_barPlots.r $2"_Trinity" "$outputFolder"/tmp.csv
+Rscript fastaStats_barPlots.r "Trinity" "$outputFolder"/tmp.csv
 #Clean up
 rm "$outputFolder"/tmp.csv
