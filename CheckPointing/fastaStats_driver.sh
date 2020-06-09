@@ -107,7 +107,7 @@ genotypeList=$(echo "${@:3}")
 echo "GENOTYPES: $genotypeList"
 counter=1
 for i in $genotypeList; do
-	sed -i 's/genotype"$counter"/"$i"/g' $summaryFileCSV
+	sed -i "s/genotype$counter/$i/g" $summaryFileCSV
 	counter=$(($counter+1))
 done
 #Re-set header
