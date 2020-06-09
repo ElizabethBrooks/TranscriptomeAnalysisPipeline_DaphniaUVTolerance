@@ -1,11 +1,11 @@
 #!/bin/bash
 #Script to perform merge mergedfasta files and retain only
 #the specified unique data (by sequence, ID, or both)
-#Usage: bash fastaMerge_driver.sh mergeBy sortedFolder genotypes
-#Usage Ex: bash fastaMerge_driver.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash fastaMerge_driver.sh sequence sortedCoordinate_samtoolsTophat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash fastaMerge_driver.sh sequence trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Default usage Ex: bash fastaMerge_driver.sh sequence assemblyTrinity_all
+#Usage: bash fastaStats_driver.sh mergeBy sortedFolder genotypes
+#Usage Ex: bash fastaStats_driver.sh sequence sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash fastaStats_driver.sh sequence sortedCoordinate_samtoolsTophat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash fastaStats_driver.sh sequence trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Default usage Ex: bash fastaStats_driver.sh sequence assemblyTrinity_all
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -92,27 +92,28 @@ fi
 
 #Merge the set of fasta files
 echo "Beginning fasta file merging..."
-bash fastaMerge.sh $1 $mergedFastaFile $fastaList
+#bash fastaMerge.sh $1 $mergedFastaFile $fastaList
 
 #Write fasta stats to the summary file
 echo "Beginning file statistics summarizing..."
-bash fastaStats.sh $mergedFastaFile $fastaList > $summaryFile
-#Fix file tags
-genotypeList=$(echo "${@:3}")
-counter=1
-for i in $genotypeList; do
-	sed -i 's/file"$counter"/"$i"/g' $summaryFile
-	counter=$(($counter+1))
-done
+#bash fastaStats.sh $mergedFastaFile $fastaList > $summaryFile
 
 #Write fasta stats to the csv formatted summary file
 echo "Beginning file statistics formatting..."
 summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
 bash fastaStats_csvFormatted.sh $mergedFastaFile $fastaList > $summaryFileCSV
+#Fix file tags
+genotypeList=$(echo "${@:3}")
+echo "GENOTYPES: $genotypeList"
+counter=1
+for i in $genotypeList; do
+	sed -i 's/file"$counter"/"$i"/g' $summaryFileCSV
+	counter=$(($counter+1))
+done
+#Re-set header
+sed -i 's/file/genotype/g' $summaryFileCSV
 
 #Plot fasta stats from summary file
 echo "Beginning file statistics plotting..."
-Rscript fastaStats_barPlots.r $1 $summaryFileCSV
+#Rscript fastaStats_barPlots.r $1 $summaryFileCSV
 
-#Clean up
-rm Rplots.pdf

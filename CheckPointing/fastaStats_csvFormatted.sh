@@ -3,7 +3,7 @@
 #Usage: bash fastaStats_csvFormatted.sh fastaFilePaths mergedFile
 
 #Create header for csv
-echo "file, sequences, lines, MB"
+echo "file,sequences,lines,MB"
 
 #Initialize counters
 counter=1
@@ -18,7 +18,7 @@ for i; do
 	lines=$(wc -l $i | cut -d " " -f1)
 	mBytes=$(ls -l --block-size=1MB $i | cut -d " " -f5)
 	#Output file name tags and stats
-	echo "file$counter, $seqs, $lines, $mBytes"
+	echo "file$counter,$seqs,$lines,$mBytes"
 
 	#Calculate running total of un-merged file stats
 	if [[ $counter -lt $# ]]; then
@@ -31,4 +31,4 @@ for i; do
 done
 
 #Output total stats
-echo "total, $seqsTotal, $linesTotal, $mBytesTotal"
+echo "total,$seqsTotal,$linesTotal,$mBytesTotal"
