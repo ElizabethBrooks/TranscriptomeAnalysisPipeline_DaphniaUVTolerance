@@ -47,7 +47,7 @@ echo "$2"", $genes1a, $genes1b, $genes1c" >> "$outFileResults"
 genes2a=$(wc -l "$inputRDBPath" | cut -d ' ' -f 1)
 genes2b=$(sort "$inputRDBPath" | uniq -u | wc -l)
 genes2c=$(($genes2a-$genes2b))
-echo "melanica, $genes2a, $genes2b, $genes2c" >> "$outFileResults"
+echo "Pulex, $genes2a, $genes2b, $genes2c" >> "$outFileResults"
 genes3a=$(wc -l "$outFileMerged" | cut -d ' ' -f 1)
 genes3b=$(wc -l "$outFileCleaned" | cut -d ' ' -f 1)
 genes3c=$(($genes3a-$genes3b))
