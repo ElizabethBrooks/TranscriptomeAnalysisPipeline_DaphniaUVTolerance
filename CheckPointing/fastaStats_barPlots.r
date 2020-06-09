@@ -25,7 +25,7 @@ totalIndex <- length(rownames(aStats))
 endFiles <- totalIndex-2
 
 #Create data frame of combined file stats
-statsMerged <- data.frame(aStats$genotype, aStats$sequences, aStats$lines, aStats$MB)
+statsFiles <- data.frame(aStats$genotype, aStats$sequences, aStats$lines, aStats$MB)
 #statsFiles <- statsMerged[1:endFiles,]
 
 #Create matrix for multiple plots
