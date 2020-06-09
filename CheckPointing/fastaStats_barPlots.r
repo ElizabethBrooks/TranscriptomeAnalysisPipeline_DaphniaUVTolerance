@@ -33,7 +33,7 @@ par(mfrow=c(3,1))
 
 #Set the plot titles and output file
 plotTitle1 <- args[1]
-plotTitle2 <- "File Stats"
+plotTitle2 <- "Fasta Stats"
 plotTitle <- paste(plotTitle1, plotTitle2, sep=" ")
 
 #Generate sequences bar plots
