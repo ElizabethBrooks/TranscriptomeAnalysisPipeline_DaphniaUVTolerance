@@ -5,6 +5,7 @@
 #Usage Ex: bash searchDriver.sh merge trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash searchDriver.sh mergePlot trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash searchDriver.sh plot trimmed_run1
+
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -44,6 +45,8 @@ for i in "$@"; do
 done
 #Check if plotting was selected
 if [ "$1" == *lot ]; then
+	#Load necessary modules
+	module load R
 	#Retrieve output file name
 	outFile="$outPath"/"$2""_blastp_summary.txt"
 	#Usage: Rscript blastpStats_barPlots.r title blastpSummaryFile
