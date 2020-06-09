@@ -32,7 +32,7 @@ statsFiles <- data.frame(aStats$genotype, aStats$sequences, aStats$lines, aStats
 par(mfrow=c(3,1))
 
 #Set the plot titles and output file
-plotTitle1 <- args[1]
+plotTitle1 <- args[2]
 plotTitle2 <- "Fasta Stats"
 plotTitle <- paste(plotTitle1, plotTitle2, sep=" ")
 
@@ -90,7 +90,8 @@ finalFilesPlot <- annotate_figure(finalFilesPlot,
   bottom=text_grob("File Number", color="black", size=12))
 
 #Set output file names
-outTitle <- args[2]
+outTitle1 <- args[1]
+outTitle <- paste(plotTitle1, outTitle1, sep="_")
 #plotMergedOut <- "mergedFastaStats.jpg"
 plotFilesOut <- "fastaStats.jpg"
 #plotMergedFile <- paste(outTitle, plotMergedOut, sep="_")
