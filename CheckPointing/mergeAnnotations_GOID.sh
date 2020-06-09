@@ -1,3 +1,4 @@
+#!/bin/bash
 #Bash script to merge two GO annotation files
 # and remove duplicate entries
 #bash mergeAnnotations_GOID.sh /home/mae/Documents/RNASeq_Workshop_ND/PA42_annotations/Frozen3.0Genome_Annotaton/PA42_3.0_annotation_go_terms_enzyme_code_by_line_18440.txt /home/mae/Documents/RNASeq_Workshop_ND/PA42_annotations/PANNZER_proteins_new/GO.out.txt

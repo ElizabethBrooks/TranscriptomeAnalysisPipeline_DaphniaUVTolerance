@@ -47,6 +47,8 @@ cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/searchedTranscripts_"$1"_summary.txt
 #Use blastp to search a database
+# and output with outfmt6 header:
+#qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
 echo "Beginning blastp database search..."
 blastp -query "$inputsPath" -db "$dbPath" -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 24 > blastp.outfmt6
 echo "Finished blastp database search!"
