@@ -1,9 +1,7 @@
 #!/bin/bash
 #Script to filter reciprocal blast results for best hits
-#Usage: bash mergeSearches_blastp.sh firstBlastResults reciprocalBlastResults
-#Usage Ex: bash mergeSearches_blastp.sh blastp.outfmt6 blastp_reciprocal.outfmt6
-
-#Check for input arguments of folder names
+#Usage: bash mergeSearches_blastp.sh transcriptomeFasta genotype
+#Usage Ex: bash mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
@@ -41,15 +39,15 @@ awk 'seen[$0]++' "$outFileMerged" >  "$outFileCleaned"
 
 #Check number of lines
 echo "Recodring number of entries..."
-echo "File, Total, Unique, Duplicates" > "$outFileResults"
+echo "Query, Total, Unique, Duplicates" > "$outFileResults"
 genes1a=$(wc -l "$inputDBPath" | cut -d ' ' -f 1)
 genes1b=$(sort "$inputDBPath" | uniq -u | wc -l)
 genes1c=$(($genes1a-$genes1b))
-echo "File1, $genes1a, $genes1b, $genes1c" >> "$outFileResults"
+echo "$3"", $genes1a, $genes1b, $genes1c" >> "$outFileResults"
 genes2a=$(wc -l "$inputRDBPath" | cut -d ' ' -f 1)
 genes2b=$(sort "$inputRDBPath" | uniq -u | wc -l)
 genes2c=$(($genes2a-$genes2b))
-echo "File2, $genes2a, $genes2b, $genes2c" >> "$outFileResults"
+echo "melanica, $genes2a, $genes2b, $genes2c" >> "$outFileResults"
 genes3a=$(wc -l "$outFileMerged" | cut -d ' ' -f 1)
 genes3b=$(wc -l "$outFileCleaned" | cut -d ' ' -f 1)
 genes3c=$(($genes3a-$genes3b))

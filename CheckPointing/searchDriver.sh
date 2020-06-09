@@ -29,7 +29,7 @@ for i in "$@"; do
 			qsub search_blastp.sh "$inputFolder"
 		elif [[ "$1" == merge ]]; then
 			#Usage: bash mergeSearches_blastp.sh transcriptomeFastaFolder
-			bash mergeSearches_blastp.sh "$inputFolder"
+			bash mergeSearches_blastp.sh "$inputFolder" "$i"
 		fi
 	fi
 	counter=$(($counter+1))
