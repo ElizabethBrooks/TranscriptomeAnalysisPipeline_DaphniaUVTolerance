@@ -12,6 +12,13 @@ if [ $# -eq 0 ]; then
 fi
 #set output summary file path
 outPath=$(grep "assemblyAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblyAnalysis://g")
+#Set merged summary file name and header
+if [[ "$1" == merge ]]; then
+	#Set output file name
+	outFile="$outPath"/"$2""_blastp_summary.txt"
+	#Add header to output summary file
+	echo "query,db,queryHits,reciprocalHits,bestHits" > "$outFile"
+fi
 #Initialize variables
 counter=0
 #Loop through all input sets of treatments and perform t-test analsysis
@@ -24,13 +31,6 @@ for i in "$@"; do
 	else
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 		exit 1
-	fi
-	#Set merged summary file name
-	if [[ "$1" == merge ]]; then
-		#Set output file name
-		outFile="$outPath"/"$2""_blastp_summary.txt"
-		#Add header to output summary file
-		echo "query,db,queryHits,reciprocalHits,bestHits" > "$outFile"
 	fi
 	#Skip first two arguments
 	if [ $counter -ge 2 ]; then
@@ -58,4 +58,3 @@ if [ "$1" == plot ]; then
 	Rscript blastpStats_barPlots.r "$2" "$outFile"
 	echo "Blastp results for $2 have been plotted!"
 fi
-echo "DONE"
