@@ -25,7 +25,7 @@ totalIndex <- length(rownames(aStats))
 endFiles <- totalIndex-2
 
 #Create data frame of combined file stats
-statsMerged <- data.frame(aStats$file, aStats$sequences, aStats$lines, aStats$MB)
+statsMerged <- data.frame(aStats$genotype, aStats$sequences, aStats$lines, aStats$MB)
 statsFiles <- statsMerged[1:endFiles,]
 
 #Create matrix for multiple plots
@@ -37,13 +37,13 @@ plotTitle2 <- "File Stats"
 plotTitle <- paste(plotTitle1, plotTitle2, sep=" ")
 
 #Generate sequences bar plots
-plotSeqsMerged <- ggplot(statsMerged, aes(x=aStats.file, y=aStats.sequences)) + 
+plotSeqsMerged <- ggplot(statsMerged, aes(x=aStats.genotype, y=aStats.sequences)) + 
   geom_bar(stat="identity", fill="steelblue") +
   theme_minimal() +
   geom_text(aes(label=aStats.sequences), vjust=1.6, color="white", size=3.5) +
   ylab("Sequences") +
   theme(axis.title.x = element_blank())
-plotSeqsFiles <- ggplot(statsFiles, aes(x=aStats.file, y=aStats.sequences)) + 
+plotSeqsFiles <- ggplot(statsFiles, aes(x=aStats.genotype, y=aStats.sequences)) + 
   geom_bar(stat="identity", fill="steelblue") +
   theme_minimal() +
   geom_text(aes(label=aStats.sequences), vjust=1.6, color="white", size=3.5) +
@@ -51,13 +51,13 @@ plotSeqsFiles <- ggplot(statsFiles, aes(x=aStats.file, y=aStats.sequences)) +
   theme(axis.title.x = element_blank())
 
 #Generate lines bar plots
-plotLinesMerged <- ggplot(statsMerged, aes(x=aStats.file, y=aStats.lines)) + 
+plotLinesMerged <- ggplot(statsMerged, aes(x=aStats.genotype, y=aStats.lines)) + 
   geom_bar(stat="identity", fill="steelblue") +
   theme_minimal() + 
   geom_text(aes(label=aStats.lines), vjust=1.6, color="white", size=3.5) +
   ylab("Lines") +
   theme(axis.title.x = element_blank())
-plotLinesFiles <- ggplot(statsFiles, aes(x=aStats.file, y=aStats.lines)) + 
+plotLinesFiles <- ggplot(statsFiles, aes(x=aStats.genotype, y=aStats.lines)) + 
   geom_bar(stat="identity", fill="steelblue") +
   theme_minimal() + 
   geom_text(aes(label=aStats.lines), vjust=1.6, color="white", size=3.5) +
@@ -65,13 +65,13 @@ plotLinesFiles <- ggplot(statsFiles, aes(x=aStats.file, y=aStats.lines)) +
   theme(axis.title.x = element_blank())
 
 #Generate MB bar plots
-plotMBMerged <- ggplot(statsMerged, aes(x=aStats.file, y=aStats.MB)) + 
+plotMBMerged <- ggplot(statsMerged, aes(x=aStats.genotype, y=aStats.MB)) + 
   geom_bar(stat="identity", fill="steelblue")+
   theme_minimal() +
   geom_text(aes(label=aStats.MB), vjust=1.6, color="white", size=3.5) +
   ylab("MB") +
   theme(axis.title.x = element_blank())
-plotMBFiles <- ggplot(statsFiles, aes(x=aStats.file, y=aStats.MB)) + 
+plotMBFiles <- ggplot(statsFiles, aes(x=aStats.genotype, y=aStats.MB)) + 
   geom_bar(stat="identity", fill="steelblue")+
   theme_minimal() +
   geom_text(aes(label=aStats.MB), vjust=1.6, color="white", size=3.5) +
