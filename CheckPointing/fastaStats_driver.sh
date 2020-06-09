@@ -87,7 +87,7 @@ fi
 mkdir "$outputFolder"
 if [ $? -ne 0 ]; then
 	echo "The $outputFolder directory already exsists... please remove before proceeding."
-	exit 1
+	#exit 1
 fi
 
 #Merge the set of fasta files
