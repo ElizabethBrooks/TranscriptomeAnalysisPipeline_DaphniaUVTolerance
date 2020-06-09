@@ -13,9 +13,9 @@ counter=0
 #Loop through all input sets of treatments and perform t-test analsysis
 for i in "$@"; do
 	#Determine what type of data folder was input
-	if [[ "$1" == trimmed* ]]; then
+	if [[ "$2" == trimmed* ]]; then
 		inputFolder=$(echo "$1""$i"_assemblyTrinity)
-	elif [[ "$1" == sorted* ]]; then
+	elif [[ "$2" == sorted* ]]; then
 		inputFolder=$(echo "$1""$i"_assemblyGenomeTrinity)
 	else
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
