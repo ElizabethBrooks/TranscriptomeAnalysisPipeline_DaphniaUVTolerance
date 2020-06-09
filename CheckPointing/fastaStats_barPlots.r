@@ -87,7 +87,7 @@ finalFilesPlot <- ggarrange(plotSeqsFiles, plotLinesFiles, plotMBFiles, nrow=3)
 #  bottom=text_grob("File Number", color="black", size=12))
 finalFilesPlot <- annotate_figure(finalFilesPlot,
   top=text_grob(plotTitle, color="black", face="bold", size=14),
-  bottom=text_grob("File Number", color="black", size=12))
+  bottom=text_grob("Transcriptome Genotype", color="black", size=12))
 
 #Set output file names
 outTitle1 <- args[1]
