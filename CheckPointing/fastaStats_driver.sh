@@ -106,7 +106,7 @@ bash fastaStats_csvFormatted.sh $mergedFastaFile $fastaList > $summaryFileCSV
 genotypeList=$(echo "${@:3}")
 counter=1
 for i in $genotypeList; do
-	genotypeTag="genotype"$counter
+	genotypeTag="file"$counter
 	echo "GENOTYPE: $genotypeTag, $i"
 	sed -i "s/$genotypeTag/$i/g" $summaryFileCSV
 	counter=$(($counter+1))
