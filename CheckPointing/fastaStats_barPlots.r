@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-#Usage: Rscript fastaStats_barPlots.r statsSummaryFile
+#Usage: Rscript fastaStats_barPlots.r title outFileName statsSummaryFile
 #R script to generate bar plots of file stats
 
 #Installations need to be performed once
@@ -15,12 +15,12 @@ library(ggpubr)
 args=commandArgs(trailingOnly=TRUE)
 numArgs=length(args)
 #Test if there is one input argument
-if (numArgs!=2) {
-  stop("A plot title and file name must be supplied.n", call.=FALSE)
+if (numArgs!=3) {
+  stop("A plot title, and input and output file names must be supplied.n", call.=FALSE)
 }
 
 #Retrieve file stats
-aStats <- read.csv(file=args[2])
+aStats <- read.csv(file=args[3])
 totalIndex <- length(rownames(aStats))
 endFiles <- totalIndex-2
 
@@ -90,10 +90,11 @@ finalFilesPlot <- annotate_figure(finalFilesPlot,
   bottom=text_grob("File Number", color="black", size=12))
 
 #Set output file names
+outTitle <- args[2]
 #plotMergedOut <- "mergedFastaStats.jpg"
 plotFilesOut <- "fastaStats.jpg"
-#plotMergedFile <- paste(plotTitle1, plotMergedOut, sep="_")
-plotFilesFile <- paste(plotTitle1, plotFilesOut, sep="_")
+#plotMergedFile <- paste(outTitle, plotMergedOut, sep="_")
+plotFilesFile <- paste(outTitle, plotFilesOut, sep="_")
 #Set output path to the input file path
 #outMergedFile <- paste(normalizePath(dirname(args[2])), plotMergedFile, sep="/")
 outFilesFile <- paste(normalizePath(dirname(args[2])), plotFilesFile, sep="/")
