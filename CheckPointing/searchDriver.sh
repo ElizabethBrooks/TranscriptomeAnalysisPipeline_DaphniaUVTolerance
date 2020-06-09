@@ -12,7 +12,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #set output summary file path
-outPath=$(grep "proteinSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/proteinSearch://g")
+outPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
 #Initialize variables
 counter=0
 #Loop through all input sets of treatments and perform t-test analsysis
@@ -32,12 +32,13 @@ for i in "$@"; do
 		if [[ "$1" == search ]]; then
 			#Usage: qsub search_blastp.sh transcriptomeFastaFolder
 			qsub search_blastp.sh "$inputFolder"
-		elif [[ "$1" == merge ]]; then
+		elif [[ "$1" == merge* ]]; then
 			#Set output file name
 			outFile="$outPath"/"$2""_blastp_summary.txt"
 			#Add header to output summary file
 			echo "query,db,queryHits,reciprocalHits,bestHits" > "$outFile"
 			#Usage: bash mergeSearches_blastp.sh transcriptomeFastaFolder
+			echo "Merging $i blastp result for $2..."
 			bash mergeSearches_blastp.sh "$inputFolder" "$i" >> "$outFile"
 		fi
 	fi
@@ -50,5 +51,7 @@ if [ "$1" == *lot ]; then
 	#Retrieve output file name
 	outFile="$outPath"/"$2""_blastp_summary.txt"
 	#Usage: Rscript blastpStats_barPlots.r title blastpSummaryFile
+	echo "Plotting blastp results for $2..."
 	Rscript blastpStats_barPlots.r "$2" "$outFile"
+	echo "Blastp results for $2 have been plotted!"
 fi
