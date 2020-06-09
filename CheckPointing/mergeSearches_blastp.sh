@@ -16,8 +16,8 @@ if [[ "$1" == *assembly* ]]; then
 	#Set outputs absolute path
 	outputFolder="$assemblyPath"/"$1"/searchedTranscripts_blastp
 	#Set blast result paths
-	inputDBPath="$outputFolder"/blastp.outfmt6
-	inputRDBPath="$outputFolder"/blastp_reciprocal.outfmt6
+	inputDBPath="$outputFolder"/"blastp.outfmt6"
+	inputRDBPath="$outputFolder"/"blastp_reciprocal.outfmt6"
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
