@@ -25,7 +25,7 @@ totalIndex <- length(rownames(aStats))
 endFiles <- totalIndex-2
 
 #Create data frame of combined file stats
-statsMerged <- data.frame(aStats$genotype, aStats$sequences, aStats$lines, aStats$MB)
+statsMerged <- data.frame(aStats$file, aStats$genotype, aStats$sequences, aStats$lines, aStats$MB)
 statsFiles <- statsMerged[1:endFiles,]
 
 #Create matrix for multiple plots
@@ -90,8 +90,8 @@ finalFilesPlot <- annotate_figure(finalFilesPlot,
   bottom=text_grob("File Number", color="black", size=12))
 
 #Set output file names
-plotMergedOut <- "mergedStats.jpg"
-plotFilesOut <- "fileStats.jpg"
+plotMergedOut <- "mergedFastaStats.jpg"
+plotFilesOut <- "fastaStats.jpg"
 plotMergedFile <- paste(plotTitle1, plotMergedOut, sep="_")
 plotFilesFile <- paste(plotTitle1, plotFilesOut, sep="_")
 #Set output path to the input file path

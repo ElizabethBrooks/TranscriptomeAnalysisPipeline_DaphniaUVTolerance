@@ -31,4 +31,4 @@ for i; do
 done
 
 #Output total stats
-echo "total,$seqsTotal,$linesTotal,$mBytesTotal"
+echo "fileTotal,$seqsTotal,$linesTotal,$mBytesTotal"

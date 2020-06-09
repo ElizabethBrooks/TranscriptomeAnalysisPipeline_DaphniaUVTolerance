@@ -112,6 +112,7 @@ for i in $genotypeList; do
 	sed -i "s/$genotypeTag/$replaceTag/g" $summaryFileCSV
 	counter=$(($counter+1))
 done
+sed -i 's/fileTotal,/fileTotal,total,/g' $summaryFileCSV
 #Re-set header
 sed -i 's/file,/file,genotype,/g' $summaryFileCSV
 
