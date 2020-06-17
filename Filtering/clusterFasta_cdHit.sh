@@ -37,7 +37,7 @@ if [[ "$2" == sorted* ]]; then
 		if [[ $counter -ge 3 ]]; then
 			#Set current fasta file path
 			fastaFile="$inputsPath/$2$i""_assemblyGenomeTrinity/Trinity.fasta "
-			./"$softsPath"/cd-hit-est -o "$outputFolder"/cdhit -c 0.98 -i "$fastaFile" -p 1 -d 0 -b 3 -T 10
+			"$softsPath"/cd-hit-est -o "$outputFolder"/cdhit -c 0.98 -i "$fastaFile" -p 1 -d 0 -b 3 -T 10
 		fi
 		counter=$(($counter+1))
 	done
@@ -56,7 +56,7 @@ elif [[ "$2" == trimmed* ]]; then
 		if [[ $counter -ge 3 ]]; then
 			#Set current fasta file path
 			fastaFile="$inputsPath/$2$i""_assemblyTrinity/Trinity.fasta "
-			./"$softsPath"/cd-hit-est -o "$outputFolder"/cdhit -c 0.98 -i "$fastaFile" -p 1 -d 0 -b 3 -T 10
+			"$softsPath"/cd-hit-est -o "$outputFolder"/cdhit -c 0.98 -i "$fastaFile" -p 1 -d 0 -b 3 -T 10
 		fi
 		counter=$(($counter+1))
 	done
@@ -71,7 +71,7 @@ else #Default accept a list of full file paths
 	for i in "$@"; do
 		#Set current fasta file path
 		if [[ $counter -ge 3 ]]; then
-			./"$softsPath"/cd-hit-est -o "$outputFolder"/cdhit -c 0.98 -i "$i" -p 1 -d 0 -b 3 -T 10
+			"$softsPath"/cd-hit-est -o "$outputFolder"/cdhit -c 0.98 -i "$i" -p 1 -d 0 -b 3 -T 10
 		fi
 		counter=$(($counter+1))
 	done
