@@ -1,0 +1,4 @@
+packageTransdecoder: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/TransDecoder-master
+packageTrinotate: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/Trinotate-Trinotate-v3.2.1
+packageCdhit: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/cdhit-master
+packageSanspanz: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/SANSPANZ.3
