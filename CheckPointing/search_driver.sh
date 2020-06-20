@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to perform t-test analysis of all samples in an input set
 #Usage: bash search_driver.sh assembledFolder sampleList
-#Usage Ex: bash search_driver.sh search swissprot trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh search trimmed_run1 swissprot Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash search_driver.sh reciprocal trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash search_driver.sh merge trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash search_driver.sh plot trimmed_run1
@@ -49,8 +49,8 @@ for i in "$@"; do
 	elif [[ "$1" == search ]]; then #Skip first three arguments
 		if [ $counter -ge 3 ]; then
 			#Usage: qsub search_blastp.sh transcriptomeFastaFolder proteinDB
-			echo "Searching $i transcriptome with blastp for $2..."
-			qsub search_blastp.sh "$inputFolder" "$2"
+			echo "Searching $i transcriptome with blastp for $3..."
+			qsub search_blastp.sh "$inputFolder" "$3"
 		fi
 	fi
 	counter=$(($counter+1))
