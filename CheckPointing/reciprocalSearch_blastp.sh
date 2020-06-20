@@ -45,7 +45,7 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/reciprocalSearchedTranscripts_blastp_summary.txt
+inputOutFile="$outputFolder"/reciprocalSearchedTranscripts_blastp_"$1"_summary.txt
 #Use blastp to search a database
 # and output with outfmt6 header:
 #qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore

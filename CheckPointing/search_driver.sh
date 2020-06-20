@@ -1,7 +1,8 @@
 #!/bin/bash
 #Script to perform t-test analysis of all samples in an input set
 #Usage: bash search_driver.sh assembledFolder sampleList
-#Usage Ex: bash search_driver.sh search trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh search swissprot trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh reciprocal trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash search_driver.sh merge trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash search_driver.sh plot trimmed_run1
 
@@ -32,17 +33,24 @@ for i in "$@"; do
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 		exit 1
 	fi
-	#Skip first two arguments
-	if [ $counter -ge 2 ]; then
-		#Check input option
-		if [[ "$1" == search ]]; then
-			#Usage: qsub search_blastp.sh transcriptomeFastaFolder
+	#Check input option
+	if [[ "$1" == reciprocal ]]; then #Skip first two arguments 
+		if [ $counter -ge 2 ]; then
+			#Usage: qsub reciprocalSearch_blastp.sh transcriptomeFastaFolder
 			echo "Searching $i transcriptome with blastp for $2..."
-			qsub search_blastp.sh "$inputFolder"
-		elif [[ "$1" == merge ]]; then
+			qsub reciprocalSearch_blastp.sh "$inputFolder"
+		fi
+	elif [[ "$1" == merge ]]; then #Skip first two arguments
+		if [ $counter -ge 2 ]; then
 			#Usage: bash mergeSearches_blastp.sh transcriptomeFastaFolder
 			echo "Merging $i blastp result for $2..."
 			bash mergeSearches_blastp.sh "$inputFolder" "$i" >> "$outFile"
+		fi
+	elif [[ "$1" == search ]]; then #Skip first three arguments
+		if [ $counter -ge 3 ]; then
+			#Usage: qsub search_blastp.sh transcriptomeFastaFolder proteinDB
+			echo "Searching $i transcriptome with blastp for $2..."
+			qsub search_blastp.sh "$inputFolder" "$2"
 		fi
 	fi
 	counter=$(($counter+1))
