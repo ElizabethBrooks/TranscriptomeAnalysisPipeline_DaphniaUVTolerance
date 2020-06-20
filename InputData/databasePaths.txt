@@ -1,4 +1,4 @@
-swissprotDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_transcriptome/uniprot_sprot.pep
+swissprotDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_swissprot/uniprot_sprot.pep
 transcriptomeDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_transcriptome/PA42.3.0.protein_new.fasta
 proteomeDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_proteome/proteomeDB_taxonID.fasta
 ncbiDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_ncbi/nr

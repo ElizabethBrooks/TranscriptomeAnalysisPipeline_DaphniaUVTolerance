@@ -4,9 +4,9 @@
 #$ -r n
 #$ -N database_blastp_jobOutput
 #Script to retrieve Uniprot protein sequence database fasta files
-#Usage: qsub buildDatabase_blastp.sh dbSelection
-#Usage ex: qsub buildDatabase_blastp.sh swissprot
-#Usage ex: qsub buildDatabase_blastp.sh ncbi
+#Usage: qsub getDatabase_blastp.sh dbSelection
+#Usage ex: qsub getDatabase_blastp.sh swissprot
+#Usage ex: qsub getDatabase_blastp.sh ncbi
 #Note that the NCBI NR DB may be downloaded with wget
 #ex: wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/nr.gz
 #Note that uniprot databases may be downloaded from the UniprotKB search page, or wget
@@ -27,8 +27,6 @@ elif [[ "$1" == "uniprot" ]]; then
 elif [[ "$1" == "swissprot" ]]; then
 	#Retrieve Trinotate software path
 	softsPath=$(grep "trinotatePackage:" softwarePaths.txt | tr -d " " | sed "s/trinotatePackage://g")
-	#Import swissprot database
-	"$softsPath"/TRINOTATE_HOME/admin/Build_Trinotate_Boilerplate_SQLite_db.pl  Trinotate
 	#Retreive uniprot database storage path
 	outputPath=$(grep "swissprotDB:" databasePaths.txt | tr -d " " | sed "s/swissprotDB://g")
 else
@@ -62,5 +60,5 @@ elif [[ "$1" == "uniprot" ]]; then
 	gunzip -v $dbFile
 elif [[ "$1" == "swissprot" ]]; then
 	#Import swissprot database
-	"$softsPath"/TRINOTATE_HOME/admin/Build_Trinotate_Boilerplate_SQLite_db.pl  Trinotate
+	"$softsPath"/admin/Build_Trinotate_Boilerplate_SQLite_db.pl  Trinotate
 fi
