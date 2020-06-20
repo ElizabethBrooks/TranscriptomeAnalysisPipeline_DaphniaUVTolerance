@@ -47,7 +47,8 @@ elif [[ "$1" == PA42 ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptomeDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
 	#Set outputs absolute path
-	outputFolder="$assemblyPath"/search_"$2"_blastp_"$1"
+	outputPath=$(dirname "$inputsPath")
+	outputFolder="$outputPath"/search_"$2"_blastp_"$1"
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
