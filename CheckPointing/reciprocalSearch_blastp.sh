@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N search_blastp_jobOutput
+#$ -N reciprocalSearch_blastp_jobOutput
 #$ -pe smp 8
 #Script to use blastp to translate the nucleotide sequences of a reference genome
 # for searching a protein database
@@ -17,7 +17,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve genome reference absolute path for querying
-dbPath=$(grep "transcriptomeDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
+dbPath=$(grep "transcriptomeDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
 #Determine input database for blastp
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
