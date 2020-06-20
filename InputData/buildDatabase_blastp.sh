@@ -11,22 +11,23 @@
 
 #Load necessary modules
 module load bio/blast+
+#Determine database selection
 if [[ "$1" == "ncbi" ]]; then
 	#Retreive ncbi database storage path
-	outputPath=$(grep "ncbiDB:" databasePaths.txt | tr -d " " | sed "s/ncbiDB://g")
+	dbFile=$(grep "ncbiDB:" databasePaths.txt | tr -d " " | sed "s/ncbiDB://g")
 elif [[ "$1" == "uniprot" ]]; then
 	#Retreive uniprot database storage path
-	outputPath=$(grep "uniprotDB:" databasePaths.txt | tr -d " " | sed "s/uniprotDB://g")
+	dbFile=$(grep "uniprotDB:" databasePaths.txt | tr -d " " | sed "s/uniprotDB://g")
 elif [[ "$1" == "swissprot" ]]; then
 	#Retreive uniprot database storage path
-	outputPath=$(grep "swissprotDB:" databasePaths.txt | tr -d " " | sed "s/swissprotDB://g")
+	dbFile=$(grep "swissprotDB:" databasePaths.txt | tr -d " " | sed "s/swissprotDB://g")
 else
 	#Error message
 	echo "Invalid database selection entered (ncbi or uniprot only)... exiting!"
 	exit 1
 fi
 #Make output database directory
-outputPath=$(dirname "$outputPath")
+outputPath=$(dirname "$dbFile")
 mkdir $outputPath
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -37,5 +38,4 @@ fi
 #Move to output database directory
 cd $outputPath
 #Index the database for blastp
-dbFileNoEx=$(echo $dbFile | sed 's/\.gz//')
-makeblastdb -in $dbFileNoEx -dbtype prot
+makeblastdb -in $dbFile -dbtype prot
