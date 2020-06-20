@@ -26,16 +26,8 @@ else
 	echo "Invalid database selection entered (ncbi or uniprot only)... exiting!"
 	exit 1
 fi
-#Make output database directory
-outputPath=$(dirname "$dbFile")
-mkdir $outputPath
-#Check if the folder already exists
-if [ $? -ne 0 ]; then
-	#Error message
-	echo "Database directory for $1 files already exsists... exiting!"
-	exit 1
-fi
 #Move to output database directory
+outputPath=$(dirname "$dbFile")
 cd $outputPath
 #Index the database for blastp
 makeblastdb -in $dbFile -dbtype prot

@@ -37,7 +37,7 @@ if [[ "$1" == *assembly* ]]; then
 	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
 	#Set outputs absolute path
-	outputFolder="$assemblyPath"/"$1"/searchedTranscripts_"$2"_blastp
+	outputFolder="$assemblyPath"/"$1"/search_"$2"_blastp
 	#Make blastable DB of transcriptome
 	cd $inputsPath
 	inputDB=Trinity.fasta.transdecoder.pep
@@ -57,7 +57,7 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/searchedTranscripts_"$2"_blastp_"$1"_summary.txt
+inputOutFile="$outputFolder"/search_"$2"_blastp_"$1"_summary.txt
 #Use blastp to search a database
 # and output with outfmt6 header:
 #qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
