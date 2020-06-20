@@ -8,6 +8,7 @@
 # for searching a protein database
 #Usage: qsub search_blastp.sh transcriptomeFasta proteinDB
 #Usage Ex: qsub search_blastp.sh trimmed_run1E05_assemblyTrinity swissprot
+#Alternate usage Ex: qsub search_blastp.sh PA42 swissprot
 
 #Load necessary modules for ND CRC servers
 module load bio/blast+
@@ -38,10 +39,15 @@ if [[ "$1" == *assembly* ]]; then
 	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
 	#Set outputs absolute path
 	outputFolder="$assemblyPath"/"$1"/search_"$2"_blastp
-	#Make blastable DB of transcriptome
+	#Set input transcriptome path
 	cd $inputsPath
 	inputDB=Trinity.fasta.transdecoder.pep
 	inputsPath="$inputsPath"/"$inputDB"
+elif [[ "$1" == PA42 ]]; then
+	#Retrieve genome reference absolute path for querying
+	inputsPath=$(grep "transcriptomeDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
+	#Set outputs absolute path
+	outputFolder="$assemblyPath"/search_"$2"_blastp_"$1"
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
