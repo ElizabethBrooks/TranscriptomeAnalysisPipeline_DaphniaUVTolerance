@@ -47,7 +47,7 @@ for i in "$@"; do
 			echo "Merging $i blastp result for $2..."
 			bash mergeSearches_blastp.sh "$inputFolder" "$i" >> "$outFile"
 		fi
-	if [[ "$1" == hmmscan ]]; then #Skip first two arguments 
+	elif [[ "$1" == hmmscan ]]; then #Skip first two arguments 
 		if [ $counter -ge 2 ]; then
 			#Usage: qsub search_hmmscan.sh transcriptomeFastaFolder
 			echo "Searching $i transcriptome with hmmscan for $2..."
