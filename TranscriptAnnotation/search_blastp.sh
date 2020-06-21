@@ -26,7 +26,7 @@ elif [[ "$2" == "uniprot" ]]; then
 	dbFile=$(grep "uniprotDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/uniprotDB://g")
 elif [[ "$2" == "swissprot" ]]; then
 	#Retreive uniprot database storage path
-	dbFile=$(grep "swissprotDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/swissprotDB://g")
+	dbFile=$(grep "trinotateSwissprotDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/trinotateSwissprotDB://g")
 else
 	#Error message
 	echo "Invalid database selection entered (ncbi or uniprot only)... exiting!"
