@@ -34,7 +34,7 @@ elif [[ "$1" == PA42 ]]; then
 	inputsPath=$(grep "transcriptomeDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
 	#Set outputs absolute path
 	outputPath=$(dirname "$inputsPath")
-	outputFolder="$outputPath"/search_hmmscan_"$1"
+	outputFolder="$outputPath"/searched_hmmscan
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
@@ -50,7 +50,7 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/search_hmmscan_"$1"_summary.txt
+inputOutFile="$outputFolder"/searched_hmmscan_"$1"_summary.txt
 #Use blastp to search a database
 # and output with outfmt6 header:
 #qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore

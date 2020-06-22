@@ -37,7 +37,7 @@ fi
 inputsPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve outputs absolute path
 outputsPath=$(grep "proteinSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/proteinSearch://g")
-outputFolder="$outputsPath"/searchedProteins_"$1"
+outputFolder="$outputsPath"/searched_blastx
 mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -47,7 +47,7 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1"_searchedProteins_summary.txt
+inputOutFile="$outputFolder"/searched_blastx_"$1"_summary.txt
 #Use blastx to search a protein database
 echo "Beginning blastx protein database search..."
 blastx -query "$inputsPath" -db "$dbPath" -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 > blastx.outfmt6
