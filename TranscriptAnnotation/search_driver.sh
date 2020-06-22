@@ -1,5 +1,5 @@
 #!/bin/bash
-#Script to perform t-test analysis of all samples in an input set
+#Script to perform sequence searches using a selected program for an input transcript data set
 #Usage: bash search_driver.sh assembledFolder sampleList
 #Usage Ex: bash search_driver.sh blastp trimmed_run1 swissprot Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash search_driver.sh hmmscan trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
