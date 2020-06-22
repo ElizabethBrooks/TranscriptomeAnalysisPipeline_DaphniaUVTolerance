@@ -4,7 +4,7 @@
 #$ -r n
 #$ -N annotation_trinotate_jobOutput
 #$ -pe smp 8
-#Script to use hmmscan to use hmmer to identify protein domains
+#Script to use trinotate to generate an annotation report
 #Usage: qsub annotation_trinotate.sh transcriptomeFasta
 #Usage Ex: qsub annotation_trinotate.sh trimmed_run1E05_assemblyTrinity
 #Alternate usage Ex: qsub annotation_trinotate.sh PA42
