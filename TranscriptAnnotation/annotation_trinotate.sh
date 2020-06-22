@@ -15,7 +15,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve Trinotate software path
-softsPath=$(grep "trinotatePackage:" softwarePaths.txt | tr -d " " | sed "s/trinotatePackage://g")
+softsPath=$(grep "trinotatePackage:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/trinotatePackage://g")
 #Determine input query transcriptome for blastp
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
