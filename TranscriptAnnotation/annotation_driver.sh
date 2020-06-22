@@ -22,7 +22,7 @@ for i in "$@"; do
 		exit 1
 	fi
 	#Skip first argument
-	if [ $counter -ge 2 ]; then
+	if [ $counter -ge 1 ]; then
 		#Usage: qsub annotation_trinotate.sh transcriptomeFasta
 		echo "Annotating $i transcriptome with trinotate..."
 		qsub annotation_trinotate.sh "$inputFolder"
