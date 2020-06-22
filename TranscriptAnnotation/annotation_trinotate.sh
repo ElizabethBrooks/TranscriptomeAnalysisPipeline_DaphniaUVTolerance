@@ -46,19 +46,21 @@ fi
 cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/annotated_trinotate_"$1"_summary.txt
+#Copy a new sqlite DB for the current transcript set
+cp "$sqliteDB" "$inputsPath"
 #Load transcripts and coding regions
-"$softsPath"/Trinotate "$sqliteDB" init --gene_trans_map "$inputsPath"/Trinity.fasta.gene_trans_map --transcript_fasta "$inputsPath"/Trinity.fasta --transdecoder_pep "$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
-echo "$softsPath"/Trinotate "$sqliteDB" init --gene_trans_map "$inputsPath"/Trinity.fasta.gene_trans_map --transcript_fasta "$inputsPath"/Trinity.fasta --transdecoder_pep "$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep > "$inputOutFile"
-#Loading BLAST homologies
-"$softsPath"/Trinotate "$sqliteDB" LOAD_swissprot_blastp "$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
- echo "$softsPath"/Trinotate "$sqliteDB" LOAD_swissprot_blastp "$inputsPath"/searched_blastp_swissprot/blastp.outfmt6 >> "$inputOutFile"
+"$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite init --gene_trans_map "$inputsPath"/Trinity.fasta.gene_trans_map --transcript_fasta "$inputsPath"/Trinity.fasta --transdecoder_pep "$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
+echo "$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite init --gene_trans_map "$inputsPath"/Trinity.fasta.gene_trans_map --transcript_fasta "$inputsPath"/Trinity.fasta --transdecoder_pep "$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep > "$inputOutFile"
+#Load BLAST homologies
+"$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite LOAD_swissprot_blastp "$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
+ echo "$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite LOAD_swissprot_blastp "$inputsPath"/searched_blastp_swissprot/blastp.outfmt6 >> "$inputOutFile"
 #Load Pfam domain entries
-"$softsPath"/Trinotate "$sqliteDB" LOAD_pfam "$inputsPath"/searched_hmmscan/TrinotatePFAM.out
-echo "$softsPath"/Trinotate "$sqliteDB" LOAD_pfam "$inputsPath"/searched_hmmscan/TrinotatePFAM.out >> "$inputOutFile"
+"$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite LOAD_pfam "$inputsPath"/searched_hmmscan/TrinotatePFAM.out
+echo "$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite LOAD_pfam "$inputsPath"/searched_hmmscan/TrinotatePFAM.out >> "$inputOutFile"
 #Optional load transmembrane domains
-#"$softsPath"/Trinotate "$sqliteDB" LOAD_tmhmm tmhmm.out
+#"$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite LOAD_tmhmm tmhmm.out
 #Optional load signal peptide predictions
-#"$softsPath"/Trinotate "$sqliteDB" LOAD_signalp signalp.out
+#"$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite LOAD_signalp signalp.out
 #Run Trinotate to generate an annotation report
-"$softsPath"/Trinotate "$sqliteDB" report [opts] > trinotate_annotation_report.xls
-echo "$softsPath"/Trinotate "$sqliteDB" report "[opts] >" trinotate_annotation_report.xls >> "$inputOutFile"
+"$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite report [opts] > trinotate_annotation_report.xls
+echo "$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite report "[opts] >" trinotate_annotation_report.xls >> "$inputOutFile"
