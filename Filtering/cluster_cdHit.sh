@@ -6,10 +6,10 @@
 #$ -pe smp 8
 #Script to perform clustering of sequences using cdhit
 #the specified unique data (by sequence, ID, or both)
-#Usage: bash cluster_cdHit.sh mergeBy clusterPercent sortedFolder genotypes
-#Usage Ex: bash cluster_cdHit.sh sortedCoordinate_samtoolsHisat2_run1Y05 0.98
-#Usage Ex: bash cluster_cdHit.sh sortedCoordinate_samtoolsHisat2_run1Y05 0.98
-#Alternate usage Ex: bash cluster_cdHit.sh PA42 0.95
+#Usage: qsub cluster_cdHit.sh mergeBy clusterPercent sortedFolder genotypes
+#Usage Ex: qsub cluster_cdHit.sh trimmed_run1E05_assemblyTrinity 0.95
+#Usage Ex: qsub cluster_cdHit.sh sortedCoordinate_samtoolsHisat2_run1Y05 0.98
+#Alternate usage Ex: qsub cluster_cdHit.sh PA42 0.95
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then

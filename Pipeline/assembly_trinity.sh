@@ -4,7 +4,7 @@
 #$ -r n
 #$ -N assembly_trinity_jobOutput
 #$ -pe smp 8
-#Script to perform Trinity de novo transcriptome assembly
+#Script to perform de novo transcriptome assembly using trinity
 #Usage: qsub assembly_trinity.sh trimmedFolder genotype
 #Usage Ex: qsub assembly_trinity.sh trimmed_run1 Sierra
 
