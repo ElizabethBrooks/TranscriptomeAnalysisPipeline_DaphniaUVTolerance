@@ -29,7 +29,7 @@ elif [[ "$1" == PA42 ]]; then
 	inputsPath=$(grep "transcriptomeDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
 	#Set outputs absolute path
 	inputsPath=$(dirname "$inputsPath")
-	outputFolder="$outputPath"/annotated_trinotate
+	outputFolder="$inputsPath"/annotated_trinotate
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
