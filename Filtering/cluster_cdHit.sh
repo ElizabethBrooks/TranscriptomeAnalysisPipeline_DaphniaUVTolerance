@@ -1,10 +1,15 @@
 #!/bin/bash
-#Script to perform merge multifasta files and retain only
+#$ -M ebrooks5@nd.edu
+#$ -m abe
+#$ -r n
+#$ -N clustering_cdhit_jobOutput
+#$ -pe smp 8
+#Script to perform clustering of sequences using cdhit
 #the specified unique data (by sequence, ID, or both)
-#Usage: bash clusterFasta_cdHit.sh mergeBy clusterPercent sortedFolder genotypes
-#Usage Ex: bash clusterFasta_cdHit.sh sortedCoordinate_samtoolsHisat2_run1Y05 0.98
-#Usage Ex: bash clusterFasta_cdHit.sh sortedCoordinate_samtoolsHisat2_run1Y05 0.98
-#Alternate usage Ex: bash clusterFasta_cdHit.sh PA42 0.95
+#Usage: bash cluster_cdHit.sh mergeBy clusterPercent sortedFolder genotypes
+#Usage Ex: bash cluster_cdHit.sh sortedCoordinate_samtoolsHisat2_run1Y05 0.98
+#Usage Ex: bash cluster_cdHit.sh sortedCoordinate_samtoolsHisat2_run1Y05 0.98
+#Alternate usage Ex: bash cluster_cdHit.sh PA42 0.95
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
