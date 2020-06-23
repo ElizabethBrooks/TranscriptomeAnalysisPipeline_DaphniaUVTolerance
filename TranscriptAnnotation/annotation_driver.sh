@@ -21,7 +21,7 @@ for i in "$@"; do
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 		exit 1
 	fi
-	#Skip first argument
+	#Skip first two arguments
 	if [ $counter -ge 1 ]; then
 		#Usage: qsub annotation_trinotate.sh transcriptomeFasta
 		echo "Annotating $i transcriptome with trinotate..."

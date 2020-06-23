@@ -21,7 +21,7 @@ for i in "$@"; do
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 		exit 1
 	fi
-	#Skip first argument
+	#Skip first two arguments
 	if [ $counter -ge 2 ]; then
 		#Usage: qsub cluster_cdhit.sh transcriptomeFasta clusterPercent
 		echo "Clustering $i transcriptome with cdhit at $1 percent ..."
