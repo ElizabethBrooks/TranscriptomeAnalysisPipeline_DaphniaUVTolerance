@@ -23,9 +23,9 @@ for i in "$@"; do
 	fi
 	#Skip first argument
 	if [ $counter -ge 2 ]; then
-		#Usage: qsub clusterFasta_cdHit.sh transcriptomeFasta clusterPercent
+		#Usage: qsub cluster_cdhit.sh transcriptomeFasta clusterPercent
 		echo "Clustering $i transcriptome with cdhit at $1 percent ..."
-		qsub clusterFasta_cdHit.sh "$inputFolder" "$1"
+		qsub cluster_cdhit.sh "$inputFolder" "$1"
 	fi
 	counter=$(($counter+1))
 done
