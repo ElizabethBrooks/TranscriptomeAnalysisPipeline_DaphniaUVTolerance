@@ -48,10 +48,10 @@ inputOutFile="$outputFolder"/reciprocalSearched_"$2"_cdhit_"$1"_summary.txt
 #Use cdhit to search a protein database
 echo "Beginning cdhit database search..."
 proteinName=$(basename "$cdsDB")
-cd-hit-2d -i "$inputProteinDB" -i2 "$proteinDB" -o "$proteinName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8
-echo cd-hit-2d -i "$inputProteinDB" -i2 "$proteinDB" -o "$proteinName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8 > "$inputOutFile"
+"$softsPath"/cd-hit-2d -i "$inputProteinDB" -i2 "$proteinDB" -o "$proteinName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8
+echo "$softsPath"/cd-hit-2d -i "$inputProteinDB" -i2 "$proteinDB" -o "$proteinName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8 > "$inputOutFile"
 #Use cdhit-est to search a nucelotide database
 echo "Beginning cdhit-est database search..."
 cdsName=$(basename "$cdsDB")
-cd-hit-est-2d -i "$inputNucleotideDB" -i2 "$cdsDB" -o "$cdsName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8
-echo cd-hit-est-2d -i "$inputNucleotideDB" -i2 "$cdsDB" -o "$cdsName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8 >> "$inputOutFile"
+"$softsPath"/cd-hit-est-2d -i "$inputNucleotideDB" -i2 "$cdsDB" -o "$cdsName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8
+echo "$softsPath"/cd-hit-est-2d -i "$inputNucleotideDB" -i2 "$cdsDB" -o "$cdsName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8 >> "$inputOutFile"
