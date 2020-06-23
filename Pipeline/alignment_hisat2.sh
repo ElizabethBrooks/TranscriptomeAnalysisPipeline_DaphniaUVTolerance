@@ -86,7 +86,7 @@ done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 #Build output directory for Hisat reference
-buildOut="$buildInputsPath"/"reference_bowtie2_build"
+buildOut="$buildInputsPath"/"reference_hisat2_build"
 #Trim .fa file extension from build file
 buildFileNoPath=$(basename $buildFile)
 buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/')

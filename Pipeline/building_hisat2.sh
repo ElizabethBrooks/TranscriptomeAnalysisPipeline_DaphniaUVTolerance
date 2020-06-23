@@ -5,10 +5,10 @@
 #$ -N building_hisat2_jobOutput
 #$ -pe smp 8
 #$ -q debug
-#Script to generate a bowtie2 genome refernce build folder
-#Usage: qsub building_bowtie2.sh trimmedOrAssemblyFolder
-#Usage Ex: qsub building_bowtie2.sh trimmed_run1
-#Alternate usage Ex: qsub building_bowtie2.sh trimmed_run1E05_assemblyTrinity
+#Script to generate a hisat2 genome refernce build folder
+#Usage: qsub building_hisat2.sh trimmedOrAssemblyFolder
+#Usage Ex: qsub building_hisat2.sh trimmed_run1
+#Alternate usage Ex: qsub building_hisat2.sh trimmed_run1E05_assemblyTrinity
 
 #Required modules for ND CRC servers
 module load bio
