@@ -47,9 +47,9 @@ fi
 cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/clustered_"$2"_cdhit_"$1"_summary.txt
-#Run cd-hit to cluster the current transcriptome
-"$softsPath"/cd-hit-est -o cdhitEst -c $2 -i "$inputsPath"/Trinity.fasta -p 1 -n 10 -d 0 -M 16000 -T 8
-echo "$softsPath"/cd-hit-est -o cdhitEst -c $2 -i "$inputsPath"/Trinity.fasta -p 1 -n 10 -d 0 -M 16000 -T 8 > "$inputOutFile"
-#Run cd-hit to cluster the current transcriptome protein set
+#Run cd-hit to cluster proteins
 "$softsPath"/cd-hit -o cdhit -c $2 -i "$inputsPath"/Trinity.fasta.transdecoder.pep -p 1 -n 5 -M 16000 –d 0 -T 8
 echo "$softsPath"/cd-hit -o cdhit -c $2 -i "$inputsPath"/Trinity.fasta.transdecoder.pep -p 1 -n 5 -M 16000 –d 0 -T 8 >> "$inputOutFile"
+#Run cd-hit to cluster nucleotides
+"$softsPath"/cd-hit-est -o cdhitEst -c $2 -i "$inputsPath"/Trinity.fasta -p 1 -n 10 -d 0 -M 16000 -T 8
+echo "$softsPath"/cd-hit-est -o cdhitEst -c $2 -i "$inputsPath"/Trinity.fasta -p 1 -n 10 -d 0 -M 16000 -T 8 > "$inputOutFile"

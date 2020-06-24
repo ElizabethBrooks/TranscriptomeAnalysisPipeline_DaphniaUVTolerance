@@ -53,5 +53,5 @@ echo "$softsPath"/cd-hit-2d -i "$inputProteinDB" -i2 "$proteinDB" -o "$proteinNa
 #Use cdhit-est to search a nucelotide database
 echo "Beginning cdhit-est database search..."
 cdsName=$(basename "$cdsDB")
-"$softsPath"/cd-hit-est-2d -i "$inputNucleotideDB" -i2 "$cdsDB" -o "$cdsName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8
+"$softsPath"/cd-hit-est-2d -i "$inputNucleotideDB" -i2 "$cdsDB" -o "$cdsName"_novel -c "$2" -n 10 -d 0 -M 16000 -T 8
 echo "$softsPath"/cd-hit-est-2d -i "$inputNucleotideDB" -i2 "$cdsDB" -o "$cdsName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8 >> "$inputOutFile"
