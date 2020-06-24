@@ -24,13 +24,13 @@ for i in "$@"; do
 	fi
 	#Check input option
 	if [[ "$1" == reciprocal* ]]; then #Skip first three arguments 
-		if [[ "$1" == protein ]]; then #Protein clustering
+		if [[ "$1" == *Protein ]]; then #Protein clustering
 			if [ $counter -ge 3 ]; then
 				#Usage: qsub reciprocalClusterProtein_cdhit.sh transcriptomeFasta clusterPercent
 				echo "Reciprocal protein clustering $i transcriptome with cdhit at $2 percent identity..."
 				qsub reciprocalClusterProtein_cdhit.sh "$inputFolder" "$2"
 			fi
-		elif [[ "$1" == nucleotide ]]; then #Nucleotide clustering
+		elif [[ "$1" == *Nucleotide ]]; then #Nucleotide clustering
 			if [ $counter -ge 3 ]; then
 				#Usage: qsub reciprocalClusterNucleotide_cdhit.sh transcriptomeFasta clusterPercent
 				echo "Reciprocal nucleotide clustering $i transcriptome with cdhit at $2 percent identity..."
