@@ -36,6 +36,10 @@ for i in "$@"; do
 				echo "Reciprocal nucleotide clustering $i transcriptome with cdhit at $2 percent identity..."
 				qsub reciprocalClusterNucleotide_cdhit.sh "$inputFolder" "$2"
 			fi
+		elif [[ "$1" == *Cds ]]; then
+			#Usage: qsub reciprocalClusterCds_cdhit.sh transcriptomeFasta clusterPercent
+			echo "Reciprocal cds clustering $i transcriptome with cdhit at $2 percent identity..."
+			qsub reciprocalClusterCds_cdhit.sh "$inputFolder" "$2"
 		fi
 	else
 		if [[ "$1" == protein ]]; then #Protein clustering
@@ -50,6 +54,10 @@ for i in "$@"; do
 				echo "Nucleotide clustering $i transcriptome with cdhit at $2 percent identity..."
 				qsub clusterNucleotide_cdhit.sh "$inputFolder" "$2"
 			fi
+		elif [[ "$1" == cds ]]; then
+			#Usage: qsub clusterCds_cdhit.sh transcriptomeFasta clusterPercent
+			echo "Reciprocal cds clustering $i transcriptome with cdhit at $2 percent identity..."
+			qsub clusterCds_cdhit.sh "$inputFolder" "$2"
 		fi
 	fi
 	counter=$(($counter+1))
