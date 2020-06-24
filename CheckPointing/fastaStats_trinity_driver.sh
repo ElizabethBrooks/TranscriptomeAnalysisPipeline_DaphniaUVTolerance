@@ -1,11 +1,11 @@
 #!/bin/bash
 #Script to perform merge mergedfasta files and retain only
 #the specified unique data (by sequence, ID, or both)
-#Usage: bash fastaStats_driver.sh mergeBy sortedFolder genotypes
-#Usage Ex: bash fastaStats_driver.sh sequenceAssembled sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash fastaStats_driver.sh sequenceAssembled sortedCoordinate_samtoolsTophat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash fastaStats_driver.sh sequenceDecoded trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Default usage Ex: bash fastaStats_driver.sh sequence assemblyTrinity_all
+#Usage: bash fastaStats_trinity_driver.sh mergeBy sortedFolder genotypes
+#Usage Ex: bash fastaStats_trinity_driver.sh sequenceAssembled sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash fastaStats_trinity_driver.sh sequenceAssembled sortedCoordinate_samtoolsTophat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash fastaStats_trinity_driver.sh sequenceDecoded trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Default usage Ex: bash fastaStats_trinity_driver.sh sequence assemblyTrinity_all
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
