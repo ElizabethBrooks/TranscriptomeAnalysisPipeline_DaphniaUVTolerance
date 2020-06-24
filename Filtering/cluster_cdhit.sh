@@ -43,11 +43,11 @@ else
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
-#Make output directory
-mkdir "$outputFolder"
+#Make protein set output directory
+mkdir "$outputProteinFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
-	echo "The $outputFolder directory already exsists... please remove before proceeding."
+	echo "The $outputProteinFolder directory already exsists... please remove before proceeding."
 	exit 1
 fi
 #Move to output folder
@@ -57,6 +57,13 @@ inputOutFile="$outputProteinFolder"/clustered_"$2"_cdhit_"$1"_summary.txt
 #Run cd-hit to cluster proteins
 "$softsPath"/cd-hit -o cdhit -c $2 -i "$inputProteinDB" -p 1 -n 5 -M 16000 –d 0 -T 8
 echo "$softsPath"/cd-hit -o cdhit -c $2 -i "$inputProteinDB" -p 1 -n 5 -M 16000 –d 0 -T 8 >> "$inputOutFile"
+#Make nucleotide set output directory
+mkdir "$outputNucelotideFolder"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputNucelotideFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
 #Move to output folder
 cd "$outputNucleotideFolder"
 #Name output file of inputs
