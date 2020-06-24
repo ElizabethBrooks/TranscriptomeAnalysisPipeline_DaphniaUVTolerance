@@ -45,7 +45,7 @@ if [[ "$1" == *assembly* ]]; then
 	inputsPath="$inputsPath"/"$inputDB"
 elif [[ "$1" == PA42 ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptomeDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
+	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 	#Set outputs absolute path
 	outputPath=$(dirname "$inputsPath")
 	outputFolder="$outputPath"/searched_blastp_"$2"

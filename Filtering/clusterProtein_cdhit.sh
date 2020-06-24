@@ -29,7 +29,7 @@ if [[ "$1" == *assembly* ]]; then
 	inputProteinPath="$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 elif [[ "$1" == PA42 ]]; then
 	#Set inputs absolut paths
-	inputProteinPath=$(grep "transcriptomeDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
+	inputProteinPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 	#Set outputs absolute path
 	outputProteinFolder=$(dirname "$inputProteinPath")
 	outputProteinFolder="$outputProteinFolder"/clusteredProteins_cdhit_"$2"

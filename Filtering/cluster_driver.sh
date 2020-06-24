@@ -56,7 +56,7 @@ for i in "$@"; do
 			fi
 		elif [[ "$1" == cds ]]; then
 			#Usage: qsub clusterCds_cdhit.sh transcriptomeFasta clusterPercent
-			echo "Reciprocal cds clustering $i transcriptome with cdhit at $2 percent identity..."
+			echo "CDS clustering $i transcriptome with cdhit at $2 percent identity..."
 			qsub clusterCds_cdhit.sh "$inputFolder" "$2"
 		fi
 	fi
