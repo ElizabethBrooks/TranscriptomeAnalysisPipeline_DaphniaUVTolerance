@@ -24,19 +24,20 @@ if [[ "$1" == *assembly* ]]; then
 	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	inputsPath="$assemblyPath"/"$1"
 	#Set outputs absolute path
-	outputFolder="$assemblyPath"/"$1"/clustered_cdhit_"$2"
+	outputNucelotideFolder="$assemblyPath"/"$1"/clustered_cdhit_"$2"
+	outputProteinFolder="$outputNucelotideFolder"
 	#Set DBs of transcriptome
 	inputNucleotideDB="$inputsPath"/Trinity.fasta
 	inputProteinDB="$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 elif [[ "$1" == PA42 ]]; then
-	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptomeDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
-	inputsPath=$(dirname "$inputsPath")
 	#Set inputs absolut paths
 	inputNucleotideDB=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
 	inputProteinDB=$(grep "transcriptomeDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
 	#Set outputs absolute path
-	outputFolder="$inputsPath"/clustered_cdhit_"$2"
+	inputNucleotidePath=$(dirname "$inputNucleotideDB")
+	outputNucelotideFolder="$inputNucleotidePath"/clustered_cdhit_"$2"
+	inputProteinPath=$(dirname "$inputProteinDB")
+	outputProteinFolder="$inputProteinPath"/clustered_cdhit_"$2"
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
@@ -50,12 +51,16 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 #Move to output folder
-cd "$outputFolder"
+cd "$outputProteinFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/clustered_"$2"_cdhit_"$1"_summary.txt
+inputOutFile="$outputProteinFolder"/clustered_"$2"_cdhit_"$1"_summary.txt
 #Run cd-hit to cluster proteins
 "$softsPath"/cd-hit -o cdhit -c $2 -i "$inputProteinDB" -p 1 -n 5 -M 16000 –d 0 -T 8
 echo "$softsPath"/cd-hit -o cdhit -c $2 -i "$inputProteinDB" -p 1 -n 5 -M 16000 –d 0 -T 8 >> "$inputOutFile"
+#Move to output folder
+cd "$outputNucleotideFolder"
+#Name output file of inputs
+inputOutFile="$outputNucleotideFolder"/clustered_"$2"_cdhit_"$1"_summary.txt
 #Run cd-hit to cluster nucleotides
 "$softsPath"/cd-hit-est -o cdhitEst -c $2 -i "$inputNucleotideDB" -p 1 -n 10 -d 0 -M 16000 -T 8
 echo "$softsPath"/cd-hit-est -o cdhitEst -c $2 -i "$inputNucleotideDB" -p 1 -n 10 -d 0 -M 16000 -T 8 > "$inputOutFile"
