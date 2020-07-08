@@ -45,7 +45,7 @@ elif [[ "$1" == PA42 ]]; then
 	outputFolder="$inputsPath"/annotated_trinotate
 	#Retrieve genome reference and features paths
 	multiFASTA=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	geneMap=$inputsPath/$1/"PA42.3.0.gene_trans_map"
+	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	#Set outputs absolute path
 	outputsPath=$inputsPath
 	outputFolder=$outputsPath/"decoded_transdecoder"
