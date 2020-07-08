@@ -24,12 +24,26 @@ if [[ "$1" == *assembly* ]]; then
 	inputsPath="$assemblyPath"/"$1"
 	#Set outputs absolute path
 	outputFolder="$assemblyPath"/"$1"/annotated_trinotate
+	#Set input paths
+	trinotateDB="$outputFolder"/Trinotate.sqlite
+	geneTransMap="$inputsPath"/Trinity.fasta.gene_trans_map
+	transcriptFasta="$inputsPath"/Trinity.fasta
+	transdecoderPep="$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
+	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
+	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
 elif [[ "$1" == PA42 ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptomeDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
+	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 	#Set outputs absolute path
 	inputsPath=$(dirname "$inputsPath")
 	outputFolder="$inputsPath"/annotated_trinotate
+	#Set input paths
+	trinotateDB="$outputFolder"/Trinotate.sqlite
+	geneTransMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	transcriptFasta=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
+	transdecoderPep="$inputsPath"/PA42.3.0.protein_new.fasta
+	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
+	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
@@ -47,20 +61,20 @@ cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/annotated_trinotate_"$1"_summary.txt
 #Copy a new sqlite DB for the current transcript set
-cp "$sqliteDB" "$inputsPath"
+cp "$sqliteDB" "$outputFolder"
 #Load transcripts and coding regions
-"$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite init --gene_trans_map "$inputsPath"/Trinity.fasta.gene_trans_map --transcript_fasta "$inputsPath"/Trinity.fasta --transdecoder_pep "$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
-echo "$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite init --gene_trans_map "$inputsPath"/Trinity.fasta.gene_trans_map --transcript_fasta "$inputsPath"/Trinity.fasta --transdecoder_pep "$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep > "$inputOutFile"
+"$softsPath"/Trinotate "$trinotateDB" init --gene_trans_map "$geneTransMap" --transcript_fasta "$transcriptFasta" --transdecoder_pep "$transdecoderPep"
+echo "$softsPath"/Trinotate "$trinotateDB" init --gene_trans_map "$geneTransMap" --transcript_fasta "$transcriptFasta" --transdecoder_pep "$transdecoderPep" > "$inputOutFile"
 #Load BLAST homologies
-"$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite LOAD_swissprot_blastp "$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
- echo "$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite LOAD_swissprot_blastp "$inputsPath"/searched_blastp_swissprot/blastp.outfmt6 >> "$inputOutFile"
+"$softsPath"/Trinotate "$trinotateDB" LOAD_swissprot_blastp "$swissprotBlastpDB"
+ echo "$softsPath"/Trinotate "$trinotateDB" LOAD_swissprot_blastp "$swissprotBlastpDB" >> "$inputOutFile"
 #Load Pfam domain entries
-"$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite LOAD_pfam "$inputsPath"/searched_hmmscan/TrinotatePFAM.out
-echo "$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite LOAD_pfam "$inputsPath"/searched_hmmscan/TrinotatePFAM.out >> "$inputOutFile"
+"$softsPath"/Trinotate "$trinotateDB" LOAD_pfam "$pfamDB"
+echo "$softsPath"/Trinotate "$trinotateDB" LOAD_pfam "$pfamDB" >> "$inputOutFile"
 #Optional load transmembrane domains
-#"$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite LOAD_tmhmm tmhmm.out
+#"$softsPath"/Trinotate "$trinotateDB" LOAD_tmhmm tmhmm.out
 #Optional load signal peptide predictions
-#"$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite LOAD_signalp signalp.out
+#"$softsPath"/Trinotate "$trinotateDB" LOAD_signalp signalp.out
 #Run Trinotate to generate an annotation report
-"$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite report [opts] > trinotate_annotation_report.xls
-echo "$softsPath"/Trinotate "$inputsPath"/Trinotate.sqlite report "[opts] >" trinotate_annotation_report.xls >> "$inputOutFile"
+"$softsPath"/Trinotate "$trinotateDB" report [opts] > trinotate_annotation_report.xls
+echo "$softsPath"/Trinotate "$trinotateDB" report "[opts] >" trinotate_annotation_report.xls >> "$inputOutFile"

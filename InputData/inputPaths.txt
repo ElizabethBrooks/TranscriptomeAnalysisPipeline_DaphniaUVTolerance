@@ -4,7 +4,8 @@ genomeReference: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/Daphnia
 genomeFeatures: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42.3.0.annotation.18440.gff
 geneOntology: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/gene.Blast2GO.merged.csv
 geneLengths: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/PA42.3.0.annotation.18440.genelength
-transcribed: transcribedDB: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_transcribed/PA42.3.0.transcripts_new.fasta
+transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_transcribed/PA42.3.0.transcripts_new.fasta
 codingSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_cds/PA42.3.0.cds_new.fasta
 proteinSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_proteins/PA42.3.0.protein_new.fasta
 transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_transcripts/PA42.3.0.transcripts_new.fasta
+geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42.3.0.gene_trans_map
