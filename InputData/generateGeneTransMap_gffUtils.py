@@ -8,7 +8,7 @@ import gffutils
 import itertools
 import os
 os.listdir()
-db = gffutils.create_db("GCF_000001215.4_Release_6_plus_ISO1_MT_genomic.gff.gz", ":memory:", force = True,merge_strategy="merge", id_spec={'gene': 'Dbxref'})
+db = gffutils.create_db("PA42.3.0.annotation.18440.gff", ":memory:", force = True,merge_strategy="merge", id_spec={'gene': 'Dbxref'})
 list(db.featuretypes())
 tx_and_gene=[]
 ## instead, loop over all features in the database
