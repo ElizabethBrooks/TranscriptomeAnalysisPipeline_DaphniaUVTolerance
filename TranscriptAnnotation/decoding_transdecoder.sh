@@ -10,6 +10,7 @@
 #Usage Ex: qsub decoding_transdecoder.sh trimmed_run1Sierra_assemblyTrinity
 #Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run1Sierra_assemblyGenomeTrinity
 #Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsTophat2_run1Sierra_assemblyGenomeTrinity
+#Alternate usage Ex: qsub decoding_transdecoder.sh PA42
 
 #Load necessary modules for ND CRC servers
 module load bio/2.0
@@ -26,19 +27,34 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
 	exit 1
 fi
-#Determine if the correct analysis folder was input
-if [[ "$1"  != *assembly* ]]; then
-	echo "ERROR: The $1 folder of assembly files were not found... exiting"
+#Determine input query transcriptome for blastp
+if [[ "$1" == *assembly* ]]; then
+	#Retrieve input assembly path
+	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	#Retrieve genome reference and features paths
+	multiFASTA=$(echo "$inputsPath"/"$1"/Trinity.fasta)
+	geneMap=$inputsPath/$1/"Trinity.fasta.gene_trans_map"
+	#Set outputs absolute path
+	outputsPath=$inputsPath/$1
+	outputFolder=$outputsPath/"decoded_transdecoder"
+elif [[ "$1" == PA42 ]]; then
+	#Retrieve genome reference absolute path for querying
+	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
+	#Set outputs absolute path
+	inputsPath=$(dirname "$inputsPath")
+	outputFolder="$inputsPath"/annotated_trinotate
+	#Retrieve genome reference and features paths
+	multiFASTA=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
+	geneMap=$inputsPath/$1/"PA42.3.0.gene_trans_map"
+	#Set outputs absolute path
+	outputsPath=$inputsPath
+	outputFolder=$outputsPath/"decoded_transdecoder"
+else
+	#Error message
+	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
-#Retrieve input assembly path
-inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-#Retrieve genome reference and features paths
-multiFASTA=$(echo "$inputsPath"/"$1"/Trinity.fasta)
-geneMap=$inputsPath/$1/"Trinity.fasta.gene_trans_map"
-#Set outputs absolute path
-outputsPath=$inputsPath/$1
-outputFolder=$outputsPath/"decoded_transdecoder"
+#Make output folder
 mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
