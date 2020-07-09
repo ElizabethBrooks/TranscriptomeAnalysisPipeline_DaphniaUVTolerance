@@ -34,30 +34,28 @@ if [[ "$1" == *assembly* ]]; then
 	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
 elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
+	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
 	#Set outputs absolute path
 	inputsPath=$(dirname "$inputsPath")
-	outputFolder="$inputsPath"/annotated_trinotate_cds
+	outputFolder="$inputsPath"/annotated_trinotate
 	#Set input paths
 	trinotateDB="$outputFolder"/Trinotate.sqlite
 	geneTransMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	transcriptFasta=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	transcriptPath=$(dirname "$transcriptFasta")
-	transdecoderPep="$transcriptPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
+	transdecoderPep="$inputsPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
 	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
 	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
 elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
+	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
 	#Set outputs absolute path
 	inputsPath=$(dirname "$inputsPath")
-	outputFolder="$inputsPath"/annotated_trinotate_transcripts
+	outputFolder="$inputsPath"/annotated_trinotate
 	#Set input paths
 	trinotateDB="$outputFolder"/Trinotate.sqlite
 	geneTransMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	transcriptFasta=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
-	transcriptPath=$(dirname "$transcriptFasta")
-	transdecoderPep="$transcriptPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	transdecoderPep="$inputsPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
 	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
 else
