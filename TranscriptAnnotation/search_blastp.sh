@@ -50,16 +50,16 @@ elif [[ "$1" == PA42 ]]; then
 elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	inputsPath="$inputsPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
-	#Set outputs absolute path
 	outputPath=$(dirname "$inputsPath")
+	inputsPath="$outputPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
+	#Set outputs absolute path
 	outputFolder="$outputPath"/searched_blastp_"$2"	
 elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
-	inputsPath="$inputsPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
-	#Set outputs absolute path
 	outputPath=$(dirname "$inputsPath")
+	inputsPath="$outputPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	#Set outputs absolute path
 	outputFolder="$outputPath"/searched_blastp_"$2"	
 else
 	#Error message
