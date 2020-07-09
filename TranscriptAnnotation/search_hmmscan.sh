@@ -8,6 +8,8 @@
 #Usage: qsub search_hmmscan.sh transcriptomeFasta
 #Usage Ex: qsub search_hmmscan.sh trimmed_run1E05_assemblyTrinity
 #Alternate usage Ex: qsub search_hmmscan.sh PA42
+#Alternate usage Ex: qsub search_hmmscan.sh PA42_cds
+#Alternate usage Ex: qsub search_hmmscan.sh PA42_transcripts
 
 #Load necessary modules for ND CRC servers
 module load bio/hmmer
@@ -22,19 +24,29 @@ dbFile=$(grep "trinotatePfamDB:" ../InputData/databasePaths.txt | tr -d " " | se
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
+	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 	#Set outputs absolute path
-	outputFolder="$assemblyPath"/"$1"/search_hmmscan
-	#Set input transcriptome path
-	cd $inputsPath
-	inputDB=Trinity.fasta.transdecoder.pep
-	inputsPath="$inputsPath"/"$inputDB"
+	outputFolder="$assemblyPath"/"$1"/searched_hmmscan
 elif [[ "$1" == PA42 ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 	#Set outputs absolute path
 	outputPath=$(dirname "$inputsPath")
 	outputFolder="$outputPath"/searched_hmmscan
+elif [[ "$1" == PA42_cds ]]; then
+	#Retrieve genome reference absolute path for querying
+	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
+	inputsPath="$inputsPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
+	#Set outputs absolute path
+	outputPath=$(dirname "$inputsPath")
+	outputFolder="$outputPath"/searched_hmmscan	
+elif [[ "$1" == PA42_transcripts ]]; then
+	#Retrieve genome reference absolute path for querying
+	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
+	inputsPath="$inputsPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	#Set outputs absolute path
+	outputPath=$(dirname "$inputsPath")
+	outputFolder="$outputPath"/searched_hmmscan	
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"

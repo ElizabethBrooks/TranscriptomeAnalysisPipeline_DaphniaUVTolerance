@@ -42,7 +42,8 @@ elif [[ "$1" == PA42_cds ]]; then
 	trinotateDB="$outputFolder"/Trinotate.sqlite
 	geneTransMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	transcriptFasta=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	transdecoderPep="$inputsPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
+	transcriptPath=$(dirname "$transcriptFasta")
+	transdecoderPep="$transcriptPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
 	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
 	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
 elif [[ "$1" == PA42_transcripts ]]; then
@@ -55,7 +56,8 @@ elif [[ "$1" == PA42_transcripts ]]; then
 	trinotateDB="$outputFolder"/Trinotate.sqlite
 	geneTransMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	transcriptFasta=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
-	transdecoderPep="$inputsPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	transcriptPath=$(dirname "$transcriptFasta")
+	transdecoderPep="$transcriptPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
 	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
 else

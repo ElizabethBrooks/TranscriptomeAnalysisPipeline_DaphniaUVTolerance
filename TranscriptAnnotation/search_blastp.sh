@@ -9,6 +9,8 @@
 #Usage: qsub search_blastp.sh transcriptomeFasta proteinDB
 #Usage Ex: qsub search_blastp.sh trimmed_run1E05_assemblyTrinity swissprot
 #Alternate usage Ex: qsub search_blastp.sh PA42 swissprot
+#Alternate usage Ex: qsub search_blastp.sh PA42_cds swissprot
+#Alternate usage Ex: qsub search_blastp.sh PA42_transcripts swissprot
 
 #Load necessary modules for ND CRC servers
 module load bio/blast+
@@ -36,19 +38,29 @@ fi
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
+	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 	#Set outputs absolute path
 	outputFolder="$assemblyPath"/"$1"/searched_blastp_"$2"
-	#Set input transcriptome path
-	cd $inputsPath
-	inputDB=Trinity.fasta.transdecoder.pep
-	inputsPath="$inputsPath"/"$inputDB"
 elif [[ "$1" == PA42 ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 	#Set outputs absolute path
 	outputPath=$(dirname "$inputsPath")
 	outputFolder="$outputPath"/searched_blastp_"$2"
+elif [[ "$1" == PA42_cds ]]; then
+	#Retrieve genome reference absolute path for querying
+	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
+	inputsPath="$inputsPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
+	#Set outputs absolute path
+	outputPath=$(dirname "$inputsPath")
+	outputFolder="$outputPath"/searched_blastp_"$2"	
+elif [[ "$1" == PA42_transcripts ]]; then
+	#Retrieve genome reference absolute path for querying
+	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
+	inputsPath="$inputsPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	#Set outputs absolute path
+	outputPath=$(dirname "$inputsPath")
+	outputFolder="$outputPath"/searched_blastp_"$2"	
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
