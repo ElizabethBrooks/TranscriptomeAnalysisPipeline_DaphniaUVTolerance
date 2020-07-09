@@ -3,20 +3,21 @@
 #$ -m abe
 #$ -r n
 #$ -N decoding_transdecoder_jobOutput
-#$ -pe smp 8
+#$ -pe smp 1
 #Script to predict coding regions from a de novo assembled transcriptome fasta file
 # using Transdecoder
 #Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder
 #Usage Ex: qsub decoding_transdecoder.sh trimmed_run1Sierra_assemblyTrinity
 #Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run1Sierra_assemblyGenomeTrinity
 #Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsTophat2_run1Sierra_assemblyGenomeTrinity
-#Alternate usage Ex: qsub decoding_transdecoder.sh PA42
+#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_cds
+#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_transcripts
 
 #Load necessary modules for ND CRC servers
 module load bio/2.0
-#module load bio/blast+
-#module load bio/hmmer
-#module load bio/cufflinks
+module load bio/blast+
+module load bio/hmmer
+module load bio/cufflinks
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -37,14 +38,20 @@ if [[ "$1" == *assembly* ]]; then
 	#Set outputs absolute path
 	outputsPath=$inputsPath/$1
 	outputFolder=$outputsPath/"decoded_transdecoder"
-elif [[ "$1" == PA42 ]]; then
+elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	#Set outputs absolute path
-	inputsPath=$(dirname "$inputsPath")
-	outputFolder="$inputsPath"/annotated_trinotate
 	#Retrieve genome reference and features paths
 	multiFASTA=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
+	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	#Set outputs absolute path
+	outputsPath=$inputsPath
+	outputFolder=$outputsPath/"decoded_transdecoder"
+elif [[ "$1" == PA42_transcripts ]]; then
+	#Retrieve genome reference absolute path for querying
+	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
+	#Retrieve genome reference and features paths
+	multiFASTA=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
 	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	#Set outputs absolute path
 	outputsPath=$inputsPath
@@ -72,7 +79,11 @@ echo "Beginning transdecoder open reading frame predictions..."
 TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
 echo "Finished generating transdecoder open reading frame predictions!"
 echo "Beginning transdecoder coding region selection..."
-TransDecoder.Predict -t "$multiFASTA"
+if [[ "$1" == PA42_cds ]]; then
+	TransDecoder.Predict -t "$multiFASTA" --no_refine_starts
+else
+	TransDecoder.Predict -t "$multiFASTA"
+fi
 echo "Finished transdecoder coding region selection!"
 echo "Decoding complete!"
 #Output run commands to summary file
