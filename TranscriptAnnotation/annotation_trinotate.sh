@@ -6,7 +6,8 @@
 #Script to use trinotate to generate an annotation report
 #Usage: qsub annotation_trinotate.sh transcriptomeFasta
 #Usage Ex: qsub annotation_trinotate.sh trimmed_run1E05_assemblyTrinity
-#Alternate usage Ex: qsub annotation_trinotate.sh PA42
+#Alternate usage Ex: qsub annotation_trinotate.sh PA42_cds
+#Alternate usage Ex: qsub annotation_trinotate.sh PA42_transcripts
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -31,17 +32,30 @@ if [[ "$1" == *assembly* ]]; then
 	transdecoderPep="$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
 	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
-elif [[ "$1" == PA42 ]]; then
+elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 	#Set outputs absolute path
 	inputsPath=$(dirname "$inputsPath")
-	outputFolder="$inputsPath"/annotated_trinotate
+	outputFolder="$inputsPath"/annotated_trinotate_cds
 	#Set input paths
 	trinotateDB="$outputFolder"/Trinotate.sqlite
 	geneTransMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	transcriptFasta=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	transdecoderPep="$inputsPath"/PA42.3.0.protein_new.fasta
+	transdecoderPep="$inputsPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
+	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
+	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
+elif [[ "$1" == PA42_transcripts ]]; then
+	#Retrieve genome reference absolute path for querying
+	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
+	#Set outputs absolute path
+	inputsPath=$(dirname "$inputsPath")
+	outputFolder="$inputsPath"/annotated_trinotate_transcripts
+	#Set input paths
+	trinotateDB="$outputFolder"/Trinotate.sqlite
+	geneTransMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	transcriptFasta=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
+	transdecoderPep="$inputsPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
 	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
 else

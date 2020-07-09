@@ -92,5 +92,3 @@ else
 fi
 echo "Finished transdecoder coding region selection!"
 echo "Decoding complete!"
-#Copy previous summaries
-cp "$inputsPath"/"$1"/*.txt "$outputFolder"
