@@ -71,23 +71,26 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1"_"$outputFolder"_summary.txt
+inputOutFile="$outputFolder"/"$1"_decoded_transdecoder_summary.txt
 #Generate your best candidate open rading frame (ORF) predictions
 echo "Beginning decoding..."
 #Generate candidate ORFs
 echo "Beginning transdecoder open reading frame predictions..."
 TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
+#Output run commands to summary file
+echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
 echo "Finished generating transdecoder open reading frame predictions!"
 echo "Beginning transdecoder coding region selection..."
-if [[ "$1" == PA42_cds ]]; then
+if [[ "$1" == PA42* ]]; then
 	TransDecoder.Predict -t "$multiFASTA" --no_refine_starts
+	#Output run commands to summary file
+	echo "TransDecoder.Predict -t" "$multiFASTA" "--no_refine_starts" >> "$inputOutFile"
 else
 	TransDecoder.Predict -t "$multiFASTA"
+	#Output run commands to summary file
+	echo "TransDecoder.Predict -t" "$multiFASTA" >> "$inputOutFile"
 fi
 echo "Finished transdecoder coding region selection!"
 echo "Decoding complete!"
-#Output run commands to summary file
-echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
-echo "TransDecoder.Predict -t" "$multiFASTA" >> "$inputOutFile"
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
