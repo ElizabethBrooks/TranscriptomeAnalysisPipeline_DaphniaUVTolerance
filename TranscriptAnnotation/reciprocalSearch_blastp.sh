@@ -6,8 +6,10 @@
 #$ -pe smp 8
 #Script to use blastp to translate the nucleotide sequences of a reference genome
 # for searching a protein database
-#Usage: qsub reciprocalSearch_blastp.sh transcriptomeFasta
-#Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity
+#Usage: qsub reciprocalSearch_blastp.sh transcriptomeFasta genomeTranscripts
+#Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42
+#Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_cds
+#Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_transcripts
 
 #Load necessary modules for ND CRC servers
 module load bio/blast+
@@ -24,7 +26,7 @@ if [[ "$1" == *assembly* ]]; then
 	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
 	#Set outputs absolute path
-	outputFolder="$assemblyPath"/"$1"/reciprocalSearched_blastp
+	outputFolder="$assemblyPath"/"$1"/reciprocalSearched_blastp_"$2"
 	#Make blastable DB of transcriptome
 	cd $inputsPath
 	inputDB=Trinity.fasta.transdecoder.pep
@@ -35,6 +37,30 @@ else
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
+#Determine which genome transcript set to use
+if [[ "$2" == PA42 ]]; then
+	#Retrieve genome reference absolute path for querying
+	dbPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
+	#Make blastable DB of transcripts
+	cd $dbPath
+	makeblastdb -in $dbPath -dbtype prot
+elif [[ "$2" == PA42_cds ]]; then
+	#Retrieve genome reference absolute path for querying
+	dbPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
+	inputDB=$(dirname "$dbPath")
+	dbPath="$inputDB"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
+	#Make blastable DB of transcripts
+	cd $dbPath
+	makeblastdb -in $dbPath -dbtype prot
+elif [[ "$2" == PA42_transcripts ]]; then
+	#Retrieve genome reference absolute path for querying
+	dbPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
+	inputDB=$(dirname "$dbPath")
+	dbPath="$inputDB"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	#Make blastable DB of transcripts
+	cd $dbPath
+	makeblastdb -in $dbPath -dbtype prot
+else
 #Make output directory
 mkdir "$outputFolder"
 #Check if the folder already exists
