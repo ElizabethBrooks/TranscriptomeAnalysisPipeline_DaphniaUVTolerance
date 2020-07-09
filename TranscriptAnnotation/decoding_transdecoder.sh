@@ -45,7 +45,7 @@ elif [[ "$1" == PA42_cds ]]; then
 	multiFASTA=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
 	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	#Set outputs absolute path
-	outputsPath=$inputsPath
+	outputsPath=$(dirname $inputsPath)
 	outputFolder=$outputsPath/"decoded_transdecoder"
 elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
@@ -54,7 +54,7 @@ elif [[ "$1" == PA42_transcripts ]]; then
 	multiFASTA=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
 	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	#Set outputs absolute path
-	outputsPath=$inputsPath
+	outputsPath=$(dirname $inputsPath)
 	outputFolder=$outputsPath/"decoded_transdecoder"
 else
 	#Error message
