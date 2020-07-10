@@ -61,6 +61,10 @@ elif [[ "$2" == PA42_transcripts ]]; then
 	cd $dbPath
 	makeblastdb -in $dbPath -dbtype prot
 else
+	#Error message
+	echo "Invalid PA42 fasta entered... exiting!"
+	exit 1
+fi
 #Make output directory
 mkdir "$outputFolder"
 #Check if the folder already exists
