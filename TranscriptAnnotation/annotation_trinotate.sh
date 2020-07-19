@@ -81,7 +81,7 @@ cp "$sqliteDB" "$outputFolder"
 echo "$softsPath"/Trinotate "$trinotateDB" init --gene_trans_map "$geneTransMap" --transcript_fasta "$transcriptFasta" --transdecoder_pep "$transdecoderPep" > "$inputOutFile"
 #Load BLAST homologies
 "$softsPath"/Trinotate "$trinotateDB" LOAD_swissprot_blastp "$swissprotBlastpDB"
- echo "$softsPath"/Trinotate "$trinotateDB" LOAD_swissprot_blastp "$swissprotBlastpDB" >> "$inputOutFile"
+echo "$softsPath"/Trinotate "$trinotateDB" LOAD_swissprot_blastp "$swissprotBlastpDB" >> "$inputOutFile"
 #Load Pfam domain entries
 "$softsPath"/Trinotate "$trinotateDB" LOAD_pfam "$pfamDB"
 echo "$softsPath"/Trinotate "$trinotateDB" LOAD_pfam "$pfamDB" >> "$inputOutFile"
