@@ -25,6 +25,6 @@ fi
 #Move to output folder
 cd "$inputsPath"
 #Set inputs path
-inputsPath="$inputsPath"/"$1"
+inputsPath="$inputsPath"/"$1"/annotated_trinotate/trinotate_annotation_report.xls
 #Retrieve GO annotations
 "$softsPath"/Trinotate /util/extract_GO_assignments_from_Trinotate_xls.pl --Trinotate_xls "$inputsPath" -G --include_ancestral_terms > go_annotations.txt
