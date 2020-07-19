@@ -23,6 +23,7 @@ else
 	exit 1
 fi
 #Move to output folder
+inputsPath=$(dirname $inputsPath)
 cd "$inputsPath"
 #Set inputs path
 inputsPath="$inputsPath"/"$1"/annotated_trinotate/trinotate_annotation_report.xls
