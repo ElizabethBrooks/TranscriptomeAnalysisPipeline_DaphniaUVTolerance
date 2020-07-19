@@ -1,6 +1,6 @@
 #!/bin/bash
 #Script to compare annotation files
-#Usage: bash compareAnnotations_KO_PA42.sh annotationFile1 annotationFile2
+#Usage: bash compareAnnotations_KO_PA42.sh annotationFile1 annotationFile2 annotationFile3
 #Usage ex: bash compareAnnotations_KO_PA42.sh PA42_proteins/user_ko.txt PA42_cds/user_ko.txt PA42_transcripts/user_ko.txt
 
 echo "Beginning KO comparisons..."

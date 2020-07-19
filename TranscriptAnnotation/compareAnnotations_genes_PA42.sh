@@ -1,25 +1,25 @@
 #!/bin/bash
 #Script to compare annotation files
-#Usage: bash compareAnnotations_KOGeness_PA42.sh annotationFile1 annotationMatchingFile
-#Usage ex: bash compareAnnotations_KOGeness_PA42.sh PA42_cds_PA42_transcripts/PA42_cds_KO_unique.csv PA42_cds_PA42_proteins_PA42_transcripts/KO_matching.csv
+#Usage: bash compareAnnotations_genes_PA42.sh annotationFile1 annotationMatchingFile
+#Usage ex: bash compareAnnotations_genes_PA42.sh PA42_cds_PA42_transcripts/PA42_cds_KO_unique.csv PA42_cds_PA42_proteins_PA42_transcripts/KO_matching.csv
 
 echo "Beginning KO genes comparisons..."
 
 #Retrieve file inputs
-name1=$(basename $1 | sed 's/\_KO\.csv//g')
-name2=$(basename $2 | sed 's/\_KO\.csv//g')
+name1=$(basename $1 | sed 's/\_.O\.csv//g')
+name2=$(basename $2 | sed 's/\_.O\.csv//g')
 
 #Name output directory
 # and make, if necessary
-outputPath=$(dirname $2); outputPath="$outputPath"/"KOGenes"
+outputPath=$(dirname $2); outputPath="$outputPath"/"genes"
 
 #Make output directories
 mkdir "$outputPath"
 
 #Name output files
-outputFile="$outputPath"/"$name1"_KOGenes_comparisonSummary.txt
-alt1File="$outputPath"/"$name1"_KOGenes_alternate.csv
-new1File="$outputPath"/"$name1"_KOGenes_new.csv
+outputFile="$outputPath"/"$name1"_genes_comparisonSummary.txt
+alt1File="$outputPath"/"$name1"_genes_alternate.csv
+new1File="$outputPath"/"$name1"_genes_new.csv
 
 #Add header to output files
 echo "gene" > $alt1File
