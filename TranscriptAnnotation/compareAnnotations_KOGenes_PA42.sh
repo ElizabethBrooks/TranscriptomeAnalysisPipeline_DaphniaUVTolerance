@@ -6,24 +6,20 @@
 echo "Beginning KO genes comparisons..."
 
 #Retrieve file inputs
-name1=$(basename $1 | sed 's/\_KO\_unique\.csv//g')
-name2=$(dirname $2); name2=$(basename $name2)
-if [[ $name1 == "KO_matching.csv" ]]; then
-	name1=$(dirname $1); name1=$(basename $name1)
-fi
+name1=$(basename $1 | sed 's/\_KO\.csv//g')
+name2=$(basename $2 | sed 's/\_KO\.csv//g')
 
 #Name output directory
 # and make, if necessary
-outputPath=$(dirname $1); outputPath=$(dirname $outputPath); outputPath="$outputPath"/"KOGenes"
+outputPath=$(dirname $2); outputPath="$outputPath"/"KOGenes"
 
 #Make output directories
 mkdir "$outputPath"
-mkdir "$outputPath"/"$name2"
 
 #Name output files
-outputFile="$outputPath"/"$name2"/"$name1"_KOGenes_comparisonSummary.txt
-alt1File="$outputPath"/"$name2"/"$name1"_KOGenes_alternate.csv
-new1File="$outputPath"/"$name2"/"$name1"_KOGenes_new.csv
+outputFile="$outputPath"/"$name1"_KOGenes_comparisonSummary.txt
+alt1File="$outputPath"/"$name1"_KOGenes_alternate.csv
+new1File="$outputPath"/"$name1"_KOGenes_new.csv
 
 #Add header to output files
 echo "gene" > $alt1File
