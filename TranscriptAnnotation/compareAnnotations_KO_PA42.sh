@@ -1,33 +1,32 @@
 #!/bin/bash
 #Script to compare annotation files
-#Usage: bash compareAnnotations.sh annotationType annotationFile1 annotationFile2
-#Usage ex: bash compareAnnotations.sh KO PA42_proteins/user_ko.txt PA42_cds/user_ko.txt
-#Usage ex: bash compareAnnotations.sh GO PA42_proteins/user_ko.txt PA42_cds/user_ko.txt
+#Usage: bash compareAnnotations_KO_PA42.sh annotationType annotationFile1 annotationFile2
+#Usage ex: bash compareAnnotations_KO_PA42.sh PA42_proteins/user_ko.txt PA42_cds/user_ko.txt
 
-echo "Beginning comparisons..."
+echo "Beginning KO comparisons..."
 
 #Retrieve file names
-name1=$(dirname $2); name1=$(basename $name1)
-name2=$(dirname $3); name2=$(basename $name2)
+name1=$(dirname $1); name1=$(basename $name1)
+name2=$(dirname $2); name2=$(basename $name2)
 
 #Change white spaces to commas
 # and change mRNA tags to gene
 # and remove lines without annotations
-sed -e 's/\s\+/,/g' $2 | sed 's/mRNA/gene/g' | sed 's/\.p1//g' | awk -F , 'NF == 2' > tmp1.csv
-sed -e 's/\s\+/,/g' $3 | sed 's/mRNA/gene/g' | sed 's/\.p1//g' | awk -F , 'NF == 2' > tmp2.csv
+sed -e 's/\s\+/,/g' $1 | sed 's/mRNA/gene/g' | sed 's/\.p1//g' | awk -F , 'NF == 2' > tmp1.csv
+sed -e 's/\s\+/,/g' $2 | sed 's/mRNA/gene/g' | sed 's/\.p1//g' | awk -F , 'NF == 2' > tmp2.csv
 
 #Name output directory
 # and make, if necessary
-outputPath=$(dirname $2); outputPath=$(dirname $outputPath)
-outputPath="$outputPath"/Comparisons_"$1"
+outputPath=$(dirname $1); outputPath=$(dirname $outputPath)
+outputPath="$outputPath"/Comparisons_KO
 mkdir $outputPath
 
 #Name output files
-outputFile="$outputPath"/"$name1"_"$name2"_"$1"_comparisonSummary.txt
-match1File="$outputPath"/"$name1"_"$name2"_"$1"_matching.csv
-unique1File="$outputPath"/"$name1"_"$1"_unique.csv
-match2File="$outputPath"/"$name2"_"$name1"_"$1"_matching.csv
-unique2File="$outputPath"/"$name2"_"$1"_unique.csv
+outputFile="$outputPath"/"$name1"_"$name2"_KO_comparisonSummary.txt
+match1File="$outputPath"/"$name1"_"$name2"_KO_matching.csv
+unique1File="$outputPath"/"$name1"_KO_unique.csv
+match2File="$outputPath"/"$name2"_"$name1"_KO_matching.csv
+unique2File="$outputPath"/"$name2"_KO_unique.csv
 
 #Pre-clean up
 rm $match1File
@@ -65,15 +64,15 @@ unique1Num=$(wc -l $unique1File | cut -d " " -f 1)
 unique2Num=$(wc -l $unique2File | cut -d " " -f 1)
 
 #Output the number of annotations
-echo "---- $1 Inputs ----" > $outputFile
+echo "---- KO Inputs ----" > $outputFile
 echo "File Total" >> $outputFile
 echo "$name1 $total1Num" >> $outputFile
 echo "$name2 $total2Num" >> $outputFile
-echo "---- $1 Comparison ---" >> $outputFile
+echo "---- KO Comparison ----" >> $outputFile
 echo "$name1 | Matches | $name2" >> $outputFile
 echo "$unique1Num | $matchNum | $unique2Num" >> $outputFile
 
 #Clean up
 rm tmp*.csv
 
-echo "Comparisons complete!"
+echo "KO comparisons complete!"
