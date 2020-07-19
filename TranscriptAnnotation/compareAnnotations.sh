@@ -61,11 +61,11 @@ unique2Num=$(wc -l "$outputPath"/"$name2"_unique.csv | cut -d " " -f 1)
 
 #Output the number of annotations
 echo "---- Inputs ----" > $outputFile
-echo "file total" >> $outputFile
+echo "File Total" >> $outputFile
 echo "$name1 $total1Num" >> $outputFile
 echo "$name2 $total2Num" >> $outputFile
 echo "---- Results ---" >> $outputFile
-echo "$name1 | Matches | $name2" >> $outputFile
+echo "$name1 Unique | Matches | $name2 Unique" >> $outputFile
 echo "$unique1Num | $matchNum | $unique2Num" >> $outputFile
 
 #Clean up
