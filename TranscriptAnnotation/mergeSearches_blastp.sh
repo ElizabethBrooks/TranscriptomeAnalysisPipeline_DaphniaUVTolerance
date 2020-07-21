@@ -45,5 +45,5 @@ awk 'seen[$0]++' "$outFileMerged" >  "$outFileCleaned"
 genes1a=$(wc -l "$inputDBPath" | cut -d ' ' -f 1)
 genes2a=$(wc -l "$inputRDBPath" | cut -d ' ' -f 1)
 genes3b=$(wc -l "$outFileCleaned" | cut -d ' ' -f 1)
-echo "$2"",PA42,$genes1a,$genes2a,$genes3b"
+echo "$2","$3","$genes1a","$genes2a","$genes3b"
 #echo "Number of entries recorded!"

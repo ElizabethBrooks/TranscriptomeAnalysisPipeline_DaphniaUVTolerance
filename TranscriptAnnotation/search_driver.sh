@@ -17,7 +17,7 @@ outPath=$(grep "assemblyAnalysis:" ../InputData/outputPaths.txt | tr -d " " | se
 #Set merged summary file name and header
 if [[ "$1" == merge ]]; then
 	#Set output file name
-	outFile="$outPath"/"$2""_blastp_summary.txt"
+	outFile="$outPath"/reciprocalSearched_blastp_"$2"/"$3"_"$2"_blastp_summary.txt
 	#Add header to output summary file
 	echo "query,db,queryHits,reciprocalHits,bestHits" > "$outFile"
 fi
@@ -27,9 +27,9 @@ counter=0
 for i in "$@"; do
 	#Determine what type of data folder was input
 	if [[ "$3" == trimmed* ]]; then
-		inputFolder=$(echo "$2""$i"_assemblyTrinity)
+		inputFolder=$(echo "$3""$i"_assemblyTrinity)
 	elif [[ "$3" == sorted* ]]; then
-		inputFolder=$(echo "$2""$i"_assemblyGenomeTrinity)
+		inputFolder=$(echo "$3""$i"_assemblyGenomeTrinity)
 	else
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 		exit 1
@@ -67,9 +67,9 @@ if [ "$1" == plot ]; then
 	#Load necessary modules
 	module load R
 	#Retrieve output file name
-	outFile="$outPath"/"$2""_blastp_summary.txt"
+	outFile="$outPath"/reciprocalSearched_blastp_"$2"/"$3"_"$2"_blastp_summary.txt
 	#Usage: Rscript blastpStats_barPlots.r title blastpSummaryFile
-	echo "Plotting blastp results for $2..."
-	Rscript blastpStats_barPlots.r "$2" "$outFile"
-	echo "Blastp results for $2 have been plotted!"
+	echo "Plotting blastp results for $3 and $2..."
+	Rscript blastpStats_barPlots.r "$3" "$outFile"
+	echo "Blastp results for $3 and $2 have been plotted!"
 fi
