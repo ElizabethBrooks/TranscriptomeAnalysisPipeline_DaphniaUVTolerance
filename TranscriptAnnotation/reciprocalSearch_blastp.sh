@@ -18,8 +18,8 @@ if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve genome reference absolute path for querying
-dbPath=$(grep "transcriptomeDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptomeDB://g")
+#Determine current script location
+currLoc=$(echo $PWD)
 #Determine input database for blastp
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
@@ -37,6 +37,8 @@ else
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
+#Move back to script location
+cd $currLoc
 #Determine which genome transcript set to use
 if [[ "$2" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
