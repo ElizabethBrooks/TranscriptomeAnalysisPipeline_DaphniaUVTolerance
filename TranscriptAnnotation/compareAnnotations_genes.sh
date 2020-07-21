@@ -1,9 +1,9 @@
 #!/bin/bash
 #Script to compare annotation files
-#Usage: bash compareAnnotations_genes_PA42.sh annotationFile1 annotationMatchingFile
-#Usage ex: bash compareAnnotations_genes_PA42.sh PA42_cds_PA42_transcripts/PA42_cds_KO_unique.csv PA42_cds_PA42_proteins_PA42_transcripts/KO_matching.csv
+#Usage: bash compareAnnotations_genes.sh annotationFile1 annotationMatchingFile
+#Usage ex: bash compareAnnotations_genes.sh PA42_cds_PA42_transcripts/PA42_cds_KO_unique.csv PA42_cds_PA42_proteins_PA42_transcripts/KO_matching.csv
 
-echo "Beginning KO genes comparisons..."
+echo "Beginning annotated genes comparisons..."
 
 #Retrieve file inputs
 name1=$(basename $1 | sed 's/\_.O\.csv//g')
@@ -46,4 +46,4 @@ new1Num=$(($(wc -l $new1File | cut -d " " -f 1)-1))
 echo "File Matching Uniqe New Alternate" > $outputFile
 echo "$name1 $matchNum $total1Num $new1Num $alt1Num" >> $outputFile
 
-echo "KO genes comparisons complete!"
+echo "Annotated genes comparisons complete!"

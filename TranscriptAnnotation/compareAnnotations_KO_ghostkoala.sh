@@ -1,21 +1,16 @@
 #!/bin/bash
 #Script to compare annotation files
-#Usage: bash compareAnnotations_GO_PA42.sh annotationFile1 annotationFile2 annotationFile3
-#Usage ex: bash compareAnnotations_GO_PA42.sh PA42_proteins/user_GO.txt PA42_cds/user_GO.txt PA42_transcripts/user_GO.txt
+#Usage: bash compareAnnotations_KO_ghostkoala.sh annotationFile1 annotationFile2 annotationFile3
+#Usage ex: bash compareAnnotations_KO_ghostkoala.sh PA42_proteins/user_ko.txt PA42_cds/user_ko.txt PA42_transcripts/user_ko.txt
 
-echo "Beginning GO comparisons..."
-
-#Retrieve ID fields
-tail -n +2 $1 | cut -f 1,3 > tmp1_fields.csv
-tail -n +2 $2 | cut -f 1,3 > tmp2_fields.csv
-tail -n +2 $3 | cut -f 1,3 > tmp3_fields.csv
+echo "Beginning KO comparisons..."
 
 #Change white spaces to commas
 # and change mRNA tags to gene
 # and remove lines without annotations
-sed -e 's/\s\+/,/g' tmp1_fields.csv | sed 's/mRNA/gene/g' | sed 's/\.p.//g' | awk -F , 'NF == 2' > tmp1.csv
-sed -e 's/\s\+/,/g' tmp2_fields.csv | sed 's/mRNA/gene/g' | sed 's/\.p.//g' | awk -F , 'NF == 2' > tmp2.csv
-sed -e 's/\s\+/,/g' tmp3_fields.csv | sed 's/mRNA/gene/g' | sed 's/\.p.//g' | awk -F , 'NF == 2' > tmp3.csv
+sed -e 's/\s\+/,/g' $1 | sed 's/mRNA/gene/g' | sed 's/\.p.//g' | awk -F , 'NF == 2' > tmp1.csv
+sed -e 's/\s\+/,/g' $2 | sed 's/mRNA/gene/g' | sed 's/\.p.//g' | awk -F , 'NF == 2' > tmp2.csv
+sed -e 's/\s\+/,/g' $3 | sed 's/mRNA/gene/g' | sed 's/\.p.//g' | awk -F , 'NF == 2' > tmp3.csv
 
 #Retrieve file names
 name1=$(dirname $1); name1=$(basename $name1)
@@ -24,7 +19,7 @@ name3=$(dirname $3); name3=$(basename $name3)
 
 #Name output directories
 outputPath=$(dirname $1); outputPath=$(dirname $outputPath)
-outputPath="$outputPath"/Comparisons_GO/"$name1"_"$name2"_"$name3"
+outputPath="$outputPath"/Comparisons_KO/"$name1"_"$name2"_"$name3"
 
 #Pre-clean up
 rm -r $outputPath
@@ -33,14 +28,14 @@ rm -r $outputPath
 mkdir $outputPath
 
 #Name output files
-outputFile="$outputPath"/GO_comparisonSummary.txt
-file1="$outputPath"/"$name1"_GO.csv
-file2="$outputPath"/"$name2"_GO.csv
-file3="$outputPath"/"$name3"_GO.csv
-file1File2="$outputPath"/"$name1"_"$name2"_GO.csv
-file1File3="$outputPath"/"$name1"_"$name3"_GO.csv
-file2File3="$outputPath"/"$name2"_"$name3"_GO.csv
-file1File2File3="$outputPath"/"$name1"_"$name2"_"$name3"_GO.csv
+outputFile="$outputPath"/KO_comparisonSummary.txt
+file1="$outputPath"/"$name1"_KO.csv
+file2="$outputPath"/"$name2"_KO.csv
+file3="$outputPath"/"$name3"_KO.csv
+file1File2="$outputPath"/"$name1"_"$name2"_KO.csv
+file1File3="$outputPath"/"$name1"_"$name3"_KO.csv
+file2File3="$outputPath"/"$name2"_"$name3"_KO.csv
+file1File2File3="$outputPath"/"$name1"_"$name2"_"$name3"_KO.csv
 
 #Loop over first set of annotations
 while IFS=, read -r f1 f2
@@ -124,4 +119,4 @@ echo $name1"_"$name2"_"$name3" $match123Num" >> $outputFile
 #Clean up
 rm tmp*.csv
 
-echo "GO comparisons complete!"
+echo "KO comparisons complete!"

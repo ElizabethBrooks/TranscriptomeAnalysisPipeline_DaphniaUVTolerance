@@ -1,11 +1,11 @@
 #!/bin/bash
 #Script to perform sequence searches using a selected program for an input transcript data set
-#Usage: bash search_driver.sh assembledFolder sampleList
-#Usage Ex: bash search_driver.sh blastp trimmed_run1 swissprot Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash search_driver.sh hmmscan trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash search_driver.sh reciprocal trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash search_driver.sh merge trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash search_driver.sh plot trimmed_run1
+#Usage: bash search_driver.sh method PA42Target assembledFolder sampleList
+#Usage Ex: bash search_driver.sh blastp PA42_proteins trimmed_run1 swissprot Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh hmmscan PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh reciprocal PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh merge PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh plot PA42_proteins trimmed_run1
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -26,38 +26,38 @@ counter=0
 #Loop through all input sets of treatments and perform t-test analsysis
 for i in "$@"; do
 	#Determine what type of data folder was input
-	if [[ "$2" == trimmed* ]]; then
+	if [[ "$3" == trimmed* ]]; then
 		inputFolder=$(echo "$2""$i"_assemblyTrinity)
-	elif [[ "$2" == sorted* ]]; then
+	elif [[ "$3" == sorted* ]]; then
 		inputFolder=$(echo "$2""$i"_assemblyGenomeTrinity)
 	else
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 		exit 1
 	fi
 	#Check input option
-	if [[ "$1" == reciprocal ]]; then #Skip first two arguments 
-		if [ $counter -ge 2 ]; then
+	if [[ "$1" == reciprocal ]]; then #Skip first three arguments 
+		if [ $counter -ge 3 ]; then
 			#Usage: qsub reciprocalSearch_blastp.sh transcriptomeFastaFolder
-			echo "Searching $i transcriptome with blastp for $2..."
-			qsub reciprocalSearch_blastp.sh "$inputFolder"
+			echo "Searching $i transcriptome with blastp for $3 and $2..."
+			qsub reciprocalSearch_blastp.sh "$inputFolder" "$2"
 		fi
-	elif [[ "$1" == merge ]]; then #Skip first two arguments
-		if [ $counter -ge 2 ]; then
+	elif [[ "$1" == merge ]]; then #Skip first three arguments
+		if [ $counter -ge 3 ]; then
 			#Usage: bash mergeSearches_blastp.sh transcriptomeFastaFolder
-			echo "Merging $i blastp result for $2..."
-			bash mergeSearches_blastp.sh "$inputFolder" "$i" >> "$outFile"
+			echo "Merging $i blastp result for $3 and $2..."
+			bash mergeSearches_blastp.sh "$inputFolder" "$i" "$2" >> "$outFile"
 		fi
-	elif [[ "$1" == hmmscan ]]; then #Skip first two arguments 
-		if [ $counter -ge 2 ]; then
+	elif [[ "$1" == hmmscan ]]; then #Skip first three arguments 
+		if [ $counter -ge 3 ]; then
 			#Usage: qsub search_hmmscan.sh transcriptomeFastaFolder
-			echo "Searching $i transcriptome with hmmscan for $2..."
-			qsub search_hmmscan.sh "$inputFolder"
+			echo "Searching $i transcriptome with hmmscan for $3 and $2..."
+			qsub search_hmmscan.sh "$inputFolder" "$2"
 		fi
 	elif [[ "$1" == blastp ]]; then #Skip first three arguments
 		if [ $counter -ge 3 ]; then
 			#Usage: qsub search_blastp.sh transcriptomeFastaFolder proteinDB
-			echo "Searching $i transcriptome with blastp for $3..."
-			qsub search_blastp.sh "$inputFolder" "$3"
+			echo "Searching $i transcriptome with blastp using $2..."
+			qsub search_blastp.sh "$inputFolder" "$2"
 		fi
 	fi
 	counter=$(($counter+1))

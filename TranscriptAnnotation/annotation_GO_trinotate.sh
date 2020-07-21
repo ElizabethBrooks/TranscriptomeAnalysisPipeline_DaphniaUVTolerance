@@ -24,7 +24,7 @@ else
 fi
 #Move to output folder
 inputsPath=$(dirname $inputsPath)
-cd "$inputsPath"
+cd "$inputsPath"/annotated_trinotate
 #Set inputs path
 inputsPath="$inputsPath"/annotated_trinotate/trinotate_annotation_report.xls
 #Retrieve GO annotations

@@ -1,7 +1,10 @@
 #!/bin/bash
 #Script to filter reciprocal blast results for best hits
 #Usage: bash mergeSearches_blastp.sh transcriptomeFasta genotype
-#Usage Ex: bash mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05
+#Usage Ex: bash mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_proteins
+#Usage Ex: bash mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_cds
+#Usage Ex: bash mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_transcripts
+
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
@@ -10,9 +13,8 @@ fi
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
 	#Set outputs absolute path
-	outputFolder="$assemblyPath"/"$1"/searchedTranscripts_blastp
+	outputFolder="$assemblyPath"/"$1"/reciprocalSearched_blastp_"$3"
 	#Set blast result paths
 	inputDBPath="$outputFolder"/"blastp.outfmt6"
 	inputRDBPath="$outputFolder"/"blastp_reciprocal.outfmt6"

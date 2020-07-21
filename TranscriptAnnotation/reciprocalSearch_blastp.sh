@@ -7,7 +7,7 @@
 #Script to use blastp to translate the nucleotide sequences of a reference genome
 # for searching a protein database
 #Usage: qsub reciprocalSearch_blastp.sh transcriptomeFasta genomeTranscripts
-#Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42
+#Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_proteins
 #Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_cds
 #Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_transcripts
 
@@ -38,7 +38,7 @@ else
 	exit 1
 fi
 #Determine which genome transcript set to use
-if [[ "$2" == PA42 ]]; then
+if [[ "$2" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	dbPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 	#Make blastable DB of transcripts

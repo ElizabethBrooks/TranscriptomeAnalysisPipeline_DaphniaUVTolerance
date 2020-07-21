@@ -7,7 +7,7 @@
 #Script to use hmmscan to use hmmer to identify protein domains
 #Usage: qsub search_hmmscan.sh transcriptomeFasta
 #Usage Ex: qsub search_hmmscan.sh trimmed_run1E05_assemblyTrinity
-#Alternate usage Ex: qsub search_hmmscan.sh PA42
+#Alternate usage Ex: qsub search_hmmscan.sh PA42_proteins
 #Alternate usage Ex: qsub search_hmmscan.sh PA42_cds
 #Alternate usage Ex: qsub search_hmmscan.sh PA42_transcripts
 
@@ -27,7 +27,7 @@ if [[ "$1" == *assembly* ]]; then
 	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 	#Set outputs absolute path
 	outputFolder="$assemblyPath"/"$1"/searched_hmmscan
-elif [[ "$1" == PA42 ]]; then
+elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 	#Set outputs absolute path
