@@ -24,8 +24,8 @@ fi
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	inputDB="$inputsPath"/"$1"/decoded_transdecoder
-	inputsPath="$inputDB"/Trinity.fasta.transdecoder.pep
+	inputDB="$inputsPath"/"$1"
+	inputsPath="$inputDB"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
