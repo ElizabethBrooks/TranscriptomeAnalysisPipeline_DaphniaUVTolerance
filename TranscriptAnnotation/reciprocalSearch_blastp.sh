@@ -34,8 +34,8 @@ if [[ "$1" == *assembly* ]]; then
 elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	dbPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
-	inputDB=$(dirname "$dbPath"); inputDB="$inputDB"/decoded_transdecoder
-	dbPath="$inputDB"/PA42.3.0.protein_new.fasta.transdecoder.pep
+	inputDB=$(dirname "$dbPath")
+	dbPath="$inputDB"/PA42.3.0.protein_new.fasta
 	#Make blastable DB of transcripts
 	cd $inputDB
 	makeblastdb -in $dbPath -dbtype prot
@@ -70,8 +70,8 @@ cd $currLoc
 if [[ "$2" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	dbPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
-	inputDB=$(dirname "$dbPath"); inputDB="$inputDB"/decoded_transdecoder
-	dbPath="$inputDB"/PA42.3.0.protein_new.fasta.transdecoder.pep
+	inputDB=$(dirname "$dbPath")
+	dbPath="$inputDB"/PA42.3.0.protein_new.fasta
 	#Make blastable DB of transcripts
 	cd $inputDB
 	makeblastdb -in $dbPath -dbtype prot
