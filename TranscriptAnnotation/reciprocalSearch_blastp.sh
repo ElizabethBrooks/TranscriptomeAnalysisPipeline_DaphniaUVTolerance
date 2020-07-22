@@ -25,36 +25,36 @@ currLoc=$(echo $PWD)
 #Determine input database for blastp
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
-	dbPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	inputDB="$dbPath"/"$1"/decoded_transdecoder
-	dbPath="$inputDB"/Trinity.fasta.transdecoder.pep
+	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	inputDB="$inputsPath"/"$1"/decoded_transdecoder
+	inputsPath="$inputDB"/Trinity.fasta.transdecoder.pep
 	#Make blastable DB of transcriptome
 	cd $inputDB
-	makeblastdb -in $dbPath -dbtype prot
+	makeblastdb -in $inputsPath -dbtype prot
 elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
-	dbPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
-	inputDB=$(dirname "$dbPath")
-	dbPath="$inputDB"/PA42.3.0.protein_new.fasta
+	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
+	inputDB=$(dirname "$inputsPath")
+	inputsPath="$inputDB"/PA42.3.0.protein_new.fasta
 	#Make blastable DB of transcripts
 	cd $inputDB
-	makeblastdb -in $dbPath -dbtype prot
+	makeblastdb -in $inputsPath -dbtype prot
 elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	dbPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	inputDB=$(dirname "$dbPath"); inputDB="$inputDB"/decoded_transdecoder
-	dbPath="$inputDB"/PA42.3.0.cds_new.fasta.transdecoder.pep
+	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
+	inputDB=$(dirname "$inputsPath"); inputDB="$inputDB"/decoded_transdecoder
+	inputsPath="$inputDB"/PA42.3.0.cds_new.fasta.transdecoder.pep
 	#Make blastable DB of transcripts
 	cd $inputDB
-	makeblastdb -in $dbPath -dbtype prot
+	makeblastdb -in $inputsPath -dbtype prot
 elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	dbPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
-	inputDB=$(dirname "$dbPath"); inputDB="$inputDB"/decoded_transdecoder
-	dbPath="$inputDB"/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
+	inputDB=$(dirname "$inputsPath"); inputDB="$inputDB"/decoded_transdecoder
+	inputsPath="$inputDB"/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 	#Make blastable DB of transcripts
 	cd $inputDB
-	makeblastdb -in $dbPath -dbtype prot
+	makeblastdb -in $inputsPath -dbtype prot
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
