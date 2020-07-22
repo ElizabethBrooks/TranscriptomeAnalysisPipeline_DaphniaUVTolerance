@@ -61,7 +61,7 @@ else
 	exit 1
 fi
 #Set outputs absolute path
-outputFolder="$dbPath"/reciprocalSearched_blastp_"$2"
+outputFolder="$inputDB"/reciprocalSearched_blastp_"$2"
 #Name output file of inputs
 inputOutFile="$outputFolder"/reciprocalSearched_blastp_summary.txt
 #Move back to script location
