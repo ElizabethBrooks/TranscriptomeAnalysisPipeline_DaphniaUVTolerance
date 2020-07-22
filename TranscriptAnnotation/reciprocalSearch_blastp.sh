@@ -23,7 +23,7 @@ fi
 #Determine input database for blastp
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
-	inputPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	inputDB="$inputsPath"/"$1"/decoded_transdecoder
 	inputsPath="$inputDB"/Trinity.fasta.transdecoder.pep
 elif [[ "$1" == PA42_proteins ]]; then
