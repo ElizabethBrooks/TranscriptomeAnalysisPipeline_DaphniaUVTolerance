@@ -23,7 +23,7 @@ if [[ "$1" == *assembly* ]]; then
 	#Set blast result paths
 	inputDBPath="$outputFolder"/"blastp.outfmt6"
 	inputRDBPath="$outputFolder"/"blastp_reciprocal.outfmt6"
-elif [[ "$1" == *PA42_proteins ]]; then
+elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 	inputsPath=$(dirname "$inputsPath")
@@ -33,7 +33,7 @@ elif [[ "$1" == *PA42_proteins ]]; then
 	#Set blast result paths
 	inputDBPath="$outputFolder"/"blastp.outfmt6"
 	inputRDBPath="$outputFolder"/"blastp_reciprocal.outfmt6"
-elif [[ "$1" == *PA42_cds ]]; then
+elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
 	inputsPath=$(dirname "$inputsPath")
@@ -43,7 +43,7 @@ elif [[ "$1" == *PA42_cds ]]; then
 	#Set blast result paths
 	inputDBPath="$outputFolder"/"blastp.outfmt6"
 	inputRDBPath="$outputFolder"/"blastp_reciprocal.outfmt6"
-elif [[ "$1" == *PA42_transcripts ]]; then
+elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
 	inputsPath=$(dirname "$inputsPath")
