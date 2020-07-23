@@ -44,7 +44,6 @@ if [ $? -ne 0 ]; then
 	echo "The $outputFolder directory already exsists... please remove before proceeding."
 	exit 1
 fi
-cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/counted_summary.txt
 #Count reads using featureCounts via an R script
