@@ -3,7 +3,7 @@
 #Usage: bash search_driver.sh method PA42Target assembledFolder sampleList
 #Usage Ex: bash search_driver.sh blastp PA42_proteins trimmed_run1 swissprot Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash search_driver.sh hmmscan PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash search_driver.sh reciprocal PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh reciprocal PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_cds PA42_transcripts
 #Usage Ex: bash search_driver.sh merge PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_cds PA42_transcripts
 #Usage Ex: bash search_driver.sh merge PA42_transcripts trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_cds PA42_proteins
 #Usage Ex: bash search_driver.sh merge PA42_cds trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_proteins PA42_transcripts
