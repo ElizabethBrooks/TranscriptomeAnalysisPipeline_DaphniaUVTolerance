@@ -34,13 +34,13 @@ elif [[ "$1" == PA42_proteins ]]; then
 elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	inputDB=$(dirname "$inputsPath"); inputDB="$inputDB"/decoded_transdecoder
-	inputsPath="$inputDB"/PA42.3.0.cds_new.fasta.transdecoder.pep
+	inputDB=$(dirname "$inputsPath")
+	inputsPath="$inputDB"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
 elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
-	inputDB=$(dirname "$inputsPath"); inputDB="$inputDB"/decoded_transdecoder
-	inputsPath="$inputDB"/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	inputDB=$(dirname "$inputsPath")
+	inputsPath="$inputDB"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
@@ -67,13 +67,13 @@ if [[ "$2" == PA42_proteins ]]; then
 elif [[ "$2" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	reciprocalPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	reciprocalDB=$(dirname "$reciprocalPath"); reciprocalDB="$reciprocalDB"/decoded_transdecoder
-	reciprocalPath="$reciprocalDB"/PA42.3.0.cds_new.fasta.transdecoder.pep
+	reciprocalDB=$(dirname "$reciprocalPath")
+	reciprocalPath="$reciprocalDB"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
 elif [[ "$2" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	reciprocalPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
-	reciprocalDB=$(dirname "$reciprocalPath"); reciprocalDB="$reciprocalDB"/decoded_transdecoder
-	reciprocalPath="$reciprocalDB"/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	reciprocalDB=$(dirname "$reciprocalPath")
+	reciprocalPath="$reciprocalDB"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 else
 	#Error message
 	echo "Invalid PA42 fasta entered... exiting!"
