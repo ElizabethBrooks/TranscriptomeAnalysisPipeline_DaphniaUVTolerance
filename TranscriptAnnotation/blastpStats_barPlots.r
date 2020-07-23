@@ -54,8 +54,8 @@ plotQuery <- ggplot(statsMerged, aes(x=aStats.query, y=aStats.queryHits)) +
   ylab("Query Hits") +
   theme(axis.title.x = element_blank())
 
-#Generate bar plot of reciprocal hits
-plotReciprocal <- ggplot(statsMerged, aes(x=aStats.query, y=aStats.dbHits)) + 
+#Generate bar plot of DB hits
+plotDB <- ggplot(statsMerged, aes(x=aStats.query, y=aStats.dbHits)) + 
   geom_bar(stat="identity", fill="steelblue") +
   theme_minimal() + 
   geom_text(aes(label=aStats.dbHits), vjust=1.6, color="white", size=3.5) +
