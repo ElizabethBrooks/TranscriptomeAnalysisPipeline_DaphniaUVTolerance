@@ -29,13 +29,17 @@ counter=0
 for i in "$@"; do
 	#Determine what type of data folder was input
 	if [[ "$3" == trimmed* ]]; then
-		if [[ "$i" == P42* ]]; then
+		if [[ "$i" == PA42* ]]; then
 			inputFolder="$i"
 		else
 			inputFolder=$(echo "$3""$i"_assemblyTrinity)
 		fi
 	elif [[ "$3" == sorted* ]]; then
-		inputFolder=$(echo "$3""$i"_assemblyGenomeTrinity)
+		if [[ "$i" == PA42* ]]; then
+			inputFolder="$i"
+		else
+			inputFolder=$(echo "$3""$i"_assemblyGenomeTrinity)
+		fi
 	else
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 		exit 1
