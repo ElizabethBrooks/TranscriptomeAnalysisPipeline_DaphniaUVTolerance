@@ -5,8 +5,8 @@
 #$ -N counting_featureCounts_jobOutput
 #Script to perform freatureCounts counting of aligned or sorted
 # paired end reads
-#Usage: qsub counting_featureCounts.sh assemblyFolder sortedNameFolder
-#Usage Ex: qsub counting_featureCounts.sh trimmed_run1E05_assemblyTrinity sortedName_samtoolsTophat2_run1
+#Usage: qsub countingDriver_featureCounts.sh assemblyFolder sortedNameFolder
+#Usage Ex: qsub countingDriver_featureCounts.sh trimmed_run1E05_assemblyTrinity sortedName_samtoolsTophat2_run1
 
 #Required modules for ND CRC servers
 module load R/3.5.3
@@ -39,12 +39,17 @@ genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | se
 #Move to outputs directory
 outputFolder="$outputsPath"/counted_featureCounts
 mkdir "$outputFolder"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
 cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/counted_summary.txt
 #Count reads using featureCounts via an R script
-Rscript generateCounts_featureCounts.r "$inputsPath"/"$1" "$genomeFile"
+Rscript counting_featureCounts.r "$outputsPath" "$genomeFile"
 #Add run to summary file
-echo Rscript generateCounts_featureCounts.r > "$inputOutFile"
+echo "Rscript counting_featureCounts.r" "$outputsPath" "$genomeFile" > "$inputOutFile"
 #Copy previous summaries
-cp "$inputsPath"/"$1"/*.txt "$outputFolder"
+cp "$outputsPath"/*.txt "$outputFolder"
