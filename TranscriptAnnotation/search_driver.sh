@@ -21,7 +21,7 @@ if [[ "$1" == merge ]]; then
 	#Set output file name
 	outFile="$outPath"/reciprocalSearched_blastp/"$3"_"$2"_blastp_summary.txt
 	#Add header to output summary file
-	echo "query,db,queryHits,reciprocalHits,bestHits" > "$outFile"
+	echo "query,db,queryHits,dbHits,bestHits" > "$outFile"
 fi
 #Initialize variables
 counter=0

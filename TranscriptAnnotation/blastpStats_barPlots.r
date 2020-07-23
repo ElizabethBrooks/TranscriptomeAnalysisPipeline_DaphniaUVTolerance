@@ -26,7 +26,7 @@ totalIndex <- length(rownames(aStats))
 endFiles <- totalIndex-2
 
 #Create data frame of combined file stats
-statsMerged <- data.frame(aStats$query, aStats$queryHits, aStats$reciprocalHits, aStats$bestHits)
+statsMerged <- data.frame(aStats$query, aStats$queryHits, aStats$dbHits, aStats$bestHits)
 
 #Create matrix for multiple plots
 par(mfrow=c(3,1))
@@ -55,16 +55,16 @@ plotQuery <- ggplot(statsMerged, aes(x=aStats.query, y=aStats.queryHits)) +
   theme(axis.title.x = element_blank())
 
 #Generate bar plot of reciprocal hits
-plotReciprocal <- ggplot(statsMerged, aes(x=aStats.query, y=aStats.reciprocalHits)) + 
+plotReciprocal <- ggplot(statsMerged, aes(x=aStats.query, y=aStats.dbHits)) + 
   geom_bar(stat="identity", fill="steelblue") +
   theme_minimal() + 
-  geom_text(aes(label=aStats.reciprocalHits), vjust=1.6, color="white", size=3.5) +
-  ylab("Reciprocal Hits") +
+  geom_text(aes(label=aStats.dbHits), vjust=1.6, color="white", size=3.5) +
+  ylab("DB Hits") +
   theme(axis.title.x = element_blank())
 
 
 #Arrange stats plots on grid
-finalPlot <- ggarrange(plotBest, plotQuery, plotReciprocal, nrow=3)
+finalPlot <- ggarrange(plotBest, plotQuery, plotDB, nrow=3)
 #Add plot title and x-axis label
 finalPlot <- annotate_figure(finalPlot,
   top=text_grob(plotTitle, color="black", face="bold", size=14),
