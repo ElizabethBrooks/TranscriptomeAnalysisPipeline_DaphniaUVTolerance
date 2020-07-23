@@ -104,13 +104,13 @@ cd "$outputFolder"
 # and output with outfmt6 header:
 #qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
 echo "Beginning blastp database search..."
-blastp -query "$inputsPath" -db "$reciprocalPath" -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 > blastp.outfmt6
+blastp -query "$inputsPath" -db "$reciprocalPath" -max_target_seqs 1 -outfmt 6 -evalue 1e-10 -num_threads 8 > blastp.outfmt6
 echo "Finished blastp database search!"
 #Output run commands to summary file
-echo "blastp -query $inputsPath -db $reciprocalPath  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 > blastp.outfmt6" >> "$inputOutFile"
+echo "blastp -query $inputsPath -db $reciprocalPath  -max_target_seqs 1 -outfmt 6 -evalue 1e-10 -num_threads 8 > blastp.outfmt6" >> "$inputOutFile"
 #Switch query and search paths for reciprocal search
 echo "Beginning reciprocal blastp database search..."
-blastp -query "$reciprocalPath" -db "$inputsPath" -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 > blastp_reciprocal.outfmt6
+blastp -query "$reciprocalPath" -db "$inputsPath" -max_target_seqs 1 -outfmt 6 -evalue 1e-10 -num_threads 8 > blastp_reciprocal.outfmt6
 echo "Finished reciprocal blastp database search!"
 #Output run commands to summary file
-echo "blastp -query $reciprocalPath -db $inputsPath  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 8 > blastp_reciprocal.outfmt6" >> "$inputOutFile"
+echo "blastp -query $reciprocalPath -db $inputsPath  -max_target_seqs 1 -outfmt 6 -evalue 1e-10 -num_threads 8 > blastp_reciprocal.outfmt6" >> "$inputOutFile"
