@@ -81,7 +81,7 @@ else
 fi
 #Check if DB of transcriptome exsists
 if [ -f "$reciprocalPath".phr ]; then
-	echo "Using exsisting "$inputsPath".phr DB..."
+	echo "Using exsisting "$reciprocalPath".phr DB..."
 else #Make blastable DB of transcriptome
 	#Move to DB directory
 	cd $reciprocalDB

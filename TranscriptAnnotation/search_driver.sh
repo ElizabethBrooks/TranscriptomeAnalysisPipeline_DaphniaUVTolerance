@@ -4,7 +4,9 @@
 #Usage Ex: bash search_driver.sh blastp PA42_proteins trimmed_run1 swissprot Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash search_driver.sh hmmscan PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash search_driver.sh reciprocal PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash search_driver.sh merge PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh merge PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_cds PA42_transcripts
+#Usage Ex: bash search_driver.sh merge PA42_transcripts trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_cds PA42_proteins
+#Usage Ex: bash search_driver.sh merge PA42_cds trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_proteins PA42_transcripts
 #Usage Ex: bash search_driver.sh plot PA42_proteins trimmed_run1
 
 #Check for input arguments of folder names
@@ -13,11 +15,11 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #set output summary file path
-outPath=$(grep "assemblyAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblyAnalysis://g")
+outPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
 #Set merged summary file name and header
 if [[ "$1" == merge ]]; then
 	#Set output file name
-	outFile="$outPath"/reciprocalSearched_blastp_"$2"/"$3"_"$2"_blastp_summary.txt
+	outFile="$outPath"/reciprocalSearched_blastp/"$3"_"$2"_blastp_summary.txt
 	#Add header to output summary file
 	echo "query,db,queryHits,reciprocalHits,bestHits" > "$outFile"
 fi
