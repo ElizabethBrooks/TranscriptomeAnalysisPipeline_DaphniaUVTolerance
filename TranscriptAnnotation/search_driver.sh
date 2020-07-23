@@ -77,7 +77,7 @@ if [ "$1" == plot ]; then
 	#Load necessary modules
 	module load R
 	#Retrieve output file name
-	outFile="$outPath"/reciprocalSearched_blastp_"$2"/"$3"_"$2"_blastp_summary.txt
+	outFile="$outPath"/reciprocalSearched_blastp/"$3"_"$2"_blastp_summary.txt
 	#Usage: Rscript blastpStats_barPlots.r title blastpSummaryFile
 	echo "Plotting blastp results for $3 and $2..."
 	Rscript blastpStats_barPlots.r "$3" "$outFile"
