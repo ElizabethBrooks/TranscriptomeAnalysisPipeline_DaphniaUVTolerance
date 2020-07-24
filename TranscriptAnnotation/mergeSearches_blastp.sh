@@ -1,13 +1,20 @@
 #!/bin/bash
+#$ -M ebrooks5@nd.edu
+#$ -m abe
+#$ -r n
+#$ -N mergeSearches_blastp_jobOutput
 #Script to filter reciprocal blast results for best hits
-#Usage: bash mergeSearches_blastp.sh transcriptomeFasta genotype
-#Usage Ex: bash mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_proteins
-#Usage Ex: bash mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_cds
-#Usage Ex: bash mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_transcripts
-#Usage Ex: bash mergeSearches_blastp.sh PA42_transcripts PA42_transcripts PA42_proteins
-#Usage Ex: bash mergeSearches_blastp.sh PA42_cds PA42_cds PA42_proteins
-#Usage Ex: bash mergeSearches_blastp.sh PA42_proteins PA42_proteins PA42_transcripts
-#Usage Ex: bash mergeSearches_blastp.sh PA42_proteins PA42_proteins PA42_cds
+#Usage: qsub mergeSearches_blastp.sh transcriptomeFasta genotype PA42File outFile
+#Usage Ex: qsub mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_proteins trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_cds trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_transcripts trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub mergeSearches_blastp.sh PA42_transcripts PA42_transcripts PA42_proteins trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub mergeSearches_blastp.sh PA42_cds PA42_cds PA42_proteins trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub mergeSearches_blastp.sh PA42_proteins PA42_proteins PA42_transcripts trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub mergeSearches_blastp.sh PA42_proteins PA42_proteins PA42_cds trimmed_run1_PA42_proteins_blastp_summary.txt
+
+#set output summary file path
+outFile="$4"
 
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -62,23 +69,31 @@ fi
 cd "$outputFolder"
 
 #Merge blast search results
-#outFileResults="$outputFolder"/"blastp_merged_summary.txt"
-outFileMerged="$outputFolder"/"blastp_merged.txt"
-outFileCleaned="$outputFolder"/"blastp_noDuplicates.txt"
-cut -f 1,2 "$inputDBPath" > "$outFileCleaned"
-awk '{print $2 " " $1}' "$inputRDBPath" > "$outFileCleaned"
+outFileRBH="$outputFolder"/"blastp_RBH.txt"
+outFileQuery="$outputFolder"/"tmp1_blastp.txt"
+outFileDB="$outputFolder"/"tmp2_blastp.txt"
+awk '{print $1 "," $2}' "$inputDBPath" > "$outFileQuery"
+awk '{print $2 "," $1}' "$inputRDBPath" > "$outFileDB"
 
-#Remove extra tabs
-unexpand -a "$outFileCleaned" > "$outFileMerged"
+#Pre-clean up
+echo "query,db" > $outFileRBH
 
-#Output all the duplicates n-1 times
-awk 'seen[$0]++' "$outFileMerged" >  "$outFileCleaned"
+#Loop over first set of annotations
+while IFS=, read -r f1 f2
+do
+	#Determine annotation sets
+	if grep -q "$f1,$f2" $outFileDB; then #RBH
+		echo "$f1,$f2" >> $outFileRBH
+	fi
+done < $outFileQuery
 
 #Check number of lines
 #echo "Recodring number of entries..."
-#echo "query,db,queryHits,reciprocalHits,bestHits" > "$outFileResults"
-genes1a=$(wc -l "$inputDBPath" | cut -d ' ' -f 1)
-genes2a=$(wc -l "$inputRDBPath" | cut -d ' ' -f 1)
-genes3b=$(wc -l "$outFileCleaned" | cut -d ' ' -f 1)
-echo "$geno","$3","$genes1a","$genes2a","$genes3b"
-#echo "Number of entries recorded!"
+#echo "query,db,queryHits,dbHits,bestHits" > "$outFileResults"
+genes1a=$(wc -l "$outFileQuery" | cut -d ' ' -f 1)
+genes2a=$(wc -l "$outFileDB" | cut -d ' ' -f 1)
+genes3b=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
+echo "$geno","$3","$genes1a","$genes2a","$genes3b" >> "$outFile"
+
+#Clean up
+rm "$outputFolder"/tmp*
