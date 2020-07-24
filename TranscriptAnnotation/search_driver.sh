@@ -7,6 +7,7 @@
 #Usage Ex: bash search_driver.sh merge PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_cds PA42_transcripts PA42_proteins
 #Usage Ex: bash search_driver.sh merge PA42_transcripts trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_cds PA42_proteins
 #Usage Ex: bash search_driver.sh merge PA42_cds trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_proteins PA42_transcripts
+#Usage Ex: bash search_driver.sh consensus PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_cds PA42_transcripts
 #Usage Ex: bash search_driver.sh plot PA42_proteins trimmed_run1
 
 #Check for input arguments of folder names
@@ -54,8 +55,14 @@ for i in "$@"; do
 	elif [[ "$1" == merge ]]; then #Skip first three arguments
 		if [ $counter -ge 3 ]; then
 			#Usage: bash mergeSearches_blastp.sh transcriptomeFastaFolder
-			echo "Merging $i blastp result for $3 and $2..."
+			echo "Merging $i blastp results for $3 and $2..."
 			qsub mergeSearches_blastp.sh "$inputFolder" "$i" "$2" "$outFile"
+		fi
+	elif [[ "$1" == consensus ]]; then #Skip first three arguments
+		if [ $counter -ge 3 ]; then
+			#Usage: bash consensusRBH_blastp.sh transcriptomeFastaFolder
+			echo "Generating consensus RBH of $i blastp results for $3 and $2..."
+			qsub consensusRBH_blastp.sh "$inputFolder" "$i" "$2" "$outFile"
 		fi
 	elif [[ "$1" == hmmscan ]]; then #Skip first three arguments 
 		if [ $counter -ge 3 ]; then
