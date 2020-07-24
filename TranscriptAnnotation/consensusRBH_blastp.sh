@@ -85,14 +85,14 @@ outFile=$(echo "$outFile" | sed 's/summary/consensusSummary/g')
 outFileRBH=$(echo "$outFile" | sed 's/consensusSummary/GENOTYPEConsensusRBH/g' | sed "s/GENOTYPE/$geno/g")
 
 #Pre-clean up
-echo "query,db" > $outFileRBH
+echo "queryHit,dbHit,db" > $outFileRBH
 
 #Loop over first set of annotations
-while IFS=, read -r f1 f2
+while IFS=, read -r f1 f2 f3
 do
 	#Determine annotation sets
-	if grep -q "$f2" tmp2.txt; then #RBH
-		echo "$f2" >> $outFileRBH
+	if grep -q "$f2,$f3" tmp2.txt; then #RBH
+		echo "$f1,$f2,$f3" >> $outFileRBH
 	fi
 done < tmp1.txt
 

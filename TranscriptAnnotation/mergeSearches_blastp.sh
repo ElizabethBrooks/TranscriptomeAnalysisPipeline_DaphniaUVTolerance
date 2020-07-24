@@ -75,15 +75,21 @@ outFileDB="$outputFolder"/"tmp2_blastp.txt"
 awk '{print $1 "," $2}' "$inputDBPath" > "$outFileQuery"
 awk '{print $2 "," $1}' "$inputRDBPath" > "$outFileDB"
 
+#Add db tag to each line
+sed -e 's/$/,GENOTYPE/' -i "$outFileQuery"
+sed "s/GENOTYPE/$3/" -i "$outFileQuery"
+sed -e 's/$/,GENOTYPE/' -i "$outFileDB"
+sed "s/GENOTYPE/$3/" -i "$outFileDB"
+
 #Pre-clean up
-echo "query,db" > $outFileRBH
+echo "queryHit,dbHit,db" > $outFileRBH
 
 #Loop over first set of annotations
-while IFS=, read -r f1 f2
+while IFS=, read -r f1 f2 f3
 do
 	#Determine annotation sets
-	if grep -q "$f1,$f2" $outFileDB; then #RBH
-		echo "$f1,$f2" >> $outFileRBH
+	if grep -q "$f1,$f2,$f3" $outFileDB; then #RBH
+		echo "$f1,$f2,$f3" >> $outFileRBH
 	fi
 done < $outFileQuery
 
