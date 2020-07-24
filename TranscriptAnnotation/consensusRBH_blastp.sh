@@ -89,8 +89,8 @@ rm $outFileRBH
 while IFS=, read -r f1 f2
 do
 	#Determine annotation sets
-	if grep -q "$f1,$f2" $dbFileRBH; then #RBH
-		echo "$f1,$f2" >> $outFileRBH
+	if grep -q "$f2" $dbFileRBH; then #RBH
+		echo "$f2" >> $outFileRBH
 	fi
 done < $queryFileRBH
 
