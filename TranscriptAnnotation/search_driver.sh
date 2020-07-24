@@ -62,7 +62,7 @@ for i in "$@"; do
 		if [ $counter -ge 3 ]; then
 			#Usage: bash consensusRBH_blastp.sh transcriptomeFastaFolder
 			echo "Generating consensus RBH of $i blastp results for $3 and $2..."
-			qsub consensusRBH_blastp.sh "$inputFolder" "$i" "$2" "$outFile"
+			bash consensusRBH_blastp.sh "$inputFolder" "$i" "$2" "$outFile"
 		fi
 	elif [[ "$1" == hmmscan ]]; then #Skip first three arguments 
 		if [ $counter -ge 3 ]; then

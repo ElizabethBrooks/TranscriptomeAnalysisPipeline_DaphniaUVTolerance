@@ -1,17 +1,13 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N consensusRBH_blastp_jobOutput
 #Script to filter reciprocal blast results for best hits
-#Usage: qsub consensusRBH_blastp.sh transcriptomeFasta genotype PA42File outFile
-#Usage Ex: qsub consensusRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt
-#Usage Ex: qsub consensusRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_cds trimmed_run1_PA42_proteins_RBH_summary.txt
-#Usage Ex: qsub consensusRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_transcripts trimmed_run1_PA42_proteins_RBH_summary.txt
-#Usage Ex: qsub consensusRBH_blastp.sh PA42_transcripts PA42_transcripts PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt
-#Usage Ex: qsub consensusRBH_blastp.sh PA42_cds PA42_cds PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt
-#Usage Ex: qsub consensusRBH_blastp.sh PA42_proteins PA42_proteins PA42_transcripts trimmed_run1_PA42_proteins_RBH_summary.txt
-#Usage Ex: qsub consensusRBH_blastp.sh PA42_proteins PA42_proteins PA42_cds trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage: bash consensusRBH_blastp.sh transcriptomeFasta genotype PA42File outFile
+#Usage Ex: bash consensusRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage Ex: bash consensusRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_cds trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage Ex: bash consensusRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_transcripts trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage Ex: bash consensusRBH_blastp.sh PA42_transcripts PA42_transcripts PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage Ex: bash consensusRBH_blastp.sh PA42_cds PA42_cds PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage Ex: bash consensusRBH_blastp.sh PA42_proteins PA42_proteins PA42_transcripts trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage Ex: bash consensusRBH_blastp.sh PA42_proteins PA42_proteins PA42_cds trimmed_run1_PA42_proteins_RBH_summary.txt
 
 #set output summary file path
 outFile="$4"
@@ -83,7 +79,7 @@ queryFileRBH="$inputQueryFolder"/"blastp_RBH.txt"
 dbFileRBH="$inputDBFolder"/"blastp_RBH.txt"
 
 #Set outputs
-outFileRBH=$(basename "$outFile" | sed 's/summary/consensusRBH/g')
+outFileRBH=$(echo "$outFile" | sed 's/summary/consensusRBH/g')
 
 #Pre-clean up
 echo "query,db" > $outFileRBH
