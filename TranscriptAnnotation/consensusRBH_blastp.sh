@@ -77,22 +77,24 @@ fi
 #Merge blast search results
 queryFileRBH="$inputQueryFolder"/"blastp_RBH.txt"
 dbFileRBH="$inputDBFolder"/"blastp_RBH.txt"
+tail -n +2 $queryFileRBH > tmp1.txt
+tail -n +2 $dbFileRBH > tmp2.txt
 
 #Set outputs
 outFile=$(echo "$outFile" | sed 's/summary/consensusSummary/g')
 outFileRBH=$(echo "$outFile" | sed 's/consensusSummary/GENOTYPEConsensusRBH/g' | sed "s/GENOTYPE/$geno/g")
 
 #Pre-clean up
-rm $outFileRBH
+echo "query,db" > $outFileRBH
 
 #Loop over first set of annotations
 while IFS=, read -r f1 f2
 do
 	#Determine annotation sets
-	if grep -q "$f2" $dbFileRBH; then #RBH
+	if grep -q "$f2" tmp2.txt; then #RBH
 		echo "$f2" >> $outFileRBH
 	fi
-done < $queryFileRBH
+done < tmp1.txt
 
 #Check number of lines
 #echo "query,db,queryRBH,dbRBH,consensusRBH" > "$outFile"
