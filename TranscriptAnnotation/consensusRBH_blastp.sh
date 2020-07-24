@@ -104,5 +104,5 @@ done < tmp1.txt
 queryHits=$(wc -l "$queryFileRBH" | cut -d ' ' -f 1)
 dbHits=$(wc -l "$dbFileRBH" | cut -d ' ' -f 1)
 consensusHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
-queryUnique=$(($queryHits-$consensusHits))
+queryUnique=$(($(wc -l "$outFileUnique" | cut -d ' ' -f 1)-1))
 echo "$geno","$3","$queryHits","$dbHits","$consensusHits","$queryUnique" >> "$outFile"
