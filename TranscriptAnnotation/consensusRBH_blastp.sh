@@ -82,9 +82,11 @@ tail -n +2 $dbFileRBH > tmp2.txt
 
 #Set outputs
 outFileRBH=$(echo "$outFile" | sed 's/consensusSummary/GENOTYPEConsensusRBH/g' | sed "s/GENOTYPE/$geno/g")
+outFileUnique=$(echo "$outFile" | sed 's/consensusSummary/GENOTYPEUniqueRBH/g' | sed "s/GENOTYPE/$geno/g")
 
 #Pre-clean up
 echo "queryHit,dbHit,db" > $outFileRBH
+echo "queryHit,dbHit,db" > $outFileUnique
 
 #Loop over first set of annotations
 while IFS=, read -r f1 f2 f3
@@ -92,6 +94,8 @@ do
 	#Determine annotation sets
 	if grep -q "$f2,$f3" tmp2.txt; then #RBH
 		echo "$f1,$f2,$f3" >> $outFileRBH
+	else #Query unique
+		echo "$f1,$f2,$f3" >> $outFileUnique
 	fi
 done < tmp1.txt
 
