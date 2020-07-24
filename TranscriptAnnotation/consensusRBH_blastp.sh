@@ -96,8 +96,9 @@ do
 done < tmp1.txt
 
 #Check number of lines
-#echo "query,db,queryRBH,dbRBH,consensusRBH" > "$outFile"
+#echo "query,db,queryRBH,dbRBH,consensusRBH,queryUnique" > "$outFile"
 queryHits=$(wc -l "$queryFileRBH" | cut -d ' ' -f 1)
 dbHits=$(wc -l "$dbFileRBH" | cut -d ' ' -f 1)
 consensusHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
-echo "$geno","$3","$queryHits","$dbHits","$consensusHits" >> "$outFile"
+queryUnique=$(($queryHits-$consensusHits))
+echo "$geno","$3","$queryHits","$dbHits","$consensusHits","$queryUnique" >> "$outFile"

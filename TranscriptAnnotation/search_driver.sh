@@ -27,7 +27,7 @@ elif [[ "$1" == consensus ]]; then
 	#Set output file name
 	outFile="$outPath"/reciprocalSearched_blastp/"$3"_"$2"_blastp_consensusSummary.txt
 	#Add header to output summary file
-	echo "query,db,queryRBH,dbRBH,consensusRBH" > "$outFile"
+	echo "query,db,queryRBH,dbRBH,consensusRBH,queryUnique" > "$outFile"
 fi
 #Initialize variables
 counter=0
