@@ -81,7 +81,6 @@ tail -n +2 $queryFileRBH > tmp1.txt
 tail -n +2 $dbFileRBH > tmp2.txt
 
 #Set outputs
-outFile=$(echo "$outFile" | sed 's/summary/consensusSummary/g')
 outFileRBH=$(echo "$outFile" | sed 's/consensusSummary/GENOTYPEConsensusRBH/g' | sed "s/GENOTYPE/$geno/g")
 
 #Pre-clean up
