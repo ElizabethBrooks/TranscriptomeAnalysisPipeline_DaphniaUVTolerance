@@ -18,9 +18,14 @@ fi
 #set output summary file path
 outPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
 #Set merged summary file name and header
-if [[ "$1" == merge || "$1" == consensus ]]; then
+if [[ "$1" == merge ]]; then
 	#Set output file name
 	outFile="$outPath"/reciprocalSearched_blastp/"$3"_"$2"_blastp_summary.txt
+	#Add header to output summary file
+	echo "query,db,queryHits,dbHits,bestHits" > "$outFile"
+elif [[ "$1" == consensus ]]; then
+	#Set output file name
+	outFile="$outPath"/reciprocalSearched_blastp/"$3""$i"_"$2"_blastp_summary.txt
 	#Add header to output summary file
 	echo "query,db,queryHits,dbHits,bestHits" > "$outFile"
 fi
