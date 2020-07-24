@@ -79,10 +79,11 @@ queryFileRBH="$inputQueryFolder"/"blastp_RBH.txt"
 dbFileRBH="$inputDBFolder"/"blastp_RBH.txt"
 
 #Set outputs
+outFile=$(echo "$outFile" | sed 's/summary/consensusSummary/g')
 outFileRBH=$(echo "$outFile" | sed 's/summary/consensusRBH/g')
 
 #Pre-clean up
-echo "query,db" > $outFileRBH
+rm $outFileRBH
 
 #Loop over first set of annotations
 while IFS=, read -r f1 f2
