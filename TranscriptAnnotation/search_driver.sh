@@ -55,7 +55,7 @@ for i in "$@"; do
 		if [ $counter -ge 3 ]; then
 			#Usage: bash mergeSearches_blastp.sh transcriptomeFastaFolder
 			echo "Merging $i blastp result for $3 and $2..."
-			bash mergeSearches_blastp.sh "$inputFolder" "$i" "$2" >> "$outFile"
+			bash mergeSearches2_blastp.sh "$inputFolder" "$i" "$2" >> "$outFile"
 		fi
 	elif [[ "$1" == hmmscan ]]; then #Skip first three arguments 
 		if [ $counter -ge 3 ]; then
