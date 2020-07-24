@@ -80,7 +80,7 @@ dbFileRBH="$inputDBFolder"/"blastp_RBH.txt"
 
 #Set outputs
 outFile=$(echo "$outFile" | sed 's/summary/consensusSummary/g')
-outFileRBH=$(echo "$outFile" | sed 's/consensusSummary/consensusRBH/g')
+outFileRBH=$(echo "$outFile" | sed "s/consensusSummary/$geno_consensusRBH/g")
 
 #Pre-clean up
 rm $outFileRBH
@@ -95,9 +95,8 @@ do
 done < $queryFileRBH
 
 #Check number of lines
-#echo "Recodring number of entries..."
-#echo "query,db,queryRBH,dbRBH,consensusRBH" > "$outFileResults"
-genes1a=$(wc -l "$queryFileRBH" | cut -d ' ' -f 1)
-genes2a=$(wc -l "$dbFileRBH" | cut -d ' ' -f 1)
-genes3b=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
-echo "$geno","$3","$genes1a","$genes2a","$genes3b" >> "$outFile"
+#echo "query,db,queryRBH,dbRBH,consensusRBH" > "$outFile"
+queryHits=$(wc -l "$queryFileRBH" | cut -d ' ' -f 1)
+dbHits=$(wc -l "$dbFileRBH" | cut -d ' ' -f 1)
+consensusHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
+echo "$geno","$3","$queryHits","$dbHits","$consensusHits" >> "$outFile"
