@@ -80,7 +80,7 @@ dbFileRBH="$inputDBFolder"/"blastp_RBH.txt"
 
 #Set outputs
 outFile=$(echo "$outFile" | sed 's/summary/consensusSummary/g')
-outFileRBH=$(echo "$outFile" | sed "s/consensusSummary/$geno_consensusRBH/g")
+outFileRBH=$(echo "$outFile" | sed 's/consensusSummary/consensusRBH/g' | sed "s/run./run.$geno/g")
 
 #Pre-clean up
 rm $outFileRBH
