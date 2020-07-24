@@ -65,18 +65,18 @@ cd "$outputFolder"
 outFileRBH="$outputFolder"/"blastp_RBH.txt"
 outFileQuery="$outputFolder"/"tmp1_blastp.txt"
 outFileDB="$outputFolder"/"tmp2_blastp.txt"
-awk '{print $1 " " $2}' "$inputDBPath" > "$outFileQuery"
-awk '{print $2 " " $1}' "$inputRDBPath" > "$outFileDB"
+awk '{print $1 "," $2}' "$inputDBPath" > "$outFileQuery"
+awk '{print $2 "," $1}' "$inputRDBPath" > "$outFileDB"
 
 #Pre-clean up
-rm $outFileRBH
+echo "query,db" > $outFileRBH
 
 #Loop over first set of annotations
-while IFS= read -r f1 f2
+while IFS=, read -r f1 f2
 do
 	#Determine annotation sets
-	if grep -q "$f1 $f2" $outFileDB; then #RBH
-		echo "$f1 $f2" >> $outFileRBH
+	if grep -q "$f1,$f2" $outFileDB; then #RBH
+		echo "$f1,$f2" >> $outFileRBH
 	fi
 done < $outFileQuery
 
@@ -85,7 +85,7 @@ done < $outFileQuery
 #echo "query,db,queryHits,dbHits,bestHits" > "$outFileResults"
 genes1a=$(wc -l "$outFileQuery" | cut -d ' ' -f 1)
 genes2a=$(wc -l "$outFileDB" | cut -d ' ' -f 1)
-genes3b=$(wc -l "$outFileRBH" | cut -d ' ' -f 1)
+genes3b=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
 echo "$geno","$3","$genes1a","$genes2a","$genes3b"
 
 #Clean up
