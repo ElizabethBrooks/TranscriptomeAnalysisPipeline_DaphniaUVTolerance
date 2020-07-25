@@ -95,7 +95,7 @@ do
 	if grep -q "$f2,$f3" tmp2.txt; then #RBH
 		echo "$f1,$f2,$f3" >> $outFileRBH
 	else #Query unique
-		echo "$f1,$f2,$f3" >> $outFileUnique
+		echo "$geno,$f1,$f2,$f3" >> $outFileUnique
 		COUNTER=$(($COUNTER+1))
 	fi
 done < tmp1.txt
