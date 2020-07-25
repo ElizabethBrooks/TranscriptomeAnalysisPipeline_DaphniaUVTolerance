@@ -11,6 +11,7 @@
 
 #set output summary file path
 outFile="$4"
+outFileUnique="$5"
 
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -82,13 +83,12 @@ tail -n +2 $dbFileRBH > tmp2.txt
 
 #Set outputs
 outFileRBH=$(echo "$outFile" | sed 's/consensusSummary/GENOTYPEConsensusRBH/g' | sed "s/GENOTYPE/$geno/g")
-outFileUnique=$(echo "$outFile" | sed 's/consensusSummary/GENOTYPEUniqueRBH/g' | sed "s/GENOTYPE/$geno/g")
 
 #Pre-clean up
 echo "queryHit,dbHit,db" > $outFileRBH
-echo "queryHit,dbHit,db" > $outFileUnique
 
 #Loop over first set of annotations
+COUNTER=0
 while IFS=, read -r f1 f2 f3
 do
 	#Determine annotation sets
@@ -96,6 +96,7 @@ do
 		echo "$f1,$f2,$f3" >> $outFileRBH
 	else #Query unique
 		echo "$f1,$f2,$f3" >> $outFileUnique
+		COUNTER=$(($COUNTER+1))
 	fi
 done < tmp1.txt
 
@@ -104,5 +105,5 @@ done < tmp1.txt
 queryHits=$(wc -l "$queryFileRBH" | cut -d ' ' -f 1)
 dbHits=$(wc -l "$dbFileRBH" | cut -d ' ' -f 1)
 consensusHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
-queryUnique=$(($(wc -l "$outFileUnique" | cut -d ' ' -f 1)-1))
+queryUnique=$COUNTER
 echo "$geno","$3","$queryHits","$dbHits","$consensusHits","$queryUnique" >> "$outFile"
