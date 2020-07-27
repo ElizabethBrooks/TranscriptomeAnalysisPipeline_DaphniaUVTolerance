@@ -2,16 +2,16 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N mergeSearches_blastp_jobOutput
+#$ -N searchRBH_blastp_jobOutput
 #Script to filter reciprocal blast results for best hits
-#Usage: qsub mergeSearches_blastp.sh transcriptomeFasta genotype PA42File outFile
-#Usage Ex: qsub mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_proteins trimmed_run1_PA42_proteins_blastp_summary.txt
-#Usage Ex: qsub mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_cds trimmed_run1_PA42_proteins_blastp_summary.txt
-#Usage Ex: qsub mergeSearches_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_transcripts trimmed_run1_PA42_proteins_blastp_summary.txt
-#Usage Ex: qsub mergeSearches_blastp.sh PA42_transcripts PA42_transcripts PA42_proteins trimmed_run1_PA42_proteins_blastp_summary.txt
-#Usage Ex: qsub mergeSearches_blastp.sh PA42_cds PA42_cds PA42_proteins trimmed_run1_PA42_proteins_blastp_summary.txt
-#Usage Ex: qsub mergeSearches_blastp.sh PA42_proteins PA42_proteins PA42_transcripts trimmed_run1_PA42_proteins_blastp_summary.txt
-#Usage Ex: qsub mergeSearches_blastp.sh PA42_proteins PA42_proteins PA42_cds trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage: qsub searchRBH_blastp.sh transcriptomeFasta genotype PA42File outFile
+#Usage Ex: qsub searchRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_proteins trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub searchRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_cds trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub searchRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_transcripts trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub searchRBH_blastp.sh PA42_transcripts PA42_transcripts PA42_proteins trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub searchRBH_blastp.sh PA42_cds PA42_cds PA42_proteins trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub searchRBH_blastp.sh PA42_proteins PA42_proteins PA42_transcripts trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub searchRBH_blastp.sh PA42_proteins PA42_proteins PA42_cds trimmed_run1_PA42_proteins_blastp_summary.txt
 
 #set output summary file path
 outFile="$4"
