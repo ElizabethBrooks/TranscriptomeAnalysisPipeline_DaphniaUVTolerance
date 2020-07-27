@@ -56,9 +56,9 @@ for i in "$@"; do
 		fi
 	elif [[ "$1" == consensus ]]; then #Skip first three arguments
 		if [ $counter -ge 3 ]; then
-			#Usage: bash consensusRBH_blastp.sh transcriptomeFastaFolder
+			#Usage: qsub consensusRBH_blastp.sh transcriptomeFastaFolder
 			echo "Generating consensus RBH of $i blastp results for $3 and $2..."
-			bash consensusRBH_blastp.sh "$inputFolder" "$i" "$2" "$outFile" "$outFileUnique"
+			qsub consensusRBH_blastp.sh "$inputFolder" "$i" "$2" "$outFile" "$outFileUnique"
 		fi
 	fi
 	counter=$(($counter+1))

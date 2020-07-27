@@ -2,7 +2,10 @@
 #Script to filter reciprocal blast results for best hits
 #Usage: bash searchRBH_annotations.sh annotationMethod uniqueHitsFile annotationFile
 #Usage Ex: bash searchRBH_annotations.sh PANNZER /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_proteins/GO.out.txt
+#Usage Ex: bash searchRBH_annotations.sh PANNZER /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_cds/GO.out.txt
 #Usage Ex: bash searchRBH_annotations.sh GhostKOALA /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_proteins/user_ko.txt
+#Usage Ex: bash searchRBH_annotations.sh GhostKOALA /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_cds/user_ko.txt
+#Usage Ex: bash searchRBH_annotations.sh Trinotate /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_cds/go_annotations.txt
 
 #Set input file paths
 tail -n +2 "$2" > tmp1.txt
@@ -12,23 +15,34 @@ annotationFile="$3"
 sed -e 's/\s\+/,/g' $annotationFile > tmp2.txt
 
 #Set outputs
-outFilePath=$(dirname "$2")
-outFileAnnotations=$(echo "$2" | sed 's/\.txt//g')
-outFileAnnotations="$outFileAnnotations"_"$1"_matchedAnnotations.txt
-outFileUnique=$(echo "$2" | sed 's/\.txt//g')
-outFileUnique="$outFileUnique"_"$1"_uniqueAnnotations.txt
+outFilePath=$(dirname "$3")
+outFileAnnotations=$(basename "$2" | sed 's/\.txt//g')
+outFileAnnotations="$outFilePath"/"$outFileAnnotations"_"$1"_matchedAnnotations.txt
+outFileUnique=$(basename "$2" | sed 's/\.txt//g')
+outFileUnique="$outFilePath"/"$outFileUnique"_"$1"_uniqueAnnotations.txt
 
 #Pre-clean up
-echo "query,db,annotation" > $outFileAnnotations
+echo "query,db,dbHit,annotation" > $outFileAnnotations
 echo "query,db,queryHit,dbHit" > $outFileUnique
+#Determine annotation input
+if [[ "$1" == "GhostKOALA" ]]; then
+	echo "query,db,dbHit,annotation" > $outFileAnnotations
+else
+	echo "dbHit,annotation" > $outFileAnnotations
+fi
 
 #Loop over first set of annotations
 while IFS=, read -r f1 f2 f3 f4
 do
 	#Determine annotation for DB hit
-	if grep -q "$f3," tmp2.txt; then #Match
-		anno=$(grep "$f3," tmp2.txt)
-		echo "$f1,$f2,$anno" >> $outFileAnnotations
+	if grep -q "$f4," tmp2.txt; then #Match
+		anno=$(grep "$f4," tmp2.txt)
+		#Determine annotation input
+		if [[ "$1" == "GhostKOALA" ]]; then
+			echo "$f1,$f2,$anno" >> $outFileAnnotations
+		else
+			echo "$anno" >> $outFileAnnotations
+		fi
 	else #Unique
 		echo "$f1,$f2,$f3,$f4" >> $outFileUnique
 	fi
