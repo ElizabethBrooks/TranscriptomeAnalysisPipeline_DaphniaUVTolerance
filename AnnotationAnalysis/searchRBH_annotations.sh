@@ -1,8 +1,10 @@
 #!/bin/bash
 #Script to filter reciprocal blast results for best hits
 #Usage: bash searchRBH_annotations.sh annotationMethod uniqueHitsFile annotationFile
+#Usage Ex: bash searchRBH_annotations.sh PANNZER /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_PA42_proteinsConsensusRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_proteins/GO.out.txt
 #Usage Ex: bash searchRBH_annotations.sh PANNZER /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_proteins/GO.out.txt
 #Usage Ex: bash searchRBH_annotations.sh PANNZER /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_cds/GO.out.txt
+#Usage Ex: bash searchRBH_annotations.sh GhostKOALA /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_PA42_proteinsConsensusRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_proteins/user_ko.txt
 #Usage Ex: bash searchRBH_annotations.sh GhostKOALA /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_proteins/user_ko.txt
 #Usage Ex: bash searchRBH_annotations.sh GhostKOALA /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_cds/user_ko.txt
 #Usage Ex: bash searchRBH_annotations.sh Trinotate /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_cds/go_annotations.txt
