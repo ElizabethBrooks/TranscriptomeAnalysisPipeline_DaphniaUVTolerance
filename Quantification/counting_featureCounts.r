@@ -23,14 +23,17 @@ bam.files <- list.files(path=args[1], pattern="accepted_hits.bam", full.names=TR
 fc <- featureCounts(bam.files, annot.ext=args[2], isGTFAnnotationFile=TRUE,
 	GTF.attrType="ID", isPairedEnd=TRUE, nthreads=8)
 #Write gene counts to csv
-write.table(fc, file="counts.csv", sep=",", row.names=TRUE)
+write.table(x=data.frame(fc$annotation[,c("GeneID","Length")],fc$counts,stringsAsFactors=FALSE),
+	file="counts.txt",quote=FALSE,sep="\t",row.names=FALSE)
+
+#write.table(fc, file="counts.csv", sep=",", row.names=TRUE)
 #See what slots are stored in fc
-names(fc)
+#names(fc)
 #Take a look at the featurecounts stats
-fc$stat
+#fc$stat
 #Take a look at the dimensions to see the number of genes for samples
-dim(fc$counts)
+#dim(fc$counts)
 #Take a look at the first 6 lines
-head(fc$counts)
+#head(fc$counts)
 #The annotation slot shows the annotation information that featureCounts used to summarise reads over genes
-head(fc$annotation)
+#head(fc$annotation)
