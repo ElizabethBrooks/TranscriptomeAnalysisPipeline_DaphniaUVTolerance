@@ -111,3 +111,6 @@ dbHits=$(wc -l "$dbFileRBH" | cut -d ' ' -f 1)
 consensusHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
 queryUnique=$COUNTER
 echo "$geno","$3","$queryHits","$dbHits","$consensusHits","$queryUnique" >> "$outFile"
+
+#Clean up
+rm tmp*.txt
