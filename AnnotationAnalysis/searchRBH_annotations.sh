@@ -1,4 +1,8 @@
 #!/bin/bash
+#$ -M ebrooks5@nd.edu
+#$ -m abe
+#$ -r n
+#$ -N searchRBH_annotations_jobOutput
 #Script to filter reciprocal blast results for best hits
 #Usage: bash searchRBH_annotations.sh annotationMethod uniqueHitsFile annotationFile
 #Usage Ex: bash searchRBH_annotations.sh PANNZER trimmed_run1_PA42_proteins_blastp_PA42_proteinsConsensusRBH.txt PA42_proteins/GO.out.txt
