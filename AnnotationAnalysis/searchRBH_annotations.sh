@@ -1,17 +1,21 @@
 #!/bin/bash
 #Script to filter reciprocal blast results for best hits
 #Usage: bash searchRBH_annotations.sh annotationMethod uniqueHitsFile annotationFile
-#Usage Ex: bash searchRBH_annotations.sh PANNZER /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_PA42_proteinsConsensusRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_proteins/GO.out.txt
-#Usage Ex: bash searchRBH_annotations.sh PANNZER /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_proteins/GO.out.txt
-#Usage Ex: bash searchRBH_annotations.sh PANNZER /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_cds/GO.out.txt
-#Usage Ex: bash searchRBH_annotations.sh GhostKOALA /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_PA42_proteinsConsensusRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_proteins/user_ko.txt
-#Usage Ex: bash searchRBH_annotations.sh GhostKOALA /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_proteins/user_ko.txt
-#Usage Ex: bash searchRBH_annotations.sh GhostKOALA /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_cds/user_ko.txt
-#Usage Ex: bash searchRBH_annotations.sh Trinotate /home/mae/Documents/RNASeq_Workshop_ND/reciprocalSearched_blastp/trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt /home/mae/Documents/RNASeq_Workshop_ND/AnnotationAnalysis/PA42_cds/go_annotations.txt
+#Usage Ex: bash searchRBH_annotations.sh PANNZER trimmed_run1_PA42_proteins_blastp_PA42_proteinsConsensusRBH.txt PA42_proteins/GO.out.txt
+#Usage Ex: bash searchRBH_annotations.sh PANNZER trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt PA42_proteins/GO.out.txt
+#Usage Ex: bash searchRBH_annotations.sh PANNZER trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt PA42_cds/GO.out.txt
+#Usage Ex: bash searchRBH_annotations.sh GhostKOALA trimmed_run1_PA42_proteins_blastp_PA42_proteinsConsensusRBH.txt PA42_proteins/user_ko.txt
+#Usage Ex: bash searchRBH_annotations.sh GhostKOALA trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt PA42_proteins/user_ko.txt
+#Usage Ex: bash searchRBH_annotations.sh GhostKOALA trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt PA42_cds/user_ko.txt
+#Usage Ex: bash searchRBH_annotations.sh Trinotate trimmed_run1_PA42_proteins_blastp_uniqueRBH.txt PA42_cds/go_annotations.txt
 
 #Set input file paths
-tail -n +2 "$2" > tmp1.txt
-annotationFile="$3"
+searchPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
+annotationPath=$(grep "annotations:" ../InputData/inputPaths.txt | tr -d " " | sed "s/annotations://g")
+
+#Retrieve input files
+tail -n +2 "$searchPath"/"$2" > tmp1.txt
+annotationFile="$annotationPath"/"$3"
 
 #Replace whitespace with commas for comparisons
 sed -e 's/\s\+/,/g' $annotationFile > tmp2.txt
