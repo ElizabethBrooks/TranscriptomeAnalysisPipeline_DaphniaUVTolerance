@@ -12,19 +12,20 @@
 #Set input file paths
 searchPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
 annotationPath=$(grep "annotations:" ../InputData/inputPaths.txt | tr -d " " | sed "s/annotations://g")
-
-#Retrieve input files
-tail -n +2 "$searchPath"/"$2" > tmp1.txt
+outFilePath="$searchPath"/reciprocalSearched_blastp
+searchFile="$outFilePath"/"$2"
 annotationFile="$annotationPath"/"$3"
+
+#Remove header
+tail -n +2 $searchFile > tmp1.txt
 
 #Replace whitespace with commas for comparisons
 sed -e 's/\s\+/,/g' $annotationFile > tmp2.txt
 
 #Set outputs
-outFilePath=$(dirname "$3")
-outFileAnnotations=$(basename "$2" | sed 's/\.txt//g')
+outFileAnnotations=$(basename "$searchFile" | sed 's/\.txt//g')
 outFileAnnotations="$outFilePath"/"$outFileAnnotations"_"$1"_matchedAnnotations.txt
-outFileUnique=$(basename "$2" | sed 's/\.txt//g')
+outFileUnique=$(basename "$searchFile" | sed 's/\.txt//g')
 outFileUnique="$outFilePath"/"$outFileUnique"_"$1"_uniqueAnnotations.txt
 
 #Pre-clean up
