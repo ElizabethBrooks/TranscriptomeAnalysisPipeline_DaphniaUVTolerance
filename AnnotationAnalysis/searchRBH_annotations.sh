@@ -37,6 +37,9 @@ else
 	echo "dbHit,annotation" > $outFileAnnotations
 fi
 
+#Output status message
+echo "Beginning annotation search..."
+
 #Loop over first set of annotations
 while IFS=, read -r f1 f2 f3 f4
 do
@@ -53,6 +56,9 @@ do
 		echo "$f1,$f2,$f3,$f4" >> $outFileUnique
 	fi
 done < tmp1.txt
+
+#Output status message
+echo "Annotation search complete!"
 
 #Clean up
 rm tmp*.txt
