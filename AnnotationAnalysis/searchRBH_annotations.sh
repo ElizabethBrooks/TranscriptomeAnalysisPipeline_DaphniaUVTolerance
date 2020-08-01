@@ -33,7 +33,6 @@ outFileUnique=$(basename "$searchFile" | sed 's/\.txt//g')
 outFileUnique="$outFilePath"/"$outFileUnique"_"$1"_uniqueAnnotations.txt
 
 #Pre-clean up
-echo "query,db,dbHit,annotation" > $outFileAnnotations
 echo "query,db,queryHit,dbHit" > $outFileUnique
 #Determine annotation input
 if [[ "$1" == "GhostKOALA" ]]; then
