@@ -58,7 +58,7 @@ for i in "$@"; do
 		if [ $counter -ge 3 ]; then
 			#Usage: qsub consensusRBH_blastp.sh transcriptomeFastaFolder
 			echo "Generating consensus RBH of $i blastp results for $3 and $2..."
-			qsub consensusRBH_blastp.sh "$inputFolder" "$i" "$2" "$outFile" "$outFileUnique" "blastp_RBH.txt"
+			qsub consensusRBH_blastp.sh "$inputFolder" "$i" "$2" "$outFile" "$outFileUnique"
 		fi
 	fi
 	counter=$(($counter+1))

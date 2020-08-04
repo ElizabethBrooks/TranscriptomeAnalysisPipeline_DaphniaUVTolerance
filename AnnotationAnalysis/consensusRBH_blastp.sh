@@ -4,14 +4,14 @@
 #$ -r n
 #$ -N consensusRBH_jobOutput
 #Script to filter reciprocal blast results for best hits
-#Usage: qsub consensusRBH_blastp.sh transcriptomeFasta genotype PA42File outFile queryBlastFile
-#Usage Ex: qsub consensusRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt blastp_RBH.txt
-#Usage Ex: qsub consensusRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_cds trimmed_run1_PA42_proteins_RBH_summary.txt blastp_RBH.txt
-#Usage Ex: qsub consensusRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_transcripts trimmed_run1_PA42_proteins_RBH_summary.txt blastp_RBH.txt
-#Usage Ex: qsub consensusRBH_blastp.sh PA42_transcripts PA42_transcripts PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt blastp_RBH.txt
-#Usage Ex: qsub consensusRBH_blastp.sh PA42_cds PA42_cds PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt blastp_RBH.txt
-#Usage Ex: qsub consensusRBH_blastp.sh PA42_proteins PA42_proteins PA42_transcripts trimmed_run1_PA42_proteins_RBH_summary.txt blastp_RBH.txt
-#Usage Ex: qsub consensusRBH_blastp.sh PA42_proteins PA42_proteins PA42_cds trimmed_run1_PA42_proteins_RBH_summary.txt blastp_RBH.txt
+#Usage: qsub consensusRBH_blastp.sh transcriptomeFasta genotype PA42File outFile
+#Usage Ex: qsub consensusRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage Ex: qsub consensusRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_cds trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage Ex: qsub consensusRBH_blastp.sh trimmed_run1E05_assemblyTrinity E05 PA42_transcripts trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage Ex: qsub consensusRBH_blastp.sh PA42_transcripts PA42_transcripts PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage Ex: qsub consensusRBH_blastp.sh PA42_cds PA42_cds PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage Ex: qsub consensusRBH_blastp.sh PA42_proteins PA42_proteins PA42_transcripts trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage Ex: qsub consensusRBH_blastp.sh PA42_proteins PA42_proteins PA42_cds trimmed_run1_PA42_proteins_RBH_summary.txt
 
 #set output summary file path
 outFile="$4"
@@ -80,15 +80,11 @@ else
 fi
 
 #Merge blast search results
-queryFileRBH="$inputQueryFolder"/"$6"
+queryFileRBH="$inputQueryFolder"/"blastp_RBH.txt"
 dbFileRBH="$inputDBFolder"/"blastp_RBH.txt"
 
 #Remove headers
-if [[ "$6" == "blastp_RBH.txt" ]]; then
-	tail -n +2 $queryFileRBH > tmp1.txt
-else
-	cat $queryFileRBH > tmp1.txt
-fi
+tail -n +2 $queryFileRBH > tmp1.txt
 tail -n +2 $dbFileRBH > tmp2.txt
 
 #Set outputs

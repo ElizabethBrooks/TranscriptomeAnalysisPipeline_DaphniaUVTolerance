@@ -1,8 +1,4 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N searchRBH_annotations_jobOutput
 #Script to filter reciprocal blast results for best hits
 #Usage: bash searchRBH_annotations.sh annotationMethod uniqueHitsFile annotationFile
 #Usage Ex: bash searchRBH_annotations.sh PANNZER trimmed_run1_PA42_proteins_blastp_PA42_proteinsConsensusRBH.txt PA42_proteins/GO.out.txt
@@ -41,25 +37,16 @@ else
 	echo "dbHit,annotation" > $outFileAnnotations
 fi
 
+#Split input RBH
+split tmp1.txt split.txt
+
 #Output status message
 echo "Beginning annotation search..."
 
-#Loop over first set of annotations
-while IFS=, read -r f1 f2 f3 f4
-do
-	#Determine annotation for DB hit
-	if grep -q "$f4," tmp2.txt; then #Match
-		anno=$(grep "$f4," tmp2.txt)
-		#Determine annotation input
-		if [[ "$1" == "GhostKOALA" ]]; then
-			echo "$f1,$f2,$anno" >> $outFileAnnotations
-		else
-			echo "$anno" >> $outFileAnnotations
-		fi
-	else #Unique
-		echo "$f1,$f2,$f3,$f4" >> $outFileUnique
-	fi
-done < tmp1.txt
+#Loop over sets of annotations
+for f in split.txt*; do
+	qsub searchAnnotations.sh "$f" tmp2.txt "$outFileAnnotations" "$outFileUnique"
+done
 
 #Output status message
 echo "Annotation search complete!"
