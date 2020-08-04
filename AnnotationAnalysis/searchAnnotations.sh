@@ -12,7 +12,7 @@ while IFS=, read -r f1 f2 f3 f4
 do
 	#Determine annotation for DB hit
 	if grep -q "$f4," "$2"; then #Match
-		anno=$(grep "$f4," tmp2.txt)
+		anno=$(grep "$f4," "$2")
 		#Determine annotation input
 		if [[ "$1" == "GhostKOALA" ]]; then
 			echo "$f1,$f2,$anno" >> "$3"
