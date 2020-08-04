@@ -4,8 +4,8 @@
 #$ -r n
 #$ -N searchAnnotations_jobOutput
 #Script to filter reciprocal blast results for best hits
-#Usage: qsub searchAnnotations.sh annotationMethod uniqueHitsFile annotationFile
-#Usage ex: qsub searchAnnotations.sh split.txt tmp2.txt outFileAnnotations outFileUnique
+#Usage: qsub searchAnnotations.sh annotationMethod uniqueHitsFile annotationFile outAnnotations outUnique
+#Usage ex: qsub searchAnnotations.sh PANNZER split.txt tmp2.txt outFileAnnotations outFileUnique
 
 #Loop over first set of annotations
 while IFS=, read -r f1 f2 f3 f4

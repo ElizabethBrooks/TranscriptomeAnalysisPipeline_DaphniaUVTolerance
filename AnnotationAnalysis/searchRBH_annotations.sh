@@ -15,12 +15,13 @@ annotationPath=$(grep "annotations:" ../InputData/inputPaths.txt | tr -d " " | s
 outFilePath="$searchPath"/reciprocalSearched_blastp
 searchFile="$outFilePath"/"$2"
 annotationFile="$annotationPath"/"$3"
+annotationCleanedFile=$(echo $annotationFile | sed 's/\.txt/Cleaned\.txt/g')
 
 #Remove header
-tail -n +2 $searchFile > tmp1.txt
+tail -n +2 "$searchFile" > tmp1.txt
 
 #Replace whitespace with commas for comparisons
-sed -e 's/\s\+/,/g' $annotationFile > tmp2.txt
+sed -e 's/\s\+/,/g' "$annotationFile" > "$annotationCleanedFile"
 
 #Set outputs
 outFileAnnotations=$(basename "$searchFile" | sed 's/\.txt//g')
@@ -29,12 +30,12 @@ outFileUnique=$(basename "$searchFile" | sed 's/\.txt//g')
 outFileUnique="$outFilePath"/"$outFileUnique"_"$1"_uniqueAnnotations.txt
 
 #Pre-clean up
-echo "query,db,queryHit,dbHit" > $outFileUnique
+echo "query,db,queryHit,dbHit" > "$outFileUnique"
 #Determine annotation input
 if [[ "$1" == "GhostKOALA" ]]; then
-	echo "query,db,dbHit,annotation" > $outFileAnnotations
+	echo "query,db,dbHit,annotation" > "$outFileAnnotations"
 else
-	echo "dbHit,annotation" > $outFileAnnotations
+	echo "dbHit,annotation" > "$outFileAnnotations"
 fi
 
 #Output status message
@@ -45,11 +46,11 @@ split -n 8 --verbose tmp1.txt split.txt
 
 #Loop over sets of annotations
 for f in split.txt*; do
-	qsub searchAnnotations.sh "$f" tmp2.txt "$outFileAnnotations" "$outFileUnique"
+	qsub searchAnnotations.sh "$1" "$f" "$annotationCleanedFile" "$outFileAnnotations" "$outFileUnique"
 done
 
 #Output status message
 echo "Annotation search complete!"
 
 #Clean up
-rm tmp*.txt
+rm tmp1.txt
