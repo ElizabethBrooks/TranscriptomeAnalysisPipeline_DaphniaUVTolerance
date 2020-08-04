@@ -17,11 +17,9 @@ searchFile="$outFilePath"/"$2"
 annotationFile="$annotationPath"/"$3"
 
 #Remove header
-echo "Remove header"
 tail -n +2 $searchFile > tmp1.txt
 
 #Replace whitespace with commas for comparisons
-echo "Replace whitespace"
 sed -e 's/\s\+/,/g' $annotationFile > tmp2.txt
 
 #Set outputs
@@ -31,7 +29,6 @@ outFileUnique=$(basename "$searchFile" | sed 's/\.txt//g')
 outFileUnique="$outFilePath"/"$outFileUnique"_"$1"_uniqueAnnotations.txt
 
 #Pre-clean up
-echo "Pre-clean up"
 echo "query,db,queryHit,dbHit" > $outFileUnique
 #Determine annotation input
 if [[ "$1" == "GhostKOALA" ]]; then
