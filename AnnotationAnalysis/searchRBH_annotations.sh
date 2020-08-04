@@ -38,7 +38,7 @@ else
 fi
 
 #Split input RBH
-split tmp1.txt split.txt
+split -n 8 --verbose tmp1.txt split.txt
 
 #Output status message
 echo "Beginning annotation search..."
