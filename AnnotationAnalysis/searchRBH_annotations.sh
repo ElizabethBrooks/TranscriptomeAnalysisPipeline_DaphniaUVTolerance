@@ -37,11 +37,11 @@ else
 	echo "dbHit,annotation" > $outFileAnnotations
 fi
 
-#Split input RBH
-split -n 8 --verbose tmp1.txt split.txt
-
 #Output status message
 echo "Beginning annotation search..."
+
+#Split input RBH
+split -n 8 --verbose tmp1.txt split.txt
 
 #Loop over sets of annotations
 for f in split.txt*; do
