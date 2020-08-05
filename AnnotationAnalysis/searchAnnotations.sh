@@ -1,4 +1,6 @@
 #!/bin/bash
+#$ -M ebrooks5@nd.edu
+#$ -m abe
 #$ -r n
 #$ -N searchAnnotations_jobOutput
 #Script to filter reciprocal blast results for best hits
