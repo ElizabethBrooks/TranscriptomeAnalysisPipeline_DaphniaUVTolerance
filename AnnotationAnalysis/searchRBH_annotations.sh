@@ -17,8 +17,11 @@ searchFile="$outFilePath"/"$2"
 annotationFile="$annotationPath"/"$3"
 annotationCleanedFile=$(echo $annotationFile | sed 's/\.txt/Cleaned\.txt/g')
 
+#Move to output folder
+cd "$outFilePath"
+
 #Remove header
-tail -n +2 "$searchFile" > tmp1.txt
+tail -n +2 "$searchFile" > tmp1_"$1".txt
 
 #Replace whitespace with commas for comparisons
 sed -e 's/\s\+/,/g' "$annotationFile" > "$annotationCleanedFile"
@@ -42,10 +45,10 @@ fi
 echo "Beginning annotation search..."
 
 #Split input RBH
-split -n 8 --verbose tmp1.txt split.txt
+split -n 8 --verbose tmp1_"$1".txt split_"$1".txt
 
 #Loop over sets of annotations
-for f in split.txt*; do
+for f in split_"$1".txt*; do
 	qsub searchAnnotations.sh "$1" "$f" "$annotationCleanedFile" "$outFileAnnotations" "$outFileUnique"
 done
 
@@ -53,4 +56,4 @@ done
 echo "Annotation search complete!"
 
 #Clean up
-rm tmp1.txt
+rm tmp1_"$1".txt
