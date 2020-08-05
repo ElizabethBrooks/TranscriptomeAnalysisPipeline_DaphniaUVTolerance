@@ -17,43 +17,44 @@ searchFile="$outFilePath"/"$2"
 annotationFile="$annotationPath"/"$3"
 annotationCleanedFile=$(echo $annotationFile | sed 's/\.txt/Cleaned\.txt/g')
 
-#Move to output folder
-cd "$outFilePath"
+#Set temporary file output paths
+tmp="$outFilePath"/tmp1_"$1".txt
+split="$outFilePath"/split_"$1".txt
 
 #Remove header
-tail -n +2 "$searchFile" > tmp1_"$1".txt
+tail -n +2 $searchFile > $tmp
 
 #Replace whitespace with commas for comparisons
-sed -e 's/\s\+/,/g' "$annotationFile" > "$annotationCleanedFile"
+sed -e 's/\s\+/,/g' $annotationFile > $annotationCleanedFile
 
 #Set outputs
-outFileAnnotations=$(basename "$searchFile" | sed 's/\.txt//g')
+outFileAnnotations=$(basename $searchFile | sed 's/\.txt//g')
 outFileAnnotations="$outFilePath"/"$outFileAnnotations"_"$1"_matchedAnnotations.txt
-outFileUnique=$(basename "$searchFile" | sed 's/\.txt//g')
+outFileUnique=$(basename $searchFile | sed 's/\.txt//g')
 outFileUnique="$outFilePath"/"$outFileUnique"_"$1"_uniqueAnnotations.txt
 
 #Pre-clean up
-echo "query,db,queryHit,dbHit" > "$outFileUnique"
+echo "query,db,queryHit,dbHit" > $outFileUnique
 #Determine annotation input
 if [[ "$1" == "GhostKOALA" ]]; then
-	echo "query,db,dbHit,annotation" > "$outFileAnnotations"
+	echo "query,db,dbHit,annotation" > $outFileAnnotations
 else
-	echo "dbHit,annotation" > "$outFileAnnotations"
+	echo "dbHit,annotation" > $outFileAnnotations
 fi
 
 #Output status message
 echo "Beginning annotation search..."
 
 #Split input RBH
-split -n 8 --verbose tmp1_"$1".txt split_"$1".txt
+split -n 8 --verbose $tmp $split
 
 #Loop over sets of annotations
-for f in split_"$1".txt*; do
-	qsub searchAnnotations.sh "$1" "$f" "$annotationCleanedFile" "$outFileAnnotations" "$outFileUnique"
+for f in "$split"*; do
+	qsub searchAnnotations.sh $1 $f $annotationCleanedFile $outFileAnnotations $outFileUnique
 done
 
 #Output status message
 echo "Annotation search complete!"
 
 #Clean up
-rm tmp1_"$1".txt
+rm $tmp
