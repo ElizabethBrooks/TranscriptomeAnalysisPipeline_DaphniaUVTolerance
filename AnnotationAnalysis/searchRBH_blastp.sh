@@ -81,6 +81,9 @@ sed "s/GENOTYPE/$3/" -i "$outFileQuery"
 sed -e 's/$/,GENOTYPE/' -i "$outFileDB"
 sed "s/GENOTYPE/$3/" -i "$outFileDB"
 
+#Count number of query entries
+queryTotal=$(wc -l $outFileQuery)
+
 #Pre-clean up
 echo "queryHit,dbHit,db" > $outFileRBH
 
@@ -95,11 +98,12 @@ done < $outFileQuery
 
 #Check number of lines
 #echo "Recodring number of entries..."
-#echo "query,db,queryHits,dbHits,bestHits" > "$outFileResults"
-genes1a=$(wc -l "$outFileQuery" | cut -d ' ' -f 1)
-genes2a=$(wc -l "$outFileDB" | cut -d ' ' -f 1)
-genes3b=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
-echo "$geno","$3","$genes1a","$genes2a","$genes3b" >> "$outFile"
+#echo "query,db,queryHits,dbHits,bestHits,similarity" > "$outFileResults"
+queryHits=$(wc -l "$outFileQuery" | cut -d ' ' -f 1)
+dbHits=$(wc -l "$outFileDB" | cut -d ' ' -f 1)
+bestHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
+similar=$(($queryTotal-$bestHits))
+echo "$geno","$3","$queryHits","$dbHits","$bestHits","$similar" >> "$outFile"
 
 #Clean up
 rm "$outputFolder"/tmp*
