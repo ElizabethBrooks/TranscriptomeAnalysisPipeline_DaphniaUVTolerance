@@ -102,7 +102,7 @@ done < $outFileQuery
 queryHits=$(wc -l "$outFileQuery" | cut -d ' ' -f 1)
 dbHits=$(wc -l "$outFileDB" | cut -d ' ' -f 1)
 bestHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
-similar=$(($queryTotal-$bestHits))
+similar=$(($queryTotal/$bestHits))
 echo "$geno","$3","$queryHits","$dbHits","$bestHits","$similar" >> "$outFile"
 
 #Clean up
