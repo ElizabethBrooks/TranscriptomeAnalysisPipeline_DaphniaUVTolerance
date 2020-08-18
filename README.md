@@ -17,7 +17,8 @@ To avoid uploading outputs to this repository, the output paths for these script
 
 ### Running Scripts Locally
 * To run the script: **bash *SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
-#### Alternative Method of Running Scripts Locally
+
+### Alternative Method of Running Scripts Locally
 * To compile the script before running: **chmod +x *SCRIPTNAME*.sh**
 * To run a compiled trimming script: **./*SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
 
