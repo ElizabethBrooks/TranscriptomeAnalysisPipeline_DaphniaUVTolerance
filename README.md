@@ -22,13 +22,8 @@ To avoid uploading outputs to this repository, the output paths for these script
 * To compile the script before running: **chmod +x *SCRIPTNAME*.sh**
 * To run a compiled trimming script: **./*SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
 
-## Script Naming Format
+### Script Naming Format
 Each script is named by the action and the primary software needed to perform the action.
-
-## Script Inputs and Outputs
-Instructions for usage, with required inputs are given in the first few lines of each script. There is a text file with information about the inputs, and one for outputs in the *InputData* directory. This is where paths may be set for input and output directories.
-
-Furthermore, inputs and outputs for a given script are vizualized in the workflow diagram.
 
 ## Workflow Summary ##
 1. Quality control check a sample with [FastQC][2] to identify the correct adapter library encoding of illumina pipeline used and corresponding phred.
