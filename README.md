@@ -7,8 +7,8 @@ To avoid uploading outputs to this repository, the output paths for these script
 ![RNA-seq Analysis Pipeline](RNASeq_Workflow_DmelUV.png)
 
 ## Running Scripts
-* The input and output paths need to be set using the **inputPaths.txt** and **outputPaths.txt** files in the **InputData** directory.
-* Be sure to read the **usage notes** at the beginning of the file for any script that you intend to run.
+* The input and output paths need to be set using the *inputPaths.txt* and *outputPaths.txt* files in the *InputData* directory.
+* Be sure to read the *usage notes* at the beginning of the file for any script that you intend to run.
 
 ### Running Scripts on Servers
 * To submit a trimming job to the queue: **qsub *SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N**
@@ -21,9 +21,6 @@ To avoid uploading outputs to this repository, the output paths for these script
 ### Alternative Method of Running Scripts Locally
 * To compile the script before running: **chmod +x *SCRIPTNAME*.sh**
 * To run a compiled trimming script: **./*SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
-
-### Script Naming Format
-Each script is named by the action and the primary software needed to perform the action.
 
 ## Workflow Summary ##
 1. Quality control check a sample with [FastQC][2] to identify the correct adapter library encoding of illumina pipeline used and corresponding phred.
