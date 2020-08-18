@@ -1,21 +1,23 @@
 # TranscriptomeAnalysisPipeline_DaphniaUVTolerance
 Repository for scripts used to analyze short paired-end RNA sequence reads for Daphnia UV tolerance treatments.
 
-Be sure to read the *usage notes* at the beginning of the file for any script that you intend to run.
-
-To avoid uploading outputs to this repository, the outputs from these scripts be placed in separate folders from this directory.
+To avoid uploading outputs to this repository, the output paths for these scripts should be set in separate folders from this directory.
 
 ## RNA-seq Analysis Pipeline
 ![RNA-seq Analysis Pipeline](RNASeq_Workflow_DmelUV.png)
 
-## Running Scripts on Servers
+## Running Scripts
+* The input and output paths need to be set using the inputPaths.txt and outputPaths.txt files in the InputData directory.
+* Be sure to read the *usage notes* at the beginning of the file for any script that you intend to run.
+
+### Running Scripts on Servers
 * To submit a trimming job to the queue: **qsub *SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N**
 * To view the jobs you have submitted and corresponding task ID numbers: **qstat -u *USERNAME***
 * To delete a job from the queue: **qdel *TASKIDNUMBER***
 
-## Running Scripts Locally
+### Running Scripts Locally
 * To run the script: **bash *SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
-### Alternative Method of Running Scripts Locally
+#### Alternative Method of Running Scripts Locally
 * To compile the script before running: **chmod +x *SCRIPTNAME*.sh**
 * To run a compiled trimming script: **./*SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
 
