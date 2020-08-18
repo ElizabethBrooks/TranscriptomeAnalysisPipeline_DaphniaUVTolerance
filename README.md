@@ -7,8 +7,8 @@ To avoid uploading outputs to this repository, the output paths for these script
 ![RNA-seq Analysis Pipeline](RNASeq_Workflow_DmelUV.png)
 
 ## Running Scripts
-* The input and output paths need to be set using the inputPaths.txt and outputPaths.txt files in the InputData directory.
-* Be sure to read the *usage notes* at the beginning of the file for any script that you intend to run.
+* The input and output paths need to be set using the **inputPaths.txt** and **outputPaths.txt** files in the **InputData** directory.
+* Be sure to read the **usage notes** at the beginning of the file for any script that you intend to run.
 
 ### Running Scripts on Servers
 * To submit a trimming job to the queue: **qsub *SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N**
