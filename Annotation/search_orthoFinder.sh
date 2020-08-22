@@ -28,7 +28,8 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 #Loop through all input proteomes and build directory of inputs
-inputsDir="InputProteomes"
+inputsDir="$outputFolder"/InputProteomes
+mkdir "$inputsDir"
 for i in "$@"; do
 	#Determine input proteome
 	if [[ "$i" == *assembly* ]]; then
@@ -43,7 +44,7 @@ for i in "$@"; do
 		echo "Invalid fasta entered (species proteome expected)... exiting!"
 		exit 1
 	fi
-	cp "$inputsPath" "$outputFolder"/"$inputsDir"
+	cp "$inputsPath" "$inputsDir"
 done
 #Move to output folder
 cd "$outputFolder"
