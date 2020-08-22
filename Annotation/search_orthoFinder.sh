@@ -22,8 +22,6 @@ outputPath=$(grep "orthoFinder:" ../InputData/outputPaths.txt | tr -d " " | sed 
 outputFolder="$outputPath"/searched_orthoFinder
 #Make output directory
 mkdir "$outputFolder"
-#Move to output folder
-cd "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
 	echo "The $outputFolder directory already exsists... please remove before proceeding."
@@ -47,6 +45,8 @@ for i in "$@"; do
 	fi
 	cp "$inputsPath" "$outputFolder"/"$inputsDir"
 done
+#Move to output folder
+cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/searched_orthoFinder_summary.txt
 #Use OrthoFinder to find orthologs
