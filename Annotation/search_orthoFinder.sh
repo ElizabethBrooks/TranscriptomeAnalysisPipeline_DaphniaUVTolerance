@@ -48,7 +48,7 @@ for i in "$@"; do
 	cp "$inputsPath" "$outputFolder"/"$inputsDir"
 done
 #Name output file of inputs
-inputOutFile="$outputFolder"/searched_orthoFinder_"$1"_summary.txt
+inputOutFile="$outputFolder"/searched_orthoFinder_summary.txt
 #Use OrthoFinder to find orthologs
 echo "Beginning OrthoFinder search..."
 "$softwarePath"/orthofinder -f "$outputFolder"/"$inputsDir" -t 16
