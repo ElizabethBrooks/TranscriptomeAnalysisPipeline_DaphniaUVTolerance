@@ -14,3 +14,4 @@ geneTableAnalysis: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 transcriptSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 reciprocalSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
+orthoFinder: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
