@@ -28,23 +28,23 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 #Loop through all input proteomes and build directory of inputs
-inputsDir="$outputFolder"/InputProteomes
-mkdir "$inputsDir"
+inputsDir="$outputFolder"
 for i in "$@"; do
 	#Determine input proteome
 	if [[ "$i" == *assembly* ]]; then
 		#Retrieve reads input absolute path
 		assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 		inputsPath="$assemblyPath"/"$i"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
+		cp "$inputsPath" "$inputsDir"/"$i"_Trinity.fasta.transdecoder.pep
 	elif [[ "$i" == PA42_proteins ]]; then
 		#Retrieve genome reference absolute path for querying
 		inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
+		cp "$inputsPath" "$inputsDir"
 	else
 		#Error message
 		echo "Invalid fasta entered (species proteome expected)... exiting!"
 		exit 1
 	fi
-	cp "$inputsPath" "$inputsDir"
 done
 #Move to output folder
 cd "$outputFolder"
