@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N search_orthoFinder_jobOutput
-#$ -pe smp 16
+#$ -pe smp 24
 #Script to use OrthoFinder to find orthogroups and orthologs, 
 # infers rooted gene trees for all orthogroups and identifies 
 # all of the gene duplication events in those gene trees
@@ -52,7 +52,7 @@ cd "$outputFolder"
 inputOutFile="$outputFolder"/searched_orthoFinder_summary.txt
 #Use OrthoFinder to find orthologs
 echo "Beginning OrthoFinder search..."
-"$softwarePath"/orthofinder -f "$inputsDir" -t 16
+"$softwarePath"/orthofinder -f "$inputsDir" -t 24
 echo "OrthoFinder search complete!"
 #Output run commands to summary file
-echo "$softwarePath"/"orthofinder -f" "$inputsDir" "-t 16" > "$inputOutFile"
+echo "$softwarePath"/"orthofinder -f" "$inputsDir" "-t 24" > "$inputOutFile"

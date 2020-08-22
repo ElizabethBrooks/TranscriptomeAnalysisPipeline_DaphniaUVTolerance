@@ -2,14 +2,14 @@
 library(VennDiagram)
 
 #Import data
-ids <- read.csv(file=args[1])
+counts <- read.csv(file=args[1])
 #Define sets for diagram
-SET1 <- ids$Y05
-SET2 <- ids$Y023
-SET3 <- ids$E05
-SET4 <- ids$R2
-SET5 <- ids$PA
-SET6 <- ids$Sierra
+SET1 <- counts$Y05
+SET2 <- counts$Y023
+SET3 <- counts$E05
+SET4 <- counts$R2
+SET5 <- counts$PA
+SET6 <- counts$Sierra
 #Replace NAs
 SET1[is.na(SET1)] <- ""
 SET2[is.na(SET2)] <- ""
