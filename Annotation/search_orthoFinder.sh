@@ -52,7 +52,7 @@ cd "$outputFolder"
 inputOutFile="$outputFolder"/searched_orthoFinder_summary.txt
 #Use OrthoFinder to find orthologs
 echo "Beginning OrthoFinder search..."
-"$softwarePath"/orthofinder -f "$outputFolder"/"$inputsDir" -t 16
+"$softwarePath"/orthofinder -f "$inputsDir" -t 16
 echo "OrthoFinder search complete!"
 #Output run commands to summary file
-echo "$softwarePath"/"orthofinder -f" "$outputFolder"/"$inputsDir" "-t 16" > "$inputOutFile"
+echo "$softwarePath"/"orthofinder -f" "$inputsDir" "-t 16" > "$inputOutFile"
