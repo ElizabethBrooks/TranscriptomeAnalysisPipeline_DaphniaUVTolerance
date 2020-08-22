@@ -20,13 +20,23 @@ softwarePath=$(grep "orthoFinder:" ../InputData/softwarePaths.txt | tr -d " " | 
 #Set outputs absolute path
 outputPath=$(grep "orthoFinder:" ../InputData/outputPaths.txt | tr -d " " | sed "s/orthoFinder://g")
 outputFolder="$outputPath"/searched_orthoFinder
-#Make output directory
-mkdir "$outputFolder"
-#Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outputFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
+dirFlag=0
+runNum=1
+#Make a new directory for each alignment run
+while [ $dirFlag -eq 0 ]; do
+	#Hisat output directory name
+	outputFolder="searched_orthoFinder_run$runNum"
+	mkdir "$outputFolder"
+	#Check if the folder already exists
+	if [ $? -ne 0 ]; then
+		#Increment the folder name
+		let runNum+=1
+	else
+		#Indicate that the folder was successfully made
+		dirFlag=1
+		echo "Creating folder for run $runNum of orthoFinder searching..."
+	fi
+done
 #Loop through all input proteomes and build directory of inputs
 inputsDir="$outputFolder"
 for i in "$@"; do
