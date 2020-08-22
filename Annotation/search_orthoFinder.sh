@@ -19,13 +19,12 @@ fi
 softwarePath=$(grep "orthoFinder:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/orthoFinder://g")
 #Set outputs absolute path
 outputPath=$(grep "orthoFinder:" ../InputData/outputPaths.txt | tr -d " " | sed "s/orthoFinder://g")
-outputFolder="$outputPath"/searched_orthoFinder
 dirFlag=0
 runNum=1
 #Make a new directory for each alignment run
 while [ $dirFlag -eq 0 ]; do
 	#Hisat output directory name
-	outputFolder="searched_orthoFinder_run$runNum"
+	outputFolder="$outputPath"/"searched_orthoFinder_run$runNum"
 	mkdir "$outputFolder"
 	#Check if the folder already exists
 	if [ $? -ne 0 ]; then
