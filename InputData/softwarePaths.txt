@@ -2,3 +2,4 @@ transdecoderPackage: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/Tr
 trinotatePackage: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/Trinotate-Trinotate-v3.2.1
 cdhitPackage: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/cdhit-master
 sanspanzPackage: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/SANSPANZ.3
+orthoFinder: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/OrthoFinder

@@ -16,6 +16,8 @@ if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
+#Set software path
+softwarePath=$(grep "orthoFinder:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/orthoFinder://g")
 #Determine input query transcriptome for orthoFinder
 if [[ "$1" == *assembly* ]]; then
 	#Retrieve reads input absolute path
@@ -47,6 +49,6 @@ cd "$outputFolder"
 inputOutFile="$outputFolder"/searched_orthoFinder_"$1"_summary.txt
 #Use OrthoFinder to find orthologs
 echo "Beginning OrthoFinder search..."
-
+"$softwarePath"/orthofinder -f
 echo "OrthoFinder search complete!"
 #Output run commands to summary file
