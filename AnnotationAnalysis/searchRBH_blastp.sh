@@ -13,9 +13,6 @@
 #Usage Ex: qsub searchRBH_blastp.sh PA42_proteins PA42_proteins PA42_transcripts trimmed_run1_PA42_proteins_blastp_summary.txt
 #Usage Ex: qsub searchRBH_blastp.sh PA42_proteins PA42_proteins PA42_cds trimmed_run1_PA42_proteins_blastp_summary.txt
 
-#set output summary file path
-outFile="$4"
-
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
@@ -68,33 +65,27 @@ fi
 #Move to output folder
 cd "$outputFolder"
 
-#Merge blast search results
+#set output paths
+outFile="$4"
 outFileRBH="$outputFolder"/"blastp_RBH.txt"
-outFileQuery="$outputFolder"/"tmp1_blastp.txt"
-outFileDB="$outputFolder"/"tmp2_blastp.txt"
-awk '{print $1 "," $2}' "$inputDBPath" > "$outFileQuery"
-awk '{print $2 "," $1}' "$inputRDBPath" > "$outFileDB"
 
 #Add db tag to each line
-sed -e 's/$/,GENOTYPE/' -i "$outFileQuery"
-sed "s/GENOTYPE/$3/" -i "$outFileQuery"
-sed -e 's/$/,GENOTYPE/' -i "$outFileDB"
-sed "s/GENOTYPE/$3/" -i "$outFileDB"
-
-#Count number of query entries
-queryTotal=$(wc -l $outFileQuery)
+#sed -e 's/$/,GENOTYPE/' -i "$outFileQuery"
+#sed "s/GENOTYPE/$3/" -i "$outFileQuery"
+#sed -e 's/$/,GENOTYPE/' -i "$outFileDB"
+#sed "s/GENOTYPE/$3/" -i "$outFileDB"
 
 #Pre-clean up
 echo "queryHit,dbHit,db" > $outFileRBH
 
 #Loop over first set of annotations
-while IFS=, read -r f1 f2 f3
+while IFS=, read -r f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
 do
 	#Determine annotation sets
-	if grep -q "$f1,$f2,$f3" $outFileDB; then #RBH
-		echo "$f1,$f2,$f3" >> $outFileRBH
+	if grep -q "$f2 $f1 " $inputRDBPath; then #RBH
+		echo "$f1,$f2" >> $outFileRBH
 	fi
-done < $outFileQuery
+done < $inputDBPath
 
 #Check number of lines
 #echo "Recodring number of entries..."
@@ -102,7 +93,7 @@ done < $outFileQuery
 queryHits=$(wc -l "$outFileQuery" | cut -d ' ' -f 1)
 dbHits=$(wc -l "$outFileDB" | cut -d ' ' -f 1)
 bestHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
-similar=$(($queryTotal/$bestHits))
+similar=$(($queryHits/$bestHits))
 echo "$geno","$3","$queryHits","$dbHits","$bestHits","$similar" >> "$outFile"
 
 #Clean up
