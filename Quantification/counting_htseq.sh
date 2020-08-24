@@ -5,13 +5,14 @@
 #$ -N counting_htseq_jobOutput
 #Script to perform htseq-count counting of trimmed, aligned, then name sorted
 # paired end reads
-#Usage: qsub counting_htseq.sh sortedNameFolder
-#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1
+#Usage: qsub counting_htseq.sh sortedNameFolder analysisTarget
+#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 genome
+#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsTophat2_run1 trimmed_run1E05_assemblyTrinity
 
 #Required modules for ND CRC servers
 module load bio
-module load bio/python/2.7.14
-module load bio/htseq/0.11.2
+#module load bio/python/2.7.14
+#module load bio/htseq/0.11.2
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -22,43 +23,30 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
 	exit 1
 fi
-#Determine if the correct analysis folder was input
-if [[ "$1"  == sortedName* ]]; then
-	#Set name sorted method flag
-	sortType="Name"
-elif [[ "$1"  == sortedCoordinate* ]]; then
-	#Set coordinate sorted method flag
-	sortType="Coordinate"
-else
-	echo "ERROR: The "$1" folder of name or coordinate sorted files were not found... exiting"
-	exit 1
-fi
+#Retrieve genome features absolute path for alignment
+genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
 #Determine what analysis method was used for the input folder of data
-if [[ "$1" == *"Hisat2"*  ]]; then
-	#Set analysis method for folder naming
-	analysisMethod="Hisat2"
-elif [[ "$1" == *"Tophat2"* ]]; then
-	#Set analysis method for folder naming
-	analysisMethod="Tophat2"
+if [[ "$2" == *assembly* ]]; then
+	#Retrieve reads input absolute path
+	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	inputsPath="$inputsPath"/"$2"/"$1"
+	outputsPath="$inputsPath"
+elif [[ "$2" == "genome" ]]; then
+	#Retrieve sorted reads input absolute path
+	inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+	inputsPath="$inputsPath"/"$1"
+	outputsPath="$inputsPath"
 else
 	echo "ERROR: The sorted "$1" folder of bam files were not found... exiting"
 	exit 1
 fi
-#Retrieve sorted reads input absolute path
-inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
-#Retrieve genome features absolute path for alignment
-genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
-#Retrieve alignment outputs absolute path
-outputsPath=$(grep "counting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/counting://g")
-#Move to outputs directory
-cd "$outputsPath"
 #Prepare for analysis
 dirFlag=0
 runNum=1
 COUNTER=0
 #Make a new directory for each analysis run
 while [ $dirFlag -eq 0 ]; do
-	outputFolder=counted"$sortType"_htseq"$analysisMethod"_run"$runNum"
+	outputFolder="$outputsPath"/counted_htseq_run"$runNum"
 	mkdir "$outputFolder"
 	#Check if the folder already exists
 	if [ $? -ne 0 ]; then
@@ -71,9 +59,9 @@ while [ $dirFlag -eq 0 ]; do
 	fi
 done
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
+inputOutFile="$outputFolder"/counted_summary.txt
 #Loop through all sorted forward and reverse paired reads and store the file locations in an array
-for f1 in "$inputsPath"/"$1"/*/*.bam; do
+for f1 in "$inputsPath"/*/*.bam; do
 	#Name of sorted and aligned file
 	curAlignedSample="$f1"
 	#Trim file paths from current sample folder name
@@ -111,4 +99,4 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 	echo "Sample $curSampleNoPath has been counted!"
 done
 #Copy previous summaries
-cp "$inputsPath"/"$1"/*.txt "$outputFolder"
+cp "$inputsPath"/*.txt "$outputFolder"
