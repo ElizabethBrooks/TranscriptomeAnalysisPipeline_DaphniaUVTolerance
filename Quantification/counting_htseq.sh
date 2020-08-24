@@ -7,7 +7,7 @@
 # paired end reads
 #Usage: qsub counting_htseq.sh sortedNameFolder analysisTarget
 #Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 genome
-#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsTophat2_run1 trimmed_run1E05_assemblyTrinity
+#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity
 
 #Required modules for ND CRC servers
 module load bio
@@ -17,11 +17,6 @@ module load bio
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
-fi
-#Determine if the folder name was input in the correct format
-if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
-	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
-	exit 1
 fi
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
