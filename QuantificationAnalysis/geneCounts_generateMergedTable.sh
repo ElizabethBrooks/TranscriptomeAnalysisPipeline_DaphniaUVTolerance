@@ -19,13 +19,13 @@ fi
 if [[ "$3" == *assembly* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	inputsPath="$inputsPath"/"$3"/"$1"/"$2"
+	inputsPath="$inputsPath"/"$3"/"$2"/"$1"
 elif [[ "$3" == "genome" ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
-	inputsPath="$inputsPath"/"$1"/"$2"
+	inputsPath="$inputsPath"/"$2"/"$1"
 else
-	echo "ERROR: The sorted "$1" folder of bam files were not found... exiting"
+	echo "ERROR: The counted files were not found... exiting"
 	exit 1
 fi
 #Retrieve alignment outputs absolute path
@@ -33,7 +33,6 @@ outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " "
 #Make a new directory for the analysis
 outputsPath="$outputsPath"/GeneCountsAnalyzed
 mkdir $outputsPath
-echo "Creating folder for gene count analysis for a $2 of $1..."
 #Remove any extra number tags from file names
 for f0 in "$inputsPath"/*/; do
 	newName=$(echo "$f0" | sed 's/UV1/UV/g')
