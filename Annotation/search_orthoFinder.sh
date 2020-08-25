@@ -9,6 +9,10 @@
 # all of the gene duplication events in those gene trees
 #Usage: qsub search_orthoFinder.sh proteomeFastaList
 #Usage Ex: qsub search_orthoFinder.sh trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1PA_assemblyTrinity trimmed_run1Sierra_assemblyTrinity PA42_proteins
+#Usage Ex: qsub search_orthoFinder.sh trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity
+#Usage Ex: qsub search_orthoFinder.sh trimmed_run1PA_assemblyTrinity PA42_proteins
+#Usage Ex: qsub search_orthoFinder.sh trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1Sierra_assemblyTrinity 
+#Usage Ex: qsub search_orthoFinder.sh trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1PA_assemblyTrinity PA42_proteins
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then

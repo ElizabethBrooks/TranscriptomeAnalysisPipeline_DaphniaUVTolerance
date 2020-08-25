@@ -79,10 +79,10 @@ outFileRBH="$outputFolder"/"blastp_RBH.txt"
 echo "queryHit,dbHit,db" > $outFileRBH
 
 #Loop over first set of annotations
-while IFS=, read -r f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
+while IFS=$'\t' read -r f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
 do
 	#Determine annotation sets
-	if grep -q "$f2 $f1 " $inputRDBPath; then #RBH
+	if grep -q "$f2"$'\t'"$f1"$'\t' $inputRDBPath; then #RBH
 		echo "$f1,$f2" >> $outFileRBH
 	fi
 done < $inputDBPath

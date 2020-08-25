@@ -10,7 +10,6 @@ statistics: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV
 assemblyAnalysis: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 alignmentAnalysis: /home/mae/Documents/RNASeq_Workshop_ND
 geneCountAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
-geneTableAnalysis: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 transcriptSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 reciprocalSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
