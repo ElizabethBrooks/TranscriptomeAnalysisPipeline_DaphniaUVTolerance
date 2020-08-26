@@ -17,7 +17,7 @@ if [[ "$1" == RBH ]]; then
 	#Set output file name
 	outFile="$outPath"/reciprocalSearched_blastp/"$3"_"$2"_blastp_summary.txt
 	#Add header to output summary file
-	echo "query,db,queryHits,dbHits,bestHits,similar" > "$outFile"
+	echo "query,db,queryHits,dbHits,bestHits" > "$outFile"
 elif [[ "$1" == consensus ]]; then
 	#Set output file names
 	outFile="$outPath"/reciprocalSearched_blastp/"$3"_"$2"_blastp_consensusSummary.txt
@@ -52,13 +52,13 @@ for i in "$@"; do
 		if [ $counter -ge 3 ]; then
 			#Usage: bash searchRBH_blastp.sh transcriptomeFastaFolder
 			echo "Merging $i blastp results for $3 and $2..."
-			qsub searchRBH_blastp.sh "$inputFolder" "$i" "$2" "$outFile"
+			qsub searchRBH.sh "$inputFolder" "$i" "$2" "$outFile"
 		fi
 	elif [[ "$1" == consensus ]]; then #Skip first three arguments
 		if [ $counter -ge 3 ]; then
 			#Usage: qsub consensusRBH_blastp.sh transcriptomeFastaFolder
 			echo "Generating consensus RBH of $i blastp results for $3 and $2..."
-			qsub consensusRBH_blastp.sh "$inputFolder" "$i" "$2" "$outFile" "$outFileUnique"
+			qsub consensusRBH.sh "$inputFolder" "$i" "$2" "$outFile" "$outFileUnique"
 		fi
 	fi
 	counter=$(($counter+1))
