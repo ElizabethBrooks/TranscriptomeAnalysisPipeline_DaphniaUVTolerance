@@ -69,11 +69,6 @@ cd "$outputFolder"
 outFile="$4"
 outFileRBH="$outputFolder"/"blastp_RBH.txt"
 
-#Add db tag to each line
-#sed -e 's/$/,GENOTYPE/' -i "$outFileQuery"
-#sed "s/GENOTYPE/$3/" -i "$outFileQuery"
-#sed -e 's/$/,GENOTYPE/' -i "$outFileDB"
-#sed "s/GENOTYPE/$3/" -i "$outFileDB"
 
 #Pre-clean up
 echo "queryHit,dbHit,db" > $outFileRBH
@@ -90,11 +85,7 @@ done < $inputDBPath
 #Check number of lines
 #echo "Recodring number of entries..."
 #echo "query,db,queryHits,dbHits,bestHits,similarity" > "$outFileResults"
-queryHits=$(wc -l "$outFileQuery" | cut -d ' ' -f 1)
-dbHits=$(wc -l "$outFileDB" | cut -d ' ' -f 1)
+queryHits=$(wc -l "$inputDBPath" | cut -d ' ' -f 1)
+dbHits=$(wc -l "$inputRDBPath" | cut -d ' ' -f 1)
 bestHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
-similar=$(($queryHits/$bestHits))
-echo "$geno","$3","$queryHits","$dbHits","$bestHits","$similar" >> "$outFile"
-
-#Clean up
-rm "$outputFolder"/tmp*
+echo "$geno","$3","$queryHits","$dbHits","$bestHits" >> "$outFile"
