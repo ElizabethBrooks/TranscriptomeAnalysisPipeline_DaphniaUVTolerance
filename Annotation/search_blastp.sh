@@ -23,12 +23,15 @@ fi
 if [[ "$2" == "ncbi" ]]; then
 	#Retreive ncbi database storage path
 	dbFile=$(grep "ncbiDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/ncbiDB://g")
+	dbType="ncbi"
 elif [[ "$2" == "uniprot" ]]; then
 	#Retreive uniprot database storage path
 	dbFile=$(grep "uniprotDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/uniprotDB://g")
+	dbType="uniprot"
 elif [[ "$2" == "swissprot" ]]; then
 	#Retreive uniprot database storage path
 	dbFile=$(grep "trinotateSwissprotDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/trinotateSwissprotDB://g")
+	dbType="swissprot"
 else
 	#Error message
 	echo "Invalid database selection entered (ncbi or uniprot only)... exiting!"
@@ -40,27 +43,27 @@ if [[ "$1" == *assembly* ]]; then
 	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 	#Set outputs absolute path
-	outputFolder="$assemblyPath"/"$1"/searched_blastp_"$2"
+	outputFolder="$assemblyPath"/"$1"/searched_blastp_"$2"_"$dbtype"
 elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 	#Set outputs absolute path
 	outputPath=$(dirname "$inputsPath")
-	outputFolder="$outputPath"/searched_blastp_"$2"
+	outputFolder="$outputPath"/searched_blastp_"$2"_"$dbtype"
 elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
 	outputPath=$(dirname "$inputsPath")
 	inputsPath="$outputPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
 	#Set outputs absolute path
-	outputFolder="$outputPath"/searched_blastp_"$2"	
+	outputFolder="$outputPath"/searched_blastp_"$2"_"$dbtype"
 elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
 	outputPath=$(dirname "$inputsPath")
 	inputsPath="$outputPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 	#Set outputs absolute path
-	outputFolder="$outputPath"/searched_blastp_"$2"	
+	outputFolder="$outputPath"/searched_blastp_"$2"_"$dbtype"
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
@@ -76,7 +79,7 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/searched_blastp_"$1"_summary.txt
+inputOutFile="$outputFolder"/searched_blastp_summary.txt
 #Use blastp to search a database
 # and output with outfmt6 header:
 #qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
