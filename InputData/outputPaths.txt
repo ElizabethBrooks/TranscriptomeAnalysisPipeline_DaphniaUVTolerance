@@ -11,4 +11,4 @@ geneCountAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 transcriptSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 reciprocalSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
-orthoFinder: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
+orthoFinder: /scratch365/ebrooks5/rnaseq
