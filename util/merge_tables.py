@@ -43,7 +43,7 @@ for line in infile:
 	try:
 		data_f = open(filename)
 	except IOError:
-		print "%s can't be found?"%filename
+		print(filename, ' can not be found?')
 		sys.exit()
 		
 	col_header.append(header)	
@@ -69,17 +69,17 @@ for gene in genes:
 	try:
 		assert len(data) == len(col_header)
 	except AssertionError:
-		print "one of the treatment or genes is missing or extra"
-		print "data, found the problem here:"
-		print gene,data
-		print "while %s columns of treatments given" %len(col_header)
+		print('one of the treatment or genes is missing or extra')
+		print('data, found the problem here:')
+		print(gene, data)
+		#print "while %s columns of treatments given" %len(col_header)
 		sys.exit()
 		
 	out_data = gene+'\t'+'\t'.join(data)+'\n'
 	outfile.write(out_data)
 	
 outfile.close()
-print "Merged table is 'merged_counts.txt'"	
+print('Merged table is merged_counts.txt')	
 		
 	
 	
