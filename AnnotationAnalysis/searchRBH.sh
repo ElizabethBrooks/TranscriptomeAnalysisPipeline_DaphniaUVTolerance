@@ -31,7 +31,7 @@ elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 	inputsPath=$(dirname "$inputsPath")
-	geno="$2"
+	geno="PA42_p"
 	#Set outputs absolute path
 	outputFolder="$inputsPath"/reciprocalSearched_blastp_"$3"
 	#Set blast result paths
@@ -41,7 +41,7 @@ elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
 	inputsPath=$(dirname "$inputsPath")
-	geno="$2"
+	geno="PA42_c"
 	#Set outputs absolute path
 	outputFolder="$inputsPath"/reciprocalSearched_blastp_"$3"
 	#Set blast result paths
@@ -51,7 +51,7 @@ elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
 	inputsPath=$(dirname "$inputsPath")
-	geno="$2"
+	geno="PA42_t"
 	#Set outputs absolute path
 	outputFolder="$inputsPath"/reciprocalSearched_blastp_"$3"
 	#Set blast result paths
