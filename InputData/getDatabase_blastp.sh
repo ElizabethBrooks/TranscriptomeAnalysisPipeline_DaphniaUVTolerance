@@ -2,11 +2,11 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N getDB_blastp_jobOutput
+#$ -N getDatabase_blastp_jobOutput
 #Script to retrieve Uniprot protein sequence database fasta files
-#Usage: qsub getDB_blastp.sh dbSelection
-#Usage ex: qsub getDB_blastp.sh swissprot
-#Usage ex: qsub getDB_blastp.sh ncbi
+#Usage: qsub getDatabase_blastp.sh dbSelection
+#Usage ex: qsub getDatabase_blastp.sh swissprot
+#Usage ex: qsub getDatabase_blastp.sh ncbi
 #Note that the NCBI NR DB may be downloaded with wget
 #ex: wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/nr.gz
 #Note that uniprot databases may be downloaded from the UniprotKB search page, or wget

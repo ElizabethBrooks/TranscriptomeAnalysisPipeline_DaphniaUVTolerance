@@ -2,12 +2,12 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N buildDB_blastp_jobOutput
+#$ -N buildDatabase_blastp_jobOutput
 #Script to retrieve Uniprot protein sequence database fasta files
-#Usage: qsub buildDB_blastp.sh dbSelection
-#Usage ex: qsub buildDB_blastp.sh swissprot
-#Usage ex: qsub buildDB_blastp.sh ncbi
-#Usage ex: qsub buildDB_blastp.sh uniprot
+#Usage: qsub buildDatabase_blastp.sh dbSelection
+#Usage ex: qsub buildDatabase_blastp.sh swissprot
+#Usage ex: qsub buildDatabase_blastp.sh ncbi
+#Usage ex: qsub buildDatabase_blastp.sh uniprot
 
 #Load necessary modules
 module load bio/blast+
