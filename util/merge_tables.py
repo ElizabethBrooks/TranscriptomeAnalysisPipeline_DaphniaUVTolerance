@@ -26,7 +26,7 @@ import sys
 try:
 	infile = open(sys.argv[1])
 except IndexError:
-	print "No guide file provided"
+	print('No guide file provided')
 	sys.exit()
 	
 #make dict of genes with list of counts

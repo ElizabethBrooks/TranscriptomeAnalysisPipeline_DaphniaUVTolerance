@@ -32,7 +32,7 @@ fi
 outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
 #Make a new directory for the analysis
 outputsPath="$outputsPath"/GeneCountsAnalyzed
-mkdir $outputsPath
+#mkdir $outputsPath
 #Remove any extra number tags from file names
 for f0 in "$inputsPath"/*/; do
 	newName=$(echo "$f0" | sed 's/UV1/UV/g')
@@ -52,22 +52,26 @@ grep "Pool3" ../InputData/mergeCounts_guideFile_tags.txt | sed 's/^/Pool_3_/' > 
 cat "$outputsPath"/tmp*.txt >> "$outputsPath"/tmp.txt
 #Loop through all counted paired reads and append each sample tag
 # with the corresponding file path
-cat ../InputData/mergeCounts_guideFile_tags.txt > "$outputsPath"/tmp_mergeCounts_guideFile_"$1"_"$2"_"$3".txt
+guideFile="$outputsPath"/tmp_mergeCounts_guideFile_"$1"_"$2"_"$3".txt
+cat ../InputData/mergeCounts_guideFile_tags.txt > "$guideFile"
 for f1 in "$inputsPath"/*/; do
 	currSample=$(basename "$f1" | sed "s/140327_I481_FCC3P1PACXX_L..//g")
 	#Determine if subset of files are to be used
 	if grep -iFq "$currSample" "$outputsPath"/tmp.txt; then
 		currTag=$(grep "$currSample" "$outputsPath"/tmp.txt | sed "s/Pool_._//g")
-		sed -i 's,'"$currTag"','"$f1"'counts.txt '"$currTag"',' "$outputsPath"/tmp_mergeCounts_guideFile_"$1"_"$2"_"$3".txt
+		sed -i 's,'"$currTag"','"$f1"'counts.txt '"$currTag"',' "$guideFile"
 	fi
 done
 #Move to location of merge_tagles.py script
 cd ../util
 #Merge gene counts based on generated guide file
-python merge_tables.py "$outputsPath"/tmp_mergeCounts_guideFile_"$1"_"$2"_"$3".txt
+echo "Guide file: $guideFile"
+cat $guideFile
+python merge_tables.py "$guideFile"
 #Rename the output merged counts file
-mv merged_counts.txt "$outputsPath"/geneCounts_merged_"$1"_"$2"_"$3".txt
+mergedCounts="$outputsPath"/geneCounts_merged_"$1".txt
+mv merged_counts.txt "$mergedCounts"
 #Print a script completion confirmation message
-echo "Merged table has been renamed 'geneCounts_merged_"$1"_"$2"_"$3".txt' and moved!"
+echo "Merged table has been renamed $mergedCounts and moved!"
 #Clean up
 rm "$outputsPath"/tmp*.txt
