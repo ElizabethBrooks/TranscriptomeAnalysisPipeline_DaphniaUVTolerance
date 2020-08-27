@@ -52,7 +52,7 @@ grep "Pool3" ../InputData/mergeCounts_guideFile_tags.txt | sed 's/^/Pool_3_/' > 
 cat "$outputsPath"/tmp*.txt >> "$outputsPath"/tmp.txt
 #Loop through all counted paired reads and append each sample tag
 # with the corresponding file path
-guideFile="$outputsPath"/tmp_mergeCounts_guideFile_"$1"_"$2"_"$3".txt
+guideFile="$outputsPath"/tmp_mergeCounts_guideFile_"$3"_"$2"_"$1".txt
 cat ../InputData/mergeCounts_guideFile_tags.txt > "$guideFile"
 for f1 in "$inputsPath"/*/; do
 	currSample=$(basename "$f1" | sed "s/140327_I481_FCC3P1PACXX_L..//g")
@@ -69,7 +69,7 @@ echo "Guide file: $guideFile"
 cat $guideFile
 python merge_tables.py "$guideFile"
 #Rename the output merged counts file
-mergedCounts="$outputsPath"/geneCounts_merged_"$1".txt
+mergedCounts="$outputsPath"/geneCounts_merged_"$3"_"$2"_"$1".txt
 mv merged_counts.txt "$mergedCounts"
 #Print a script completion confirmation message
 echo "Merged table has been renamed $mergedCounts and moved!"

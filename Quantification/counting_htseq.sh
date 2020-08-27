@@ -28,7 +28,7 @@ if [[ "$2" == *assembly* ]]; then
 	outputsPath="$inputsPath"
 elif [[ "$2" == "genome" ]]; then
 	#Retrieve sorted reads input absolute path
-	inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	inputsPath="$inputsPath"/"$1"
 	outputsPath="$inputsPath"
 else

@@ -42,7 +42,7 @@ elif [[ "$1"  == genome ]]; then
 	#Retrieve aligned reads input absolute path
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	#Retrieve sorting outputs absolute path
-	outputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+	outputsPath="$inputsPath"
 else
 	echo "ERROR: The input alignment target is not valid... exiting!"
 	exit 1
