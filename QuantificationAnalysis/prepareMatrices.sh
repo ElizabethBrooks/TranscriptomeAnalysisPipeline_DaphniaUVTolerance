@@ -11,29 +11,15 @@ runNum=1
 inputTable=$(echo "$1" | sed "s/\.txt//g")
 #Directory for outputs
 outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
-prefixOutputs="$outputsPath"/GeneCounts_Formatted
+prefixOutputs="$outputsPath"/GeneCountsAnalyzed
 #Directory for gene count tables
-prefixInputs="$outputsPath"/GeneCounts_Formatted/"GeneCounts_Tables"
+prefixInputs="$prefixOutputs"
 #Check which set of data is used
 if [[ "$inputTable" == *"subset"* ]]; then
 	analysisSet="subset"
 else
 	analysisSet="fullset"
 fi
-#Make a new directory for each analysis run
-while [ $dirFlag -eq 0 ]; do
-	prefixOutputs="$prefixOutputs"/GeneCountAnalysis_"$analysisSet"_run"$runNum"
-	mkdir $prefixOutputs
-	#Check if the folder already exists
-	if [ $? -ne 0 ]; then
-		#Increment the folder name
-		let runNum+=1
-	else
-		#Indicate that the folder was successfully made
-		dirFlag=1
-		echo "Creating folder for run $runNum of gene count analysis of $1..."
-	fi
-done
 
 #Prepare new gene count tables for comparison
 #Remove excess white space in gene count tables,
