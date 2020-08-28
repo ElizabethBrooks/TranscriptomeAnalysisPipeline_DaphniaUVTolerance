@@ -22,7 +22,7 @@ if [[ "$3" == *assembly* ]]; then
 	inputsPath="$inputsPath"/"$3"/"$2"/"$1"
 elif [[ "$3" == "genome" ]]; then
 	#Retrieve sorted reads input absolute path
-	inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	inputsPath="$inputsPath"/"$2"/"$1"
 else
 	echo "ERROR: The counted files were not found... exiting"
@@ -65,8 +65,6 @@ done
 #Move to location of merge_tagles.py script
 cd ../util
 #Merge gene counts based on generated guide file
-echo "Guide file: $guideFile"
-cat $guideFile
 python merge_tables.py "$guideFile"
 #Rename the output merged counts file
 mergedCounts="$outputsPath"/geneCounts_merged_"$3"_"$2"_"$1".txt
