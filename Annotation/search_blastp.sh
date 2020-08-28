@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N search_blastp_jobOutput
-#$ -pe smp 8
+#$ -pe smp 24
 #Script to use blastp to translate the nucleotide sequences of a reference genome
 # for searching a protein database
 #Usage: qsub search_blastp.sh transcriptomeFasta proteinDB
