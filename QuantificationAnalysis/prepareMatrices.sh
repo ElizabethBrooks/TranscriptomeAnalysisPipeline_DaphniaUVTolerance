@@ -1,6 +1,6 @@
 #!/bin/bash
 #Usage: bash prepareMatrices.sh countedGenesFile
-#Usage Ex: bash prepareMatrices.sh geneCounts_merged_counted_htseqTophat2_run1_fullset.txt
+#Usage Ex: bash prepareMatrices.sh geneCounts_merged_genome_sortedName_samtoolsHisat2_run1_counted_htseq_run1.txt
 #Fullset gene counts were created using trimmomatic, hisat2 or tophat2, and cuffdiff
 #Subset gene counts were created using trimmomatic, hisat2 or tophat2, and cuffdiff
 #Legacy gene counts were created using trimmomatic, tophat2, and cuffdiff
@@ -10,7 +10,7 @@ runNum=1
 #Trim file extension from input
 inputTable=$(echo "$1" | sed "s/\.txt//g")
 #Directory for outputs
-outputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
+outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
 prefixOutputs="$outputsPath"/GeneCounts_Formatted
 #Directory for gene count tables
 prefixInputs="$outputsPath"/GeneCounts_Formatted/"GeneCounts_Tables"

@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 #Usage: Rscript twoWayANOVA_OlympicsGrp1_edgeR.r countsFile factorGroupingFile
-#Usage Ex: Rscript twoWayANOVA_OlympicsGrp1_edgeR.r geneCounts_merged_counted_htseqTophat2_run1_fullset_cleaned.csv DMelUV_ExpDesign_Olympics_GRP1.csv
+#Usage Ex: Rscript twoWayANOVA_OlympicsGrp1_edgeR.r geneCounts_merged_counted_htseqTophat2_run1_fullset_cleaned.csv expDesign_Olympics_GRP1.csv
 #R script to perform statistical analysis of gene count tables using edgeR two way ANOVA
 #Install edgeR, this should only need to be done once
 #Since edgeR is already installed on the CRC this can be skipped if using the module
@@ -32,8 +32,17 @@ fit <- glmQLFit(y, design)
 
 #Contrasts for comparisons
 my.contrasts <- makeContrasts(
-	UV.TsNT = UV.NotTolerant-UV.Tolerant,
-	VIS.TvsNT = VIS.NotTolerant-VIS.Tolerant,
+	UV.NTvsT = UV.NotTolerant-UV.Tolerant,
+	VIS.NTvsT = VIS.NotTolerant-VIS.Tolerant,
 	UVvsVIS.NT = UV.NotTolerant-VIS.NotTolerant,
 	UVvsVIS.T = (UV.Tolerant-UV.NotTolerant)-(VIS.Tolerant-VIS.NotTolerant),
 	levels=design)
+
+#To find genes responding to UV at low tolerance
+qlf <- glmQLFTest(fit, contrast=my.contrasts[,"UV.NTvsT"])
+#To find genes responding to VIS at low tolerance
+qlf <- glmQLFTest(fit, contrast=my.contrasts[,"VIS.NTvsT"])
+#To find genes with baseline differences between UV and VIS at low tolerance
+qlf <- glmQLFTest(fit, contrast=my.contrasts[,"UVvsVIS.NT"])
+#To find genes with baseline differences between UV and VIS at high tolerance
+qlf <- glmQLFTest(fit, contrast=my.contrasts[,"UVvsVIS.T"])
