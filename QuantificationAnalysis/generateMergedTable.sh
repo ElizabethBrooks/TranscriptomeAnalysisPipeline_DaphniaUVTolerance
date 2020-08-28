@@ -29,7 +29,7 @@ else
 	exit 1
 fi
 #Retrieve alignment outputs absolute path
-outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
+outputsPath=$(grep "genesCounted:" ../InputData/outputPaths.txt | tr -d " " | sed "s/genesCounted://g")
 #Make a new directory for the analysis
 outputsPath="$outputsPath"/GeneCountsAnalyzed
 #mkdir $outputsPath
