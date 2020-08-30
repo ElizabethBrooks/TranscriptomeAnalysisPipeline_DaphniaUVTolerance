@@ -36,7 +36,7 @@ my.contrasts <- makeContrasts(
 	VIS.NTvsT = VIS.NotTolerant-VIS.Tolerant,
 	UVvsVIS.NT = UV.NotTolerant-VIS.NotTolerant,
 	UVvsVIS.T = (UV.Tolerant-UV.NotTolerant)-(VIS.Tolerant-VIS.NotTolerant),
-	levels=design)
+	levels = design)
 
 #To find genes responding to UV at low tolerance
 qlf <- glmQLFTest(fit, contrast=my.contrasts[,"UV.NTvsT"])

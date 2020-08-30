@@ -21,18 +21,21 @@ cd "$outDir"
 
 #Make table of GO data for the top tags from exact tests
 head -11 stats_exactTest.csv > topGenesStats_exactTest.csv
-#sed -i 's/^logFC/gene,logFC/g' topGenesStats_exactTest.csv
+sed -i 's/^logFC/gene,logFC/g' topGenesStats_exactTest.csv
 cut -f1 -d ',' topGenesStats_exactTest.csv > tmpTopGeneIds.csv
-head -1 "$ontologyPath" > topGenesGO_exactTest.csv
+rm topGenesGO_exactTest.csv
 #Rertieve top genes GO annotations
-while IFS= read -r line; do grep $line "$ontologyPath" >> topGenesGO_exactTest.csv; done < "tmpTopGeneIds.csv"
+while IFS= read -r line; do grep $line "$ontologyPath" >> tmpTopGenesGO_exactTest.csv; done < "tmpTopGeneIds.csv"
 
 #Make table of GO data for the top tags from exact tests
-cut -f1 -d ',' stats_exactTest.csv > tmpGeneIDs_exactTest.csv
+cat stats_exactTest.csv > tmpGeneIDs_exactTest.csv
+sed -i 's/^logFC/gene,logFC/g' tmpGeneIDs_exactTest.csv
+cut -f1 -d ',' tmpGeneIDs_exactTest.csv > tmpGeneIDs.csv
 cat "$ontologyPath" | cut -d"," -f1,7 | sed "s/\"//g" > tmpGOIDs.csv
-head -1 "$ontologyPath" | cut -d"," -f1,7 | sed "s/\"//g" > genesUniprotIDs_exactTest.csv 
+rm genesUniprotIDs_exactTest.csv 
 #Retrieve uniprot IDs from GO annotations
-while IFS= read -r line; do grep $line tmpGOIDs.csv >> genesUniprotIDs_exactTest.csv; done < "tmpGeneIDs_exactTest.csv"
+while IFS= read -r line; do grep $line tmpGOIDs.csv >> genesUniprotIDs_exactTest.csv; done < "tmpGeneIDs.csv"
+cut -d"," -f2 genesUniprotIDs_exactTest.csv | cut -d"^" -f1 > uniprotIDs_exactTest.csv
 
 #Clean up
 rm tmp*.csv

@@ -15,11 +15,9 @@ inputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " 
 inFile=$(echo "$inputsPath"/GeneCountsAnalyzed/"$1"/cleaned.csv)
 noExt=$(echo $inFile | sed 's/\.txt//g')
 newFile=$(echo "$noExt".csv)
-
 #Create directory for output files
 outDir="$inputsPath"/GeneCountsAnalyzed/"$1"/"$2"
 mkdir $outDir
-
 #Convert TXT formatted counts to CSV
 #sed -e 's/\s\+/,/g' "$inFile" > "$newFile"
 cat "$inFile" > "$newFile"
@@ -28,13 +26,10 @@ cat "$inFile" > "$newFile"
 head -1 "$newFile" | tr "," "\n" | grep -n "$2" > tmpColNum.txt
 colNumStart=$(($(head -1 tmpColNum.txt | cut -d ':' -f1)-1))
 colNumEnd=$(($colNumStart+5))
-
 #Clean up
 rm tmpColNum.txt
-
 #Perform DE analysis using edgeR and output analysis results to a txt file
 Rscript exactTest_edgeR.r "$newFile" $colNumStart $colNumEnd > "$outDir"/analysisResults.txt
-
 #Rename and move produced normalized counts table and exact test stats
 mv stats_normalizedCounts.csv "$outDir"/stats_normalizedCounts.csv
 mv stats_exactTest.csv "$outDir"/stats_exactTest.csv
@@ -48,30 +43,24 @@ mv plotHeatMapAfter.jpg "$outDir"/plotHeatMapAfter.jpg
 mv plotBCV.jpg "$outDir"/plotBCV.jpg
 mv plotMD.jpg "$outDir"/plotMD.jpg
 mv plotMA.jpg "$outDir"/plotMA.jpg
+#Fix formatting and headers for the normalized counts table and exact test stats
+sed -i 's/"//g' "$outDir"/stats_normalizedCounts.csv
+sed -i 's/"//g' "$outDir"/stats_exactTest.csv
+sed -i -e 's/^$2_VIS_Pool1/gene,$2_VIS_Pool1/' "$outDir"/stats_normalizedCounts.csv
+#Add gene tags, mRNA tags for assemblies
+if [[ "$1" == genome* ]]; then
+	sed -i -e 's/^logFC/gene,logFC/' "$outDir"/stats_exactTest.csv
+else
+	sed -i -e 's/^logFC/mRNA,logFC/' "$outDir"/stats_exactTest.csv
+fi
 
 #Move to current outputs folder
 #cd "$outDir"
-
-#Fix formatting and headers for the normalized counts table and exact test stats
-#sed -i 's/"//g' stats_normalizedCounts.csv
-#sed -i 's/"//g' stats_exactTest.csv
-#sed -i -e 's/^$2_VIS_Pool1/gene,$2_VIS_Pool1/' stats_normalizedCounts.csv
-#sed -i -e 's/^logFC/gene,logFC/' stats_exactTest.csv
-
 #Make table of GO data for the top tags from exact tests
 #head -11 stats_exactTest.csv > topGenesStats_exactTest.csv
 #sed -i 's/^logFC/gene,logFC/g' topGenesStats_exactTest.csv
-#cut -f1 -d ',' topGenesStats_exactTest.csv > tmpTopGeneIds.csv
+#cut -f1 -d ',' topGenesStats_exactTest.csv > tmp.csv
 #head -1 "$ontologyPath" > topGenesGO_exactTest.csv
-#Rertieve top genes GO annotations
-#while IFS= read -r line; do grep $line "$ontologyPath" >> topGenesGO_exactTest.csv; done < "tmpTopGeneIds.csv"
-
-#Make table of GO data for the top tags from exact tests
-#cut -f1 -d ',' stats_exactTest.csv > tmpGeneIDs_exactTest.csv
-#cat "$ontologyPath" | cut -d"," -f1,7 | sed "s/\"//g" > tmpGOIDs.csv
-#head -1 "$ontologyPath" | cut -d"," -f1,7 | sed "s/\"//g" > genesUniprotIDs_exactTest.csv 
-#Retrieve uniprot IDs from GO annotations
-#while IFS= read -r line; do grep $line tmpGOIDs.csv >> genesUniprotIDs_exactTest.csv; done < "tmpGeneIDs_exactTest.csv"
-
+#while IFS= read -r line; do grep $line "$ontologyPath" >> topGenesGO_exactTest.csv; done < "tmp.csv"
 #Clean up
-#rm tmp*.csv
+#rm tmp.csv
