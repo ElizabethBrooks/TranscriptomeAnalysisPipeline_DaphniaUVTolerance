@@ -5,7 +5,7 @@
 #Usage Ex: bash fastaStats_driver.sh sequenceAssembled sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash fastaStats_driver.sh sequenceAssembled sortedCoordinate_samtoolsTophat2_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash fastaStats_driver.sh sequenceDecoded trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash fastaStats_driver.sh sequenceDecoded trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_proteins
+#Usage Ex: bash fastaStats_driver.sh sequenceDecoded trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_p
 #Default usage Ex: bash fastaStats_driver.sh sequence assemblyTrinity_all
 
 #Load necessary modules
@@ -24,14 +24,7 @@ fastaList=""
 outputsPath=$(grep "mergedFASTA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/mergedFASTA://g")
 
 #Set plot title
-if [[ "$1" == *Assembled ]]; then
-	plotTitle="Trinity"
-elif [[ "$1" == *Decoded ]]; then
-	plotTitle="Transdecoder"
-else
-	echo "Invalid fasta input... exiting!"
-	exit 1
-fi
+plotTitle="Protein"
 
 #Determine assembly target
 if [[ "$2" == sorted* ]]; then
@@ -86,17 +79,17 @@ elif [[ "$2" == trimmed* ]]; then
 	#Loop through all input genotypes and add fasta files to a list
 	for i in "${@:3}"; do #Skip first two arguments
 		#Determine which fastas were input
-		if [[ "$i" == PA42_proteins ]]; then
+		if [[ "$i" == PA42_p* ]]; then
 			#Retrieve genome reference absolute path for querying
 			inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 			inputsPath=$(dirname "$inputsPath")
 			fastaFile="$inputsPath""/PA42.3.0.protein_new.fasta "
-		elif [[ "$i" == PA42_cds ]]; then
+		elif [[ "$i" == PA42_c* ]]; then
 			#Retrieve genome reference absolute path for querying
 			inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
 			inputsPath=$(dirname "$inputsPath")
 			fastaFile="$inputsPath""/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep "
-		elif [[ "$i" == PA42_transcripts ]]; then
+		elif [[ "$i" == PA42_t* ]]; then
 			#Retrieve genome reference absolute path for querying
 			inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
 			inputsPath=$(dirname "$inputsPath")
