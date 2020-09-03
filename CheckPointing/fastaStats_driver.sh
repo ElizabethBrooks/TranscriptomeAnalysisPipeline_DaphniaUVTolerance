@@ -164,3 +164,4 @@ egrep -v "Merged|Total|Duplicates" $summaryFileCSV > "$outputFolder"/tmp.csv
 Rscript fastaStats_barPlots.r "$2" "$plotTitle" "$outputFolder"/tmp.csv
 #Clean up
 rm "$outputFolder"/tmp.csv
+rm $mergedFastaFile
