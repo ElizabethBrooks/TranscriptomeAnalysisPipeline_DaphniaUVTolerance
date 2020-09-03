@@ -132,11 +132,11 @@ else #Default accept a list of full file paths
 	done
 fi
 #Check if the folder already exists
-mkdir "$outputFolder"
-if [ $? -ne 0 ]; then
-	echo "The $outputFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#mkdir "$outputFolder"
+#if [ $? -ne 0 ]; then
+#	echo "The $outputFolder directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 #Merge the set of fasta files
 #echo "Beginning fasta file merging..."
@@ -148,7 +148,7 @@ fi
 
 #Write fasta stats to the csv formatted summary file
 #echo "Beginning file statistics formatting..."
-#summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
+summaryFileCSV=$(echo "$summaryFile" | sed 's/\.txt/\.csv/g')
 #bash fastaStats_csvFormatted.sh $mergedFastaFile $fastaList > $summaryFileCSV
 #Fix file tags
 #genotypeList=$(echo "${@:3}")
