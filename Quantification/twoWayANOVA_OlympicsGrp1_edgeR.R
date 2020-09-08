@@ -38,14 +38,23 @@ my.contrasts <- makeContrasts(
 	UVvsVIS.T = (UV.Tolerant-UV.NotTolerant)-(VIS.Tolerant-VIS.NotTolerant),
 	levels = design)
 
+#Test all contrasts
+for (i in 1:ncol(my.contrasts)){
+
+    current.tested <- glmQLFTest(fit, contrast = my.contrasts[,i])
+
+    
+
+}
+
 #To find genes responding to UV at low tolerance
-tested <- glmQLFTest(fit, contrast=my.contrasts[,"UV.NTvsT"])
+#tested <- glmQLFTest(fit, contrast=my.contrasts[,"UV.NTvsT"])
 #To find genes responding to VIS at low tolerance
-tested <- glmQLFTest(fit, contrast=my.contrasts[,"VIS.NTvsT"])
+#tested <- glmQLFTest(fit, contrast=my.contrasts[,"VIS.NTvsT"])
 #To find genes with baseline differences between UV and VIS at low tolerance
-tested <- glmQLFTest(fit, contrast=my.contrasts[,"UVvsVIS.NT"])
+#tested <- glmQLFTest(fit, contrast=my.contrasts[,"UVvsVIS.NT"])
 #To find genes with baseline differences between UV and VIS at high tolerance
-tested <- glmQLFTest(fit, contrast=my.contrasts[,"UVvsVIS.T"])
+#tested <- glmQLFTest(fit, contrast=my.contrasts[,"UVvsVIS.T"])
 
 #View the top DE genes
 topTags(tested)
