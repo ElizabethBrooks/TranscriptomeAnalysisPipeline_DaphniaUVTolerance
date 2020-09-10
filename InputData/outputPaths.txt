@@ -7,7 +7,7 @@ buildingGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42_v3.
 assemblyAnalysis: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 alignmentAnalysis: /home/mae/Documents/RNASeq_Workshop_ND
 genesCounted: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
-geneCountAnalysis: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV
+geneCountAnalysis: /home/mae/Documents/RNASeq_Workshop_ND
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 transcriptSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 reciprocalSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq

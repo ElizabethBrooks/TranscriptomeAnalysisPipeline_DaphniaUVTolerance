@@ -8,28 +8,34 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
+
 #Retrieve gene ontology data path
 ontologyPath=$(grep "geneOntology:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneOntology://g")
 #Retrieve analysis inputs path
 inputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
 inFile=$(echo "$inputsPath"/GeneCountsAnalyzed/"$1"/cleaned.csv)
-noExt=$(echo $inFile | sed 's/\.txt//g')
-newFile=$(echo "$noExt".csv)
+#noExt=$(echo $inFile | sed 's/\.txt//g')
+#newFile=$(echo "$noExt".csv)
+
 #Create directory for output files
 outDir="$inputsPath"/GeneCountsAnalyzed/"$1"/"$2"
 mkdir $outDir
+
 #Convert TXT formatted counts to CSV
 #sed -e 's/\s\+/,/g' "$inFile" > "$newFile"
-cat "$inFile" > "$newFile"
+#cat "$inFile" > "$newFile"
+
 #Retrieve selected sample beginning column number
 #head -1 "$inFile" | tr "\t" "\n" | grep -n "$2" > tmpColNum.txt
-head -1 "$newFile" | tr "," "\n" | grep -n "$2" > tmpColNum.txt
+head -1 "$inFile" | tr "," "\n" | grep -n "$2" > tmpColNum.txt
 colNumStart=$(($(head -1 tmpColNum.txt | cut -d ':' -f1)-1))
 colNumEnd=$(($colNumStart+5))
 #Clean up
 rm tmpColNum.txt
+
 #Perform DE analysis using edgeR and output analysis results to a txt file
-Rscript exactTest_edgeR.r "$newFile" $colNumStart $colNumEnd > "$outDir"/analysisResults.txt
+Rscript exactTest_edgeR.r "$inFile" $colNumStart $colNumEnd > "$outDir"/analysisResults.txt
+
 #Rename and move produced normalized counts table and exact test stats
 mv stats_normalizedCounts.csv "$outDir"/stats_normalizedCounts.csv
 mv stats_exactTest.csv "$outDir"/stats_exactTest.csv
@@ -43,6 +49,7 @@ mv plotHeatMapAfter.jpg "$outDir"/plotHeatMapAfter.jpg
 mv plotBCV.jpg "$outDir"/plotBCV.jpg
 mv plotMD.jpg "$outDir"/plotMD.jpg
 mv plotMA.jpg "$outDir"/plotMA.jpg
+
 #Fix formatting and headers for the normalized counts table and exact test stats
 sed -i 's/"//g' "$outDir"/stats_normalizedCounts.csv
 sed -i 's/"//g' "$outDir"/stats_exactTest.csv

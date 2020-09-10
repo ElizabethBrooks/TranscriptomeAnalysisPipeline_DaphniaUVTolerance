@@ -1,6 +1,6 @@
 #!/bin/bash
 #Usage: bash prepareMatrices.sh countedGenesFile
-#Usage Ex: bash prepareMatrices.sh geneCounts_merged_genome_sortedName_samtoolsHisat2_run1_counted_htseq_run1.txt
+#Usage Ex: bash prepareMatrices.sh geneCounts_merged_genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1.txt
 
 #Prepare for analysis
 dirFlag=0
