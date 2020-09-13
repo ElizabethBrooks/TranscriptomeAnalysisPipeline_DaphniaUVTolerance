@@ -3,9 +3,6 @@
 #Usage Ex: Rscript glm_edgeR.r cleaned.csv 1 24 expDesign_Olympics_GRP1.csv
 #R script to perform statistical analysis of gene count tables using edgeR two way ANOVA
 
-countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/GeneCountsAnalyzed/genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1/cleaned.csv", row.names="gene")[ ,1:24]
-targets <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_Olympics_GRP1.csv", row.names="sample")
-
 #Install edgeR, this should only need to be done once
 #Since edgeR is already installed on the CRC this can be skipped if using the module
 #bioLite("edgeR")
@@ -16,17 +13,17 @@ library("edgeR")
 library("statmod")
 
 #Retrieve input file name of gene counts
-#args = commandArgs(trailingOnly=TRUE)
+args = commandArgs(trailingOnly=TRUE)
 #Test if there is one input argument
-#if (length(args)!=3) {
-#  stop("One file name and a range of columns must be supplied.n", call.=FALSE)
-#}
+if (length(args)!=3) {
+  stop("One file name and a range of columns must be supplied.n", call.=FALSE)
+}
 
 #Import gene count data
-#countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
+countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
 #head(countsTable)
 #Import grouping factor
-#targets <- read.csv(file=args[4], row.names="sample")
+targets <- read.csv(file=args[4], row.names="sample")
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$genotype,sep="."))
