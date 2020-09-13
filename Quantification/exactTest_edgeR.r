@@ -2,6 +2,7 @@
 #Usage: Rscript exactTest_edgeR.r countsFile.csv startColPos endColPos
 #Usage Ex: Rscript exactTest_edgeR.r genome_sortedName_samtoolsHisat2_run1_counted_htseq_run1 31 36
 #R script to perform statistical analysis of gene count tables using edgeR exact test
+
 #Install edgeR, this should only need to be done once
 #Since edgeR is already installed on the CRC this can be skipped if using the module
 #bioLite("edgeR")
@@ -24,17 +25,17 @@ group <- factor(c(rep("ctrl",3),rep("treat",3)))
 list <- DGEList(counts=countsTable,group=group)
 
 #Plot the library sizes before normalization
-jpeg("plotBarsBefore.jpg")
+jpeg("exactTest_plotBarsBefore.jpg")
 barplot(list$samples$lib.size*1e-6, names=1:6, ylab="Library size (millions)")
 dev.off()
 #Draw a MDS plot to show the relative similarities of the samples
 # and to view batch and treatment effects before normalization
-jpeg("plotMDSBefore.jpg")
+jpeg("exactTest_plotMDSBefore.jpg")
 plotMDS(list, col=rep(1:3, each=3))
 dev.off()
 #Draw a heatmap of individual RNA-seq samples using moderated 
 # log-counts-per-million before normalization
-jpeg("plotHeatMapBefore.jpg")
+jpeg("exactTest_plotHeatMapBefore.jpg")
 logcpm <- cpm(list, log=TRUE)
 heatmap(logcpm)
 dev.off()
@@ -48,23 +49,23 @@ list <- list[keep, , keep.lib.sizes=FALSE]
 list <- calcNormFactors(list)
 #Write normalized counts to file
 normList <- cpm(list, normalized.lib.sizes=TRUE)
-write.table(normList, file="stats_normalizedCounts.csv", sep=",", row.names=TRUE)
+write.table(normList, file="exactTest_normalizedCounts.csv", sep=",", row.names=TRUE)
 #View normalization factors
 list$samples
 dim(list)
 
 #Plot the library sizes after normalization
-jpeg("plotBarsAfter.jpg")
+jpeg("exactTest_plotBarsAfter.jpg")
 barplot(list$samples$lib.size*1e-6, names=1:6, ylab="Library size (millions)")
 dev.off()
 #Draw a MDS plot to show the relative similarities of the samples
 # and to view batch and treatment effects after normalization
-jpeg("plotMDSAfter.jpg")
+jpeg("exactTest_plotMDSAfter.jpg")
 plotMDS(list, col=rep(1:3, each=3))
 dev.off()
 #Draw a heatmap of individual RNA-seq samples using moderated
 # log-counts-per-million after normalization
-jpeg("plotHeatMapAfter.jpg")
+jpeg("exactTest_plotHeatMapAfter.jpg")
 logcpm <- cpm(list, log=TRUE)
 heatmap(logcpm)
 dev.off()
@@ -74,7 +75,7 @@ dev.off()
 list <- estimateDisp(list)
 list$common.dispersion
 #View dispersion estimates and biological coefficient of variation
-jpeg("plotBCV.jpg")
+jpeg("exactTest_plotBCV.jpg")
 plotBCV(list)
 dev.off()
 
@@ -84,7 +85,7 @@ topTags(tested)
 #Create results table of DE genes
 resultsTbl <- topTags(tested, n=nrow(tested$table))$table
 #Output resulting table
-write.table(resultsTbl, file="stats_exactTest.csv", sep=",", row.names=TRUE)
+write.table(resultsTbl, file="exactTest.csv", sep=",", row.names=TRUE)
 
 #Look at the counts-per-million in individual samples for the top genes
 o <- order(tested$table$PValue)
@@ -94,14 +95,14 @@ summary(decideTests(tested))
 
 #Plot log-fold change against log-counts per million, with DE genes highlighted
 #The blue lines indicate 2-fold changes
-jpeg("plotMD.jpg")
+jpeg("exactTest_plotMD.jpg")
 plotMD(tested)
 abline(h=c(-1, 1), col="blue")
 dev.off()
 
 #Make a mean-difference plot of two libraries of count data with smearing of points
 #  with very low counts, especially those that are zero for one of the columns
-jpeg("plotMA.jpg")
+jpeg("exactTest_plotMA.jpg")
 plotSmear(tested)
 dev.off()
 
