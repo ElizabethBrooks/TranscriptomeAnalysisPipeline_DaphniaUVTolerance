@@ -81,11 +81,10 @@ dev.off()
 
 #Perform an exact test for treat vs ctrl
 tested <- exactTest(list, pair=c("ctrl", "treat"))
-topTags(tested)
+write.table(tested, file="exactTest.csv", sep=",", row.names=TRUE)
 #Create results table of DE genes
 resultsTbl <- topTags(tested, n=nrow(tested$table))$table
-#Output resulting table
-write.table(resultsTbl, file="exactTest.csv", sep=",", row.names=TRUE)
+write.table(resultsTbl, file="exactTest_topTags.csv", sep=",", row.names=TRUE)
 
 #Look at the counts-per-million in individual samples for the top genes
 o <- order(tested$table$PValue)
