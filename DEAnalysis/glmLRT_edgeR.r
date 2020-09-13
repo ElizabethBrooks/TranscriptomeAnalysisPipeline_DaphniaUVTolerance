@@ -86,13 +86,9 @@ jpeg("glmLRT_plotBCV.jpg")
 plotBCV(list)
 dev.off()
 
-#Now, estimate and plot the QL dispersions
+#Now, fit the model
 fit <- glmFit(list, design, robust=TRUE)
 #head(fit$coefficients)
-#Write plot to file
-jpeg("glmLRT_plotQLDisp.jpg")
-plotQLDisp(fit)
-dev.off()
 
 #Define a matrix of contrasts, where each column
 # represents a contrast between two groups of interest
@@ -104,7 +100,7 @@ con.allPairs <- makeContrasts(
   Y05.UVvsVIS = UV.Y05 - VIS.Y05,
   levels=design)
 
-#All pairs using QL F-test
+#All pairs using likelihood ratio test
 test.allPairs <- glmLRT(fit, contrast=con.allPairs)
 write.table(test.allPairs, file="glmLRT_allPairwise.csv", sep=",", row.names=TRUE)
 summary(decideTests(test.allPairs))
@@ -173,12 +169,12 @@ dev.off()
 tagsTblY05Pairwise <- topTags(treat.Y05.UVvsVIS, n=nrow(treat.Y05.UVvsVIS$table))$table
 write.table(tagsTblY05Pairwise, file="glmLRT_Y05Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
 
-#ANOVA like comparisons of UV using QL
+#ANOVA like comparisons of UV using likelihood ratio
 anov.UV <- makeContrasts(UV.R2 - UV.E05,
   UV.Y023 - UV.E05,
   UV.Y05 - UV.E05,
   levels=design)
-#Look at genes QL F-test
+#Look at genes using likelihood ratio test
 test.anov.UV <- glmLRT(fit, contrast=anov.UV)
 write.table(test.anov.UV, file="glmLRT_UV1WayANOVA.csv", sep=",", row.names=TRUE)
 summary(decideTests(test.anov.UV))
@@ -196,7 +192,7 @@ anov.VIS <- makeContrasts(VIS.R2 - VIS.E05,
   VIS.Y023 - VIS.E05,
   VIS.Y05 - VIS.E05,
   levels=design)
-#Look at genes QL F-test
+#Look at genes using likelihood ratio test
 test.anov.VIS <- glmLRT(fit, contrast=anov.VIS)
 write.table(test.anov.VIS, file="glmLRT_VIS1WayANOVA.csv", sep=",", row.names=TRUE)
 summary(decideTests(test.anov.VIS))
@@ -215,7 +211,7 @@ con.UVvsVIS <- makeContrasts(UVvsVIS = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
   - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4,
   levels=design)
 
-#Look at genes expressed across all UV groups using QL F-test
+#Look at genes expressed across all UV groups using likelihood ratio test
 test.anov.UVVIS <- glmLRT(fit, contrast=con.UVvsVIS)
 write.table(test.anov.UVVIS, file="glmLRT_2WayANOVA.csv", sep=",", row.names=TRUE)
 summary(decideTests(test.anov.UVVIS))
