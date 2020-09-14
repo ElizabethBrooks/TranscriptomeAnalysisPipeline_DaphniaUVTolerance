@@ -2,11 +2,11 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N getDatabase_blastp_jobOutput
+#$ -N getDatabase_jobOutput
 #Script to retrieve Uniprot protein sequence database fasta files
-#Usage: qsub getDatabase_blastp.sh dbSelection
-#Usage ex: qsub getDatabase_blastp.sh swissprot
-#Usage ex: qsub getDatabase_blastp.sh ncbi
+#Usage: qsub getDatabase.sh dbSelection
+#Usage ex: qsub getDatabase.sh swissprot
+#Usage ex: qsub getDatabase.sh ncbi
 #Note that the NCBI NR DB may be downloaded with wget
 #ex: wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/nr.gz
 #Note that uniprot databases may be downloaded from the UniprotKB search page, or wget
@@ -29,6 +29,11 @@ elif [[ "$1" == "swissprot" ]]; then
 	softsPath=$(grep "trinotatePackage:" softwarePaths.txt | tr -d " " | sed "s/trinotatePackage://g")
 	#Retreive uniprot database storage path
 	outputPath=$(grep "swissprotDB:" databasePaths.txt | tr -d " " | sed "s/swissprotDB://g")
+elif [[ "$1" == "panther" ]]; then
+	#Set slected database to panther
+	dbAddress="ftp://ftp.pantherdb.org/panther_library/14.1/PANTHER14.1_hmmscoring.tgz"
+	#Retreive uniprot database storage path
+	outputPath=$(grep "pantherDB:" databasePaths.txt | tr -d " " | sed "s/pantherDB://g")	
 else
 	#Error message
 	echo "Invalid database selection entered (ncbi or uniprot only)... exiting!"
@@ -46,13 +51,7 @@ fi
 #Move to output database directory
 cd $outputPath
 #Retrieve selected input database
-if [[ "$1" == "ncbi" ]]; then
-	#Retrieve selected input database
-	wget $dbAddress
-	#Extract the database
-	dbFile=$(basename $dbAddress)
-	gunzip -v $dbFile
-elif [[ "$1" == "uniprot" ]]; then
+if [[ "$1" == "ncbi" || "$1" == "uniprot" || "$1" == "panther" ]]; then
 	#Retrieve selected input database
 	wget $dbAddress
 	#Extract the database

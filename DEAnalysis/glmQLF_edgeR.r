@@ -15,8 +15,8 @@ library("statmod")
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 #Test if there is one input argument
-if (length(args)!=3) {
-  stop("One file name and a range of columns must be supplied.n", call.=FALSE)
+if (length(args)!=4) {
+  stop("Two file names and a range of columns must be supplied.n", call.=FALSE)
 }
 
 #Import gene count data
@@ -106,7 +106,6 @@ con.allPairs <- makeContrasts(
 
 #All pairs using QL F-test
 test.allPairs <- glmQLFTest(fit, contrast=con.allPairs)
-write.table(test.allPairs, file="glmQLF_allPairwise.csv", sep=",", row.names=TRUE)
 summary(decideTests(test.allPairs))
 #Write plot to file
 jpeg("glmQLF_allPairwise_plotMD.jpg")
@@ -115,12 +114,13 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblAllPairwise <- topTags(test.allPairs, n=nrow(test.allPairs$table))$table
-write.table(tagsTblAllPairwise, file="glmQLF_allPairwise_topTags.csv", sep=",", row.names=TRUE)
+tagsTblAllPairwise.keep <- tagsTblAllPairwise$FDR <= 0.05
+tagsTblAllPairwise.out <- tagsTblAllPairwise[tagsTblAllPairwise.keep,]
+write.table(tagsTblAllPairwise.out, file="glmQLF_allPairwise_topTags.csv", sep=",", row.names=TRUE)
 
 #Pairwise E05.UVvsVIS
 #Test whether the differential expression is significant
 treat.E05.UVvsVIS <- glmTreat(fit, contrast=con.allPairs[,"E05.UVvsVIS"], lfc=log2(1.2))
-write.table(treat.E05.UVvsVIS, file="glmQLF_E05Pairwise_filtered.csv", sep=",", row.names=TRUE)
 summary(decideTests(treat.E05.UVvsVIS))
 #Write plot to file
 jpeg("glmQLF_E05Pairwise_plotMD_filtered.jpg")
@@ -129,12 +129,13 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblE05Pairwise <- topTags(treat.E05.UVvsVIS, n=nrow(treat.E05.UVvsVIS$table))$table
-write.table(tagsTblE05Pairwise, file="glmQLF_E05Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
+tagsTblE05Pairwise.keep <- tagsTblE05Pairwise$FDR <= 0.05
+tagsTblE05Pairwise.out <- tagsTblE05Pairwise[tagsTblE05Pairwise.keep,]
+write.table(tagsTblE05Pairwise.out, file="glmQLF_E05Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
 
 #Pairwise R2.UVvsVIS
 #Test whether the differential expression is significant
 treat.R2.UVvsVIS <- glmTreat(fit, contrast=con.allPairs[,"R2.UVvsVIS"], lfc=log2(1.2))
-write.table(treat.R2.UVvsVIS, file="glmQLF_R2Pairwise_filtered.csv", sep=",", row.names=TRUE)
 summary(decideTests(treat.R2.UVvsVIS))
 #Write plot to file
 jpeg("glmQLF_R2Pairwise_plotMD_filtered.jpg")
@@ -143,12 +144,13 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblR2Pairwise <- topTags(treat.R2.UVvsVIS, n=nrow(treat.R2.UVvsVIS$table))$table
-write.table(tagsTblR2Pairwise, file="glmQLF_R2Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
+tagsTblR2Pairwise.keep <- tagsTblR2Pairwise$FDR <= 0.05
+tagsTblR2Pairwise.out <- tagsTblR2Pairwise[tagsTblR2Pairwise.keep,]
+write.table(tagsTblR2Pairwise.out, file="glmQLF_R2Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
 
 #Pairwise Y023.UVvsVIS
 #Test whether the differential expression is significant
 treat.Y023.UVvsVIS <- glmTreat(fit, contrast=con.allPairs[,"Y023.UVvsVIS"], lfc=log2(1.2))
-write.table(treat.Y023.UVvsVIS, file="glmQLF_Y023Pairwise_filtered.csv", sep=",", row.names=TRUE)
 summary(decideTests(treat.Y023.UVvsVIS))
 #Write plot to file
 jpeg("glmQLF_Y023Pairwise_plotMD_filtered.jpg")
@@ -157,12 +159,13 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblY023Pairwise <- topTags(treat.Y023.UVvsVIS, n=nrow(treat.Y023.UVvsVIS$table))$table
-write.table(tagsTblY023Pairwise, file="glmQLF_Y023Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
+tagsTblY023Pairwise.keep <- tagsTblY023Pairwise$FDR <= 0.05
+tagsTblY023Pairwise.out <- tagsTblY023Pairwise[tagsTblY023Pairwise.keep,]
+write.table(tagsTblY023Pairwise.out, file="glmQLF_Y023Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
 
 #Pairwise Y05.UVvsVIS
 #Test whether the differential expression is significant
 treat.Y05.UVvsVIS <- glmTreat(fit, contrast=con.allPairs[,"Y05.UVvsVIS"], lfc=log2(1.2))
-write.table(treat.Y05.UVvsVIS, file="glmQLF_Y05Pairwise_filtered.csv", sep=",", row.names=TRUE)
 summary(decideTests(treat.Y05.UVvsVIS))
 #Write plot to file
 jpeg("glmQLF_Y05Pairwise_plotMD_filtered.jpg")
@@ -171,7 +174,9 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblY05Pairwise <- topTags(treat.Y05.UVvsVIS, n=nrow(treat.Y05.UVvsVIS$table))$table
-write.table(tagsTblY05Pairwise, file="glmQLF_Y05Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
+tagsTblY05Pairwise.keep <- tagsTblY05Pairwise$FDR <= 0.05
+tagsTblY05Pairwise.out <- tagsTblY05Pairwise[tagsTblY05Pairwise.keep,]
+write.table(tagsTblY05Pairwise.out, file="glmQLF_Y05Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
 
 #ANOVA like comparisons of UV using QL
 anov.UV <- makeContrasts(UV.R2 - UV.E05,
@@ -180,7 +185,6 @@ anov.UV <- makeContrasts(UV.R2 - UV.E05,
   levels=design)
 #Look at genes QL F-test
 test.anov.UV <- glmQLFTest(fit, contrast=anov.UV)
-write.table(test.anov.UV, file="glmQLF_UV1WayANOVA.csv", sep=",", row.names=TRUE)
 summary(decideTests(test.anov.UV))
 #Write plot to file
 jpeg("glmQLF_UV1WayANOVA_plotMD.jpg")
@@ -189,7 +193,9 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblUVANOVA <- topTags(test.anov.UV, n=nrow(test.anov.UV$table))$table
-write.table(tagsTblUVANOVA, file="glmQLF_UV1WayANOVA_topTags.csv", sep=",", row.names=TRUE)
+tagsTblUVANOVA.keep <- tagsTblUVANOVA$FDR <= 0.05
+tagsTblUVANOVA.out <- tagsTblUVANOVA[tagsTblUVANOVA.keep,]
+write.table(tagsTblUVANOVA.out, file="glmQLF_UV1WayANOVA_topTags.csv", sep=",", row.names=TRUE)
 
 #ANOVA like comparisons of VIS
 anov.VIS <- makeContrasts(VIS.R2 - VIS.E05,
@@ -198,7 +204,6 @@ anov.VIS <- makeContrasts(VIS.R2 - VIS.E05,
   levels=design)
 #Look at genes QL F-test
 test.anov.VIS <- glmQLFTest(fit, contrast=anov.VIS)
-write.table(test.anov.VIS, file="glmQLF_VIS1WayANOVA.csv", sep=",", row.names=TRUE)
 summary(decideTests(test.anov.VIS))
 #Write plot to file
 jpeg("glmQLF_VIS1WayANOVA_plotMD.jpg")
@@ -207,7 +212,9 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblVISANOVA <- topTags(test.anov.VIS, n=nrow(test.anov.VIS$table))$table
-write.table(tagsTblVISANOVA, file="glmQLF_VIS1WayANOVA_topTags.csv", sep=",", row.names=TRUE)
+tagsTblVISANOVA.keep <- tagsTblVISANOVA$FDR <= 0.05
+tagsTblVISANOVA.out <- tagsTblVISANOVA[tagsTblVISANOVA.keep,]
+write.table(tagsTblVISANOVA.out, file="glmQLF_VIS1WayANOVA_topTags.csv", sep=",", row.names=TRUE)
 
 #Test whether the average across all UV groups is equal to the average across
 #all VIS groups, to examine the overall effect of treatment
@@ -217,7 +224,6 @@ con.UVvsVIS <- makeContrasts(UVvsVIS = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
 
 #Look at genes expressed across all UV groups using QL F-test
 test.anov.UVVIS <- glmQLFTest(fit, contrast=con.UVvsVIS)
-write.table(test.anov.UVVIS, file="glmQLF_2WayANOVA.csv", sep=",", row.names=TRUE)
 summary(decideTests(test.anov.UVVIS))
 #Write plot to file
 jpeg("glmQLF_2WayANOVA_plotMD.jpg")
@@ -226,11 +232,12 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVA <- topTags(test.anov.UVVIS, n=nrow(test.anov.UVVIS$table))$table
-write.table(tagsTblANOVA, file="glmQLF_2WayANOVA_topTags.csv", sep=",", row.names=TRUE)
+tagsTblANOVA.keep <- tagsTblANOVA$FDR <= 0.05
+tagsTblANOVA.out <- tagsTblANOVA[tagsTblANOVA.keep,]
+write.table(tagsTblANOVA.out, file="glmQLF_2WayANOVA_topTags.csv", sep=",", row.names=TRUE)
 
 #Look at genes with significant expression across all UV groups
 treat.anov.UVVIS <- glmTreat(fit, contrast=con.UVvsVIS, lfc=log2(1.2))
-write.table(treat.anov.UVVIS, file="glmQLF_2WayANOVA_filtered.csv", sep=",", row.names=TRUE)
 summary(decideTests(treat.anov.UVVIS))
 #Write plot to file
 jpeg("glmQLF_2WayANOVA_plotMD_filtered.jpg")
@@ -239,4 +246,6 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVA.filtered <- topTags(treat.anov.UVVIS, n=nrow(treat.anov.UVVIS$table))$table
-write.table(tagsTblANOVA.filtered, file="glmQLF_2WayANOVA_topTags_filtered.csv", sep=",", row.names=TRUE)
+tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR <= 0.05
+tagsTblANOVA.filtered.out <- tagsTblANOVA.filtered[tagsTblANOVA.filtered.keep,]
+write.table(tagsTblANOVA.filtered.out, file="glmQLF_2WayANOVA_topTags_filtered.csv", sep=",", row.names=TRUE)

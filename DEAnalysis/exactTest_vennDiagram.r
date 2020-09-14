@@ -1,24 +1,24 @@
-##TODO: Add perecnts
+##TODO: Add percents
 
 #install.packages('VennDiagram')
 library(VennDiagram)
 
 #Import data
-ids <- read.csv(file=args[1])
+counts <- read.csv(file=args[1])
 #Define sets for diagram
-SET1 <- ids$Y05
-SET2 <- ids$Y023
-SET3 <- ids$E05
-SET4 <- ids$R2
-SET5 <- ids$PA
-SET6 <- ids$Sierra
+SET1 <- counts$Y05
+SET2 <- counts$Y023
+SET3 <- counts$E05
+SET4 <- counts$R2
+SET5 <- counts$PA
+SET6 <- counts$Sierra
 
 #Draw the diagram from the Olympics sets
 v1 <- venn.diagram(list(Y05=SET1, E05=SET3, Y023=SET2, R2=SET4),
                   fill = c("red", "green", "white", "blue"),
                   alpha = c(0.5, 0.5, 0.5, 0.5), cat.cex = 1.5, cex=1.5,
                   filename=NULL)
-jpeg("/home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Stats/plotOlympicsVennn_topTags.jpg")
+jpeg("plotOlympicsVennn_exactTest.jpg")
 grid.newpage()
 grid.draw(v1)
 dev.off()
@@ -28,7 +28,7 @@ v2 <- venn.diagram(list(Y05=SET1, E05=SET3, Y023=SET2, R2=SET4, PA=SET5),
                   fill = c("red", "green", "white", "blue", "yellow"),
                   alpha = c(0.5, 0.5, 0.5, 0.5, 0.5),
                   filename=NULL)
-jpeg("/home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Stats/plotOlympicsPAVennn_topTags.jpg")
+jpeg("plotOlympicsPAVennn_exactTest.jpg")
 grid.newpage()
 grid.draw(v2)
 dev.off()
@@ -38,7 +38,7 @@ v3 <- venn.diagram(list(Y05=SET1, E05=SET3, Y023=SET2, R2=SET4, Sierra=SET6),
                    fill = c("red", "green", "white", "blue", "yellow"),
                    alpha = c(0.5, 0.5, 0.5, 0.5, 0.5),
                    filename=NULL)
-jpeg("/home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Stats/plotOlympicsSierraVennn_topTags.jpg")
+jpeg("plotOlympicsSierraVennn_exactTest.jpg")
 grid.newpage()
 grid.draw(v3)
 dev.off()
@@ -48,7 +48,7 @@ v4 <- venn.diagram(list(Y05=SET1, E05=SET3, Sierra=SET6),
                    fill = c("red", "green","blue"),
                    alpha = c(0.5, 0.5, 0.5), cat.cex = 1.5, cex=1.5,
                    filename=NULL)
-jpeg("/home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Stats/plotTolerantVenn_topTags.jpg")
+jpeg("plotTolerantVenn_exactTest.jpg")
 grid.newpage()
 grid.draw(v4)
 dev.off()
@@ -58,7 +58,7 @@ v5 <- venn.diagram(list(Y023=SET2, R2=SET4, PA=SET5),
                    fill = c("red", "green","blue"),
                    alpha = c(0.5, 0.5, 0.5), cat.cex = 1.5, cex=1.5,
                    filename=NULL)
-jpeg("/home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Stats/plotNonTolerantVennn_topTags.jpg")
+jpeg("plotNonTolerantVennn_exactTest.jpg")
 grid.newpage()
 grid.draw(v5)
 dev.off()
@@ -68,7 +68,7 @@ v6 <- venn.diagram(list(Y05=SET1, E05=SET3),
                    fill = c("red","blue"),
                    alpha = c(0.5, 0.5), cat.cex = 1.5, cex=1.5,
                    filename=NULL)
-jpeg("/home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Stats/plotOlympicTolerantVenn_topTags.jpg")
+jpeg("plotOlympicTolerantVenn_exactTest.jpg")
 grid.newpage()
 grid.draw(v6)
 dev.off()
@@ -78,7 +78,7 @@ v7 <- venn.diagram(list(Y023=SET2, R2=SET4),
                    fill = c("red","blue"),
                    alpha = c(0.5, 0.5), cat.cex = 1.5, cex=1.5,
                    filename=NULL)
-jpeg("/home/mae/Documents/RNASeq_Workshop_ND/GeneCounts_Stats/plotOlympicNonTolerantVennn_topTags.jpg")
+jpeg("plotOlympicNonTolerantVennn_exactTest.jpg")
 grid.newpage()
 grid.draw(v7)
 dev.off()
