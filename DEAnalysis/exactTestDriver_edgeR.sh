@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to perform t-test analysis of all samples in an input set
-#Usage: bash exactTestDriver_edgeR.sh countsFolder sampleList
-#Usage Ex: bash exactTestDriver_edgeR.sh genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1Analysis Y05 Y023_5 E05 R2 PA Sierra
+#Usage: bash exactTestDriver_edgeR.sh sampleList
+#Usage Ex: bash exactTestDriver_edgeR.sh Y05 Y023_5 E05 R2 PA Sierra
 
 #Load module for R
 module load bio
@@ -18,7 +18,7 @@ counter=0
 for i in "$@"; do
 	#Skip first argument
 	if [ $counter -ge 1 ]; then
-		bash exactTest_subset_edgeR.sh "$1" $i
+		bash exactTest_subset_edgeR.sh $i
 	fi
 	counter=$(($counter+1))
 done

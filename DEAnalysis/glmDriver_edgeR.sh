@@ -1,8 +1,8 @@
 #!/bin/bash
 #Script to run Rscripts that perform DE analysis of gene count tables using glm in edgeR
-#Usage: bash glmDriver_edgeR.sh analysisType countsFolder
-#Usage Ex: bash glmDriver_edgeR.sh QLF genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1Analysis
-#Usage Ex: bash glmDriver_edgeR.sh LRT genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1Analysis
+#Usage: bash glmDriver_edgeR.sh analysisType
+#Usage Ex: bash glmDriver_edgeR.sh QLF
+#Usage Ex: bash glmDriver_edgeR.sh LRT
 
 #Load module for R
 module load bio
@@ -17,10 +17,10 @@ fi
 designPath="../InputData/expDesign_Olympics_GRP1.csv"
 #Retrieve analysis inputs path
 inputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
-inFile="$inputsPath"/"$2"/cleaned.csv
+inFile="$inputsPath"/cleaned.csv
 
 #Create directory for output files
-outDir="$inputsPath"/"$2"/glm"$1"Analysis
+outDir="$inputsPath"/glm"$1"Analysis
 mkdir $outDir
 
 #Determine analysis method

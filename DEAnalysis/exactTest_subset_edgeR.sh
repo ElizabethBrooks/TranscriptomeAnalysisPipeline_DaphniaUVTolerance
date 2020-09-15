@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to run Rscripts that perform DE analysis of gene count tables
-#Usage: bash exactTest_subset_edgeR.sh countsFolder sample
-#Usage Ex: bash exactTest_subset_edgeR.sh genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1Analysis R2
+#Usage: bash exactTest_subset_edgeR.sh sample
+#Usage Ex: bash exactTest_subset_edgeR.sh R2
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -14,10 +14,10 @@ fi
 
 #Retrieve analysis inputs path
 inputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
-inFile="$inputsPath"/"$1"/cleaned.csv
+inFile="$inputsPath"/cleaned.csv
 
 #Create directory for output files
-outDir="$inputsPath"/"$1"/exactTest"$2"Analysis
+outDir="$inputsPath"/exactTest"$2"Analysis
 mkdir $outDir
 
 #Convert TXT formatted counts to CSV
