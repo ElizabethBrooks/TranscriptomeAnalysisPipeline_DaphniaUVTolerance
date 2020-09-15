@@ -14,7 +14,8 @@ inputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "
 numRows=0
 numCols=0
 #Retrieve input filename
-inFile="$inputsPath"/"$1"/"$2"
+inputsPath="$inputsPath"/"$1"
+inFile="$inputsPath"/"$2"
 countsFile=$(basename "$inFile" | sed 's/\.csv//g')
 #Change delimiter for csv files
 sed 's/,/\t/g' "$inFile" > tmpInFile.txt
@@ -24,7 +25,7 @@ numRows=$(cut -d ' ' -f1 tmpNumRows.txt)
 #Retrieve number of samples
 numCols=$(($(head -n1 tmpInFile.txt | awk '{print NF}')-1))
 #Set output file name
-outFile="$inFile"/"$countsFile"_reformatted.gct
+outFile="$inputsPath"/"$countsFile"_reformatted.gct
 #Output headers for GCT formatting
 echo "#1.2" > tmpHeader.gct
 echo -e "$numRows \t $numCols" >> tmpHeader.gct
