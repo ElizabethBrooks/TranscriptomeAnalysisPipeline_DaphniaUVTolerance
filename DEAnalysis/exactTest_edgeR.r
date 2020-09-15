@@ -4,11 +4,13 @@
 #R script to perform statistical analysis of gene count tables using edgeR exact test
 
 #Install edgeR, this should only need to be done once
-#Since edgeR is already installed on the CRC this can be skipped if using the module
-#bioLite("edgeR")
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+#BiocManager::install("edgeR")
 
 #Load the edgeR library
 library("edgeR")
+
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 #Test if there is one input argument

@@ -4,6 +4,9 @@
 #Usage Ex: bash glmDriver_edgeR.sh QLF genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1Analysis
 #Usage Ex: bash glmDriver_edgeR.sh LRT genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1Analysis
 
+#Load module for R
+module load bio
+
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -34,8 +37,9 @@ fi
 
 #Move produced tables
 for f in *.csv; do
-	#Fix header
 	file="$f"
+	sed -i 's/"//g' "$file"
+	#Fix header
 	tail -n+2 "$file" > tmpTail.csv
 	head -1 "$file" | sed -e 's/^/gene,/' > tmpHeader.csv
 	#Update table

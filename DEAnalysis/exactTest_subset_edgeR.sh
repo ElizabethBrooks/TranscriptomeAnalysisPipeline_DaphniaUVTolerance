@@ -33,7 +33,7 @@ colNumEnd=$(($colNumStart+5))
 rm tmpColNum.txt
 
 #Perform DE analysis using edgeR and output analysis results to a txt file
-Rscript exactTest_edgeR.r "$inFile" $colNumStart $colNumEnd > "$outDir"/analysisResults.txt
+#Rscript exactTest_edgeR.r "$inFile" $colNumStart $colNumEnd > "$outDir"/analysisResults.txt
 
 #Fix formatting and headers for the normalized counts table and exact test stats
 #sed -i 's/"//g' stats_normalizedCounts.csv
@@ -48,8 +48,9 @@ Rscript exactTest_edgeR.r "$inFile" $colNumStart $colNumEnd > "$outDir"/analysis
 
 #Move produced tables
 for f in *.csv; do
-	#Fix header
 	file="$f"
+	sed -i 's/"//g' "$file"
+	#Fix header
 	tail -n+2 "$file" > tmpTail.csv
 	head -1 "$file" | sed -e 's/^/gene,/' > tmpHeader.csv
 	#Update table

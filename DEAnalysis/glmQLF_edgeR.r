@@ -3,9 +3,10 @@
 #Usage Ex: Rscript glmQLF_edgeR.r cleaned.csv 1 24 expDesign_Olympics_GRP1.csv
 #R script to perform statistical analysis of gene count tables using edgeR two way ANOVA
 
-#Install edgeR, this should only need to be done once
-#Since edgeR is already installed on the CRC this can be skipped if using the module
-#bioLite("edgeR")
+#Install edgeR and statmod, this should only need to be done once
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+#BiocManager::install("edgeR")
 #install.packages("statmod")
 
 #Load the edgeR library
