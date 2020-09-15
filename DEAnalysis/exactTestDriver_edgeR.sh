@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to perform t-test analysis of all samples in an input set
 #Usage: bash exactTestDriver_edgeR.sh countsFolder sampleList
-#Usage Ex: bash exactTestDriver_edgeR.sh genome_sortedName_samtoolsHisat2_run1_counted_htseq_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash exactTestDriver_edgeR.sh genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1Analysis Y05 Y023_5 E05 R2 PA Sierra
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
