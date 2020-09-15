@@ -21,7 +21,7 @@ countsFile=$(basename "$inCountsFile" | sed 's/\.csv//g')
 sed 's/,/\t/g' "$inCountsFile" > tmpinCountsFile.txt
 #Retrieve number of rows
 wc -l tmpinCountsFile.txt > tmpNumRows.txt
-numRows=$(cut -d ' ' -f1 tmpNumRows.txt)
+numRows=$(($(cut -d ' ' -f1 tmpNumRows.txt)-1))
 #Retrieve number of samples
 numCols=$(($(head -n1 tmpinCountsFile.txt | awk '{print NF}')-1))
 #Set output file name

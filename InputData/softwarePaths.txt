@@ -3,3 +3,4 @@ trinotatePackage: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/Trino
 cdhitPackage: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/cdhit-master
 sanspanzPackage: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/SANSPANZ.3
 orthoFinder: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/OrthoFinder
+GSEA: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/GSEA_Linux_4.1.0
