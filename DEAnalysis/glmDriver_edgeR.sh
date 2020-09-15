@@ -17,7 +17,7 @@ inputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "
 inFile="$inputsPath"/"$2"/cleaned.csv
 
 #Create directory for output files
-outDir="$inputsPath"/"$2"/DEAnalyzed
+outDir="$inputsPath"/"$2"/glm"$1"Analysis
 mkdir $outDir
 
 #Determine analysis method
@@ -32,7 +32,16 @@ else
 	exit 1
 fi
 
-#Rename and move produced tables
-for f in *.csv; do mv $f "$outDir"; done
-#Rename and move produced plots
+#Move produced tables
+for f in *.csv; do
+	#Fix headers
+	file="$f"
+	tail -n+2 "$file" > tmpTail.csv
+	head -1 "$file" | sed -e 's/^/gene,/' > tmpHeader.csv
+	rm "$file"
+	cat tmpHeader.csv > "$file"
+	cat tmpTail.csv >> "$file"
+	rm tmp*.csv
+done
+#Move produced plots
 for p in *.jpg; do mv $p "$outDir"; done

@@ -1,26 +1,26 @@
 #!/bin/bash
 #Script to generate venn diagrams from edgeR stats
-#Usage: bash 
-#Usage Ex: bash 
+#Usage: bash vennDiagramDriver.sh analysisResultsFile
+#Usage Ex: bash vennDiagramDriver.sh exactTest_topTags.csv genotypeList
+#Usage Ex: bash vennDiagramDriver.sh glmQLF_2WayANOVA_topTags_filtered.csv
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve statistics outputs absolute path
-outputsPath=$(grep "statistics:" ../InputData/outputPaths.txt | tr -d " " | sed "s/statistics://g")
-#Retrieve analysis inputs path
-inputsPath=$(grep "geneTableAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTableAnalysis://g")
-outFile=$(basename "$inputsPath"/GeneCounts_Formatted/"$1" | sed 's/\.csv//g')
-#Create directory for output files
-outDir="$outputsPath"/GeneCounts_Stats/"$outFile"
-outputStats="$outDir"/geneCountStats_cols"$2"to"$3"_"$outFile"
-mkdir "$outDir"
-mkdir "$outputStats"
 
-#TO DO
-#Prepare for analysis
-Rscript geneSets_vennDiagram.r "$1"
-Rscript topTags_vennDiagram.r "$1"
-#Move output JPGs
+#Retrieve analysis inputs path
+inputPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
+
+#Determine analysis method
+if [[ "$1" == "exactTest"* ]]; then
+	#TO-DO merge exact test results for selected genotypes
+	#Rscript geneSets_vennDiagram.r "$1"
+	Rscript exactTest_vennDiagram.r "$inputPath"/"$1"
+elif [[ "$1" == "glm"* ]]; then
+	Rscript glm_vennDiagram.r "$inputPath"/"$1"
+fi
+
+#Rename and move produced plots
+for p in *.jpg; do mv $p "$inputPath"; done

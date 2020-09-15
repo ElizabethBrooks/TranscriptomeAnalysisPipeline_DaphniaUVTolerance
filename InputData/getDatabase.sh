@@ -51,12 +51,20 @@ fi
 #Move to output database directory
 cd $outputPath
 #Retrieve selected input database
-if [[ "$1" == "ncbi" || "$1" == "uniprot" || "$1" == "panther" ]]; then
+if [[ "$1" == "ncbi" || "$1" == "uniprot" ]]
 	#Retrieve selected input database
 	wget $dbAddress
 	#Extract the database
 	dbFile=$(basename $dbAddress)
 	gunzip -v $dbFile
+elif [[ "$1" == "panther" ]]; then
+	#Retrieve selected input database
+	wget $dbAddress
+	#Extract the database
+	dbFile=$(basename $dbAddress)
+	gunzip -v $dbFile
+	dbFile=$(echo $dbFile | sed 's/\.tgz/\.tar/g')
+	tar -xvf $dbFile
 elif [[ "$1" == "swissprot" ]]; then
 	#Import swissprot database
 	"$softsPath"/admin/Build_Trinotate_Boilerplate_SQLite_db.pl  Trinotate
