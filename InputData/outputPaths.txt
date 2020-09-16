@@ -8,7 +8,7 @@ assemblyAnalysis: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 alignmentAnalysis: /home/mae/Documents/RNASeq_Workshop_ND
 genesCounted: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV
 geneCountAnalysis: /home/mae/Documents/RNASeq_Workshop_ND
-DEAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1Analysis
+DEAnalysis: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1Analysis
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 transcriptSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 reciprocalSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
