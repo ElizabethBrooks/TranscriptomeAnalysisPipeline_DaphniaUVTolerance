@@ -6,12 +6,6 @@
 #Load module for R
 #module load bio
 
-#Check for input arguments of folder names
-if [ $# -eq 0 ]; then
-   	echo "ERROR: No folder name(s) supplied... exiting"
-   	exit 1
-fi
-
 #Retrieve gene ontology data path
 designPath="../InputData/expDesign_fullSet.csv"
 #Retrieve analysis inputs path
@@ -20,7 +14,6 @@ inFile="$inputsPath"/cleaned.csv
 
 #Create directory for output files
 outDir="$inputsPath"
-mkdir $outDir
 
 #Perform normalization of raw counts
 Rscript normalize_edgeR.r "$inFile" "$designPath"

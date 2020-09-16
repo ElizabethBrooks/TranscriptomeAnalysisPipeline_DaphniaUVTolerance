@@ -13,9 +13,10 @@ fi
 ontologyPath=$(grep "geneOntology:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneOntology://g")
 #Retrieve inputs path
 inputPath=$(grep "geneSets:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneSets://g")
-inputSet="$inputPath"/"$1"
+inFile=$(basename "$1")
+inputSet="$inputPath"/"$inFile"
 #Retrieve analysis outputs path
-outDir=$(grep "GSEA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/GSEA://g")
+outDir="$inputPath"
 
 #Move to current outputs folder
 cd "$outDir"
@@ -27,13 +28,15 @@ inputResults=$(basename "$inputSet" | sed 's/\.gmx//g')
 tail -n+3 "$inputSet" > tmpIDs.txt
 
 #Rertieve GO annotations for DE analysis results
-while IFS= read -r line; do grep $line "$ontologyPath" >> tmp_"$inputResults".txt ; done < tmpIDs.txt
+head -1 "$ontologyPath" > tmpGO.txt
+while IFS= read -r line; do grep $line "$ontologyPath" >> tmpGO.txt ; done < tmpIDs.txt
 
 #Retieve sprot IDs from selected annotations
-cut -d"," -f1 tmp_"$inputResults".txt > geneIDs_"$inputResults".gmx
+cut -d"," -f1 tmpGO.txt > tmpGeneIDs.gmx
 
 #Remove duplicate gene ID matches
-awk '!visited[$0]++' geneIDs_"$inputResults".gmx > geneIDs_noDups_"$inputResults".gmx
+head -2 "$inputSet" > geneIDs_noDups_"$inputResults".gmx
+tail -n+2 tmpGeneIDs.gmx | awk '!visited[$0]++' >> geneIDs_noDups_"$inputResults".gmx
 
 #Clean up
-rm tmp*.txt
+rm tmp*
