@@ -116,6 +116,13 @@ tagsTblAllPairwise.out <- tagsTblAllPairwise[tagsTblAllPairwise.keep,]
 write.table(tagsTblAllPairwise.out, file="glmLRT_allPairwise_topTags.csv", sep=",", row.names=TRUE)
 
 #Pairwise E05.UVvsVIS
+test.E05.UVvsVIS <- glmLRT(fit, contrast=con.allPairs[,"E05.UVvsVIS"])
+summary(decideTests(test.E05.UVvsVIS))
+#Write plot to file
+jpeg("glmLRT_E05Pairwise_plotMD.jpg")
+plotMD(test.E05.UVvsVIS)
+abline(h=c(-1, 1), col="blue")
+dev.off()
 #Test whether the differential expression is significant
 treat.E05.UVvsVIS <- glmTreat(fit, contrast=con.allPairs[,"E05.UVvsVIS"], lfc=log2(1.2))
 summary(decideTests(treat.E05.UVvsVIS))
@@ -131,6 +138,13 @@ tagsTblE05Pairwise.out <- tagsTblE05Pairwise[tagsTblE05Pairwise.keep,]
 write.table(tagsTblE05Pairwise.out, file="glmLRT_E05Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
 
 #Pairwise R2.UVvsVIS
+test.R2.UVvsVIS <- glmLRT(fit, contrast=con.allPairs[,"R2.UVvsVIS"])
+summary(decideTests(test.R2.UVvsVIS))
+#Write plot to file
+jpeg("glmLRT_R2Pairwise_plotMD.jpg")
+plotMD(test.R2.UVvsVIS)
+abline(h=c(-1, 1), col="blue")
+dev.off()
 #Test whether the differential expression is significant
 treat.R2.UVvsVIS <- glmTreat(fit, contrast=con.allPairs[,"R2.UVvsVIS"], lfc=log2(1.2))
 summary(decideTests(treat.R2.UVvsVIS))
@@ -146,6 +160,13 @@ tagsTblR2Pairwise.out <- tagsTblR2Pairwise[tagsTblR2Pairwise.keep,]
 write.table(tagsTblR2Pairwise.out, file="glmLRT_R2Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
 
 #Pairwise Y023.UVvsVIS
+test.Y023.UVvsVIS <- glmLRT(fit, contrast=con.allPairs[,"Y023.UVvsVIS"])
+summary(decideTests(test.Y023.UVvsVIS))
+#Write plot to file
+jpeg("glmLRT_Y023Pairwise_plotMD.jpg")
+plotMD(test.Y023.UVvsVIS)
+abline(h=c(-1, 1), col="blue")
+dev.off()
 #Test whether the differential expression is significant
 treat.Y023.UVvsVIS <- glmTreat(fit, contrast=con.allPairs[,"Y023.UVvsVIS"], lfc=log2(1.2))
 summary(decideTests(treat.Y023.UVvsVIS))
@@ -161,6 +182,13 @@ tagsTblY023Pairwise.out <- tagsTblY023Pairwise[tagsTblY023Pairwise.keep,]
 write.table(tagsTblY023Pairwise.out, file="glmLRT_Y023Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
 
 #Pairwise Y05.UVvsVIS
+test.Y05.UVvsVIS <- glmLRT(fit, contrast=con.allPairs[,"Y05.UVvsVIS"])
+summary(decideTests(test.Y05.UVvsVIS))
+#Write plot to file
+jpeg("glmLRT_Y05Pairwise_plotMD.jpg")
+plotMD(test.Y05.UVvsVIS)
+abline(h=c(-1, 1), col="blue")
+dev.off()
 #Test whether the differential expression is significant
 treat.Y05.UVvsVIS <- glmTreat(fit, contrast=con.allPairs[,"Y05.UVvsVIS"], lfc=log2(1.2))
 summary(decideTests(treat.Y05.UVvsVIS))
@@ -223,7 +251,7 @@ con.UVvsVIS <- makeContrasts(UVvsVIS = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
 test.anov.UVVIS <- glmLRT(fit, contrast=con.UVvsVIS)
 summary(decideTests(test.anov.UVVIS))
 #Write plot to file
-jpeg("glmQLF_2WayANOVA_UVvsVIS_plotMD.jpg")
+jpeg("glmLRT_2WayANOVA_UVvsVIS_plotMD.jpg")
 plotMD(test.anov.UVVIS)
 abline(h=c(-1, 1), col="blue")
 dev.off()
@@ -231,13 +259,13 @@ dev.off()
 tagsTblANOVA <- topTags(test.anov.UVVIS, n=nrow(test.anov.UVVIS$table))$table
 tagsTblANOVA.keep <- tagsTblANOVA$FDR <= 0.05
 tagsTblANOVA.out <- tagsTblANOVA[tagsTblANOVA.keep,]
-write.table(tagsTblANOVA.out, file="glmQLF_2WayANOVA_UVvsVIS_topTags.csv", sep=",", row.names=TRUE)
+write.table(tagsTblANOVA.out, file="glmLRT_2WayANOVA_UVvsVIS_topTags.csv", sep=",", row.names=TRUE)
 
 #Look at genes with significant expression across all UV groups
 treat.anov.UVVIS <- glmTreat(fit, contrast=con.UVvsVIS, lfc=log2(1.2))
 summary(decideTests(treat.anov.UVVIS))
 #Write plot to file
-jpeg("glmQLF_2WayANOVA_UVvsVIS_plotMD_filtered.jpg")
+jpeg("glmLRT_2WayANOVA_UVvsVIS_plotMD_filtered.jpg")
 plotMD(treat.anov.UVVIS)
 abline(h=c(-1, 1), col="blue")
 dev.off()
@@ -245,7 +273,7 @@ dev.off()
 tagsTblANOVA.filtered <- topTags(treat.anov.UVVIS, n=nrow(treat.anov.UVVIS$table))$table
 tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR <= 0.05
 tagsTblANOVA.filtered.out <- tagsTblANOVA.filtered[tagsTblANOVA.filtered.keep,]
-write.table(tagsTblANOVA.filtered.out, file="glmQLF_2WayANOVA_UVvsVIS_topTags_filtered.csv", sep=",", row.names=TRUE)
+write.table(tagsTblANOVA.filtered.out, file="glmLRT_2WayANOVA_UVvsVIS_topTags_filtered.csv", sep=",", row.names=TRUE)
 
 #Test whether the average across all tolerant groups is equal to the average across
 #all not tolerant groups, to examine the overall effect of tolerance
@@ -257,7 +285,7 @@ con.TvsN <- makeContrasts(UVvsVIS = (UV.Y05 + VIS.Y05 + UV.E05 + VIS.E05)/4
 test.anov.TN <- glmLRT(fit, contrast=con.TvsN)
 summary(decideTests(test.anov.TN))
 #Write plot to file
-jpeg("glmQLF_2WayANOVA_TvsN_plotMD.jpg")
+jpeg("glmLRT_2WayANOVA_TvsN_plotMD.jpg")
 plotMD(test.anov.TN)
 abline(h=c(-1, 1), col="blue")
 dev.off()
@@ -265,13 +293,13 @@ dev.off()
 tagsTblANOVATN <- topTags(test.anov.TN, n=nrow(test.anov.TN$table))$table
 tagsTblANOVATN.keep <- tagsTblANOVATN$FDR <= 0.05
 tagsTblANOVATN.out <- tagsTblANOVATN[tagsTblANOVATN.keep,]
-write.table(tagsTblANOVATN.out, file="glmQLF_2WayANOVA_TvsN_topTags.csv", sep=",", row.names=TRUE)
+write.table(tagsTblANOVATN.out, file="glmLRT_2WayANOVA_TvsN_topTags.csv", sep=",", row.names=TRUE)
 
 #Look at genes with significant expression across all UV groups
 treat.anov.TN <- glmTreat(fit, contrast=con.TvsN, lfc=log2(1.2))
 summary(decideTests(treat.anov.TN))
 #Write plot to file
-jpeg("glmQLF_2WayANOVA_TvsN_plotMD_filtered.jpg")
+jpeg("glmLRT_2WayANOVA_TvsN_plotMD_filtered.jpg")
 plotMD(treat.anov.TN)
 abline(h=c(-1, 1), col="blue")
 dev.off()
@@ -279,4 +307,4 @@ dev.off()
 tagsTblANOVATN.filtered <- topTags(treat.anov.TN, n=nrow(treat.anov.TN$table))$table
 tagsTblANOVATN.filtered.keep <- tagsTblANOVATN.filtered$FDR <= 0.05
 tagsTblANOVATN.filtered.out <- tagsTblANOVATN.filtered[tagsTblANOVATN.filtered.keep,]
-write.table(tagsTblANOVATN.filtered.out, file="glmQLF_2WayANOVA_TvsN_topTags_filtered.csv", sep=",", row.names=TRUE)
+write.table(tagsTblANOVATN.filtered.out, file="glmLRT_2WayANOVA_TvsN_topTags_filtered.csv", sep=",", row.names=TRUE)

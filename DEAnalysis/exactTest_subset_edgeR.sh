@@ -17,7 +17,7 @@ inputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "
 inFile="$inputsPath"/cleaned.csv
 
 #Create directory for output files
-outDir="$inputsPath"/exactTest"$2"Analysis
+outDir="$inputsPath"/exactTest"$1"Analysis
 mkdir $outDir
 
 #Convert TXT formatted counts to CSV
@@ -25,12 +25,9 @@ mkdir $outDir
 #cat "$inFile" > "$newFile"
 
 #Retrieve selected sample beginning column number
-#head -1 "$inFile" | tr "\t" "\n" | grep -n "$2" > tmpColNum.txt
-head -1 "$inFile" | tr "," "\n" | grep -n "$2" > tmpColNum.txt
-colNumStart=$(($(head -1 tmpColNum.txt | cut -d ':' -f1)-1))
+#head -1 "$inFile" | tr "\t" "\n" | grep -n "$1"
+colNumStart=$(($(head -1 "$inFile" | tr "," "\n" | grep -n "$1" | head -1 | cut -d ':' -f1)-1))
 colNumEnd=$(($colNumStart+5))
-#Clean up
-rm tmpColNum.txt
 
 #Perform DE analysis using edgeR and output analysis results to a txt file
 Rscript exactTest_edgeR.r "$inFile" $colNumStart $colNumEnd > "$outDir"/analysisResults.txt
