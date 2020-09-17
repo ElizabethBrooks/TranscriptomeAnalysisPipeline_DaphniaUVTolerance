@@ -1,7 +1,8 @@
 #!/bin/bash
 #Script to run Rscripts that retieve annotations for DE analysis results
 #Usage: bash geneAnnotations_edgeR.sh analysisType analysisResultsFile
-#Usage Ex: bash geneAnnotations_edgeR.sh DE glmQLF_2WayANOVA_topTags_filtered.csv
+#Usage Ex: bash geneAnnotations_edgeR.sh QLF glmQLF_2WayANOVA_TvsN_topTags_filtered.csv
+#Usage Ex: bash geneAnnotations_edgeR.sh QLF glmQLF_2WayANOVA_UVvsVIS_topTags_filtered.csv
 #Usage Ex: bash geneAnnotations_edgeR.sh GSEA daphniaOlympics_leading_edge_matrix_for_results.1.gmx
 
 #Check for input arguments of folder names
@@ -14,16 +15,20 @@ fi
 ontologyPath=$(grep "geneOntology:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneOntology://g")
 
 #Determine input type
-if [[ "$1" == "DE" ]]; then
+if [[ "$1" == "QLF" || "$1" == "LRT" ]]; then
 	#Retrieve DE analysis inputs path
-	outDir=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
+	inputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
+	outDir="$inputsPath"/glm"$1"Analysis
 	#Remove file extension
-	inputResults=$(basename "$2" | sed 's/\.csv//g')
-elif [[ "$1" == "DE" ]]; then
+	inputResults=$(echo "$2" | sed 's/\.csv//g')
+elif [[ "$1" == "GSEA" ]]; then
 	#Retrieve GSEA inputs path
-	inputPath=$(grep "geneSets:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneSets://g")
+	outDir=$(grep "geneSets:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneSets://g")
 	#Remove file extension
-	inputResults=$(basename "$2" | sed 's/\.gmx//g')
+	inputResults=$(echo "$2" | sed 's/\.gmx//g')
+else
+	echo "Invalid analysis type entered... exiting!"
+	exit 1
 fi
 
 #Move to current outputs folder
