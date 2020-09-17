@@ -7,12 +7,9 @@
 #Script to use OrthoFinder to find orthogroups and orthologs, 
 # infers rooted gene trees for all orthogroups and identifies 
 # all of the gene duplication events in those gene trees
-#Usage: qsub search_orthoFinder.sh proteomeFastaList
-#Usage Ex: qsub search_orthoFinder.sh trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1PA_assemblyTrinity trimmed_run1Sierra_assemblyTrinity PA42_proteins
-#Usage Ex: qsub search_orthoFinder.sh trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity
-#Usage Ex: qsub search_orthoFinder.sh trimmed_run1PA_assemblyTrinity PA42_proteins
-#Usage Ex: qsub search_orthoFinder.sh trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1Sierra_assemblyTrinity 
-#Usage Ex: qsub search_orthoFinder.sh trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1PA_assemblyTrinity PA42_proteins
+#Usage: qsub search_orthoFinder.sh analysisType proteomeFastaList
+#Usage Ex: qsub search_orthoFinder.sh MSA trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1PA_assemblyTrinity trimmed_run1Sierra_assemblyTrinity PA42_proteins
+#Usage Ex: qsub search_orthoFinder.sh default trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1PA_assemblyTrinity trimmed_run1Sierra_assemblyTrinity PA42_proteins
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -42,7 +39,7 @@ while [ $dirFlag -eq 0 ]; do
 done
 #Loop through all input proteomes and build directory of inputs
 inputsDir="$outputFolder"
-for i in "$@"; do
+for i in "${@:2}"; do #Skip first argument
 	#Determine input proteome
 	if [[ "$i" == *assembly* ]]; then
 		#Retrieve reads input absolute path
@@ -65,7 +62,14 @@ cd "$outputFolder"
 inputOutFile="$outputFolder"/searched_orthoFinder_summary.txt
 #Use OrthoFinder to find orthologs
 echo "Beginning OrthoFinder search..."
-"$softwarePath"/orthofinder -f "$inputsDir" -t 24
+#Check OrthoFinder species tree inference method
+if [[ "$1" == "MSA" ]]; then #Multiple sequence alignment
+	"$softwarePath"/orthofinder -f "$inputsDir" -t 24 -M msa
+	#Output run commands to summary file
+	echo "$softwarePath"/"orthofinder -f" "$inputsDir" "-t 24 -M msa" > "$inputOutFile"
+else #Default
+	"$softwarePath"/orthofinder -f "$inputsDir" -t 24
+	#Output run commands to summary file
+	echo "$softwarePath"/"orthofinder -f" "$inputsDir" "-t 24" > "$inputOutFile"
+fi
 echo "OrthoFinder search complete!"
-#Output run commands to summary file
-echo "$softwarePath"/"orthofinder -f" "$inputsDir" "-t 24" > "$inputOutFile"
