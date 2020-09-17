@@ -11,4 +11,4 @@ proteinSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/datab
 transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_transcripts/PA42.3.0.transcripts_new.fasta
 geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42.3.0.gene_trans_map
 annotations: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/AnnotationAnalysis
-geneSets: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_data/GeneSets
+geneSets: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_Results
