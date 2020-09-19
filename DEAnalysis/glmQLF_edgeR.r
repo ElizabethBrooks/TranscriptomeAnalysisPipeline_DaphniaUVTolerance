@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 #Usage: Rscript glmQLF_edgeR.r countsFile startColumn endColumn factorGroupingFile
 #Usage Ex: Rscript glmQLF_edgeR.r cleaned.csv 1 24 expDesign_Olympics_GRP1.csv
-#R script to perform statistical analysis of gene count tables using edgeR two way ANOVA
+#R script to perform statistical analysis of gene count tables using edgeR GLM
 
 #Install edgeR and statmod, this should only need to be done once
 #if (!requireNamespace("BiocManager", quietly = TRUE))
