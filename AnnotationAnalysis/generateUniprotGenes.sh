@@ -29,14 +29,25 @@ tail -n+3 "$inputSet" > tmpIDs.txt
 
 #Rertieve GO annotations for DE analysis results
 head -1 "$ontologyPath" > tmpGO.txt
-while IFS= read -r line; do grep $line "$ontologyPath" >> tmpGO.txt ; done < tmpIDs.txt
+head -1 "$ontologyPath" > tmpList.txt
+while IFS= read -r line
+do
+	if grep -q $line "$ontologyPath"; then #Match
+		go=$(grep $line "$ontologyPath")
+		echo $go >> tmpGO.txt
+		echo $go >> tmpList.txt
+	else #Unique
+		echo $line",NA" >> tmpList.txt
+	fi
+done < tmpIDs.txt
 
-#Retieve sprot IDs from selected annotations
-cut -d"," -f1 tmpGO.txt > tmpGeneIDs.gmx
+#Retieve gene IDs from selected annotations
+cut -d"," -f1 tmpGO.txt > tmpGOGeneIDs.gmx
+cut -d"," -f1 tmpList.txt >> geneIDs_fullList_"$inputResults".txt
 
 #Remove duplicate gene ID matches
 head -2 "$inputSet" > geneIDs_noDups_"$inputResults".gmx
-tail -n+2 tmpGeneIDs.gmx | awk '!visited[$0]++' >> geneIDs_noDups_"$inputResults".gmx
+tail -n+2 tmpGOGeneIDs.gmx | awk '!visited[$0]++' >> geneIDs_noDups_"$inputResults".gmx
 
 #Clean up
 rm tmp*
