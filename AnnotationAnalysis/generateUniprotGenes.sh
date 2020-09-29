@@ -1,5 +1,5 @@
 #!/bin/bash
-#Script to run Rscripts that retieve annotations for DE analysis results
+#Script to retieve uniprot IDs for DE analysis results
 #Usage: bash generateUniprotGenes.sh analysisResultsFile
 #Usage Ex: bash generateUniprotGenes.sh geneset_dnaRepair.gmx
 
