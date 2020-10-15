@@ -21,10 +21,10 @@ library("hexbin")
 library("ggplot2")
 
 #Import gene count data
-countsTable <- read.csv(file="/home/mae/Documents/BIOS60132/ND_ICG_2020_Practical_Eight_Data/rawCounts.csv", row.names="gene")
+countsTable <- read.csv(file=args[1], row.names="gene")
 #head(countsTable)
 #Import grouping factor
-targets <- read.csv(file="/home/mae/Documents/BIOS60132/ND_ICG_2020_Practical_Eight_Data/expDesign.csv", row.names="sample")
+targets <- read.csv(file=args[2], row.names="sample")
 
 #Construct a DESeqDataSet
 dds <- DESeqDataSetFromMatrix(countData=countsTable,
