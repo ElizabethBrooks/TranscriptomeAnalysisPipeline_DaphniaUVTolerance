@@ -247,7 +247,7 @@ con.UVvsVIS <- makeContrasts(UVvsVIS = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
   - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4,
   levels=design)
 
-#Look at genes expressed across all UV groups using QL F-test
+#Look at genes expressed across all UV groups using LRT
 test.anov.UVVIS <- glmLRT(fit, contrast=con.UVvsVIS)
 summary(decideTests(test.anov.UVVIS))
 #Write plot to file
@@ -281,7 +281,7 @@ con.TvsN <- makeContrasts(UVvsVIS = (UV.Y05 + VIS.Y05 + UV.E05 + VIS.E05)/4
   - (UV.Y023 + VIS.Y023 + UV.R2 + VIS.R2)/4,
   levels=design)
 
-#Look at genes expressed across all UV groups using QL F-test
+#Look at genes expressed across all UV groups using LRT
 test.anov.TN <- glmLRT(fit, contrast=con.TvsN)
 summary(decideTests(test.anov.TN))
 #Write plot to file
@@ -308,3 +308,38 @@ tagsTblANOVATN.filtered <- topTags(treat.anov.TN, n=nrow(treat.anov.TN$table))$t
 tagsTblANOVATN.filtered.keep <- tagsTblANOVATN.filtered$FDR <= 0.05
 tagsTblANOVATN.filtered.out <- tagsTblANOVATN.filtered[tagsTblANOVATN.filtered.keep,]
 write.table(tagsTblANOVATN.filtered.out, file="glmLRT_2WayANOVA_TvsN_topTags_filtered.csv", sep=",", row.names=TRUE)
+
+#Test whether there is an interaction effect
+con.Inter <- makeContrasts(Inter = ((UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
+  - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4)
+  - ((UV.Y05 + VIS.Y05 + UV.E05 + VIS.E05)/4
+  - (UV.Y023 + VIS.Y023 + UV.R2 + VIS.R2)/4),
+  levels=design)
+
+#Look at genes expressed across all UV groups using LRT
+test.anov.Inter <- glmLRT(fit, contrast=con.Inter)
+summary(decideTests(test.anov.Inter))
+#Write plot to file
+jpeg("glmLRT_2WayANOVA_interaction_plotMD.jpg")
+plotMD(test.anov.Inter)
+abline(h=c(-1, 1), col="blue")
+dev.off()
+#Write tags table of DE genes to file
+tagsTblANOVAInter <- topTags(test.anov.Inter, n=nrow(test.anov.Inter$table))$table
+tagsTblANOVAInter.keep <- tagsTblANOVAInter$FDR <= 0.05
+tagsTblANOVAInter.out <- tagsTblANOVAInter[tagsTblANOVAInter.keep,]
+write.table(tagsTblANOVAInter.out, file="glmLRT_2WayANOVA_interaction_topTags.csv", sep=",", row.names=TRUE)
+
+#Look at genes with significant expression
+treat.anov.Inter <- glmTreat(fit, contrast=con.Inter, lfc=log2(1.2))
+summary(decideTests(treat.anov.Inter))
+#Write plot to file
+jpeg("glmQLF_2WayANOVA_interaction_plotMD_filtered.jpg")
+plotMD(treat.anov.Inter)
+abline(h=c(-1, 1), col="blue")
+dev.off()
+#Generate table of DE genes
+tagsTblANOVAInter.filtered <- topTags(treat.anov.Inter, n=nrow(treat.anov.Inter$table))$table
+tagsTblANOVAInter.filtered.keep <- tagsTblANOVAInter.filtered$FDR <= 0.05
+tagsTblANOVAInter.filtered.out <- tagsTblANOVAInter.filtered[tagsTblANOVAInter.filtered.keep,]
+write.table(tagsTblANOVAInter.filtered.out, file="glmQLF_2WayANOVA_interaction_topTags_filtered.csv", sep=",", row.names=TRUE)
