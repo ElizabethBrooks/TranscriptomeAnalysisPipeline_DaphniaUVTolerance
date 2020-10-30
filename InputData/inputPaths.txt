@@ -5,7 +5,7 @@ genomeFeatures: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42.3.0
 geneOntology: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/trinotate_annotation_report.csv
 geneOntologyArchive: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/gene.Blast2GO.merged.csv
 geneLengths: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/PA42.3.0.annotation.18440.genelength
-transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_transcribed/PA42.3.0.transcripts_new.fasta
+transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_transcripts/PA42.3.0.transcripts_new.fasta
 codingSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_cds/PA42.3.0.cds_new.fasta
 proteinSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_proteins/PA42.3.0.protein_new.fasta
 transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_transcripts/PA42.3.0.transcripts_new.fasta
