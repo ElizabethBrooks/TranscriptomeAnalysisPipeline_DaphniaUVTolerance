@@ -16,7 +16,7 @@ fi
 #Set software path
 softwarePath=$(grep "orthoFinder:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/orthoFinder://g")
 #Set outputs absolute path
-outputPath=$(grep "orthoFinder:" ../InputData/outputPaths.txt | tr -d " " | sed "s/orthoFinder://g")
+outputPath=$(grep "transcriptSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/transcriptSearch://g")
 dirFlag=0
 runNum=1
 #Make a new directory for each run
