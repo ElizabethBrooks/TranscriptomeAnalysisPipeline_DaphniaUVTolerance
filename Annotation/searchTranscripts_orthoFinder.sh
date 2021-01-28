@@ -60,7 +60,7 @@ inputOutFile="$outputFolder"/searchedTranscripts_orthoFinder_summary.txt
 #Use OrthoFinder to find orthologs
 echo "Beginning transcript search..."
 #Run script to keep the longest transcript variant per gene
-for f in "$inputsDir"; do 
+for f in "$inputsDir"/*.fasta*; do 
 	python "$softwarePath"/tools/primary_transcript.py $f
 	#Output run commands to summary file
 	echo "python "$softwarePath"/tools/primary_transcript.py "$f > "$inputOutFile"
