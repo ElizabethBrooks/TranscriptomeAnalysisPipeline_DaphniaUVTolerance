@@ -2,14 +2,11 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N search_orthoFinder_jobOutput
-#$ -pe smp 24
-#Script to use OrthoFinder to find orthogroups and orthologs, 
-# infers rooted gene trees for all orthogroups and identifies 
-# all of the gene duplication events in those gene trees
-#Usage: qsub search_orthoFinder.sh analysisType proteomeFastaList
-#Usage Ex: qsub search_orthoFinder.sh MSA trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1PA_assemblyTrinity trimmed_run1Sierra_assemblyTrinity PA42_proteins
-#Usage Ex: qsub search_orthoFinder.sh default trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1PA_assemblyTrinity trimmed_run1Sierra_assemblyTrinity PA42_proteins
+#$ -N searchTranscripts_jobOutput
+#Script to use an OrthoFinder script to find the longest transcript
+# variant per gene
+#Usage: qsub searchTranscripts_orthoFinder.sh proteomeFastaList
+#Usage Ex: qsub searchTranscripts_orthoFinder.sh trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1PA_assemblyTrinity trimmed_run1Sierra_assemblyTrinity PA42_proteins
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -25,7 +22,7 @@ runNum=1
 #Make a new directory for each run
 while [ $dirFlag -eq 0 ]; do
 	#Hisat output directory name
-	outputFolder="$outputPath"/"searched_orthoFinder_run$runNum"
+	outputFolder="$outputPath"/"searchedTranscripts_orthoFinder_run$runNum"
 	mkdir "$outputFolder"
 	#Check if the folder already exists
 	if [ $? -ne 0 ]; then
@@ -34,7 +31,7 @@ while [ $dirFlag -eq 0 ]; do
 	else
 		#Indicate that the folder was successfully made
 		dirFlag=1
-		echo "Creating folder for run $runNum of orthoFinder searching..."
+		echo "Creating folder for run $runNum of orthoFinder transcript searching..."
 	fi
 done
 #Loop through all input proteomes and build directory of inputs
@@ -59,17 +56,13 @@ done
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/searched_orthoFinder_summary.txt
+inputOutFile="$outputFolder"/searchedTranscripts_orthoFinder_summary.txt
 #Use OrthoFinder to find orthologs
-echo "Beginning OrthoFinder search..."
-#Check OrthoFinder species tree inference method
-if [[ "$1" == "MSA" ]]; then #Multiple sequence alignment
-	"$softwarePath"/orthofinder -f "$inputsDir" -t 24 -M msa
+echo "Beginning transcript search..."
+#Run script to keep the longest transcript variant per gene
+for f in "$inputsDir"; do 
+	python "$softwarePath"/OrthoFinder/tools/primary_transcript.py $f
 	#Output run commands to summary file
-	echo "$softwarePath"/"orthofinder -f" "$inputsDir" "-t 24 -M msa" > "$inputOutFile"
-else #Default
-	"$softwarePath"/orthofinder -f "$inputsDir" -t 24
-	#Output run commands to summary file
-	echo "$softwarePath"/"orthofinder -f" "$inputsDir" "-t 24" > "$inputOutFile"
-fi
-echo "OrthoFinder search complete!"
+	echo "python "$softwarePath"/OrthoFinder/tools/primary_transcript.py "$f > "$inputOutFile"
+done
+echo "Transcript search complete!"

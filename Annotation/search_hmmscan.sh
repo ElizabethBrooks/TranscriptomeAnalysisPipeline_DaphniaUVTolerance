@@ -63,9 +63,7 @@ fi
 cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/searched_hmmscan_"$1"_summary.txt
-#Use blastp to search a database
-# and output with outfmt6 header:
-#qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
+#Use hmmscan to search Pfam domain entries
 echo "Beginning hmmscan pfam database search..."
 hmmscan --cpu 8 --domtblout TrinotatePFAM.out "$dbFile" "$inputsPath" > pfam.log
 echo "Finished hmmscan pfam database search!"
