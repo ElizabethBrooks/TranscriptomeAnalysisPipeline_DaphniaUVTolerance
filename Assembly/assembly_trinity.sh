@@ -25,7 +25,7 @@ if [[ "$1"  != trimmed* ]]; then
 	echo "ERROR: The "$1" folder of trimmed fq.gz files were not found... exiting"
 	exit 1
 fi
-#Retrieve aligned reads input absolute path
+#Retrieve trimmed reads input absolute path
 inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
 inputsFolder="$inputsPath"/"$1"
 samplesPath=$(echo ../InputData/samplesFile_trinity.txt)
