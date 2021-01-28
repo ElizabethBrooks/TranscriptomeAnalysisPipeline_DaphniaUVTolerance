@@ -61,8 +61,8 @@ inputOutFile="$outputFolder"/searchedTranscripts_orthoFinder_summary.txt
 echo "Beginning transcript search..."
 #Run script to keep the longest transcript variant per gene
 for f in "$inputsDir"; do 
-	python "$softwarePath"/OrthoFinder/tools/primary_transcript.py $f
+	python "$softwarePath"/tools/primary_transcript.py $f
 	#Output run commands to summary file
-	echo "python "$softwarePath"/OrthoFinder/tools/primary_transcript.py "$f > "$inputOutFile"
+	echo "python "$softwarePath"/tools/primary_transcript.py "$f > "$inputOutFile"
 done
 echo "Transcript search complete!"
