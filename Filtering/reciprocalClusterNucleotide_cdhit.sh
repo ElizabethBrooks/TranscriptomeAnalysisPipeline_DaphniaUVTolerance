@@ -47,4 +47,4 @@ inputOutFile="$outputFolder"/reciprocalClusteredNucleotides_"$2"_cdhit_"$1"_summ
 echo "Beginning cdhit-est database search..."
 cdsName=$(basename "$cdsDB")
 "$softsPath"/cd-hit-est-2d -i "$inputNucleotideDB" -i2 "$cdsDB" -o "$cdsName"_novel -c "$2" -n 10 -d 0 -M 16000 -T 8
-echo "$softsPath"/cd-hit-est-2d -i "$inputNucleotideDB" -i2 "$cdsDB" -o "$cdsName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8 >> "$inputOutFile"
+echo "$softsPath"/cd-hit-est-2d -i "$inputNucleotideDB" -i2 "$cdsDB" -o "$cdsName"_novel -c "$2" -n10 -d 0 -M 16000 -T 8 >> "$inputOutFile"
