@@ -49,6 +49,8 @@ fi
 cd "$outputProteinFolder"
 #Name output file of inputs
 inputOutFile="$outputProteinFolder"/clusteredProteins_"$2"_cdhit_"$1"_summary.txt
+#Convert to single line fasta
+awk '/^>/ { print (NR==1 ? "" : RS) $0; next } { printf "%s", $0 } END { printf RS }' "$inputProteinPath" > "$inputProteinPath".AA
 #Run cd-hit to cluster proteins
-"$softsPath"/cd-hit -o cdhit -c $2 -i "$inputProteinPath" -p 1 -n 5 -M 16000 –d 0 -T 8
-echo "$softsPath"/cd-hit -o cdhit -c $2 -i "$inputProteinPath" -p 1 -n 5 -M 16000 –d 0 -T 8 >> "$inputOutFile"
+"$softsPath"/cd-hit -o cdhit -c $2 -i "$inputProteinPath".AA -p 1 -n 5 -M 16000 –d 0 -T 8
+echo "$softsPath"/cd-hit -o cdhit -c $2 -i "$inputProteinPath".AA -p 1 -n 5 -M 16000 –d 0 -T 8 >> "$inputOutFile"

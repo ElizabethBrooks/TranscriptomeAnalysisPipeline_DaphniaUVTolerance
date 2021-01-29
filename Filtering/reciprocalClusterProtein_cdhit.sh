@@ -43,8 +43,11 @@ fi
 cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/reciprocalClusteredProteins_"$2"_cdhit_"$1"_summary.txt
+#Convert to single line fasta
+awk '/^>/ { print (NR==1 ? "" : RS) $0; next } { printf "%s", $0 } END { printf RS }' "$inputProteinDB" > "$inputProteinDB".AA
+awk '/^>/ { print (NR==1 ? "" : RS) $0; next } { printf "%s", $0 } END { printf RS }' "$proteinDB" > "$proteinDB".AA
 #Use cdhit-est to search a nucelotide database
 echo "Beginning cdhit-est database search..."
 proteinName=$(basename "$proteinDB")
-"$softsPath"/cd-hit-est-2d -i "$inputProteinDB" -i2 "$proteinDB" -o "$proteinName"_novel -c "$2" -n 10 -d 0 -M 16000 -T 8
-echo "$softsPath"/cd-hit-est-2d -i "$inputProteinDB" -i2 "$proteinDB" -o "$proteinName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8 >> "$inputOutFile"
+"$softsPath"/cd-hit-est-2d -i "$inputProteinDB".AA -i2 "$proteinDB".AA -o "$proteinName"_novel -c "$2" -n 10 -d 0 -M 16000 -T 8
+echo "$softsPath"/cd-hit-est-2d -i "$inputProteinDB".AA -i2 "$proteinDB".AA -o "$proteinName"_novel -c "$2" -n 5 -d 0 -M 16000 -T 8 >> "$inputOutFile"
