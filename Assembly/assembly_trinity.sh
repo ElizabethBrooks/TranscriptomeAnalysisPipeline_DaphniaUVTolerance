@@ -30,7 +30,7 @@ inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/
 inputsFolder="$inputsPath"/"$1"
 samplesPath=$(echo ../InputData/samplesFile_trinity.txt)
 #Retrieve assembly outputs absolute path
-outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+outputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 #Create output directory
 outputFolder="$outputsPath"/"$1""$2"_assemblyTrinity
 mkdir "$outputFolder"

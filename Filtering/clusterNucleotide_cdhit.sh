@@ -6,8 +6,8 @@
 #$ -pe smp 8
 #Script to perform clustering of sequences using cdhit
 #the specified unique data (by sequence, ID, or both)
-#Usage: qsub clusterNucleotide_cdhit.sh mergeBy clusterPercent sortedFolder genotypes
-#Usage Ex: qsub clusterNucleotide_cdhit.sh trimmed_run1E05_assemblyTrinity 0.95
+#Usage: qsub clusterNucleotide_cdhit.sh mergeBy clusterPercent
+#Usage Ex: qsub clusterNucleotide_cdhit.sh trimmed_run1E05_assemblyTrinity 0.98
 #Usage Ex: qsub clusterNucleotide_cdhit.sh sortedCoordinate_samtoolsHisat2_run1Y05 0.98
 #Alternate usage Ex: qsub clusterNucleotide_cdhit.sh PA42 0.95
 
