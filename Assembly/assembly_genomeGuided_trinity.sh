@@ -5,21 +5,16 @@
 #$ -N assembly_genomeGuided_trinity_jobOutput
 #$ -pe smp 8
 #Script to perform genome-guided Trinity de novo transcriptome assembly
-#Usage: qsub assembly_genomeGuided_trinity.sh sortedFolder genotype maxIntronLength
-#Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsHisat2_run1 Sierra 14239
+#Usage: qsub assembly_genomeGuided_trinity.sh target sortedFolder genotype maxIntronLength
+#Usage Ex: qsub assembly_genomeGuided_trinity.sh genome sortedCoordinate_samtoolsHisat2_run2 E05 14239
 
 #Required modules for ND CRC servers
 module load bio/2.0
-module load bio/samtools
+#module load bio/samtools
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
-   	echo "No folder name(s) supplied... exiting"
+   	echo "No arguments supplied... exiting"
    	exit 1
-fi
-#Determine if the folder name was input in the correct format
-if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
-	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
-	exit 1
 fi
 #Determine if the correct analysis folder was input
 if [[ "$1"  != sortedCoordinate* ]]; then
@@ -38,7 +33,7 @@ else
 	exit 1
 fi
 #Retrieve aligned reads input absolute path
-inputsPath=$(grep "sorting:" ../InputData/outputPaths.txt | tr -d " " | sed "s/sorting://g")
+inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 #Retrieve genome reference absolute path for alignment
 genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve assembly outputs absolute path
