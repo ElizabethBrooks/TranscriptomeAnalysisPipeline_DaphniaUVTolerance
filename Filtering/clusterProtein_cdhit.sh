@@ -24,17 +24,17 @@ if [[ "$1" == *assemblyTrinity* ]]; then
 	assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	inputsPath="$assemblyPath"/"$1"
 	#Set outputs absolute path
-	outputNucleotideFolder="$assemblyPath"/"$1"/clusteredProteins_cdhit_"$2"
+	outputProteinFolder="$assemblyPath"/"$1"/clusteredProteins_cdhit_"$2"
 	#Set DBs of transcriptome
-	inputNucleotidePath="$inputsPath"/Trinity.fasta.transdecoder.pep
+	inputProteinPath="$inputsPath"/Trinity.fasta.transdecoder.pep
 elif [[ "$1" == *assemblyGenome* ]]; then
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	inputsPath="$assemblyPath"/"$1"
 	#Set outputs absolute path
-	outputNucleotideFolder="$assemblyPath"/"$1"/clusteredProteins_cdhit_"$2"
+	outputProteinFolder="$assemblyPath"/"$1"/clusteredProteins_cdhit_"$2"
 	#Set DBs of transcriptome
-	inputNucleotidePath="$inputsPath"/Trinity.fasta.transdecoder.pep
+	inputProteinPath="$inputsPath"/Trinity.fasta.transdecoder.pep
 elif [[ "$1" == PA42 ]]; then
 	#Set inputs absolut paths
 	inputProteinPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
