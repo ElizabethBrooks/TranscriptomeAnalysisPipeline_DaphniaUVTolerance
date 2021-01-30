@@ -19,9 +19,17 @@ fi
 #Retrieve Trinotate software path
 softsPath=$(grep "cdhitPackage:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/cdhitPackage://g")
 #Determine input query transcriptome for blastp
-if [[ "$1" == *assembly* ]]; then
+if [[ "$1" == *assemblyTrinity* ]]; then
 	#Retrieve reads input absolute path
-	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	inputsPath="$assemblyPath"/"$1"
+	#Set outputs absolute path
+	outputNucleotideFolder="$assemblyPath"/"$1"/clusteredNucleotides_cdhit_"$2"
+	#Set DBs of transcriptome
+	inputNucleotidePath="$inputsPath"/Trinity.fasta
+elif [[ "$1" == *assemblyGenome* ]]; then
+	#Retrieve reads input absolute path
+	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	inputsPath="$assemblyPath"/"$1"
 	#Set outputs absolute path
 	outputNucleotideFolder="$assemblyPath"/"$1"/clusteredNucleotides_cdhit_"$2"

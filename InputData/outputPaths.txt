@@ -1,8 +1,8 @@
 mergedFASTA: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 qc: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 trimming: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
-assemblingFree: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/
-assemblingGenome: /afs/crc.nd.edu/group/pfrenderlab/lodge3/ebrooks/rnaseq/
+assemblingFree: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
+assemblingGenome: /afs/crc.nd.edu/group/pfrenderlab/lodge3/ebrooks/rnaseq
 aligningGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42_v3.0
 buildingGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42_v3.0
 assemblyAnalysis: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
