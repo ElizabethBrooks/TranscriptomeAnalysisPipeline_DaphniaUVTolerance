@@ -15,9 +15,9 @@
 
 #Load necessary modules for ND CRC servers
 module load bio/2.0
-module load bio/blast+
-module load bio/hmmer
-module load bio/cufflinks
+#module load bio/blast+
+#module load bio/hmmer
+#module load bio/cufflinks
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -65,13 +65,13 @@ if [[ $2 == assembly ]]; then
 	geneMap=$inputsPath/$1/"Trinity.fasta.gene_trans_map"
 	#Set output path
 	outputFolder=$outputsPath/"decoded_transdecoder"
-elif [[ $2 == clusterNucleotide* ]]; then
+elif [[ $2 == clusteredNucleotide* ]]; then
 	#Retrieve genome reference and features paths
 	multiFASTA=$(echo "$inputsPath"/"$2"/cdhitEst)
 	geneMap=$inputsPath/$1/"Trinity.fasta.gene_trans_map"
 	#Set output path
 	outputFolder=$outputsPath/"$2"/"decoded_transdecoder"
-elif [[ $2 == clusterProtein* ]]; then
+elif [[ $2 == clusteredProtein* ]]; then
 	#Retrieve genome reference and features paths
 	multiFASTA=$(echo "$inputsPath"/"$2"/cdhit)
 	geneMap=$inputsPath/$1/"Trinity.fasta.gene_trans_map"
