@@ -7,7 +7,7 @@
 #Script to perform clustering of sequences using cdhit
 #the specified unique data (by sequence, ID, or both)
 #Usage: qsub clusterProtein_cdhit.sh mergeBy clusterPercent sortedFolder genotypes
-#Usage Ex: qsub clusterProtein_cdhit.sh trimmed_run1E05_assemblyTrinity 0.95
+#Usage Ex: qsub clusterProtein_cdhit.sh trimmed_run1E05_assemblyTrinity 0.98
 #Usage Ex: qsub clusterProtein_cdhit.sh sortedCoordinate_samtoolsHisat2_run1Y05 0.98
 #Alternate usage Ex: qsub clusterProtein_cdhit.sh PA42 0.95
 
@@ -19,14 +19,22 @@ fi
 #Retrieve Trinotate software path
 softsPath=$(grep "cdhitPackage:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/cdhitPackage://g")
 #Determine input query transcriptome for blastp
-if [[ "$1" == *assembly* ]]; then
+if [[ "$1" == *assemblyTrinity* ]]; then
 	#Retrieve reads input absolute path
-	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	inputsPath="$assemblyPath"/"$1"
 	#Set outputs absolute path
-	outputProteinFolder="$assemblyPath"/"$1"/clusteredProteins_cdhit_"$2"
+	outputNucleotideFolder="$assemblyPath"/"$1"/clusteredProteins_cdhit_"$2"
 	#Set DBs of transcriptome
-	inputProteinPath="$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
+	inputNucleotidePath="$inputsPath"/Trinity.fasta.transdecoder.pep
+elif [[ "$1" == *assemblyGenome* ]]; then
+	#Retrieve reads input absolute path
+	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+	inputsPath="$assemblyPath"/"$1"
+	#Set outputs absolute path
+	outputNucleotideFolder="$assemblyPath"/"$1"/clusteredProteins_cdhit_"$2"
+	#Set DBs of transcriptome
+	inputNucleotidePath="$inputsPath"/Trinity.fasta.transdecoder.pep
 elif [[ "$1" == PA42 ]]; then
 	#Set inputs absolut paths
 	inputProteinPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
