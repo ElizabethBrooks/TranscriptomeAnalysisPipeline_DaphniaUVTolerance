@@ -31,7 +31,7 @@ fi
 #Determine input query transcriptome for blastp
 if [[ "$1" == *assemblyTrinity* ]]; then
 	#Retrieve input assembly path
-	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	#Set outputs absolute path
 	outputsPath=$inputsPath/$1
 elif [[ "$1" == *assemblyGenome* ]]; then
