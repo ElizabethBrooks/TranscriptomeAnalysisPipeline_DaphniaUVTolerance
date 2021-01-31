@@ -61,20 +61,20 @@ fi
 #Determine input file type
 if [[ $2 == assembly ]]; then
 	#Retrieve genome reference and features paths
-	multiFASTA=$(echo "$inputsPath"/"$1"/Trinity.fasta)
-	geneMap=$inputsPath/$1/"Trinity.fasta.gene_trans_map"
+	multiFASTA=$(echo "$outputsPath"/Trinity.fasta)
+	geneMap="$outputsPath"/"Trinity.fasta.gene_trans_map"
 	#Set output path
 	outputFolder=$outputsPath/"decoded_transdecoder"
 elif [[ $2 == clusteredNucleotide* ]]; then
 	#Retrieve genome reference and features paths
-	multiFASTA=$(echo "$inputsPath"/"$2"/cdhitEst)
-	geneMap=$inputsPath/$1/"Trinity.fasta.gene_trans_map"
+	multiFASTA=$(echo "$outputsPath"/"$2"/cdhitEst)
+	geneMap="$outputsPath"/"Trinity.fasta.gene_trans_map"
 	#Set output path
 	outputFolder=$outputsPath/"$2"/"decoded_transdecoder"
 elif [[ $2 == clusteredProtein* ]]; then
 	#Retrieve genome reference and features paths
-	multiFASTA=$(echo "$inputsPath"/"$2"/cdhit)
-	geneMap=$inputsPath/$1/"Trinity.fasta.gene_trans_map"
+	multiFASTA=$(echo "$outputsPath"/"$2"/cdhit)
+	geneMap="$outputsPath"/"Trinity.fasta.gene_trans_map"
 	#Set output path
 	outputFolder=$outputsPath/"$2"/"decoded_transdecoder"
 elif [[ $2 == genome ]]; then
