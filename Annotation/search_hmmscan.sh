@@ -6,7 +6,7 @@
 #$ -pe smp 8
 #Script to use hmmscan to use hmmer to identify protein domains
 #Usage: qsub search_hmmscan.sh transcriptomeFasta
-#Usage Ex: qsub search_hmmscan.sh trimmed_run1E05_assemblyTrinity
+#Usage Ex: qsub search_hmmscan.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98
 #Alternate usage Ex: qsub search_hmmscan.sh PA42_proteins
 #Alternate usage Ex: qsub search_hmmscan.sh PA42_cds
 #Alternate usage Ex: qsub search_hmmscan.sh PA42_transcripts
@@ -21,12 +21,34 @@ fi
 #Retreive pfam database storage path
 dbFile=$(grep "trinotatePfamDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/trinotatePfamDB://g")
 #Determine input query transcriptome for blastp
-if [[ "$1" == *assembly* ]]; then
+if [[ "$1" == *assemblyTrinity* ]]; then
 	#Retrieve reads input absolute path
-	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
+	assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
 	#Set outputs absolute path
 	outputFolder="$assemblyPath"/"$1"/searched_hmmscan
+	#Determine input file type
+	if [[ "$1" == */clusteredNucleotide* ]]; then
+		inputsPath="$inputsPath"/cdhitEst.transdecoder.pep
+	elif [[ "$1" == */clusteredProtein* ]]; then
+		inputsPath="$inputsPath"/cdhit.transdecoder.pep
+	else 
+		inputsPath="$inputsPath"/Trinity.fasta.transdecoder.pep
+	fi
+elif [[ "$1" == *assemblyGenome* ]]; then
+	#Retrieve reads input absolute path
+	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
+	#Set outputs absolute path
+	outputFolder="$assemblyPath"/"$1"/searched_hmmscan
+	#Determine input file type
+	if [[ "$1" == */clusteredNucleotide* ]]; then
+		inputsPath="$inputsPath"/cdhitEst.transdecoder.pep
+	elif [[ "$1" == */clusteredProtein* ]]; then
+		inputsPath="$inputsPath"/cdhit.transdecoder.pep
+	else 
+		inputsPath="$inputsPath"/Trinity.fasta.transdecoder.pep
+	fi
 elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
