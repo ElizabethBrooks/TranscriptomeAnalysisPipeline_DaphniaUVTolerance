@@ -11,7 +11,13 @@ outputsPath=$(dirname "$inputCounts")
 outputCounts="$outputsPath"
 
 #Make output directory
+outputsPath=$(basename "$inputCounts" | sed 's/\.txt//g')
 mkdir "$outputCounts"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputsPath directory already exsists... please remove before proceeding."
+	exit 1
+fi
 
 #Prepare new gene count tables for comparison
 #Remove excess white space in gene count tables,

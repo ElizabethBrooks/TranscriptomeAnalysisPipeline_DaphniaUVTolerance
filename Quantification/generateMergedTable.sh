@@ -69,20 +69,14 @@ for f1 in "$inputsPath"/*/; do
 		sed -i 's,'"$currTag"','"$f1"'counts.txt '"$currTag"',' "$guideFile"
 	fi
 done
-#Save current working directory
-currDir=$(pwd)
 #Move to location of merge_tagles.py script
 cd ../util
 #Merge gene counts based on generated guide file
 python merge_tables.py "$guideFile"
 #Rename the output merged counts file
-mergedCounts="$outputsPath"/geneCounts_merged.txt
+mergedCounts="$outputsPath"/geneCounts_merged_"$3"_"$2"_"$1".txt
 mv merged_counts.txt "$mergedCounts"
 #Print a script completion confirmation message
 echo "Merged table has been renamed $mergedCounts and moved!"
 #Clean up
 rm "$outputsPath"/tmp*.txt
-
-#Run script to prepare gene count matrices
-cd "$currDir"
-bash prepareMatrices.sh "$mergedCounts"
