@@ -1,17 +1,14 @@
 #!/bin/bash
-#Usage: bash prepareMatrices.sh countedGenesFile
-#Usage Ex: bash prepareMatrices.sh geneCounts_merged_genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1.txt
+#Usage: bash prepareMatrices.sh countedGenesFilePath
 
 #Prepare for analysis
 dirFlag=0
 runNum=1
 #Trim file extension from input
-inputTable=$(echo "$1" | sed "s/\.txt//g" | sed "s/geneCounts\_merged\_//g")
+inputCounts="$1"
 #Directory for outputs
-outputsPath=$(grep "geneCountAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneCountAnalysis://g")
-outputCounts="$outputsPath"/GeneCountsAnalyzed/"$inputTable"
-#Directory for gene count tables
-inputCounts="$outputsPath"/GeneCountsAnalyzed/"$1"
+outputsPath=$(dirname "$inputCounts")
+outputCounts="$outputsPath"
 
 #Make output directory
 mkdir "$outputCounts"
@@ -28,10 +25,14 @@ rm "$outputCounts"/blankCleaned.csv
 #Add postfix tags to each sample name in each file indicating
 # the alignment method used (T for tophat and H for hisat2)
 #Determine which analysis method was used
-if [[ "$inputTable" == *"Hisat2"* ]]; then
+if [[ "$inputCounts" == *"Hisat2"* ]]; then
 	sed 's/Pool1/Pool1_H/g' "$outputCounts"/cleaned.csv |sed 's/Pool2/Pool2_H/g' | sed 's/Pool3/Pool3_H/g' > "$outputCounts"/tagged.csv
-else
+elif [[ "$inputCounts" == *"Tophat2"*  ]]; then
+	#statements
 	sed 's/Pool1/Pool1_T/g' "$outputCounts"/cleaned.csv |sed 's/Pool2/Pool2_T/g' | sed 's/Pool3/Pool3_T/g' > "$outputCounts"/tagged.csv
+else
+	echo "A valid alignment method was not detected... exiting!"
+	exit 1
 fi
 
 #Transpose gene count tables for PCA and fix headers

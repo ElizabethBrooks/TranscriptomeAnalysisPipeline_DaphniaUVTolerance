@@ -5,9 +5,6 @@ assemblingFree: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 assemblingGenome: /afs/crc.nd.edu/group/pfrenderlab/lodge3/ebrooks/rnaseq
 aligningGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42_v3.0
 buildingGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42_v3.0
-assemblyAnalysis: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
-alignmentAnalysis: /home/mae/Documents/RNASeq_Workshop_ND
-geneCountAnalysis: /home/mae/Documents/RNASeq_Workshop_ND
 DEAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1Analysis
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 transcriptSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
