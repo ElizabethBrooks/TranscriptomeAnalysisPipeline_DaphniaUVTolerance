@@ -1,7 +1,7 @@
 #!/bin/bash
 #Usage: bash generateMergedTable.sh countedGenesFolder sampleSet
 #Usage Ex: bash generateMergedTable.sh counted_htseq_run1 sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity
-#Usage Ex: bash generateMergedTable.sh counted_htseq_run1 sortedName_samtoolsHisat2_run1 genome
+#Usage Ex: bash generateMergedTable.sh counted_htseq_run1 sortedName_samtoolsHisat2_run2 genome
 #Script to generate guide file and merge gene counts
 # using the merge_tables.py script
 #Load necessary modules for ND CRC servers
@@ -16,9 +16,13 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Determine what analysis method was used for the input folder of data
-if [[ "$3" == *assembly* ]]; then
+if [[ "$3" == *assemblyTrinity* ]]; then
 	#Retrieve reads input absolute path
-	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	inputsPath="$inputsPath"/"$3"/"$2"/"$1"
+elif [[ "$1" == *assemblyGenome* ]]; then
+	#Retrieve reads input absolute path
+	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	inputsPath="$inputsPath"/"$3"/"$2"/"$1"
 elif [[ "$3" == "genome" ]]; then
 	#Retrieve sorted reads input absolute path
@@ -28,11 +32,14 @@ else
 	echo "ERROR: The counted files were not found... exiting"
 	exit 1
 fi
-#Retrieve alignment outputs absolute path
-outputsPath=$(grep "genesCounted:" ../InputData/outputPaths.txt | tr -d " " | sed "s/genesCounted://g")
 #Make a new directory for the analysis
-outputsPath="$outputsPath"/GeneCountsAnalyzed
-#mkdir $outputsPath
+outputsPath="$inputsPath"/GeneCountsAnalyzed
+mkdir $outputsPath
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputsPath directory already exsists... please remove before proceeding."
+	exit 1
+fi
 #Remove any extra number tags from file names
 for f0 in "$inputsPath"/*/; do
 	newName=$(echo "$f0" | sed 's/UV1/UV/g')

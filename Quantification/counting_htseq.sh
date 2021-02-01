@@ -6,7 +6,7 @@
 #Script to perform htseq-count counting of trimmed, aligned, then name sorted
 # paired end reads
 #Usage: qsub counting_htseq.sh sortedNameFolder analysisTarget
-#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 genome
+#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run2 genome
 #Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity
 
 #Required modules for ND CRC servers
@@ -21,9 +21,14 @@ fi
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
 #Determine what analysis method was used for the input folder of data
-if [[ "$2" == *assembly* ]]; then
+if [[ "$2" == *assemblyTrinity* ]]; then
 	#Retrieve reads input absolute path
-	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	inputsPath="$inputsPath"/"$2"/"$1"
+	outputsPath="$inputsPath"
+elif [[ "$1" == *assemblyGenome* ]]; then
+	#Retrieve reads input absolute path
+	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	inputsPath="$inputsPath"/"$2"/"$1"
 	outputsPath="$inputsPath"
 elif [[ "$2" == "genome" ]]; then
