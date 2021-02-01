@@ -26,48 +26,47 @@ fi
 if [[ "$1" == *assemblyTrinity* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	inputDB="$inputsPath"/"$1"/decoded_transdecoder
+	outputFolder="$inputsPath"/"$1"
 	#Determine input file type
 	if [[ "$1" == */clusteredNucleotide* ]]; then
-		inputsPath="$inputDB"/cdhitEst.transdecoder.pep
+		inputsPath="$outputFolder"/decoded_transdecoder/cdhitEst.transdecoder.pep
 	elif [[ "$1" == */clusteredProtein* ]]; then
-		inputsPath="$inputDB"/cdhit.transdecoder.pep
+		inputsPath="$outputFolder"/decoded_transdecoder/cdhit.transdecoder.pep
 	else 
-		inputsPath="$inputDB"/Trinity.fasta.transdecoder.pep
+		inputsPath="$outputFolder"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 	fi
 elif [[ "$1" == *assemblyGenome* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
-	inputDB="$inputsPath"/"$1"/decoded_transdecoder
+	outputFolder="$inputsPath"/"$1"
 	#Determine input file type
 	if [[ "$1" == */clusteredNucleotide* ]]; then
-		inputsPath="$inputDB"/cdhitEst.transdecoder.pep
+		inputsPath="$outputFolder"/decoded_transdecoder/cdhitEst.transdecoder.pep
 	elif [[ "$1" == */clusteredProtein* ]]; then
-		inputsPath="$inputDB"/cdhit.transdecoder.pep
+		inputsPath="$outputFolder"/decoded_transdecoder/cdhit.transdecoder.pep
 	else 
-		inputsPath="$inputDB"/Trinity.fasta.transdecoder.pep
+		inputsPath="$outputFolder"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 	fi
 elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
-	inputDB=$(dirname "$inputsPath")
-	inputsPath="$inputDB"/PA42.3.0.protein_new.fasta
+	inputsPath=$(grep "proteinSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequences://g")
 elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	inputDB=$(dirname "$inputsPath")
-	inputsPath="$inputDB"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
+	inputsPath=$(grep "codingSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequences://g")
+	outputFolder=$(dirname "$inputsPath")
+	inputsPath="$outputFolder"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
 elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
-	inputDB=$(dirname "$inputsPath")
-	inputsPath="$inputDB"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	inputsPath=$(grep "transcriptSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	outputFolder=$(dirname "$inputsPath")
+	inputsPath="$outputFolder"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
 #Check if DB of transcriptome exsists
+inputDB=$(dirname "$inputsPath")
 if [ -f "$inputsPath".phr ]; then
 	echo "Using exsisting "$inputsPath".phr DB..."
 else #Make blastable DB of transcriptome
@@ -82,25 +81,24 @@ fi
 #Determine which genome transcript set to use
 if [[ "$2" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
-	reciprocalPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
-	reciprocalDB=$(dirname "$reciprocalPath")
-	reciprocalPath="$reciprocalDB"/PA42.3.0.protein_new.fasta
+	reciprocalPath=$(grep "proteinSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequences://g")
 elif [[ "$2" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	reciprocalPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	reciprocalDB=$(dirname "$reciprocalPath")
-	reciprocalPath="$reciprocalDB"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
+	reciprocalPath=$(grep "codingSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequences://g")
+	reciprocalPath=$(dirname "$reciprocalPath")
+	reciprocalPath="$reciprocalPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
 elif [[ "$2" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	reciprocalPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
-	reciprocalDB=$(dirname "$reciprocalPath")
-	reciprocalPath="$reciprocalDB"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	reciprocalPath=$(grep "transcriptSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	reciprocalPath=$(dirname "$reciprocalPath")
+	reciprocalPath="$reciprocalPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 else
 	#Error message
 	echo "Invalid PA42 fasta entered... exiting!"
 	exit 1
 fi
 #Check if DB of transcriptome exsists
+reciprocalDB=$(dirname "$reciprocalPath")
 if [ -f "$reciprocalPath".phr ]; then
 	echo "Using exsisting "$reciprocalPath".phr DB..."
 else #Make blastable DB of transcriptome
@@ -109,7 +107,7 @@ else #Make blastable DB of transcriptome
 	makeblastdb -in $reciprocalPath -dbtype prot
 fi
 #Set outputs absolute path
-outputFolder="$inputDB"/reciprocalSearched_blastp_"$2"
+outputFolder="$outputFolder"/reciprocalSearched_blastp_"$2"
 #Name output file of inputs
 inputOutFile="$outputFolder"/reciprocalSearched_blastp_summary.txt
 #Make output directory

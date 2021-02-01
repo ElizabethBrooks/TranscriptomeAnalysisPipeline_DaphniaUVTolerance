@@ -22,13 +22,13 @@ fi
 #Determine database selection
 if [[ "$2" == "ncbi" ]]; then
 	#Retreive ncbi database storage path
-	dbFile=$(grep "ncbiDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/ncbiDB://g")
+	dbFile=$(grep "ncbi:" ../InputData/databasePaths.txt | tr -d " " | sed "s/ncbi://g")
 elif [[ "$2" == "uniprot" ]]; then
 	#Retreive uniprot database storage path
-	dbFile=$(grep "uniprotDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/uniprotDB://g")
+	dbFile=$(grep "uniprot:" ../InputData/databasePaths.txt | tr -d " " | sed "s/uniprot://g")
 elif [[ "$2" == "swissprot" ]]; then
 	#Retreive uniprot database storage path
-	dbFile=$(grep "trinotateSwissprotDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/trinotateSwissprotDB://g")
+	dbFile=$(grep "trinotateSwissprot:" ../InputData/databasePaths.txt | tr -d " " | sed "s/trinotateSwissprot://g")
 else
 	#Error message
 	echo "Invalid database selection entered (ncbi or uniprot only)... exiting!"
@@ -65,20 +65,20 @@ elif [[ "$1" == *assemblyGenome* ]]; then
 	fi
 elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
+	inputsPath=$(grep "proteinSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequences://g")
 	#Set outputs absolute path
 	outputPath=$(dirname "$inputsPath")
 	outputFolder="$outputPath"/searched_blastp_"$2"
 elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
+	inputsPath=$(grep "codingSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequences://g")
 	outputPath=$(dirname "$inputsPath")
 	inputsPath="$outputPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
 	#Set outputs absolute path
 	outputFolder="$outputPath"/searched_blastp_"$2"	
 elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
+	inputsPath=$(grep "transcriptSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	outputPath=$(dirname "$inputsPath")
 	inputsPath="$outputPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 	#Set outputs absolute path

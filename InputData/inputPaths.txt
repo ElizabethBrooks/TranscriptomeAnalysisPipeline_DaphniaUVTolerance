@@ -8,7 +8,6 @@ geneLengths: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/PA42.3.0
 transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_transcripts/PA42.3.0.transcripts_new.fasta
 codingSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_cds/PA42.3.0.cds_new.fasta
 proteinSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_proteins/PA42.3.0.protein_new.fasta
-transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_transcripts/PA42.3.0.transcripts_new.fasta
 geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources/PA42.3.0.gene_trans_map
 annotations: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/AnnotationAnalysis
 geneSets: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_Results

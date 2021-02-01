@@ -19,7 +19,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retreive pfam database storage path
-dbFile=$(grep "trinotatePfamDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/trinotatePfamDB://g")
+dbFile=$(grep "trinotatePfam:" ../InputData/databasePaths.txt | tr -d " " | sed "s/trinotatePfam://g")
 #Determine input query transcriptome for blastp
 if [[ "$1" == *assemblyTrinity* ]]; then
 	#Retrieve reads input absolute path
@@ -51,20 +51,20 @@ elif [[ "$1" == *assemblyGenome* ]]; then
 	fi
 elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
+	inputsPath=$(grep "proteinSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequences://g")
 	#Set outputs absolute path
 	outputPath=$(dirname "$inputsPath")
 	outputFolder="$outputPath"/searched_hmmscan
 elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
+	inputsPath=$(grep "codingSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequences://g")
 	outputPath=$(dirname "$inputsPath")
 	inputsPath="$outputPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
 	#Set outputs absolute path
 	outputFolder="$outputPath"/searched_hmmscan	
 elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
+	inputsPath=$(grep "transcriptSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	outputPath=$(dirname "$inputsPath")
 	inputsPath="$outputPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 	#Set outputs absolute path
