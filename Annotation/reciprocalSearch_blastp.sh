@@ -16,7 +16,7 @@
 #Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_transcripts
 
 #Load necessary modules for ND CRC servers
-module load bio/blast+
+module load bio
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -26,26 +26,26 @@ fi
 if [[ "$1" == *assemblyTrinity* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	inputDB="$inputsPath"/"$1"
+	inputDB="$inputsPath"/"$1"/decoded_transdecoder
 	#Determine input file type
 	if [[ "$1" == */clusteredNucleotide* ]]; then
-		inputsPath="$inputDB"/decoded_transdecoder/cdhitEst.transdecoder.pep
+		inputsPath="$inputDB"/cdhitEst.transdecoder.pep
 	elif [[ "$1" == */clusteredProtein* ]]; then
-		inputsPath="$inputDB"/decoded_transdecoder/cdhit.transdecoder.pep
+		inputsPath="$inputDB"/cdhit.transdecoder.pep
 	else 
-		inputsPath="$inputDB"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
+		inputsPath="$inputDB"/Trinity.fasta.transdecoder.pep
 	fi
 elif [[ "$1" == *assemblyGenome* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
-	inputDB="$inputsPath"/"$1"
+	inputDB="$inputsPath"/"$1"/decoded_transdecoder
 	#Determine input file type
 	if [[ "$1" == */clusteredNucleotide* ]]; then
-		inputsPath="$inputDB"/decoded_transdecoder/cdhitEst.transdecoder.pep
+		inputsPath="$inputDB"/cdhitEst.transdecoder.pep
 	elif [[ "$1" == */clusteredProtein* ]]; then
-		inputsPath="$inputDB"/decoded_transdecoder/cdhit.transdecoder.pep
+		inputsPath="$inputDB"/cdhit.transdecoder.pep
 	else 
-		inputsPath="$inputDB"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
+		inputsPath="$inputDB"/Trinity.fasta.transdecoder.pep
 	fi
 elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying

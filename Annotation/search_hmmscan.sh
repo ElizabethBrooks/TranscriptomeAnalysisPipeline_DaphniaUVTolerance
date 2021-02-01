@@ -12,7 +12,7 @@
 #Alternate usage Ex: qsub search_hmmscan.sh PA42_transcripts
 
 #Load necessary modules for ND CRC servers
-module load bio/hmmer
+module load bio
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -84,7 +84,7 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/searched_hmmscan_"$1"_summary.txt
+inputOutFile="$outputFolder"/searched_hmmscan_summary.txt
 #Use hmmscan to search Pfam domain entries
 echo "Beginning hmmscan pfam database search..."
 hmmscan --cpu 8 --domtblout TrinotatePFAM.out "$dbFile" "$inputsPath" > pfam.log

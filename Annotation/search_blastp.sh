@@ -13,7 +13,7 @@
 #Alternate usage Ex: qsub search_blastp.sh PA42_transcripts swissprot
 
 #Load necessary modules for ND CRC servers
-module load bio/blast+
+module load bio
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
