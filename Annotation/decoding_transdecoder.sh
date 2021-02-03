@@ -14,7 +14,7 @@
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_transcripts genome
 
 #Load necessary modules for ND CRC servers
-module load bio/2.0
+module load bio
 #module load bio/blast+
 #module load bio/hmmer
 #module load bio/cufflinks
@@ -41,16 +41,16 @@ elif [[ "$1" == *assemblyGenome* ]]; then
 	outputsPath=$inputsPath/$1
 elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
+	inputsPath=$(grep "codingSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequences://g")
 	#Retrieve genome reference and features paths
-	multiFASTA=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
+	multiFASTA=$(grep "codingSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequences://g")
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
+	inputsPath=$(grep "transcriptSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	#Retrieve genome reference and features paths
-	multiFASTA=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
+	multiFASTA=$(grep "transcriptSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 else
