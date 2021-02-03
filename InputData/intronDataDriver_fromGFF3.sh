@@ -3,6 +3,8 @@
 #Usage: bash intronDataDriver_fromGFF3.sh
 #Usage Ex: bash intronDataDriver_fromGFF3.sh
 
+#Load necessary modules
+module load bio
 #Set paths for r script
 export R_LIBS=/afs/crc.nd.edu/user/e/ebrooks5/R/x86_64-pc-linux-gnu-library/3.5:$R_LIBS
 #Retrieve analysis inputs path
