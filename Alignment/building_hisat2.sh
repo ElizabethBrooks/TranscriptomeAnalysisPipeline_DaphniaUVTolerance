@@ -12,7 +12,7 @@
 
 #Required modules for ND CRC servers
 module load bio
-module load bio/hisat2/2.1.0
+#module load bio/hisat2/2.1.0
 #Prepare for alignment
 dirFlag=0
 runNum=1

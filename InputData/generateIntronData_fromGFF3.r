@@ -1,7 +1,8 @@
 #!/usr/bin/env Rscript
 #R script to generate intron data from a gff3 file
 #Usage: Rscript generateIntronData_fromGFF3.r gffPath
-#Usage Ex: Rscript generateIntronData_fromGFF3.r /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources_PA42_v4.1/GCA_900092285.2_PA42_4.1_genomic.gbff
+#Usage Ex: Rscript generateIntronData_fromGFF3.r /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources_PA42_v4.1/GCA_900092285.2_PA42_4.1_genomic.gbff.gff
+#Usage Ex: Rscript generateIntronData_fromGFF3.r /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources_PA42_v3.0/PA42.3.0.annotation.18440.gff
 
 #Install Rsubread using BiocManager, this should only need to be done once
 #BiocManager::install("GenomicFeatures")

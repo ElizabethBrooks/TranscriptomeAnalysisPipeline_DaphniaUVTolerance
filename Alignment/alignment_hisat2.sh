@@ -15,7 +15,7 @@
 
 #Required modules for ND CRC servers
 module load bio
-module load bio/hisat2/2.1.0
+#module load bio/hisat2/2.1.0
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
