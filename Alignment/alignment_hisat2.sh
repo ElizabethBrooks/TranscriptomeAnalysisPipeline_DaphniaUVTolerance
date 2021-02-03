@@ -107,7 +107,7 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 		echo $curSampleNoPath >> $inputOutFile
 		echo "hisat2 -p 8 -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
 	else #Run hisat2 using input intron lengths
-		echo "Sample $curSampleNoPath is being aligned using input intron lengths..."
+		echo "Sample $curSampleNoPath is being aligned using input max intron length..."
 		hisat2 -p 8 --max-intronlen $maxIntron -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
 		#Add run inputs to output summary file
 		echo $curSampleNoPath >> $inputOutFile
