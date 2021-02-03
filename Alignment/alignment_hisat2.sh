@@ -7,11 +7,11 @@
 #Script to perform hisat2 alignment of trimmed
 # paired end reads
 #Note that a hisat2 genome refernce build folder needs to be generated first
-#Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder minIntronLength maxIntronLength
-#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 20 14239
-#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 20 23554
-#Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 trimmed_run1E05_assemblyTrinity 20 14239
-#Alternate usage Ex: qsub alignment_hisat2.sh assemblyStats trimmed_run1 trimmed_run1E05_assemblyTrinity 20 14239
+#Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder maxIntronLength
+#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 14239
+#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 23554
+#Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 trimmed_run1E05_assemblyTrinity 14239
+#Alternate usage Ex: qsub alignment_hisat2.sh assemblyStats trimmed_run1 trimmed_run1E05_assemblyTrinity 14239
 #Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
 
 #Required modules for ND CRC servers
@@ -34,12 +34,10 @@ if [[ "$1"  == assembly* ]]; then
 	#Retrieve alignment outputs absolute path
 	outputsPath="$assemblyPath"/"$3"
 	#Determine if intron lengths were entered
-	if [[ -z "$4" || -z "$5" ]]; then #Arguments were not entered
-		minIntron=-1
+	if [[ -z "$4" ]]; then #Arguments were not entered
 		maxIntron=-1
 	else
-		minIntron=$4
-		maxIntron=$5
+		maxIntron=$4
 	fi
 elif [[ "$1"  == genome* ]]; then
 	analysisInput="trimmed"
@@ -50,12 +48,10 @@ elif [[ "$1"  == genome* ]]; then
 	#Retrieve alignment outputs absolute path
 	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	#Determine if intron lengths were entered
-	if [[ -z "$3" || -z "$4" ]]; then #Arguments were not entered
-		minIntron=-1
+	if [[ -z "$3" ]]; then #Arguments were not entered
 		maxIntron=-1
 	else
-		minIntron=$3
-		maxIntron=$4
+		maxIntron=$3
 	fi
 else
 	echo "ERROR: The input alignment target is not valid... exiting!"
@@ -103,7 +99,7 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	#Create directory for current sample outputs
 	mkdir "$outputFolder"/"$curSampleNoPath"
 	#Determine if intron lengths were entered
-	if [[ $minIntron == -1 || $maxIntron == -1 ]]; then #Arguments were not entered
+	if [[ $maxIntron == -1 ]]; then #Arguments were not entered
 		#Run hisat2 with default settings
 		echo "Sample $curSampleNoPath is being aligned using default settings..."
 		hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
@@ -112,10 +108,10 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 		echo "hisat2 -p 8 -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
 	else #Run hisat2 using input intron lengths
 		echo "Sample $curSampleNoPath is being aligned using input intron lengths..."
-		hisat2 -p 8 --min-intronlen $minIntron --max-intronlen $maxIntron -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
+		hisat2 -p 8 --max-intronlen $maxIntron -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
 		#Add run inputs to output summary file
 		echo $curSampleNoPath >> $inputOutFile
-		echo "hisat2 -p 8 --min-intronlen $minIntron --max-intronlen $maxIntron -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
+		echo "hisat2 -p 8 --max-intronlen $maxIntron -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
 	fi
 	echo "Sample $curSampleNoPath has been aligned!"
 	#Convert or clean up bam files depending on analysis
