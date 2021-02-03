@@ -50,9 +50,9 @@ elif [[ "$1"  == genome* ]]; then
 	#Retrieve alignment outputs absolute path
 	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	#Determine if intron lengths were entered
-	if [[ -z "$3" || -z "$4" ]]; then #Arguments were not entered
-		minIntron=$3
-		maxIntron=$4
+	if [[ -z "$4" || -z "$5" ]]; then #Arguments were not entered
+		minIntron=$4
+		maxIntron=$5
 	else
 		minIntron=-1
 		maxIntron=-1
