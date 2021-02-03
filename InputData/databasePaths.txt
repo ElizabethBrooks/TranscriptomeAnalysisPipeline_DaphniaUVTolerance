@@ -1,6 +1,3 @@
-proteinSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_proteins/PA42.3.0.protein_new.fasta
-transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_transcripts/PA42.3.0.transcripts_new.fasta
-codingSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_cds/PA42.3.0.cds_new.fasta
 trinotateSwissprot: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_trinotate/uniprot_sprot.pep
 trinotatePfam: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_trinotate/Pfam-A.hmm
 trinotateSqlite: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/database_trinotate/Trinotate.sqlite

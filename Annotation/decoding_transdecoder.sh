@@ -41,16 +41,16 @@ elif [[ "$1" == *assemblyGenome* ]]; then
 	outputsPath=$inputsPath/$1
 elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "codingSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequences://g")
+	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	#Retrieve genome reference and features paths
-	multiFASTA=$(grep "codingSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequences://g")
+	multiFASTA=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	#Retrieve genome reference and features paths
-	multiFASTA=$(grep "transcriptSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	multiFASTA=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 else
