@@ -49,17 +49,17 @@ elif [[ "$1" == *assemblyGenome* ]]; then
 	fi
 elif [[ "$1" == PA42_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "proteinSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequences://g")
+	inputsPath=$(grep "proteinSequences:" ../InputData/inputsPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 elif [[ "$1" == PA42_cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "codingSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequences://g")
+	inputsPath=$(grep "codingSequences:" ../InputData/inputsPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	outputFolder=$(dirname "$inputsPath")
-	inputsPath="$outputFolder"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
+	inputsPath=$(echo "$outputPath"/decoded_transdecoder/*transdecoder.pep)
 elif [[ "$1" == PA42_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	inputsPath=$(grep "transcriptSequences:" ../InputData/inputsPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	outputFolder=$(dirname "$inputsPath")
-	inputsPath="$outputFolder"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	inputsPath=$(echo "$outputPath"/decoded_transdecoder/*transdecoder.pep)
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
