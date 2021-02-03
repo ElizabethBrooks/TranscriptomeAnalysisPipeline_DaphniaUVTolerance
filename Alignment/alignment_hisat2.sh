@@ -8,8 +8,8 @@
 # paired end reads
 #Note that a hisat2 genome refernce build folder needs to be generated first
 #Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder maxIntronLength
-#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 14239
-#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 23554
+#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 14239 dta
+#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 23554 dta
 #Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 trimmed_run1E05_assemblyTrinity 14239
 #Alternate usage Ex: qsub alignment_hisat2.sh assemblyStats trimmed_run1 trimmed_run1E05_assemblyTrinity 14239
 #Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
@@ -39,6 +39,12 @@ if [[ "$1"  == assembly* ]]; then
 	else
 		maxIntron=$4
 	fi
+	#Determine if downstream transcriptome analysis was selected
+	if [[ -z "$5" ]]; then #Arguments were not entered
+		dtAnalysis=-1
+	else
+		dtAnalysis=1
+	fi
 elif [[ "$1"  == genome* ]]; then
 	analysisInput="trimmed"
 	#Retrieve build genome files absolute path
@@ -52,6 +58,12 @@ elif [[ "$1"  == genome* ]]; then
 		maxIntron=-1
 	else
 		maxIntron=$3
+	fi
+	#Determine if downstream transcriptome analysis was selected
+	if [[ -z "$4" ]]; then #Arguments were not entered
+		dtAnalysis=-1
+	else
+		dtAnalysis=1
 	fi
 else
 	echo "ERROR: The input alignment target is not valid... exiting!"
@@ -100,18 +112,35 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	mkdir "$outputFolder"/"$curSampleNoPath"
 	#Determine if intron lengths were entered
 	if [[ $maxIntron == -1 ]]; then #Arguments were not entered
-		#Run hisat2 with default settings
-		echo "Sample $curSampleNoPath is being aligned using default settings..."
-		hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
-		#Add run inputs to output summary file
-		echo $curSampleNoPath >> $inputOutFile
-		echo "hisat2 -p 8 -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
+		if [[ $dtAnalysis == -1 ]]; then #Arguments were not entered
+			#Run hisat2 with default settings
+			echo "Sample $curSampleNoPath is being aligned using default settings..."
+			hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
+			#Add run inputs to output summary file
+			echo $curSampleNoPath >> $inputOutFile
+			echo "hisat2 -p 8 -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
+		else
+			#Run hisat2 with default settings
+			echo "Sample $curSampleNoPath is being aligned using default settings and dta..."
+			hisat2 -p 8 --dta -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
+			#Add run inputs to output summary file
+			echo $curSampleNoPath >> $inputOutFile
+			echo "hisat2 -p 8 --dta -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
+		fi
 	else #Run hisat2 using input intron lengths
-		echo "Sample $curSampleNoPath is being aligned using input max intron length..."
-		hisat2 -p 8 --max-intronlen $maxIntron -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
-		#Add run inputs to output summary file
-		echo $curSampleNoPath >> $inputOutFile
-		echo "hisat2 -p 8 --max-intronlen $maxIntron -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
+		if [[ $dtAnalysis == -1 ]]; then #Arguments were not entered
+			echo "Sample $curSampleNoPath is being aligned using input max intron length..."
+			hisat2 -p 8 --max-intronlen $maxIntron -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
+			#Add run inputs to output summary file
+			echo $curSampleNoPath >> $inputOutFile
+			echo "hisat2 -p 8 --max-intronlen $maxIntron -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
+		else
+			echo "Sample $curSampleNoPath is being aligned using input max intron length and dta..."
+			hisat2 -p 8 --dta --max-intronlen $maxIntron -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
+			#Add run inputs to output summary file
+			echo $curSampleNoPath >> $inputOutFile
+			echo "hisat2 -p 8 --dta --max-intronlen $maxIntron -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
+		fi
 	fi
 	echo "Sample $curSampleNoPath has been aligned!"
 	#Convert or clean up bam files depending on analysis

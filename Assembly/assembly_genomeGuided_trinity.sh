@@ -9,7 +9,7 @@
 #Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsHisat2_run2 E05 14239
 
 #Required modules for ND CRC servers
-module load bio/2.0
+module load bio
 #module load bio/samtools
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then

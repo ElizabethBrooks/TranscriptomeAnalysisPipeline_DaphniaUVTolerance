@@ -11,7 +11,7 @@
 #Usage Ex: qsub sorting_samtools.sh assembly name aligned_hisat2_run1 trimmed_run1E05_assemblyTrinity
 
 #Required modules for ND CRC servers
-module load bio/2.0
+module load bio
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"

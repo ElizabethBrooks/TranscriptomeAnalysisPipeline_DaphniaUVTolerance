@@ -9,7 +9,7 @@
 #Usage Ex: qsub assembly_trinity.sh trimmed_run1 Sierra
 
 #Required modules for ND CRC servers
-module load bio/2.0
+module load bio
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
