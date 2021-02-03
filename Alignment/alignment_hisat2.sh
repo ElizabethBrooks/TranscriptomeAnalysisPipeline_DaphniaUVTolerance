@@ -9,7 +9,7 @@
 #Note that a hisat2 genome refernce build folder needs to be generated first
 #Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder minIntronLength maxIntronLength
 #Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 20 14239
-#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 4 23554
+#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 20 23554
 #Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 trimmed_run1E05_assemblyTrinity 20 14239
 #Alternate usage Ex: qsub alignment_hisat2.sh assemblyStats trimmed_run1 trimmed_run1E05_assemblyTrinity 20 14239
 #Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
@@ -50,9 +50,9 @@ elif [[ "$1"  == genome* ]]; then
 	#Retrieve alignment outputs absolute path
 	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	#Determine if intron lengths were entered
-	if [[ -z "$4" || -z "$5" ]]; then #Arguments were not entered
-		minIntron=$4
-		maxIntron=$5
+	if [[ -z "$3" || -z "$4" ]]; then #Arguments were not entered
+		minIntron=$3
+		maxIntron=$4
 	else
 		minIntron=-1
 		maxIntron=-1
