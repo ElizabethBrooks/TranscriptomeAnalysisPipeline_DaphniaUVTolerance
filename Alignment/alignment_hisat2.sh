@@ -35,13 +35,13 @@ if [[ "$1"  == assembly* ]]; then
 	outputsPath="$assemblyPath"/"$3"
 	#Determine if intron lengths were entered
 	if [[ -z "$4" || -z "$5" ]]; then #Arguments were not entered
-		minIntron=$4
-		maxIntron=$5
-	else
 		minIntron=-1
 		maxIntron=-1
+	else
+		minIntron=$4
+		maxIntron=$5
 	fi
-elif [[ "$1"  == genome ]]; then
+elif [[ "$1"  == genome* ]]; then
 	analysisInput="trimmed"
 	#Retrieve build genome files absolute path
 	buildInputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/buildingGenome://g")
@@ -51,11 +51,11 @@ elif [[ "$1"  == genome ]]; then
 	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	#Determine if intron lengths were entered
 	if [[ -z "$3" || -z "$4" ]]; then #Arguments were not entered
-		minIntron=$3
-		maxIntron=$4
-	else
 		minIntron=-1
 		maxIntron=-1
+	else
+		minIntron=$3
+		maxIntron=$4
 	fi
 else
 	echo "ERROR: The input alignment target is not valid... exiting!"
