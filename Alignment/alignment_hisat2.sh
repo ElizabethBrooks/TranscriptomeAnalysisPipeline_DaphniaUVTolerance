@@ -41,7 +41,7 @@ if [[ "$1"  == assembly* ]]; then
 		minIntron=-1
 		maxIntron=-1
 	fi
-elif [[ "$1"  == genome* ]]; then
+elif [[ "$1"  == genome ]]; then
 	analysisInput="trimmed"
 	#Retrieve build genome files absolute path
 	buildInputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/buildingGenome://g")
