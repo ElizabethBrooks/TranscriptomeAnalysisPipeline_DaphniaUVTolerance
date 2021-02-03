@@ -1,5 +1,6 @@
 #!/bin/bash
 #Usage: bash prepareMatrices.sh countedGenesFilePath
+#Usage: bash prepareMatrices.sh /home/mae/Documents/RNASeq_Workshop_ND/geneCounts_merged_genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1.txt
 
 #Prepare for analysis
 dirFlag=0
@@ -11,11 +12,12 @@ outputsPath=$(dirname "$inputCounts")
 outputCounts="$outputsPath"
 
 #Make output directory
-outputsPath=$(basename "$inputCounts" | sed 's/\.txt//g')
+inputTag=$(basename "$inputCounts" | sed 's/\.txt//g')
+outputCounts="$outputCounts"/"$inputTag"
 mkdir "$outputCounts"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
-	echo "The $outputsPath directory already exsists... please remove before proceeding."
+	echo "The $outputCounts directory already exsists... please remove before proceeding."
 	exit 1
 fi
 
