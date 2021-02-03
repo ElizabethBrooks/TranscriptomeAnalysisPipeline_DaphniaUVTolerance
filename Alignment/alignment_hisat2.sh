@@ -9,6 +9,7 @@
 #Note that a hisat2 genome refernce build folder needs to be generated first
 #Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder minIntronLength maxIntronLength
 #Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 20 14239
+#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 4 23554
 #Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 trimmed_run1E05_assemblyTrinity 20 14239
 #Alternate usage Ex: qsub alignment_hisat2.sh assemblyStats trimmed_run1 trimmed_run1E05_assemblyTrinity 20 14239
 #Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
