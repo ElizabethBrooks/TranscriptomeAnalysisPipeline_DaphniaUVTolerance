@@ -36,7 +36,7 @@ if [[ "$1" == *assemblyTrinity* ]]; then
 	outputsPath=$inputsPath/$1
 elif [[ "$1" == *assemblyGenome* ]]; then
 	#Retrieve reads input absolute path
-	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	#Set outputs absolute path
 	outputsPath=$inputsPath/$1
 elif [[ "$1" == *cds ]]; then
