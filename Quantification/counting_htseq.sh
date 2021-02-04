@@ -5,9 +5,9 @@
 #$ -N counting_htseq_jobOutput
 #Script to perform htseq-count counting of trimmed, aligned, then name sorted
 # paired end reads
-#Usage: qsub counting_htseq.sh sortedNameFolder analysisTarget
+#Usage: qsub counting_htseq.sh sortedNameFolder analysisTarget optionalGenotype
 #Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 genome
-#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity
+#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity E05
 
 #Required modules for ND CRC servers
 module load bio
@@ -26,7 +26,7 @@ if [[ "$2" == *assemblyTrinity* ]]; then
 	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	inputsDir="$inputsPath"/"$2"/"$1"
 	outputsPath="$inputsPath"/"$2"
-elif [[ "$1" == *assemblyGenome* ]]; then
+elif [[ "$2" == *assemblyGenome* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	inputsDir="$inputsPath"/"$2"/"$1"
@@ -37,8 +37,14 @@ elif [[ "$2" == genome ]]; then
 	inputsDir="$inputsPath"/"$1"
 	outputsPath="$inputsPath"
 else
-	echo "ERROR: The sorted "$1" folder of bam files were not found... exiting"
+	echo "ERROR: Invalid sorted folder of bam files entered... exiting"
 	exit 1
+fi
+#Determine if a specific genotype was entered
+if [[ -z "$3" ]]; then #Argument was not entered
+	genotypeTag=""
+else
+	genotypeTag="$3"
 fi
 #Prepare for analysis
 dirFlag=0
@@ -61,7 +67,7 @@ done
 #Name output file of inputs
 inputOutFile="$outputFolder"/counted_summary.txt
 #Loop through all sorted forward and reverse paired reads and store the file locations in an array
-for f1 in "$inputsDir"/*/*.bam; do
+for f1 in "$inputsDir"/*"$genotypeTag"*/*.bam; do
 	#Name of sorted and aligned file
 	curAlignedSample="$f1"
 	#Trim file paths from current sample folder name

@@ -8,7 +8,7 @@
 # using Transdecoder
 #Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder
 #Usage Ex: qsub decoding_transdecoder.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98
-#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyGenomeTrinity
+#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity
 #Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsTophat2_run1Sierra_assemblyGenomeTrinity
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_cds
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_transcripts

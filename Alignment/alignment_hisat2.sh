@@ -7,11 +7,11 @@
 #Script to perform hisat2 alignment of trimmed
 # paired end reads
 #Note that a hisat2 genome refernce build folder needs to be generated first
-#Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder maxIntronLength
-#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 14239 dta
+#Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder maxIntronLength optionalDTA
+#Usage Ex: qsub alignment_hisat2.sh genomeStats trimmed_run1 14239 dta
 #Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 23554 dta
-#Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 trimmed_run1E05_assemblyTrinity 14239
-#Alternate usage Ex: qsub alignment_hisat2.sh assemblyStats trimmed_run1 trimmed_run1E05_assemblyTrinity 14239
+#Alternate usage Ex: qsub alignment_hisat2.sh assemblyE05 trimmed_run1 trimmed_run1E05_assemblyTrinity 23554
+#Alternate usage Ex: qsub alignment_hisat2.sh assemblyE05Stats trimmed_run1 trimmed_run1E05_assemblyTrinity 14239
 #Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
 
 #Required modules for ND CRC servers
@@ -34,13 +34,13 @@ if [[ "$1"  == assembly* ]]; then
 	#Retrieve alignment outputs absolute path
 	outputsPath="$assemblyPath"/"$3"
 	#Determine if intron lengths were entered
-	if [[ -z "$4" ]]; then #Arguments were not entered
+	if [[ -z "$4" ]]; then #Argument was not entered
 		maxIntron=-1
 	else
 		maxIntron=$4
 	fi
 	#Determine if downstream transcriptome analysis was selected
-	if [[ -z "$5" ]]; then #Arguments were not entered
+	if [[ -z "$5" ]]; then #Argument was not entered
 		dtAnalysis=-1
 	else
 		dtAnalysis=1
@@ -54,13 +54,13 @@ elif [[ "$1"  == genome* ]]; then
 	#Retrieve alignment outputs absolute path
 	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	#Determine if intron lengths were entered
-	if [[ -z "$3" ]]; then #Arguments were not entered
+	if [[ -z "$3" ]]; then #Argument was not entered
 		maxIntron=-1
 	else
 		maxIntron=$3
 	fi
 	#Determine if downstream transcriptome analysis was selected
-	if [[ -z "$4" ]]; then #Arguments were not entered
+	if [[ -z "$4" ]]; then #Argument was not entered
 		dtAnalysis=-1
 	else
 		dtAnalysis=1
@@ -69,6 +69,8 @@ else
 	echo "ERROR: The input alignment target is not valid... exiting!"
 	exit 1
 fi
+#Retrieve optional genotype
+genotypeTag=$(echo "$1" | sed 's/assembly//g' | sed 's/Stats//g')
 #Retrieve reads input absolute path
 inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
 trimmedFolder="$2"
@@ -102,7 +104,7 @@ buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/')
 buildFileNoEx=$(echo $buildFileNoEx | sed 's/\.fa//')
 #Loop through all forward and reverse paired reads and run Hisat2 on each pair
 # using 8 threads and samtools to convert output sam files to bam
-for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
+for f1 in "$inputsPath"/"$trimmedFolder"/*"$genotypeTag"*pForward.fq.gz; do
 	#Trim extension from current file name
 	curSample=$(echo $f1 | sed 's/.pForward\.fq\.gz//')
 	#Trim file path from current file name
@@ -111,8 +113,8 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 	#Create directory for current sample outputs
 	mkdir "$outputFolder"/"$curSampleNoPath"
 	#Determine if intron lengths were entered
-	if [[ $maxIntron == -1 ]]; then #Arguments were not entered
-		if [[ $dtAnalysis == -1 ]]; then #Arguments were not entered
+	if [[ "$maxIntron" == -1 ]]; then #Arguments were not entered
+		if [[ "$dtAnalysis" == -1 ]]; then #Arguments were not entered
 			#Run hisat2 with default settings
 			echo "Sample $curSampleNoPath is being aligned using default settings..."
 			hisat2 -p 8 -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
@@ -128,7 +130,7 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
 			echo "hisat2 -p 8 --dta -q -x" "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt >> "$inputOutFile"
 		fi
 	else #Run hisat2 using input intron lengths
-		if [[ $dtAnalysis == -1 ]]; then #Arguments were not entered
+		if [[ "$dtAnalysis" == -1 ]]; then #Arguments were not entered
 			echo "Sample $curSampleNoPath is being aligned using input max intron length..."
 			hisat2 -p 8 --max-intronlen $maxIntron -q -x "$buildOut"/"$buildFileNoEx" -1 "$f1" -2 "$curSample"_pReverse.fq.gz -S "$outputFolder"/"$curSampleNoPath"/accepted_hits.sam --summary-file "$outputFolder"/"$curSampleNoPath"/alignedSummary.txt
 			#Add run inputs to output summary file
