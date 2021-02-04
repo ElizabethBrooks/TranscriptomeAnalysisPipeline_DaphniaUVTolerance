@@ -6,12 +6,12 @@
 #$ -pe smp 1
 #Script to predict coding regions from a de novo assembled transcriptome fasta file
 # using Transdecoder
-#Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder target
-#Usage Ex: qsub decoding_transdecoder.sh trimmed_run1E05_assemblyTrinity clusteredNucleotides_cdhit_0.98
-#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run1Sierra_assemblyGenomeTrinity assembly
-#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsTophat2_run1Sierra_assemblyGenomeTrinity assembly
-#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_cds genome
-#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_transcripts genome
+#Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder
+#Usage Ex: qsub decoding_transdecoder.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98
+#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyGenomeTrinity
+#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsTophat2_run1Sierra_assemblyGenomeTrinity
+#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_cds
+#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_transcripts
 
 #Load necessary modules for ND CRC servers
 module load bio
@@ -39,14 +39,14 @@ elif [[ "$1" == *assemblyGenome* ]]; then
 	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	#Set outputs absolute path
 	outputsPath=$inputsPath/$1
-elif [[ "$1" == PA42_cds ]]; then
+elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	#Retrieve genome reference and features paths
 	multiFASTA=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
-elif [[ "$1" == PA42_transcripts ]]; then
+elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	#Retrieve genome reference and features paths
@@ -59,29 +59,31 @@ else
 	exit 1
 fi
 #Determine input file type
-if [[ $2 == assembly ]]; then
+if [[ "$1" == *assembly* ]]; then
 	#Retrieve genome reference and features paths
 	multiFASTA=$(echo "$outputsPath"/Trinity.fasta)
 	geneMap="$outputsPath"/"Trinity.fasta.gene_trans_map"
 	#Set output path
-	outputFolder=$outputsPath/"decoded_transdecoder"
-elif [[ $2 == clusteredNucleotide* ]]; then
+	outputFolder="$outputsPath"/"decoded_transdecoder"
+elif [[ "$1" == *clusteredNucleotide* ]]; then
 	#Retrieve genome reference and features paths
-	multiFASTA=$(echo "$outputsPath"/"$2"/cdhitEst)
-	geneMap="$outputsPath"/"Trinity.fasta.gene_trans_map"
+	multiFASTA=$(echo "$outputsPath"/cdhitEst)
+	inputsDir=$(dirname "$outputsPath")
+	geneMap="$inputsDir"/"Trinity.fasta.gene_trans_map"
 	#Set output path
-	outputFolder=$outputsPath/"$2"/"decoded_transdecoder"
-elif [[ $2 == clusteredProtein* ]]; then
+	outputFolder="$outputsPath"/"decoded_transdecoder"
+elif [[ "$1" == *clusteredProtein* ]]; then
 	#Retrieve genome reference and features paths
-	multiFASTA=$(echo "$outputsPath"/"$2"/cdhit)
-	geneMap="$outputsPath"/"Trinity.fasta.gene_trans_map"
+	multiFASTA=$(echo "$outputsPath"/cdhit)
+	inputsDir=$(dirname "$outputsPath")
+	geneMap="$inputsDir"/"Trinity.fasta.gene_trans_map"
 	#Set output path
-	outputFolder=$outputsPath/"$2"/"decoded_transdecoder"
-elif [[ $2 == genome ]]; then
+	outputFolder="$outputsPath"/"decoded_transdecoder"
+elif [[ "$1" == PA42* ]]; then
 	#Retrieve genome reference and features paths
 	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	#Set output path
-	outputFolder=$outputsPath/"decoded_transdecoder"
+	outputFolder="$outputsPath"/"decoded_transdecoder"
 else 
 	#Error message
 	echo "Invalid analysis target entered... exiting!"

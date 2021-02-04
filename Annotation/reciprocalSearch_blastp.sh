@@ -13,7 +13,7 @@
 #Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98 PA42_v4.1_proteins
 #Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_cds
 #Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_transcripts
-#Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_proteins
+#Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyGenomeTrinity PA42_v4.1_proteins
 
 #Load necessary modules for ND CRC servers
 module load bio
