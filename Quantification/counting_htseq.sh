@@ -6,7 +6,7 @@
 #Script to perform htseq-count counting of trimmed, aligned, then name sorted
 # paired end reads
 #Usage: qsub counting_htseq.sh sortedNameFolder analysisTarget
-#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run2 genome
+#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 genome
 #Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity
 
 #Required modules for ND CRC servers
@@ -24,17 +24,17 @@ genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | se
 if [[ "$2" == *assemblyTrinity* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	inputsPath="$inputsPath"/"$2"/"$1"
-	outputsPath="$inputsPath"
+	inputsDir="$inputsPath"/"$2"/"$1"
+	outputsPath="$inputsPath"/"$2"
 elif [[ "$1" == *assemblyGenome* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
-	inputsPath="$inputsPath"/"$2"/"$1"
-	outputsPath="$inputsPath"
-elif [[ "$2" == "genome" ]]; then
+	inputsDir="$inputsPath"/"$2"/"$1"
+	outputsPath="$inputsPath"/"$2"
+elif [[ "$2" == genome ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-	inputsPath="$inputsPath"/"$1"
+	inputsDir="$inputsPath"/"$1"
 	outputsPath="$inputsPath"
 else
 	echo "ERROR: The sorted "$1" folder of bam files were not found... exiting"
@@ -61,7 +61,7 @@ done
 #Name output file of inputs
 inputOutFile="$outputFolder"/counted_summary.txt
 #Loop through all sorted forward and reverse paired reads and store the file locations in an array
-for f1 in "$inputsPath"/*/*.bam; do
+for f1 in "$inputsDir"/*/*.bam; do
 	#Name of sorted and aligned file
 	curAlignedSample="$f1"
 	#Trim file paths from current sample folder name
@@ -99,4 +99,4 @@ for f1 in "$inputsPath"/*/*.bam; do
 	echo "Sample $curSampleNoPath has been counted!"
 done
 #Copy previous summaries
-cp "$inputsPath"/*.txt "$outputFolder"
+cp "$inputsDir"/*.txt "$outputFolder"
