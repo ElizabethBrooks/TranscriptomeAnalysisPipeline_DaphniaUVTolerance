@@ -5,10 +5,10 @@
 #$ -N searchTranscripts_jobOutput
 #Script to use an OrthoFinder script to find the longest transcript
 # variant per gene
-#Usage: qsub searchTranscripts_orthoFinder.sh proteomeFasta
-#Usage Ex: qsub searchTranscripts_orthoFinder.sh trimmed_run1E05_assemblyTrinity
-#Usage Ex: qsub searchTranscripts_orthoFinder.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98 swissprot
-#Usage Ex: qsub searchTranscripts_orthoFinder.sh PA42_v4.1_proteins
+#Usage: bash searchTranscripts_orthoFinder.sh proteomeFasta
+#Usage Ex: bash searchTranscripts_orthoFinder.sh trimmed_run1E05_assemblyTrinity
+#Usage Ex: bash searchTranscripts_orthoFinder.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98
+#Usage Ex: bash searchTranscripts_orthoFinder.sh PA42_v4.1_proteins
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then

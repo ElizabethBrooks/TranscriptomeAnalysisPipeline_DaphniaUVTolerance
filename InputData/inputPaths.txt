@@ -5,9 +5,9 @@ genomeFeatures: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomic
 geneAnnotations: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/GeneAnnotations/trinotate_annotation_report.csv
 geneOntologyArchive: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/gene.Blast2GO.merged.csv
 geneLengths: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/PA42.3.0.annotation.18440.genelength
-transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/transcripts_PA42_v4.1/PA42.4.1.cdna.longest.fasta
-codingSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/cds_PA42_v4.1/PA42.4.1.cds_longest.fasta
-proteinSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/proteins_PA42_v4.1/PA42.4.1.pep_longest.fasta
+transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/PA42_v4.1_transcripts/PA42.4.1.cdna.longest.fasta
+codingSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/PA42_v4.1_cds/PA42.4.1.cds_longest.fasta
+proteinSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/PA42_v4.1_proteins/PA42.4.1.pep_longest.fasta
 geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources_PA42_v4.1/PA42.4.1.fasta.gene_trans_map
 annotations: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/AnnotationAnalysis
 geneSets: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_Results
