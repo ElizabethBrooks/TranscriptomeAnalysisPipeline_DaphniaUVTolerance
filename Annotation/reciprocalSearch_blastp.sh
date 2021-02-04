@@ -13,7 +13,7 @@
 #Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98 PA42_v4.1_proteins
 #Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_cds
 #Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_transcripts
-#Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_transcripts
+#Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_proteins
 
 #Load necessary modules for ND CRC servers
 module load bio
@@ -47,15 +47,15 @@ elif [[ "$1" == *assemblyGenome* ]]; then
 	else 
 		inputsPath="$outputFolder"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 	fi
-elif [[ "$1" == PA42*_proteins ]]; then
+elif [[ "$1" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
-elif [[ "$1" == PA42*_cds ]]; then
+elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	outputFolder=$(dirname "$inputsPath")
 	inputsPath=$(echo "$outputPath"/decoded_transdecoder/*transdecoder.pep)
-elif [[ "$1" == PA42*_transcripts ]]; then
+elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	outputFolder=$(dirname "$inputsPath")
@@ -81,15 +81,15 @@ fi
 #Determine which genome transcript set to use
 if [[ "$2" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
-	reciprocalPath=$(grep "proteinSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequences://g")
+	reciprocalPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 elif [[ "$2" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	reciprocalPath=$(grep "codingSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequences://g")
+	reciprocalPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	reciprocalPath=$(dirname "$reciprocalPath")
 	reciprocalPath="$reciprocalPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
 elif [[ "$2" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	reciprocalPath=$(grep "transcriptSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	reciprocalPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	reciprocalPath=$(dirname "$reciprocalPath")
 	reciprocalPath="$reciprocalPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 else
