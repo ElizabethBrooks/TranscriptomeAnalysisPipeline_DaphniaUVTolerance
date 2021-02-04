@@ -10,7 +10,7 @@
 #Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder maxIntronLength optionalDTA
 #Usage Ex: qsub alignment_hisat2.sh genomeStats trimmed_run1 14239 dta
 #Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 23554 dta
-#Alternate usage Ex: qsub alignment_hisat2.sh assemblyE05 trimmed_run1 trimmed_run1E05_assemblyTrinity 23554
+#Alternate usage Ex: qsub alignment_hisat2.sh assemblyE05 trimmed_run1 sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity 23554
 #Alternate usage Ex: qsub alignment_hisat2.sh assemblyE05Stats trimmed_run1 trimmed_run1E05_assemblyTrinity 14239
 #Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
 
@@ -24,9 +24,14 @@ if [ $# -eq 0 ]; then
 fi
 #Determine which analysis folder was input
 if [[ "$1"  == assembly* ]]; then
-	analysisInput="assembly"
-	#Retrieve reads input absolute path
-	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	#Determine the type of assembly
+	elif [[ "$3" == *assemblyTrinity* ]]; then
+		#Retrieve reads input absolute path
+		assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	elif [[ "$3" == *assemblyGenome* ]]; then
+		#Retrieve reads input absolute path
+		assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+	fi
 	#Retrieve build transcriptome files absolute path
 	buildInputsPath="$assemblyPath"/"$3"
 	#Retrieve transcriptome reference absolute path for alignment
@@ -46,7 +51,6 @@ if [[ "$1"  == assembly* ]]; then
 		dtAnalysis=1
 	fi
 elif [[ "$1"  == genome* ]]; then
-	analysisInput="trimmed"
 	#Retrieve build genome files absolute path
 	buildInputsPath=$(grep "buildingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/buildingGenome://g")
 	#Retrieve genome reference absolute path for alignment
