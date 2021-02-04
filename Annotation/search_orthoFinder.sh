@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N search_orthoFinder_jobOutput
-#$ -pe smp 24
+#$ -pe smp 12
 #Script to use OrthoFinder to find orthogroups and orthologs, 
 # infers rooted gene trees for all orthogroups and identifies 
 # all of the gene duplication events in those gene trees
@@ -95,11 +95,11 @@ inputOutFile="$outputFolder"/searched_orthoFinder_summary.txt
 echo "Beginning OrthoFinder search..."
 #Check OrthoFinder species tree inference method
 if [[ "$1" == MSA ]]; then #Multiple sequence alignment
-	"$softwarePath"/orthofinder -f "$inputsDir" -t 24 -M msa
+	"$softwarePath"/orthofinder -f "$inputsDir" -t 12 -M msa
 	#Output run commands to summary file
 	echo "$softwarePath"/"orthofinder -f" "$inputsDir" "-t 24 -M msa" > "$inputOutFile"
 else #Default
-	"$softwarePath"/orthofinder -f "$inputsDir" -t 24
+	"$softwarePath"/orthofinder -f "$inputsDir" -t 12
 	#Output run commands to summary file
 	echo "$softwarePath"/"orthofinder -f" "$inputsDir" "-t 24" > "$inputOutFile"
 fi
