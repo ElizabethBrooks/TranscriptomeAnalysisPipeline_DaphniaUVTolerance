@@ -34,11 +34,21 @@ if [[ "$1" == *assemblyTrinity* ]]; then
 	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	#Set outputs absolute path
 	outputsPath=$inputsPath/$1
+	#Retrieve genome reference and features paths
+	multiFASTA=$(echo "$outputsPath"/Trinity.fasta)
+	geneMap="$outputsPath"/"Trinity.fasta.gene_trans_map"
+	#Set output path
+	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == *assemblyGenome* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	#Set outputs absolute path
 	outputsPath=$inputsPath/$1
+	#Retrieve genome reference and features paths
+	multiFASTA=$(echo "$outputsPath"/Trinity.fasta)
+	geneMap="$outputsPath"/"Trinity.fasta.gene_trans_map"
+	#Set output path
+	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
@@ -46,6 +56,10 @@ elif [[ "$1" == *cds ]]; then
 	multiFASTA=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
+	#Retrieve genome reference and features paths
+	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	#Set output path
+	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
@@ -53,41 +67,26 @@ elif [[ "$1" == *transcripts ]]; then
 	multiFASTA=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
+	#Retrieve genome reference and features paths
+	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	#Set output path
+	outputFolder="$outputsPath"/"decoded_transdecoder"
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
-#Determine input file type
-if [[ "$1" == *assembly* ]]; then
-	#Retrieve genome reference and features paths
-	multiFASTA=$(echo "$outputsPath"/Trinity.fasta)
-	geneMap="$outputsPath"/"Trinity.fasta.gene_trans_map"
-	#Set output path
-	outputFolder="$outputsPath"/"decoded_transdecoder"
-elif [[ "$1" == *clusteredNucleotide* ]]; then
+#Determine if the input is clustered
+if [[ "$1" == *clusteredNucleotide* ]]; then
 	#Retrieve genome reference and features paths
 	multiFASTA=$(echo "$outputsPath"/cdhitEst)
 	inputsDir=$(dirname "$outputsPath")
 	geneMap="$inputsDir"/"Trinity.fasta.gene_trans_map"
-	#Set output path
-	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == *clusteredProtein* ]]; then
 	#Retrieve genome reference and features paths
 	multiFASTA=$(echo "$outputsPath"/cdhit)
 	inputsDir=$(dirname "$outputsPath")
 	geneMap="$inputsDir"/"Trinity.fasta.gene_trans_map"
-	#Set output path
-	outputFolder="$outputsPath"/"decoded_transdecoder"
-elif [[ "$1" == PA42* ]]; then
-	#Retrieve genome reference and features paths
-	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
-	#Set output path
-	outputFolder="$outputsPath"/"decoded_transdecoder"
-else 
-	#Error message
-	echo "Invalid analysis target entered... exiting!"
-	exit 1
 fi
 #Make output folder
 mkdir "$outputFolder"

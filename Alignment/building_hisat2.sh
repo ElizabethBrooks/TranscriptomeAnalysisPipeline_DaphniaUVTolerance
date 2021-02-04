@@ -10,6 +10,7 @@
 #Usage Ex: qsub building_hisat2.sh trimmed_run1
 #Alternate usage Ex: qsub building_hisat2.sh trimmed_run1E05_assemblyTrinity
 #Alternate usage Ex: qsub building_hisat2.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity
+#Alternate usage Ex: qsub building_hisat2.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity/clusteredNucleotides_cdhit_0.98
 
 #Required modules for ND CRC servers
 module load bio
@@ -41,6 +42,14 @@ elif [[ "$1"  == trimmed* ]]; then
 else
 	echo "Input analysis target (genome or assembly folder) is not valid... exiting!"
 	exit 1
+fi
+#Determine if the input is clustered
+if [[ "$1" == *clusteredNucleotide* ]]; then
+	#Retrieve genome reference and features paths
+	buildFile=$(echo "$outputsPath"/cdhitEst)
+elif [[ "$1" == *clusteredProtein* ]]; then
+	#Retrieve genome reference and features paths
+	buildFile=$(echo "$outputsPath"/cdhit)
 fi
 #Move to outputs directory
 cd "$outputsPath"
