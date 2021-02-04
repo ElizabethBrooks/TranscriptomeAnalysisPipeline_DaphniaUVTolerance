@@ -5,8 +5,8 @@
 #$ -N assembly_genomeGuided_trinity_jobOutput
 #$ -pe smp 8
 #Script to perform genome-guided Trinity de novo transcriptome assembly
-#Usage: qsub assembly_genomeGuided_trinity.sh sortedFolder genotype maxIntronLength
-#Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsHisat2_run2 E05 14239
+#Usage: qsub assembly_genomeGuided_trinity.sh sortedFolder genotype maxIntronLength genome
+#Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsHisat2_run2 E05 14239 PA42_v4.1
 
 #Required modules for ND CRC servers
 module load bio
@@ -37,7 +37,7 @@ inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | s
 #Retrieve assembly outputs absolute path
 outputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 #Create output directory
-outputFolder="$outputsPath"/"$1""$2"_assemblyGenomeTrinity
+outputFolder="$outputsPath"/"$1""$2"_assembly"$4"Trinity
 mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -47,7 +47,7 @@ fi
 #Move to outputs directory
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1""$2"_assemblyGenomeTrinity_summary.txt
+inputOutFile="$outputFolder"/"$1""$2"_assembly"$4"Trinity_summary.txt
 #Merge and re-coordinate sort the set of bam files
 readFiles=$(echo "$inputsPath"/"$1"/*_"$2"_*/*.bam)
 echo "Beginning merging..."

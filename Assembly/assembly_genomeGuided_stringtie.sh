@@ -5,8 +5,8 @@
 #$ -N alignment_hisat2_jobOutput
 #$ -pe smp 8
 #Script to assemble transcripts using a reference genome and stringtie
-#Usage: qsub assembly_genomeGuided_stringtie.sh sortedFolder genotype maxIntronLength
-#Usage Ex: qsub assembly_genomeGuided_stringtie.sh sortedCoordinate_samtoolsHisat2_run2 E05 14239
+#Usage: qsub assembly_genomeGuided_stringtie.sh sortedFolder genotype genome
+#Usage Ex: qsub assembly_genomeGuided_stringtie.sh sortedCoordinate_samtoolsHisat2_run2 E05 PA42_v4.1
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -41,7 +41,7 @@ genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | se
 #Retrieve alignment outputs absolute path
 outputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 #Create output directory
-outputFolder="$outputsPath"/"$1""$2"_assemblyGenomeStringtie
+outputFolder="$outputsPath"/"$1""$2"_assembly"$3"Stringtie
 mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -51,7 +51,7 @@ fi
 #Move to outputs directory
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1""$2"_assemblyGenomeStringtie_summary.txt
+inputOutFile="$outputFolder"/"$1""$2"_assembly"$3"Stringtie_summary.txt
 #Merge and re-coordinate sort the set of bam files
 readFiles=$(echo "$inputsPath"/"$1"/*_"$2"_*/*.bam)
 echo "Beginning merging..."

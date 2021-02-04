@@ -7,9 +7,9 @@
 #Script to use hmmscan to use hmmer to identify protein domains
 #Usage: qsub search_hmmscan.sh transcriptomeFasta
 #Usage Ex: qsub search_hmmscan.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98
-#Alternate usage Ex: qsub search_hmmscan.sh PA42_proteins
-#Alternate usage Ex: qsub search_hmmscan.sh PA42_cds
-#Alternate usage Ex: qsub search_hmmscan.sh PA42_transcripts
+#Alternate usage Ex: qsub search_hmmscan.sh PA42_v4.1_proteins
+#Alternate usage Ex: qsub search_hmmscan.sh PA42_v4.1_cds
+#Alternate usage Ex: qsub search_hmmscan.sh PA42_v4.1_transcripts
 
 #Load necessary modules for ND CRC servers
 module load bio
@@ -49,20 +49,20 @@ elif [[ "$1" == *assemblyGenome* ]]; then
 	else 
 		inputsPath="$inputsPath"/Trinity.fasta.transdecoder.pep
 	fi
-elif [[ "$1" == PA42_proteins ]]; then
+elif [[ "$1" == PA42*_proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 	#Set outputs absolute path
 	outputPath=$(dirname "$inputsPath")
 	outputFolder="$outputPath"/searched_hmmscan
-elif [[ "$1" == PA42_cds ]]; then
+elif [[ "$1" == PA42*_cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	outputPath=$(dirname "$inputsPath")
 	inputsPath=$(echo "$outputPath"/decoded_transdecoder/*transdecoder.pep)
 	#Set outputs absolute path
 	outputFolder="$outputPath"/searched_hmmscan	
-elif [[ "$1" == PA42_transcripts ]]; then
+elif [[ "$1" == PA42*_transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	outputPath=$(dirname "$inputsPath")
