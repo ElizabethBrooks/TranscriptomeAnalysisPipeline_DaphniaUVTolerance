@@ -7,7 +7,7 @@
 #Script to perform samtools sorting of trimmed, then aligned
 # paired end reads
 #Usage: qsub sorting_samtools.sh sortingTarget sortingMethod alignedFolder optionalAssembledFolder
-#Usage Ex: qsub sorting_samtools.sh genome coordiante aligned_hisat2_run2
+#Usage Ex: qsub sorting_samtools.sh genome coordinate aligned_hisat2_run2
 #Usage Ex: qsub sorting_samtools.sh assembly name aligned_hisat2_run1 trimmed_run1E05_assemblyTrinity
 
 #Required modules for ND CRC servers
@@ -28,7 +28,7 @@ elif [[ "$2" == "coordinate" || "$2" == "Coordinate" || "$2" == "c" || "$2" == "
 	methodTag="Coordinate"
 else
 	#Report error with input flag
-	echo "ERROR: a flag for sorting method (name or coordiante) is expected... exiting"
+	echo "ERROR: a flag for sorting method (name or coordinate) is expected... exiting"
 	exit 1
 fi
 #Determine which analysis folder was input
