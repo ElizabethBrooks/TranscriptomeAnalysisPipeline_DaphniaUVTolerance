@@ -9,6 +9,7 @@
 #Usage: qsub building_hisat2.sh trimmedOrAssemblyFolder
 #Usage Ex: qsub building_hisat2.sh trimmed_run1
 #Alternate usage Ex: qsub building_hisat2.sh trimmed_run1E05_assemblyTrinity
+#Alternate usage Ex: qsub building_hisat2.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity
 
 #Required modules for ND CRC servers
 module load bio
@@ -17,9 +18,18 @@ module load bio
 dirFlag=0
 runNum=1
 #Determine which analysis folder was input
-if [[ "$1"  == *assembly* ]]; then
+#Determine the type of assembly
+if [[ "$1" == *assemblyTrinity* ]]; then
+	#Retrieve reads input absolute path
+	outputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	#Retrieve build outputs absolute path
-	outputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	outputsPath="$outputsPath"/"$1"
+	#Retrieve transcriptome reference absolute path for alignment
+	buildFile="$outputsPath"/"Trinity.fasta"
+elif [[ "$1" == *assemblyGenome* ]]; then
+	#Retrieve reads input absolute path
+	outputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+	#Retrieve build outputs absolute path
 	outputsPath="$outputsPath"/"$1"
 	#Retrieve transcriptome reference absolute path for alignment
 	buildFile="$outputsPath"/"Trinity.fasta"
