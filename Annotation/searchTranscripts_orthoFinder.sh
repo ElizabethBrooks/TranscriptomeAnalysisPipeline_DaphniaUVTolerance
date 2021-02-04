@@ -5,8 +5,10 @@
 #$ -N searchTranscripts_jobOutput
 #Script to use an OrthoFinder script to find the longest transcript
 # variant per gene
-#Usage: qsub searchTranscripts_orthoFinder.sh proteomeFastaList
-#Usage Ex: qsub searchTranscripts_orthoFinder.sh trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1PA_assemblyTrinity trimmed_run1Sierra_assemblyTrinity PA42_v4.1_proteins
+#Usage: qsub searchTranscripts_orthoFinder.sh proteomeFasta
+#Usage Ex: qsub searchTranscripts_orthoFinder.sh trimmed_run1E05_assemblyTrinity
+#Usage Ex: qsub searchTranscripts_orthoFinder.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98 swissprot
+#Usage Ex: qsub searchTranscripts_orthoFinder.sh PA42_v4.1_proteins
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -15,43 +17,67 @@ if [ $# -eq 0 ]; then
 fi
 #Set software path
 softwarePath=$(grep "orthoFinder:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/orthoFinder://g")
-#Set outputs absolute path
-outputPath=$(grep "transcriptSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/transcriptSearch://g")
-dirFlag=0
-runNum=1
-#Make a new directory for each run
-while [ $dirFlag -eq 0 ]; do
-	#Hisat output directory name
-	outputFolder="$outputPath"/"searchedTranscripts_orthoFinder_run$runNum"
-	mkdir "$outputFolder"
-	#Check if the folder already exists
-	if [ $? -ne 0 ]; then
-		#Increment the folder name
-		let runNum+=1
-	else
-		#Indicate that the folder was successfully made
-		dirFlag=1
-		echo "Creating folder for run $runNum of orthoFinder transcript searching..."
+#Determine input query transcriptome for blastp
+if [[ "$1" == *assemblyTrinity* ]]; then
+	#Retrieve reads input absolute path
+	assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
+	#Set outputs absolute path
+	outputFolder="$assemblyPath"/"$1"/searchedTranscripts_orthoFinder
+	#Determine input file type
+	if [[ "$1" == */clusteredNucleotide* ]]; then
+		inputsPath="$inputsPath"/cdhitEst.transdecoder.pep
+	elif [[ "$1" == */clusteredProtein* ]]; then
+		inputsPath="$inputsPath"/cdhit.transdecoder.pep
+	else 
+		inputsPath="$inputsPath"/Trinity.fasta.transdecoder.pep
 	fi
-done
-#Loop through all input proteomes and build directory of inputs
-for i in "${@:2}"; do #Skip first argument
-	#Determine input proteome
-	if [[ "$i" == *assembly* ]]; then
-		#Retrieve reads input absolute path
-		assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-		inputsPath="$assemblyPath"/"$i"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
-		cp "$inputsPath" "$outputFolder"/"$i"_Trinity.fasta.transdecoder.pep
-	elif [[ "$i" == *proteins ]]; then
-		#Retrieve genome reference absolute path for querying
-		inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
-		cp "$inputsPath" "$outputFolder"
-	else
-		#Error message
-		echo "Invalid fasta entered (species proteome expected)... exiting!"
-		exit 1
+elif [[ "$1" == *assemblyGenome* ]]; then
+	#Retrieve reads input absolute path
+	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
+	#Set outputs absolute path
+	outputFolder="$assemblyPath"/"$1"/searchedTranscripts_orthoFinder
+	#Determine input file type
+	if [[ "$1" == */clusteredNucleotide* ]]; then
+		inputsPath="$inputsPath"/cdhitEst.transdecoder.pep
+	elif [[ "$1" == */clusteredProtein* ]]; then
+		inputsPath="$inputsPath"/cdhit.transdecoder.pep
+	else 
+		inputsPath="$inputsPath"/Trinity.fasta.transdecoder.pep
 	fi
-done
+elif [[ "$1" == *proteins ]]; then
+	#Retrieve genome reference absolute path for querying
+	inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
+	#Set outputs absolute path
+	outputPath=$(dirname "$inputsPath")
+	outputFolder="$outputPath"/searchedTranscripts_orthoFinder
+elif [[ "$1" == *cds ]]; then
+	#Retrieve genome reference absolute path for querying
+	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
+	outputPath=$(dirname "$inputsPath")
+	inputsPath=$(echo "$outputPath"/decoded_transdecoder/*transdecoder.pep)
+	#Set outputs absolute path
+	outputFolder="$outputPath"/searchedTranscripts_orthoFinder	
+elif [[ "$1" == *transcripts ]]; then
+	#Retrieve genome reference absolute path for querying
+	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	outputPath=$(dirname "$inputsPath")
+	inputsPath=$(echo "$outputPath"/decoded_transdecoder/*transdecoder.pep)
+	#Set outputs absolute path
+	outputFolder="$outputPath"/searchedTranscripts_orthoFinder	
+else
+	#Error message
+	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
+	exit 1
+fi
+#Make output directory
+mkdir "$outputFolder"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
@@ -59,11 +85,7 @@ inputOutFile="$outputFolder"/searchedTranscripts_orthoFinder_summary.txt
 #Use OrthoFinder to find orthologs
 echo "Beginning transcript search..."
 #Run script to keep the longest transcript variant per gene
-for f in "$outputFolder"/*.fasta*; do 
-	python "$softwarePath"/tools/primary_transcript.py $f
-	#Output run commands to summary file
-	echo "python "$softwarePath"/tools/primary_transcript.py "$f > "$inputOutFile"
-	#Clean up
-	rm "$f"
-done
+python "$softwarePath"/tools/primary_transcript.py "$inputsPath"
+#Output run commands to summary file
+echo "python "$softwarePath"/tools/primary_transcript.py "$inputsPath > "$inputOutFile"
 echo "Transcript search complete!"

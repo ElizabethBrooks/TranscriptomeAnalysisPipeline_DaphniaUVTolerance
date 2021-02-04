@@ -5,7 +5,7 @@
 #$ -N search_hmmscan_jobOutput
 #$ -pe smp 8
 #Script to use hmmscan to use hmmer to identify protein domains
-#Usage: qsub search_hmmscan.sh transcriptomeFasta
+#Usage: qsub search_hmmscan.sh proteomeFasta
 #Usage Ex: qsub search_hmmscan.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98
 #Alternate usage Ex: qsub search_hmmscan.sh PA42_v4.1_proteins
 #Alternate usage Ex: qsub search_hmmscan.sh PA42_v4.1_cds

@@ -6,7 +6,7 @@
 #$ -pe smp 8
 #Script to use blastp to translate the nucleotide sequences of a reference genome
 # for searching a protein database
-#Usage: qsub search_blastp.sh transcriptomeFasta proteinDB
+#Usage: qsub search_blastp.sh proteomeFasta proteinDB
 #Usage Ex: qsub search_blastp.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98 swissprot
 #Alternate usage Ex: qsub search_blastp.sh PA42_v4.1_proteins swissprot
 #Alternate usage Ex: qsub search_blastp.sh PA42_v4.1_cds swissprot
