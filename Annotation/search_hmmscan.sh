@@ -49,20 +49,20 @@ elif [[ "$1" == *assemblyGenome* ]]; then
 	else 
 		inputsPath="$inputsPath"/Trinity.fasta.transdecoder.pep
 	fi
-elif [[ "$1" == PA42*_proteins ]]; then
+elif [[ "$1" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 	#Set outputs absolute path
 	outputPath=$(dirname "$inputsPath")
 	outputFolder="$outputPath"/searched_hmmscan
-elif [[ "$1" == PA42*_cds ]]; then
+elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	outputPath=$(dirname "$inputsPath")
 	inputsPath=$(echo "$outputPath"/decoded_transdecoder/*transdecoder.pep)
 	#Set outputs absolute path
 	outputFolder="$outputPath"/searched_hmmscan	
-elif [[ "$1" == PA42*_transcripts ]]; then
+elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	outputPath=$(dirname "$inputsPath")

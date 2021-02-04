@@ -79,22 +79,22 @@ else #Make blastable DB of transcriptome
 	cd $currLoc
 fi
 #Determine which genome transcript set to use
-if [[ "$2" == PA42*_proteins ]]; then
+if [[ "$2" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	reciprocalPath=$(grep "proteinSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequences://g")
-elif [[ "$2" == PA42*_cds ]]; then
+elif [[ "$2" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	reciprocalPath=$(grep "codingSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequences://g")
 	reciprocalPath=$(dirname "$reciprocalPath")
 	reciprocalPath="$reciprocalPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
-elif [[ "$2" == PA42*_transcripts ]]; then
+elif [[ "$2" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	reciprocalPath=$(grep "transcriptSequences:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	reciprocalPath=$(dirname "$reciprocalPath")
 	reciprocalPath="$reciprocalPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
 else
 	#Error message
-	echo "Invalid PA42 fasta entered... exiting!"
+	echo "Invalid genome fasta entered... exiting!"
 	exit 1
 fi
 #Check if DB of transcriptome exsists

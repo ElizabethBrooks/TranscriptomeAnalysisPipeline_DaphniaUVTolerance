@@ -6,7 +6,7 @@
 #Script to use an OrthoFinder script to find the longest transcript
 # variant per gene
 #Usage: qsub searchTranscripts_orthoFinder.sh proteomeFastaList
-#Usage Ex: qsub searchTranscripts_orthoFinder.sh trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1PA_assemblyTrinity trimmed_run1Sierra_assemblyTrinity PA42_proteins
+#Usage Ex: qsub searchTranscripts_orthoFinder.sh trimmed_run1E05_assemblyTrinity trimmed_run1Y05_assemblyTrinity trimmed_run1R2_assemblyTrinity trimmed_run1Y023_5_assemblyTrinity trimmed_run1PA_assemblyTrinity trimmed_run1Sierra_assemblyTrinity PA42_v4.1_proteins
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -35,18 +35,17 @@ while [ $dirFlag -eq 0 ]; do
 	fi
 done
 #Loop through all input proteomes and build directory of inputs
-inputsDir="$outputFolder"
 for i in "${@:2}"; do #Skip first argument
 	#Determine input proteome
 	if [[ "$i" == *assembly* ]]; then
 		#Retrieve reads input absolute path
 		assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 		inputsPath="$assemblyPath"/"$i"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
-		cp "$inputsPath" "$inputsDir"/"$i"_Trinity.fasta.transdecoder.pep
-	elif [[ "$i" == PA42_proteins ]]; then
+		cp "$inputsPath" "$outputFolder"/"$i"_Trinity.fasta.transdecoder.pep
+	elif [[ "$i" == *proteins ]]; then
 		#Retrieve genome reference absolute path for querying
 		inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
-		cp "$inputsPath" "$inputsDir"
+		cp "$inputsPath" "$outputFolder"
 	else
 		#Error message
 		echo "Invalid fasta entered (species proteome expected)... exiting!"
@@ -60,9 +59,11 @@ inputOutFile="$outputFolder"/searchedTranscripts_orthoFinder_summary.txt
 #Use OrthoFinder to find orthologs
 echo "Beginning transcript search..."
 #Run script to keep the longest transcript variant per gene
-for f in "$inputsDir"/*.fasta*; do 
+for f in "$outputFolder"/*.fasta*; do 
 	python "$softwarePath"/tools/primary_transcript.py $f
 	#Output run commands to summary file
 	echo "python "$softwarePath"/tools/primary_transcript.py "$f > "$inputOutFile"
+	#Clean up
+	rm "$f"
 done
 echo "Transcript search complete!"
