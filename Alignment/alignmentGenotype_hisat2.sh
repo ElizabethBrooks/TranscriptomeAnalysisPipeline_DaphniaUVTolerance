@@ -7,12 +7,12 @@
 #Script to perform hisat2 alignment of trimmed
 # paired end reads
 #Note that a hisat2 genome refernce build folder needs to be generated first
-#Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder maxIntronLength optionalDTA
-#Usage Ex: qsub alignment_hisat2.sh genomeStats trimmed_run1 14239 dta
-#Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 23554 dta
-#Alternate usage Ex: qsub alignment_hisat2.sh assemblyE05 trimmed_run1 sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity 23554
-#Alternate usage Ex: qsub alignment_hisat2.sh assemblyE05Stats trimmed_run1 trimmed_run1E05_assemblyTrinity 14239
-#Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
+#Usage: qsub alignment_hisat2.sh alignmentTarget genotype trimmedFolder optionalAssemblyFolder maxIntronLength optionalDTA
+#Usage Ex: qsub alignment_hisat2.sh genomeStats E05 trimmed_run1 14239 dta
+#Usage Ex: qsub alignment_hisat2.sh genome E05 trimmed_run1 23554 dta
+#Alternate usage Ex: qsub alignment_hisat2.sh assembly E05 trimmed_run1 sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity 23554
+#Alternate usage Ex: qsub alignment_hisat2.sh assemblyStats E05 trimmed_run1 trimmed_run1E05_assemblyTrinity 14239
+#Default usage Ex: qsub alignment_hisat2.sh genome E05 trimmed_run1
 
 #Required modules for ND CRC servers
 module load bio
@@ -25,27 +25,27 @@ fi
 #Determine which analysis folder was input
 if [[ "$1"  == assembly* ]]; then
 	#Determine the type of assembly
-	elif [[ "$3" == *assemblyTrinity* ]]; then
+	if [[ "$4" == *assemblyTrinity* ]]; then
 		#Retrieve reads input absolute path
 		assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	elif [[ "$3" == *assemblyGenome* ]]; then
+	elif [[ "$4" == *assemblyGenome* ]]; then
 		#Retrieve reads input absolute path
 		assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	fi
 	#Retrieve build transcriptome files absolute path
-	buildInputsPath="$assemblyPath"/"$3"
+	buildInputsPath="$assemblyPath"/"$4"
 	#Retrieve transcriptome reference absolute path for alignment
-	buildFile="$assemblyPath"/"$3"/"Trinity.fasta"
+	buildFile="$assemblyPath"/"$4"/"Trinity.fasta"
 	#Retrieve alignment outputs absolute path
-	outputsPath="$assemblyPath"/"$3"
+	outputsPath="$assemblyPath"/"$4"
 	#Determine if intron lengths were entered
-	if [[ -z "$4" ]]; then #Argument was not entered
+	if [[ -z "$5" ]]; then #Argument was not entered
 		maxIntron=-1
 	else
-		maxIntron=$4
+		maxIntron=$5
 	fi
 	#Determine if downstream transcriptome analysis was selected
-	if [[ -z "$5" ]]; then #Argument was not entered
+	if [[ -z "$6" ]]; then #Argument was not entered
 		dtAnalysis=-1
 	else
 		dtAnalysis=1
@@ -58,13 +58,13 @@ elif [[ "$1"  == genome* ]]; then
 	#Retrieve alignment outputs absolute path
 	outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	#Determine if intron lengths were entered
-	if [[ -z "$3" ]]; then #Argument was not entered
+	if [[ -z "$4" ]]; then #Argument was not entered
 		maxIntron=-1
 	else
-		maxIntron=$3
+		maxIntron=$4
 	fi
 	#Determine if downstream transcriptome analysis was selected
-	if [[ -z "$4" ]]; then #Argument was not entered
+	if [[ -z "$5" ]]; then #Argument was not entered
 		dtAnalysis=-1
 	else
 		dtAnalysis=1
@@ -75,7 +75,7 @@ else
 fi
 #Retrieve reads input absolute path
 inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
-trimmedFolder="$2"
+trimmedFolder="$3"
 #Move to outputs directory
 cd "$outputsPath"
 #Prepare for mapping
@@ -93,7 +93,7 @@ while [ $dirFlag -eq 0 ]; do
 	else
 		#Indicate that the folder was successfully made
 		dirFlag=1
-		echo "Creating folder for run $runNum of hisat2 $1 alignment on $2 data..."
+		echo "Creating folder for run $runNum of hisat2 $1 alignment on $3 data..."
 	fi
 done
 #Name output file of inputs
@@ -106,11 +106,11 @@ buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/')
 buildFileNoEx=$(echo $buildFileNoEx | sed 's/\.fa//')
 #Loop through all forward and reverse paired reads and run Hisat2 on each pair
 # using 8 threads and samtools to convert output sam files to bam
-for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
+for f1 in "$inputsPath"/"$trimmedFolder"/*_"$2"_*pForward.fq.gz; do
 	#Trim extension from current file name
 	curSample=$(echo $f1 | sed 's/.pForward\.fq\.gz//')
 	#Trim file path from current file name
-	curSampleNoPath=$(basename $f1)
+	curSampleNoPath=$(basename $(echo $f1))
 	curSampleNoPath=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
 	#Create directory for current sample outputs
 	mkdir "$outputFolder"/"$curSampleNoPath"
