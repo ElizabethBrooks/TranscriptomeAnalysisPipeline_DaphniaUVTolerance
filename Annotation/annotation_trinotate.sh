@@ -17,7 +17,7 @@ fi
 #Retrieve Trinotate software path
 softsPath=$(grep "trinotatePackage:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/trinotatePackage://g")
 #Retrieve sqlite database path
-sqliteDB=$(grep "trinotateSqliteDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/trinotateSqliteDB://g")
+sqliteDB=$(grep "trinotateSqlite:" ../InputData/databasePaths.txt | tr -d " " | sed "s/trinotateSqlite://g")
 #Determine input query transcriptome for blastp
 if [[ "$1" == *assemblyTrinity* ]]; then
 	#Retrieve reads input absolute path
