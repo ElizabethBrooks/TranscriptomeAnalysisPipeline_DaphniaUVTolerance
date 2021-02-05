@@ -66,7 +66,7 @@ for f1 in "$inputsPath"/"$1"/*_"$2"_*/; do
 	curSampleNoPath=$(basename "$f1")
 	#The main input of the program is a BAM file with RNA-Seq 
 	# read mappings which must be sorted by their genomic location 
-	./"$softwarePath"/stringtie "$curAlignedSample" -p 8 -G "$genomeFile" -C "$curSampleNoPath".cov_refs.gtf -o "$curSampleNoPath".stringtie.gtf
+	"$softwarePath"/stringtie "$curAlignedSample" -p 8 -G "$genomeFile" -C "$curSampleNoPath".cov_refs.gtf -o "$curSampleNoPath".stringtie.gtf
 	echo "Assembly of $curSampleNoPath complete!"
 	#Add sample to list
 	sampleList="$curSampleNoPath".stringtie.gtf "$sampleList"
@@ -74,7 +74,7 @@ for f1 in "$inputsPath"/"$1"/*_"$2"_*/; do
 	echo "stringtie "$curAlignedSample" -p 8 -G "$genomeFile" -C "$curSampleNoPath".cov_refs.gtf -o "$curSampleNoPath".stringtie.gtf" > "$inputOutFile"
 done
 #Merge to generate a non-redundant set of transcripts observed in any of the reads
-./"$softwarePath"/stringtie "$sampleList" -p 8 -G "$genomeFile" -o "$1""$2"_assembly"$3"Stringtie.gtf --merge 
+"$softwarePath"/stringtie "$sampleList" -p 8 -G "$genomeFile" -o "$1""$2"_assembly"$3"Stringtie.gtf --merge 
 #Add run inputs to output summary file
 echo "stringtie "$sampleList" -p 8 -G "$genomeFile" -o "$1""$2"_assembly"$3"Stringtie.gtf --merge" > "$inputOutFile"
 #Copy previous summaries
