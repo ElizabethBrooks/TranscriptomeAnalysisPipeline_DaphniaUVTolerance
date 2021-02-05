@@ -86,12 +86,12 @@ elif [[ "$2" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	reciprocalPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	reciprocalPath=$(dirname "$reciprocalPath")
-	reciprocalPath="$reciprocalPath"/decoded_transdecoder/PA42.3.0.cds_new.fasta.transdecoder.pep
+	reciprocalPath="$reciprocalPath"/decoded_transdecoder/*.transdecoder.pep
 elif [[ "$2" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	reciprocalPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	reciprocalPath=$(dirname "$reciprocalPath")
-	reciprocalPath="$reciprocalPath"/decoded_transdecoder/PA42.3.0.transcripts_new.fasta.transdecoder.pep
+	reciprocalPath="$reciprocalPath"/decoded_transdecoder/*.transdecoder.pep
 else
 	#Error message
 	echo "Invalid genome fasta entered... exiting!"
