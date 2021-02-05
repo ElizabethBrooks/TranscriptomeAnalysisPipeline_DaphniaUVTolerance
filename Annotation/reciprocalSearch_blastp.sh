@@ -13,7 +13,7 @@
 #Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98 PA42_v4.1_proteins
 #Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_cds
 #Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_transcripts
-#Usage Ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyGenomeTrinity PA42_v4.1_proteins
+#Usage Ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity PA42_v3.0_proteins
 
 #Load necessary modules for ND CRC servers
 module load bio
@@ -23,7 +23,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Determine input database for blastp
-if [[ "$1" == *assemblyTrinity* ]]; then
+if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	outputFolder="$inputsPath"/"$1"
@@ -35,7 +35,7 @@ if [[ "$1" == *assemblyTrinity* ]]; then
 	else 
 		inputsPath="$outputFolder"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 	fi
-elif [[ "$1" == *assemblyGenome* ]]; then
+elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	outputFolder="$inputsPath"/"$1"

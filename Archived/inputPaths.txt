@@ -1,0 +1,13 @@
+pairedReads: /afs/crc.nd.edu/group/pfrenderlab/haldane/ebrooks/rnaseq/dmelUV
+adapter: /afs/crc.nd.edu/x86_64_linux/bio/Trimmomatic/0.32/adapters/TruSeq3-PE.fa:2:30:10
+genomeReference: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources_PA42_v3.0/Daphnia_pulex_PA42_v3.0.fasta
+genomeFeatures: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources_PA42_v3.0/PA42.3.0.annotation.18440.gff
+geneAnnotations: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/GeneAnnotations/trinotate_annotation_report.csv
+geneOntologyArchive: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/gene.Blast2GO.merged.csv
+geneLengths: /media/mae/5ED9-C6A9/TranscriptomeAnalysis_DmelUV/GeneData/PA42.3.0.annotation.18440.genelength
+transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/PA42_v3.0_transcripts/PA42.3.0.transcripts_new.fasta
+codingSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/PA42_v3.0_cds/PA42.3.0.cds_new.fasta
+proteinSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/PA42_v3.0_proteins/PA42.3.0.protein_new.fasta
+geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources_PA42_v3.0/PA42.3.0.gene_trans_map
+annotations: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/AnnotationAnalysis
+geneSets: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_Results
