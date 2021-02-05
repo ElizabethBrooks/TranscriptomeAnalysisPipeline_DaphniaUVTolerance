@@ -25,7 +25,7 @@ fi
 #Determine which analysis folder was input
 if [[ "$1"  == assembly* ]]; then
 	#Determine the type of assembly
-	elif [[ "$3" == *assemblyTrinity* ]]; then
+	if [[ "$3" == *assemblyTrinity* ]]; then
 		#Retrieve reads input absolute path
 		assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	elif [[ "$3" == *assemblyGenome* ]]; then
