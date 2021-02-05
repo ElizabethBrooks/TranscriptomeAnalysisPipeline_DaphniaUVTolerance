@@ -8,8 +8,6 @@
 #Usage: qsub assembly_genomeGuided_stringtie.sh sortedFolder genotype genome
 #Usage Ex: qsub assembly_genomeGuided_stringtie.sh sortedCoordinate_samtoolsHisat2_run1 E05 PA42_v4.1
 
-#Load necessary modules
-module load bio
 ##Retrieve software absolute path
 softwarePath=$(grep "stringtie:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/stringtie://g")
 #Check for input arguments of folder names
@@ -59,13 +57,15 @@ inputOutFile="$outputFolder"/"$1""$2"_assembly"$3"Stringtie_summary.txt
 sampleList=""
 #Run stringtie on each coordinate-sorted bam files using 8 threads, and a maximum intron
 # length that makes most sense given your targeted organism
-for f1 in "$inputsPath"/"$1"/*_"$2"_*/; do
+for f1 in "$inputsPath"/"$1"/*_"$2"_*/*.bam; do
 	#Retrieve curent sample
-	curAlignedSample="$f1"accepted_hits.bam
+	curAlignedSample="$f1"
 	#Trim file path from current folder name
+	curSampleNoPath=$(echo $f1 | sed 's/accepted\_hits\.bam//g')
 	curSampleNoPath=$(basename "$f1")
 	#The main input of the program is a BAM file with RNA-Seq 
 	# read mappings which must be sorted by their genomic location 
+	echo "Beginning assembly of $curSampleNoPath..."
 	"$softwarePath"/stringtie "$curAlignedSample" -p 8 -G "$genomeFile" -C "$curSampleNoPath".cov_refs.gtf -o "$curSampleNoPath".stringtie.gtf
 	echo "Assembly of $curSampleNoPath complete!"
 	#Add sample to list
