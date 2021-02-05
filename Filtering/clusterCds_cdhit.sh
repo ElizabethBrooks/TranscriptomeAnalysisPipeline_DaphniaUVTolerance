@@ -17,26 +17,24 @@ if [ $# -eq 0 ]; then
 fi
 #Retrieve Trinotate software path
 softsPath=$(grep "cdhitPackage:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/cdhitPackage://g")
-#Determine input query transcriptome for blastp
-if [[ "$1" == *assembly* ]]; then
+#Determine input database for clustering
+if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
-	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	inputsPath="$assemblyPath"/"$1"
-	#Set outputs absolute path
-	outputCdsFolder="$assemblyPath"/"$1"/clusteredCds_cdhit_"$2"
-	#Set DBs of transcriptome
-	inputCdsPath="$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.cds
-elif [[ "$1" == PA42 ]]; then
-	#Set inputs absolut paths
-	inputCdsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	#Set outputs absolute path
-	outputCdsFolder=$(dirname "$inputCdsPath")
-	outputCdsFolder="$outputCdsFolder"/clusteredCds_cdhit_"$2"
+	assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
+	#Retrieve reads input absolute path
+	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
+#Set inputs path
+inputsPath="$assemblyPath"/"$1"
+#Set outputs absolute path
+outputCdsFolder="$assemblyPath"/"$1"/clusteredCds_cdhit_"$2"
+#Set DBs of transcriptome
+inputCdsPath=$(echo "$inputsPath"/decoded_transdecoder/*.transdecoder.cds)
 #Make Cds set output directory
 mkdir "$outputCdsFolder"
 #Check if the folder already exists

@@ -17,21 +17,25 @@ fi
 #Retrieve Trinotate software path
 softsPath=$(grep "cdhitPackage:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/cdhitPackage://g")
 #Retrieve genome reference absolute paths for querying
-proteinDB=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
-#Determine input database for blastp
-if [[ "$1" == *assembly* ]]; then
+proteinDB=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
+#Determine input database for clustering
+if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
-	assemblyPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	inputsPath="$assemblyPath"/"$1"
-	#Set outputs absolute path
-	outputFolder="$assemblyPath"/"$1"/reciprocalClusteredProteins_cdhit_"$2"
-	#Set DBs of transcriptome
-	inputProteinDB="$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
+	assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
+	#Retrieve reads input absolute path
+	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 else
 	#Error message
-	echo "Invalid transcript set entered (assembled transcriptome expected)... exiting!"
+	echo "Invalid protein set entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
+#Set inputs path
+inputsPath="$assemblyPath"/"$1"
+#Set outputs absolute path
+outputFolder="$assemblyPath"/"$1"/reciprocalClusteredProteins_cdhit_"$2"
+#Set DBs of transcriptome
+inputProteinDB=$(echo "$inputsPath"/decoded_transdecoder/*.transdecoder.pep)
 #Make output directory
 mkdir "$outputFolder"
 #Check if the folder already exists

@@ -34,8 +34,8 @@ if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Set outputs absolute path
 	outputsPath=$inputsPath/$1
 	#Retrieve genome reference and features paths
-	multiFASTA=$(echo "$outputsPath"/Trinity.fasta)
-	geneMap="$outputsPath"/"Trinity.fasta.gene_trans_map"
+	multiFASTA=$(echo "$outputsPath"/*.fasta)
+	geneMap=$(echo "$outputsPath"/*.gene_trans_map)
 	#Set output path
 	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
@@ -44,8 +44,8 @@ elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Set outputs absolute path
 	outputsPath=$inputsPath/$1
 	#Retrieve genome reference and features paths
-	multiFASTA=$(echo "$outputsPath"/Trinity.fasta)
-	geneMap="$outputsPath"/"Trinity.fasta.gene_trans_map"
+	multiFASTA=$(echo "$outputsPath"/*.fasta)
+	geneMap=$(echo "$outputsPath"/*.gene_trans_map)
 	#Set output path
 	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == *cds ]]; then

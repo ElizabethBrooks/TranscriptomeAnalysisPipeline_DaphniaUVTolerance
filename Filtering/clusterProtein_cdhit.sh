@@ -8,8 +8,7 @@
 #the specified unique data (by sequence, ID, or both)
 #Usage: qsub clusterProtein_cdhit.sh mergeBy clusterPercent sortedFolder genotypes
 #Usage Ex: qsub clusterProtein_cdhit.sh trimmed_run1E05_assemblyTrinity 0.98
-#Usage Ex: qsub clusterProtein_cdhit.sh sortedCoordinate_samtoolsHisat2_run1Y05 0.98
-#Alternate usage Ex: qsub clusterProtein_cdhit.sh PA42 0.95
+#Usage Ex: qsub clusterProtein_cdhit.sh sortedCoordinate_samtoolsHisat2_run2PA_assemblyPA42_v3.0Trinity 0.98
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -18,34 +17,24 @@ if [ $# -eq 0 ]; then
 fi
 #Retrieve Trinotate software path
 softsPath=$(grep "cdhitPackage:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/cdhitPackage://g")
-#Determine input query transcriptome for blastp
-if [[ "$1" == *assemblyTrinity* ]]; then
+#Determine input database for clustering
+if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
-	assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	inputsPath="$assemblyPath"/"$1"
-	#Set outputs absolute path
-	outputProteinFolder="$assemblyPath"/"$1"/clusteredProteins_cdhit_"$2"
-	#Set DBs of transcriptome
-	inputProteinPath="$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
-elif [[ "$1" == *assemblyGenome* ]]; then
+	assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
-	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
-	inputsPath="$assemblyPath"/"$1"
-	#Set outputs absolute path
-	outputProteinFolder="$assemblyPath"/"$1"/clusteredProteins_cdhit_"$2"
-	#Set DBs of transcriptome
-	inputProteinPath="$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
-elif [[ "$1" == PA42 ]]; then
-	#Set inputs absolut paths
-	inputProteinPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
-	#Set outputs absolute path
-	outputProteinFolder=$(dirname "$inputProteinPath")
-	outputProteinFolder="$outputProteinFolder"/clusteredProteins_cdhit_"$2"
+	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
+#Set inputs path
+inputsPath="$assemblyPath"/"$1"
+#Set outputs absolute path
+outputProteinFolder="$assemblyPath"/"$1"/clusteredProteins_cdhit_"$2"
+#Set DBs of transcriptome
+inputProteinPath=$(echo "$inputsPath"/decoded_transdecoder/*.transdecoder.pep)
 #Make protein set output directory
 mkdir "$outputProteinFolder"
 #Check if the folder already exists

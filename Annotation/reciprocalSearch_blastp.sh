@@ -33,7 +33,7 @@ if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	elif [[ "$1" == */clusteredProtein* ]]; then
 		inputsPath="$outputFolder"/decoded_transdecoder/cdhit.transdecoder.pep
 	else 
-		inputsPath="$outputFolder"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
+		inputsPath=$(echo "$outputFolder"/decoded_transdecoder/*.transdecoder.pep)
 	fi
 elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
@@ -45,7 +45,7 @@ elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	elif [[ "$1" == */clusteredProtein* ]]; then
 		inputsPath="$outputFolder"/decoded_transdecoder/cdhit.transdecoder.pep
 	else 
-		inputsPath="$outputFolder"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
+		inputsPath=$(echo "$outputFolder"/decoded_transdecoder/*.transdecoder.pep)
 	fi
 elif [[ "$1" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
