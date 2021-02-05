@@ -74,7 +74,11 @@ else
 	exit 1
 fi
 #Retrieve optional genotype
-genotypeTag=$(echo "$1" | sed 's/assembly//g' | sed 's/Stats//g')
+if [[ "$1" == genome* ]]; then
+	genotypeTag=""
+else
+	genotypeTag=$(echo "$1" | sed 's/assembly//g' | sed 's/Stats//g')
+fi
 #Retrieve reads input absolute path
 inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
 trimmedFolder="$2"
