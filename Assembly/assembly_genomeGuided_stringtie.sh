@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N alignment_hisat2_jobOutput
+#$ -N assemblyGenome_stringtie_jobOutput
 #$ -pe smp 8
 #Script to assemble transcripts using a reference genome and stringtie
 #Usage: qsub assembly_genomeGuided_stringtie.sh sortedFolder genotype genome

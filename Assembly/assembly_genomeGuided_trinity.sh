@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N assembly_genomeGuided_trinity_jobOutput
+#$ -N assemblyGenome_trinity_jobOutput
 #$ -pe smp 8
 #Script to perform genome-guided Trinity de novo transcriptome assembly
 #Usage: qsub assembly_genomeGuided_trinity.sh sortedFolder genotype maxIntronLength genome
