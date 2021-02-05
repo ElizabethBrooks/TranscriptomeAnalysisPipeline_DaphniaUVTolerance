@@ -62,7 +62,7 @@ for f1 in "$inputsPath"/"$1"/*_"$2"_*/*.bam; do
 	curAlignedSample="$f1"
 	#Trim file path from current folder name
 	curSampleNoPath=$(echo $f1 | sed 's/accepted\_hits\.bam//g')
-	curSampleNoPath=$(basename "$f1")
+	curSampleNoPath=$(basename "$curSampleNoPath")
 	#The main input of the program is a BAM file with RNA-Seq 
 	# read mappings which must be sorted by their genomic location 
 	echo "Beginning assembly of $curSampleNoPath..."
