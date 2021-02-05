@@ -6,10 +6,9 @@
 #$ -pe smp 1
 #Script to predict coding regions from a de novo assembled transcriptome fasta file
 # using Transdecoder
-#Usage: qsub decoding_transdecoder.sh deNovoAssembledTranscriptomeFolder
+#Usage: qsub decoding_transdecoder.sh assembledTranscriptomeFolder
 #Usage Ex: qsub decoding_transdecoder.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98
-#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity
-#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsTophat2_run1Sierra_assemblyGenomeTrinity
+#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_cds
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_transcripts
 
@@ -29,7 +28,7 @@ if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
 	exit 1
 fi
 #Determine input query transcriptome for blastp
-if [[ "$1" == *assemblyTrinity* ]]; then
+if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve input assembly path
 	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	#Set outputs absolute path
@@ -39,7 +38,7 @@ if [[ "$1" == *assemblyTrinity* ]]; then
 	geneMap="$outputsPath"/"Trinity.fasta.gene_trans_map"
 	#Set output path
 	outputFolder="$outputsPath"/"decoded_transdecoder"
-elif [[ "$1" == *assemblyGenome* ]]; then
+elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	#Set outputs absolute path
@@ -51,24 +50,24 @@ elif [[ "$1" == *assemblyGenome* ]]; then
 	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
+	inputsPath=$(grep "codingSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	#Retrieve genome reference and features paths
-	multiFASTA=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
+	multiFASTA=$(grep "codingSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 	#Retrieve genome reference and features paths
-	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	geneMap=$(grep "geneTransMap:" ../Archived/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	#Set output path
 	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	inputsPath=$(grep "transcriptSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	#Retrieve genome reference and features paths
-	multiFASTA=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	multiFASTA=$(grep "transcriptSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 	#Retrieve genome reference and features paths
-	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	geneMap=$(grep "geneTransMap:" ../Archived/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	#Set output path
 	outputFolder="$outputsPath"/"decoded_transdecoder"
 else
