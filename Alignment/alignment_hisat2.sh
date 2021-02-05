@@ -75,7 +75,7 @@ else
 fi
 #Retrieve optional genotype
 if [[ "$1" == genome* ]]; then
-	genotypeTag=""
+	genotypeTag="*"
 else
 	genotypeTag=$(echo "$1" | sed 's/assembly//g' | sed 's/Stats//g')
 fi
@@ -116,7 +116,7 @@ for f1 in "$inputsPath"/"$trimmedFolder"/*_"$genotypeTag"_*pForward.fq.gz; do
 	#Trim extension from current file name
 	curSample=$(echo $f1 | sed 's/.pForward\.fq\.gz//')
 	#Trim file path from current file name
-	curSampleNoPath=$(basename $f1)
+	curSampleNoPath=$(basename $(echo $f1))
 	curSampleNoPath=$(echo $curSampleNoPath | sed 's/.pForward\.fq\.gz//')
 	#Create directory for current sample outputs
 	mkdir "$outputFolder"/"$curSampleNoPath"
