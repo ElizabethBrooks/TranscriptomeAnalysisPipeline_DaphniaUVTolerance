@@ -67,7 +67,7 @@ done
 #Name output file of inputs
 inputOutFile="$outputFolder"/counted_summary.txt
 #Loop through all sorted forward and reverse paired reads and store the file locations in an array
-for f1 in "$inputsDir"/*"$genotypeTag"*/*.bam; do
+for f1 in "$inputsDir"/*_"$genotypeTag"_*/*.bam; do
 	#Name of sorted and aligned file
 	curAlignedSample="$f1"
 	#Trim file paths from current sample folder name

@@ -6,8 +6,12 @@
 #$ -pe smp 8
 #Script to assemble transcripts using a reference genome and stringtie
 #Usage: qsub assembly_genomeGuided_stringtie.sh sortedFolder genotype genome
-#Usage Ex: qsub assembly_genomeGuided_stringtie.sh sortedCoordinate_samtoolsHisat2_run2 E05 PA42_v4.1
+#Usage Ex: qsub assembly_genomeGuided_stringtie.sh sortedCoordinate_samtoolsHisat2_run1 E05 PA42_v4.1
 
+#Load necessary modules
+module load bio
+##Retrieve software absolute path
+softwarePath=$(grep "stringtie:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/stringtie://g")
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -52,24 +56,26 @@ fi
 cd "$outputFolder"
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$1""$2"_assembly"$3"Stringtie_summary.txt
-#Merge and re-coordinate sort the set of bam files
-readFiles=$(echo "$inputsPath"/"$1"/*_"$2"_*/*.bam)
-echo "Beginning merging..."
-samtools merge -@ 8 merged.bam $readFiles
-echo "Merging complete! Beginning sorting..."
-samtools sort -@ 8 -o sorted.bam merged.bam
-echo "Sorting complete!"
-rm merged.bam
-#Run Trinity on coordinate-sorted bam files using 8 threads, and a maximum intron
+sampleList=""
+#Run stringtie on each coordinate-sorted bam files using 8 threads, and a maximum intron
 # length that makes most sense given your targeted organism
-#Reduce output with --full_cleanup
-echo "Beginning assembly of $1 reads for $2 data..."
-#The main input of the program is a BAM file with RNA-Seq 
-# read mappings which must be sorted by their genomic location 
-stringtie sorted.bam -p 8 -G "$genomeFile" -C cov_refs.gtf -o stringtie.gtf
-echo "Assembly complete!"
-rm sorted.bam
+for f1 in "$inputsPath"/"$1"/*_"$2"_*/; do
+	#Retrieve curent sample
+	curAlignedSample="$f1"accepted_hits.bam
+	#Trim file path from current folder name
+	curSampleNoPath=$(basename "$f1")
+	#The main input of the program is a BAM file with RNA-Seq 
+	# read mappings which must be sorted by their genomic location 
+	./"$softwarePath"/stringtie "$curAlignedSample" -p 8 -G "$genomeFile" -C "$curSampleNoPath".cov_refs.gtf -o "$curSampleNoPath".stringtie.gtf
+	echo "Assembly of $curSampleNoPath complete!"
+	#Add sample to list
+	sampleList="$curSampleNoPath".stringtie.gtf "$sampleList"
+	#Add run inputs to output summary file
+	echo "stringtie "$curAlignedSample" -p 8 -G "$genomeFile" -C "$curSampleNoPath".cov_refs.gtf -o "$curSampleNoPath".stringtie.gtf" > "$inputOutFile"
+done
+#Merge to generate a non-redundant set of transcripts observed in any of the reads
+./"$softwarePath"/stringtie "$sampleList" -p 8 -G "$genomeFile" -o "$1""$2"_assembly"$3"Stringtie.gtf --merge 
 #Add run inputs to output summary file
-echo "samtools merge --threads 8 merged.bam "$readFiles > "$inputOutFile"
-echo "samtools sort -@ 8 -o sorted.bam merged.bam" >> "$inputOutFile"
-echo "sorted.bam -p 8 -G "$genomeFile" -C cov_refs.gtf -o stringtie.gtf" >> "$inputOutFile"
+echo "stringtie "$sampleList" -p 8 -G "$genomeFile" -o "$1""$2"_assembly"$3"Stringtie.gtf --merge" > "$inputOutFile"
+#Copy previous summaries
+cp "$inputsPath"/"$1"/*.txt "$outputFolder"

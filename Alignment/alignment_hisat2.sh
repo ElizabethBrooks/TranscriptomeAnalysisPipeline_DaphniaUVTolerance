@@ -108,7 +108,7 @@ buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/')
 buildFileNoEx=$(echo $buildFileNoEx | sed 's/\.fa//')
 #Loop through all forward and reverse paired reads and run Hisat2 on each pair
 # using 8 threads and samtools to convert output sam files to bam
-for f1 in "$inputsPath"/"$trimmedFolder"/*"$genotypeTag"*pForward.fq.gz; do
+for f1 in "$inputsPath"/"$trimmedFolder"/*_"$genotypeTag"_*pForward.fq.gz; do
 	#Trim extension from current file name
 	curSample=$(echo $f1 | sed 's/.pForward\.fq\.gz//')
 	#Trim file path from current file name
