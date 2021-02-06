@@ -21,7 +21,7 @@ fi
 #Retreive pfam database storage path
 dbFile=$(grep "trinotatePfam:" ../InputData/databasePaths.txt | tr -d " " | sed "s/trinotatePfam://g")
 #Determine input query transcriptome for blastp
-if [[ "$1" == *assemblyTrinity* ]]; then
+if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
@@ -35,7 +35,7 @@ if [[ "$1" == *assemblyTrinity* ]]; then
 	else 
 		inputsPath="$inputsPath"/Trinity.fasta.transdecoder.pep
 	fi
-elif [[ "$1" == *assemblyGenome* ]]; then
+elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	inputsPath="$assemblyPath"/"$1"/decoded_transdecoder
