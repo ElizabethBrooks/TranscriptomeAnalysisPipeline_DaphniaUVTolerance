@@ -68,24 +68,24 @@ for i in "${@:2}"; do #Skip first two argument
 	#Determine input file type
 	if [[ "$i" == */clusteredNucleotide* ]]; then
 		#Set inputs path
-		inputsPath="$assemblyPath"/"$i"/decoded_transdecoder/cdhitEst.transdecoder.pep
+		inputsPath="$inputsPath"/"$i"/decoded_transdecoder/cdhitEst.transdecoder.pep
 		#Copy input fasta files
 		tag=$(echo "$i" | sed 's/\//./g')
-		cp "$inputsPath" "$inputsDir"/"$tag"_cdhitEst.transdecoder.pep
+		cp "$inputsPath" "$inputsDir"/"$tag".cdhitEst.transdecoder.pep
 	elif [[ "$i" == */clusteredProtein* ]]; then
 		#Set inputs path
-		inputsPath="$assemblyPath"/"$i"/decoded_transdecoder/cdhit.transdecoder.pep
+		inputsPath="$inputsPath"/"$i"/decoded_transdecoder/cdhit.transdecoder.pep
 		#Copy input fasta files
 		tag=$(echo "$i" | sed 's/\//./g')
-		cp "$inputsPath" "$inputsDir"/"$tag"_cdhit.transdecoder.pep
+		cp "$inputsPath" "$inputsDir"/"$tag".cdhit.transdecoder.pep
 	elif [[ "$i" == *proteins ]]; then
 		#Copy input fasta files
 		cp "$inputsPath" "$inputsDir"
 	else 
 		#Set inputs path
-		inputsPath="$assemblyPath"/"$i"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
+		inputsPath=$(echo "$inputsPath"/"$i"/decoded_transdecoder/*.transdecoder.pep)
 		#Copy input fasta files
-		cp "$inputsPath" "$inputsDir"/"$i"_Trinity.fasta.transdecoder.pep
+		cp "$inputsPath" "$inputsDir"/"$i".transdecoder.pep
 	fi
 done
 #Move to output folder
