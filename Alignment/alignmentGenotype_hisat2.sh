@@ -25,17 +25,17 @@ fi
 #Determine which analysis folder was input
 if [[ "$1"  == assembly* ]]; then
 	#Determine the type of assembly
-	if [[ "$4" == *assemblyTrinity* ]]; then
+	if [[ "$4" == *assemblyTrinity* || "$4" == *assemblyStringtie* ]]; then
 		#Retrieve reads input absolute path
 		assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	elif [[ "$4" == *assemblyGenome* ]]; then
+	elif [[ "$4" == *assembly*Trinity* || "$4" == *assembly*Stringtie* ]]; then
 		#Retrieve reads input absolute path
 		assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	fi
 	#Retrieve build transcriptome files absolute path
 	buildInputsPath="$assemblyPath"/"$4"
 	#Retrieve transcriptome reference absolute path for alignment
-	buildFile="$assemblyPath"/"$4"/"Trinity.fasta"
+	buildFile=$(echo "$assemblyPath"/"$4"/*.fasta)
 	#Retrieve alignment outputs absolute path
 	outputsPath="$assemblyPath"/"$4"
 	#Determine if intron lengths were entered

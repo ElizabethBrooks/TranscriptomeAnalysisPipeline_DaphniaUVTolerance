@@ -7,10 +7,10 @@
 #$ -q debug
 #Script to generate a hisat2 genome refernce build folder
 #Usage: qsub building_hisat2.sh trimmedOrAssemblyFolder
-#Usage Ex: qsub building_hisat2.sh trimmed_run1
-#Alternate usage Ex: qsub building_hisat2.sh trimmed_run1E05_assemblyTrinity
-#Alternate usage Ex: qsub building_hisat2.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity
-#Alternate usage Ex: qsub building_hisat2.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity/clusteredNucleotides_cdhit_0.98
+#Usage ex: qsub building_hisat2.sh trimmed_run1
+#Alternate usage ex: qsub building_hisat2.sh trimmed_run1E05_assemblyTrinity
+#Alternate usage ex: qsub building_hisat2.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity
+#Alternate usage ex: qsub building_hisat2.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98
 
 #Required modules for ND CRC servers
 module load bio
@@ -20,20 +20,20 @@ dirFlag=0
 runNum=1
 #Determine which analysis folder was input
 #Determine the type of assembly
-if [[ "$1" == *assemblyTrinity* ]]; then
+if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
 	outputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	#Retrieve build outputs absolute path
 	outputsPath="$outputsPath"/"$1"
 	#Retrieve transcriptome reference absolute path for alignment
-	buildFile="$outputsPath"/"Trinity.fasta"
-elif [[ "$1" == *assemblyGenome* ]]; then
+	buildFile=$(echo "$outputsPath"/*.fasta)
+elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
 	outputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	#Retrieve build outputs absolute path
 	outputsPath="$outputsPath"/"$1"
 	#Retrieve transcriptome reference absolute path for alignment
-	buildFile="$outputsPath"/"Trinity.fasta"
+	buildFile=$(echo "$outputsPath"/*.fasta)
 elif [[ "$1"  == trimmed* ]]; then
 	#Retrieve genome reference absolute path for alignment
 	buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
@@ -70,7 +70,7 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 if [ $? -eq 0 ]; then
 	#Trim file path from build file
 	buildFileNoPath=$(basename $buildFile)
-	buildFileNewPath=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/g')
+	buildFileNewPath=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/g' | sed 's/\.fna/\.fa/g')
 	#Copy genome build fasta file to hisat2 build folder
 	cp "$buildFile" "$outputFolder"/"$buildFileNewPath"
 	#Trim file extension
