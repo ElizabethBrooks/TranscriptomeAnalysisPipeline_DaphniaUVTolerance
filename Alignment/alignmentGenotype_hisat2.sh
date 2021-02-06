@@ -34,10 +34,19 @@ if [[ "$1"  == assembly* ]]; then
 	fi
 	#Retrieve build transcriptome files absolute path
 	buildInputsPath="$assemblyPath"/"$4"
-	#Retrieve transcriptome reference absolute path for alignment
-	buildFile=$(echo "$assemblyPath"/"$4"/*.fasta)
+	#Determine if the input is clustered
+	if [[ "$4" == *clusteredNucleotide* ]]; then
+		#Retrieve transcriptome reference absolute path for alignment
+		buildFile=$(echo "$buildInputsPath"/cdhitEst)
+	elif [[ "$4" == *clusteredProtein* ]]; then
+		#Retrieve transcriptome reference absolute path for alignment
+		buildFile=$(echo "$buildInputsPath"/cdhit)
+	else
+		#Retrieve transcriptome reference absolute path for alignment
+		buildFile=$(echo "$buildInputsPath"/*.fasta)
+	fi
 	#Retrieve alignment outputs absolute path
-	outputsPath="$assemblyPath"/"$4"
+	outputsPath="$buildInputsPath"
 	#Determine if intron lengths were entered
 	if [[ -z "$5" ]]; then #Argument was not entered
 		maxIntron=-1
