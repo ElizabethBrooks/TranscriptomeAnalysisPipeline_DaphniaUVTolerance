@@ -7,12 +7,12 @@
 #Script to perform hisat2 alignment of trimmed
 # paired end reads
 #Note that a hisat2 genome refernce build folder needs to be generated first
-#Usage: qsub alignment_hisat2.sh alignmentTarget genotype trimmedFolder optionalAssemblyFolder maxIntronLength optionalDTA
-#Usage Ex: qsub alignment_hisat2.sh genomeStats E05 trimmed_run1 14239 dta
-#Usage Ex: qsub alignment_hisat2.sh genome E05 trimmed_run1 23554 dta
-#Alternate usage Ex: qsub alignment_hisat2.sh assembly E05 trimmed_run1 sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity 23554
-#Alternate usage Ex: qsub alignment_hisat2.sh assemblyStats E05 trimmed_run1 trimmed_run1E05_assemblyTrinity 14239
-#Default usage Ex: qsub alignment_hisat2.sh genome E05 trimmed_run1
+#Usage: qsub alignmentGenotype_hisat2.sh alignmentTarget genotype trimmedFolder optionalAssemblyFolder maxIntronLength optionalDTA
+#Usage Ex: qsub alignmentGenotype_hisat2.sh genomeStats E05 trimmed_run1 14239 dta
+#Usage Ex: qsub alignmentGenotype_hisat2.sh genome E05 trimmed_run1 23554 dta
+#Alternate usage Ex: qsub alignmentGenotype_hisat2.sh assembly E05 trimmed_run1 sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity 23554
+#Alternate usage Ex: qsub alignmentGenotype_hisat2.sh assemblyStats E05 trimmed_run1 trimmed_run1E05_assemblyTrinity 14239
+#Default usage Ex: qsub alignmentGenotype_hisat2.sh genome E05 trimmed_run1
 
 #Required modules for ND CRC servers
 module load bio

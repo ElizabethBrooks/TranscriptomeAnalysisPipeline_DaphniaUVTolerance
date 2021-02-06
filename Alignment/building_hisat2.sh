@@ -83,4 +83,5 @@ else
 	echo "Build folder reference_hisat2_build already exists, skipping building..."
 fi
 #Add run inputs to output summary file
+echo "$outputsPath" > $inputOutFile
 echo hisat2-build -p 8 -f "$outputFolder"/"$buildFileNewPath" "$outputFolder"/"$buildFileNoPath" >> $inputOutFile
