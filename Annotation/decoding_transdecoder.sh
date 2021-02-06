@@ -8,7 +8,7 @@
 # using Transdecoder
 #Usage: qsub decoding_transdecoder.sh assembledTranscriptomeFolder
 #Usage Ex: qsub decoding_transdecoder.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98
-#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity
+#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_cds
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_transcripts
 
@@ -21,11 +21,6 @@ module load bio
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
-fi
-#Determine if the folder name was input in the correct format
-if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]; then
-	echo "ERROR: Please enter folder names without a trailing forward slash (/)... exiting"
-	exit 1
 fi
 #Determine input query transcriptome for blastp
 if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
