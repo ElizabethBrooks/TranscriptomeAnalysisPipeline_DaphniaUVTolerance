@@ -42,10 +42,10 @@ done
 inputsDir="$outputFolder"
 for i in "${@:2}"; do #Skip first two argument
 	#Determine input proteome
-	if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
+	if [[ "$i" == *assemblyTrinity* || "$i" == *assemblyStringtie* ]]; then
 		#Retrieve reads input absolute path
 		inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
+	elif [[ "$i" == *assembly*Trinity* || "$i" == *assembly*Stringtie* ]]; then
 		#Retrieve reads input absolute path
 		inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	elif [[ "$i" == *proteins ]]; then
