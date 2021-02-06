@@ -92,7 +92,8 @@ fi
 #Move to output folder
 cd "$outputFolder"
 #Name output file of inputs
-inputOutFile="$outputFolder"/"$1"_decoded_transdecoder_summary.txt
+inputOutFile=$(echo "$1" | sed s'/\//./g')
+inputOutFile="$outputFolder"/"$inputOutFile"_decoded_transdecoder_summary.txt
 #Generate your best candidate open rading frame (ORF) predictions
 echo "Beginning decoding..."
 #Generate candidate ORFs
