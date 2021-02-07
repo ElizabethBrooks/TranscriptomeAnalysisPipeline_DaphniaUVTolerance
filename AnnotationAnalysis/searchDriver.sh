@@ -1,8 +1,8 @@
 #!/bin/bash
 #Script to perform sequence searches using a selected program for an input transcript data set
 #Usage: bash searchDriver.sh method PA42Target assembledFolder sampleList
-#Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_proteins
-#Usage Ex: bash searchDriver.sh consensus PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_proteins
+#Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_v3.0_proteins
+#Usage Ex: bash searchDriver.sh consensus PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_v3.0_proteins
 #Usage Ex: bash searchDriver.sh plot PA42_v3.0_proteins trimmed_run1
 
 #Check for input arguments of folder names

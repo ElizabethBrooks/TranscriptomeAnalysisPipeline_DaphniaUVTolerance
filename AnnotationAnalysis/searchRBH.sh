@@ -28,17 +28,17 @@ elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	geno="$2"
 elif [[ "$1" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
+	inputsPath=$(grep "proteinSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 	inputsPath=$(dirname "$inputsPath")
 	geno="$1"
 elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
+	inputsPath=$(grep "codingSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	inputsPath=$(dirname "$inputsPath")
 	geno="$1"
 elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	inputsPath=$(grep "transcriptSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	inputsPath=$(dirname "$inputsPath")
 	geno="$1"
 else
