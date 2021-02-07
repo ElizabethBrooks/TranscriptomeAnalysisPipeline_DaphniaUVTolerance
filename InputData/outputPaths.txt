@@ -8,6 +8,6 @@ buildingGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42_v4.
 DEAnalysis: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/genome_sortedName_samtoolsHisat2_run2_counted_htseq_run1Analysis
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 transcriptSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
-reciprocalSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
+reciprocalSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/RBHB
 orthoFinder: /scratch365/ebrooks5/rnaseq
 GSEA: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_Results
