@@ -5,63 +5,53 @@
 #$ -N searchRBH_jobOutput
 #Script to filter reciprocal blast results for best hits
 #Usage: qsub searchRBH.sh transcriptomeFasta genotype PA42File outFile
-#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_proteins trimmed_run1_PA42_proteins_blastp_summary.txt
-#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_cds trimmed_run1_PA42_proteins_blastp_summary.txt
-#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_transcripts trimmed_run1_PA42_proteins_blastp_summary.txt
-#Usage Ex: qsub searchRBH.sh PA42_transcripts PA42_transcripts PA42_proteins trimmed_run1_PA42_proteins_blastp_summary.txt
-#Usage Ex: qsub searchRBH.sh PA42_cds PA42_cds PA42_proteins trimmed_run1_PA42_proteins_blastp_summary.txt
-#Usage Ex: qsub searchRBH.sh PA42_proteins PA42_proteins PA42_transcripts trimmed_run1_PA42_proteins_blastp_summary.txt
-#Usage Ex: qsub searchRBH.sh PA42_proteins PA42_proteins PA42_cds trimmed_run1_PA42_proteins_blastp_summary.txt
+#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_v3.0_proteins rbhb_summary.txt
+#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_v3.0_cds rbhb_summary.txt
+#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_v3.0_transcripts rbhb_summary.txt
+#Usage Ex: qsub searchRBH.sh PA42_v4.1_transcripts PA42_v4.1_transcripts PA42_v4.1_proteins rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
+#Usage Ex: qsub searchRBH.sh PA42_v4.1_cds PA42_cds PA42_v4.1_proteins rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
+#Usage Ex: qsub searchRBH.sh PA42_v4.1_proteins PA42_v4.1_proteins PA42_v4.1_transcripts rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
+#Usage Ex: qsub searchRBH.sh PA42_v4.1_proteins PA42_v4.1_proteins PA42_v4.1_cds rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
 
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
 #Determine input database for blastp
-if [[ "$1" == *assembly* ]]; then
+if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
-	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	geno="$2"
-	#Set outputs absolute path
-	outputFolder="$inputsPath"/"$1"/reciprocalSearched_blastp_"$3"
-	#Set blast result paths
-	inputDBPath="$outputFolder"/"blastp.outfmt6"
-	inputRDBPath="$outputFolder"/"blastp_reciprocal.outfmt6"
-elif [[ "$1" == PA42_proteins ]]; then
+elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
+	#Retrieve reads input absolute path
+	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+	geno="$2"
+elif [[ "$1" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
 	inputsPath=$(dirname "$inputsPath")
-	geno="PA42_p"
-	#Set outputs absolute path
-	outputFolder="$inputsPath"/reciprocalSearched_blastp_"$3"
-	#Set blast result paths
-	inputDBPath="$outputFolder"/"blastp.outfmt6"
-	inputRDBPath="$outputFolder"/"blastp_reciprocal.outfmt6"
-elif [[ "$1" == PA42_cds ]]; then
+	geno="$1"
+elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
 	inputsPath=$(dirname "$inputsPath")
-	geno="PA42_c"
-	#Set outputs absolute path
-	outputFolder="$inputsPath"/reciprocalSearched_blastp_"$3"
-	#Set blast result paths
-	inputDBPath="$outputFolder"/"blastp.outfmt6"
-	inputRDBPath="$outputFolder"/"blastp_reciprocal.outfmt6"
-elif [[ "$1" == PA42_transcripts ]]; then
+	geno="$1"
+elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
 	inputsPath=$(dirname "$inputsPath")
-	geno="PA42_t"
-	#Set outputs absolute path
-	outputFolder="$inputsPath"/reciprocalSearched_blastp_"$3"
-	#Set blast result paths
-	inputDBPath="$outputFolder"/"blastp.outfmt6"
-	inputRDBPath="$outputFolder"/"blastp_reciprocal.outfmt6"
+	geno="$1"
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
+#Set outputs absolute path
+outputFolder="$inputsPath"/"$1"/reciprocalSearched_blastp_"$3"
+#Set blast result paths
+inputDBPath="$outputFolder"/"blastp.outfmt6"
+inputRDBPath="$outputFolder"/"blastp_reciprocal.outfmt6"
+
 #Move to output folder
 cd "$outputFolder"
 

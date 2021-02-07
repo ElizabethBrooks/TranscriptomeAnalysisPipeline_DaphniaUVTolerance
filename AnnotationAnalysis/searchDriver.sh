@@ -1,9 +1,9 @@
 #!/bin/bash
 #Script to perform sequence searches using a selected program for an input transcript data set
 #Usage: bash searchDriver.sh method PA42Target assembledFolder sampleList
-#Usage Ex: bash searchDriver.sh RBH PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_proteins
-#Usage Ex: bash searchDriver.sh consensus PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_proteins
-#Usage Ex: bash searchDriver.sh plot PA42_proteins trimmed_run1
+#Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_proteins
+#Usage Ex: bash searchDriver.sh consensus PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_proteins
+#Usage Ex: bash searchDriver.sh plot PA42_v3.0_proteins trimmed_run1
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -15,13 +15,13 @@ outPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | se
 #Set merged summary file name and header
 if [[ "$1" == RBH ]]; then
 	#Set output file name
-	outFile="$outPath"/reciprocalSearched_blastp/"$3"_"$2"_blastp_summary.txt
+	outFile="$outPath"/reciprocalSearched_blastp_"$2"/rbhb_summary.txt
 	#Add header to output summary file
 	echo "query,db,queryHits,dbHits,bestHits" > "$outFile"
 elif [[ "$1" == consensus ]]; then
 	#Set output file names
-	outFile="$outPath"/reciprocalSearched_blastp/"$3"_"$2"_blastp_consensusSummary.txt
-	outFileUnique="$outPath"/reciprocalSearched_blastp/"$3"_"$2"_blastp_uniqueRBH.txt
+	outFile="$outPath"/reciprocalSearched_blastp_"$2"/rbhb_consensusSummary.txt
+	outFileUnique="$outPath"/reciprocalSearched_blastp_"$2"/rbhb_uniqueRBH.txt
 	#Add header to output summary file
 	echo "query,db,queryRBH,dbRBH,consensusRBH,queryUnique" > "$outFile"
 	echo "query,db,queryHit,dbHit" > "$outFileUnique"
@@ -41,7 +41,7 @@ for i in "$@"; do
 		if [[ "$i" == PA42* ]]; then
 			inputFolder="$i"
 		else
-			inputFolder=$(echo "$3""$i"_assemblyGenomeTrinity)
+			inputFolder=$(echo "$3""$i"_assembly"$2"Trinity)
 		fi
 	else
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
