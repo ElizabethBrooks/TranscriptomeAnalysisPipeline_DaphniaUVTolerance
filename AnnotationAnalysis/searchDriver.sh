@@ -17,13 +17,15 @@ outPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | se
 #Set merged summary file name and header
 if [[ "$1" == RBH ]]; then
 	#Set output file name
-	outFile="$outPath"/RBHB/"$3"_"$2"_blastp_summary.txt
+	inputTag=$(echo $3 | sed 's/\//./g')
+	outFile="$outPath"/RBHB/"$inputTag"_"$2"_blastp_summary.txt
 	#Add header to output summary file
 	echo "query,db,queryHits,dbHits,bestHits" > "$outFile"
 elif [[ "$1" == consensus ]]; then
 	#Set output file names
-	outFile="$outPath"/RBHB/"$3"_"$2"_blastp_consensusSummary.txt
-	outFileUnique="$outPath"/RBHB/"$3"_"$2"_blastp_uniqueRBH.txt
+	inputTag=$(echo $3 | sed 's/\//./g')
+	outFile="$outPath"/RBHB/"$inputTag"_"$2"_blastp_consensusSummary.txt
+	outFileUnique="$outPath"/RBHB/"$inputTag"_"$2"_blastp_uniqueRBH.txt
 	#Add header to output summary file
 	echo "query,db,queryRBH,dbRBH,consensusRBH,queryUnique" > "$outFile"
 	echo "query,db,queryHit,dbHit" > "$outFileUnique"
