@@ -69,7 +69,7 @@ for f1 in "$inputsPath"/"$1"/*_"$2"_*/*.bam; do
 	"$softwarePath"/stringtie "$curAlignedSample" -p 8 -G "$genomeFile" -C "$curSampleNoPath".cov_refs.gtf -o "$curSampleNoPath".stringtie.gtf
 	echo "Assembly of $curSampleNoPath complete!"
 	#Add sample to list
-	sampleList="$curSampleNoPath".stringtie.gtf "$sampleList"
+	sampleList=$(echo "$curSampleNoPath".stringtie.gtf "$sampleList")
 	#Add run inputs to output summary file
 	echo "stringtie "$curAlignedSample" -p 8 -G "$genomeFile" -C "$curSampleNoPath".cov_refs.gtf -o "$curSampleNoPath".stringtie.gtf" > "$inputOutFile"
 done
