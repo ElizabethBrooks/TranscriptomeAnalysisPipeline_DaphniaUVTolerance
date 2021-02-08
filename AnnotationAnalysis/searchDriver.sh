@@ -2,6 +2,7 @@
 #Script to perform sequence searches using a selected program for an input transcript data set
 #Usage: bash searchDriver.sh method PA42Target assembledFolder sampleList
 #Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins trimmed_run1/clusteredNucleotides_cdhit_0.98 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash searchDriver.sh consensus PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash searchDriver.sh plot PA42_v3.0_proteins trimmed_run1
 #Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins sortedCoordinate_samtoolsHisat2_run2 Y05 Y023_5 E05 R2 PA Sierra
@@ -33,7 +34,24 @@ inputOutFile="$outPath"/RBHB/"$3"_"$2"_inputsSummary.txt
 #Loop through all input sets of treatments and perform t-test analsysis
 for i in "$@"; do
 	#Determine what type of data folder was input
-	if [[ "$3" == trimmed* ]]; then
+	if [[ "$3" == trimmed*/clustered* ]]; then
+		if [[ "$i" == PA42* ]]; then
+			inputFolder="$i"
+		else
+			assemblyDir=$(echo $3 | cut -d '/' -f1)
+			clusteredDir=$(echo $3 | cut -d '/' -f2)
+			inputFolder=$(echo "$assemblyDir""$i"_assemblyTrinity/"$clusteredDir")
+		fi
+	elif [[ "$3" == sorted*/clustered* ]]; then
+		if [[ "$i" == PA42* ]]; then
+			inputFolder="$i"
+		else
+			assemblyDir=$(echo $3 | cut -d '/' -f1)
+			clusteredDir=$(echo $3 | cut -d '/' -f2)
+			genomeTag=$(echo $2 | sed 's/_c.*//g' | sed 's/_p.*//g' | sed 's/_t.*//g')
+			inputFolder=$(echo "$assemblyDir""$i"_assembly"$genomeTag"Trinity/"$clusteredDir")
+		fi
+	elif [[ "$3" == trimmed* ]]; then
 		if [[ "$i" == PA42* ]]; then
 			inputFolder="$i"
 		else
