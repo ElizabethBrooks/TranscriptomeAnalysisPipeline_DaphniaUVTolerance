@@ -43,7 +43,8 @@ for i in "$@"; do
 		if [[ "$i" == PA42* ]]; then
 			inputFolder="$i"
 		else
-			inputFolder=$(echo "$3""$i"_assembly"$2"Trinity)
+			genomeTag=$(echo $2 | sed 's/_c.*//g' | sed 's/_p.*//g' | sed 's/_t.*//g')
+			inputFolder=$(echo "$3""$i"_assembly"$genomeTag"Trinity)
 		fi
 	else
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
