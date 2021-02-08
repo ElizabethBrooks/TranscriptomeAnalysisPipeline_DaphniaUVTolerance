@@ -4,6 +4,7 @@
 #Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash searchDriver.sh consensus PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash searchDriver.sh plot PA42_v3.0_proteins trimmed_run1
+#Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins sortedCoordinate_samtoolsHisat2_run2 Y05 Y023_5 E05 R2 PA Sierra
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -42,7 +43,7 @@ for i in "$@"; do
 		if [[ "$i" == PA42* ]]; then
 			inputFolder="$i"
 		else
-			inputFolder=$(echo "$3""$i"_assembly"$1"Trinity)
+			inputFolder=$(echo "$3""$i"_assembly"$2"Trinity)
 		fi
 	else
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
