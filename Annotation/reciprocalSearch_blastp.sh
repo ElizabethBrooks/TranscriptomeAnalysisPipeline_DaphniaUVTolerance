@@ -50,15 +50,15 @@ elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	fi
 elif [[ "$1" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "proteinSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
+	inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "codingSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
+	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	outputFolder=$(dirname "$inputsPath")
 	inputsPath=$(echo "$outputPath"/decoded_transdecoder/*transdecoder.pep)
 elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	outputFolder=$(dirname "$inputsPath")
 	inputsPath=$(echo "$outputPath"/decoded_transdecoder/*transdecoder.pep)
 else
@@ -82,15 +82,15 @@ fi
 #Determine which genome transcript set to use
 if [[ "$2" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
-	reciprocalPath=$(grep "proteinSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
+	reciprocalPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 elif [[ "$2" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	reciprocalPath=$(grep "codingSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
+	reciprocalPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	reciprocalPath=$(dirname "$reciprocalPath")
 	reciprocalPath=$(echo "$reciprocalPath"/decoded_transdecoder/*.transdecoder.pep)
 elif [[ "$2" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	reciprocalPath=$(grep "transcriptSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	reciprocalPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	reciprocalPath=$(dirname "$reciprocalPath")
 	reciprocalPath=$(echo "$reciprocalPath"/decoded_transdecoder/*.transdecoder.pep)
 else
