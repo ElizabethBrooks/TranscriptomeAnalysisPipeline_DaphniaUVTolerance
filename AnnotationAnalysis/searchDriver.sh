@@ -29,10 +29,13 @@ elif [[ "$1" == consensus ]]; then
 	#Add header to output summary file
 	echo "query,db,queryRBH,dbRBH,consensusRBH,queryUnique" > "$outFile"
 	echo "query,db,queryHit,dbHit" > "$outFileUnique"
+else
+	echo "Invalid analysis method entered... exiting!"
+	exit 1
 fi
 #Initialize variables
 counter=0
-inputOutFile="$outPath"/RBHB/"$3"_"$2"_inputsSummary.txt
+inputOutFile="$outPath"/RBHB/"$inputTag"_"$2"_inputsSummary.txt
 #Loop through all input sets of treatments and perform t-test analsysis
 for i in "$@"; do
 	#Determine what type of data folder was input
