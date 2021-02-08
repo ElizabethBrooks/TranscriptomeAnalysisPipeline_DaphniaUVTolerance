@@ -1,9 +1,9 @@
 #!/bin/bash
 #Script to perform sequence searches using a selected program for an input transcript data set
 #Usage: bash searchDriver.sh method PA42Target assembledFolder sampleList
-#Usage Ex: bash searchDriver.sh RBH PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_proteins
-#Usage Ex: bash searchDriver.sh consensus PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_proteins
-#Usage Ex: bash searchDriver.sh plot PA42_proteins trimmed_run1
+#Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash searchDriver.sh consensus PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash searchDriver.sh plot PA42_v3.0_proteins trimmed_run1
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -28,6 +28,7 @@ elif [[ "$1" == consensus ]]; then
 fi
 #Initialize variables
 counter=0
+inputOutFile="$outPath"/RBHB/"$3"_"$2"_inputsSummary.txt
 #Loop through all input sets of treatments and perform t-test analsysis
 for i in "$@"; do
 	#Determine what type of data folder was input
@@ -41,7 +42,7 @@ for i in "$@"; do
 		if [[ "$i" == PA42* ]]; then
 			inputFolder="$i"
 		else
-			inputFolder=$(echo "$3""$i"_assemblyGenomeTrinity)
+			inputFolder=$(echo "$3""$i"_assembly"$1"Trinity)
 		fi
 	else
 		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
@@ -53,12 +54,16 @@ for i in "$@"; do
 			#Usage: bash searchRBH_blastp.sh transcriptomeFastaFolder
 			echo "Merging $i blastp results for $3 and $2..."
 			qsub searchRBH.sh "$inputFolder" "$i" "$2" "$outFile"
+			#Write inputs to summary file
+			echo "qsub searchRBH.sh "$inputFolder" "$i" "$2" "$outFile >> $inputOutFile
 		fi
 	elif [[ "$1" == consensus ]]; then #Skip first three arguments
 		if [ $counter -ge 3 ]; then
 			#Usage: qsub consensusRBH_blastp.sh transcriptomeFastaFolder
 			echo "Generating consensus RBH of $i blastp results for $3 and $2..."
 			qsub consensusRBH.sh "$inputFolder" "$i" "$2" "$outFile" "$outFileUnique"
+			#Write inputs to summary file
+			echo "qsub consensusRBH.sh "$inputFolder" "$i" "$2" "$outFile" "$outFileUnique >> $inputOutFile
 		fi
 	fi
 	counter=$(($counter+1))
@@ -73,4 +78,6 @@ if [ "$1" == plot ]; then
 	echo "Plotting blastp results for $3 and $2..."
 	Rscript blastpStats_barPlots.r "$3" "$outFile"
 	echo "Blastp results for $3 and $2 have been plotted!"
+	#Write inputs to summary file
+	echo "Rscript blastpStats_barPlots.r "$3" "$outFile >> $inputOutFile
 fi
