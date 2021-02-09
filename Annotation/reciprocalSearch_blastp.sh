@@ -4,6 +4,7 @@
 #$ -r n
 #$ -N reciprocalSearch_blastp_jobOutput
 #$ -pe smp 8
+#$ -q debug
 #Script to use blastp to translate the nucleotide sequences of a reference genome
 # for searching a protein database
 #Usage: qsub reciprocalSearch_blastp.sh proteomeFasta genomeTranscripts

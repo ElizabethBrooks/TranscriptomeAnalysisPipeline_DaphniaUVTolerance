@@ -4,6 +4,7 @@
 #$ -r n
 #$ -N sorting_samtools_jobOutput
 #$ -pe smp 8
+#$ -q debug
 #Script to perform samtools sorting of trimmed, then aligned
 # paired end reads
 #Usage: qsub sorting_samtools.sh sortingTarget sortingMethod alignedFolder optionalAssembledFolder

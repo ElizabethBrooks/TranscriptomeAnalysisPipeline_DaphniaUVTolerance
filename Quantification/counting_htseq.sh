@@ -3,6 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N counting_htseq_jobOutput
+#$ -q debug
 #Script to perform htseq-count counting of trimmed, aligned, then name sorted
 # paired end reads
 #Usage: qsub counting_htseq.sh sortedNameFolder analysisTarget optionalGenotype

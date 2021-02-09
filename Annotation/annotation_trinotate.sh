@@ -3,6 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N annotation_trinotate_jobOutput
+#$ -q debug
 #Script to use trinotate to generate an annotation report
 #Usage: qsub annotation_trinotate.sh transcriptomeFasta
 #Usage Ex: qsub annotation_trinotate.sh trimmed_run1E05_assemblyTrinity

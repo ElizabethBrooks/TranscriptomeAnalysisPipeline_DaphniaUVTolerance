@@ -3,6 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N annotation_sanspanz_jobOutput
+#$ -q debug
 #Script to predict coding regions from a transcript fasta file
 # using Transdecoder with genome reference and features files
 #Usage: qsub annotation_sanspanz.sh decodedFolder optionalSpecies

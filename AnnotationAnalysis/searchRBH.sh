@@ -3,6 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N searchRBH_jobOutput
+#$ -q debug
 #Script to filter reciprocal blast results for best hits
 #Usage: qsub searchRBH.sh transcriptomeFasta genotype PA42File outFile
 #Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_v3.0_proteins rbhb_summary.txt
