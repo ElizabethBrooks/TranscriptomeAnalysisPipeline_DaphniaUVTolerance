@@ -7,7 +7,7 @@
 #Script to perform genome-guided Trinity de novo transcriptome assembly
 #Usage: qsub assembly_genomeGuided_trinity.sh sortedFolder genotype maxIntronLength genome
 #Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsHisat2_run2 E05 14239 PA42_v3.0
-#Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsHisat2_run2 E05 23554 PA42_v4.1
+#Usage Ex: qsub assembly_genomeGuided_trinity.sh sortedCoordinate_samtoolsHisat2_run1 Y05 23554 PA42_v4.1
 
 #Required modules for ND CRC servers
 module load bio

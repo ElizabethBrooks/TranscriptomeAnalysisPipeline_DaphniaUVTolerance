@@ -21,12 +21,12 @@ fi
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
 #Determine what analysis method was used for the input folder of data
-if [[ "$2" == *assemblyTrinity* ]]; then
+if [[ "$2" == *assemblyTrinity* || "$2" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	inputsDir="$inputsPath"/"$2"/"$1"
 	outputsPath="$inputsPath"/"$2"
-elif [[ "$2" == *assemblyGenome* ]]; then
+elif [[ "$2" == *assembly*Trinity* || "$2" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	inputsDir="$inputsPath"/"$2"/"$1"
