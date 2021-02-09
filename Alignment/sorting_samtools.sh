@@ -32,15 +32,14 @@ else
 	exit 1
 fi
 #Determine which analysis folder was input
-if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie*  ]]; then
-	#inputsPath reads input absolute path
-	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	inputsPath="$inputsPath"/"$4"
-	#Retrieve alignment outputs absolute path
-	outputsPath="$inputsPath"
-elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie*  ]]; then
-	#inputsPath reads input absolute path
-	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+if [[ "$1" == assembly ]]; then
+	#Select the appropriaete assembly reads input absolute path
+	if [[ "$4" == *assemblyTrinity* || "$4" == *assemblyStringtie*  ]]; then
+		inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	elif [[ "$4" == *assemblyTrinity* || "$4" == *assemblyStringtie*  ]]; then
+		inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	fi
+	#Set the inputs path
 	inputsPath="$inputsPath"/"$4"
 	#Retrieve alignment outputs absolute path
 	outputsPath="$inputsPath"
