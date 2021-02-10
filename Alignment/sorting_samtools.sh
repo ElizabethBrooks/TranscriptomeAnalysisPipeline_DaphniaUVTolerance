@@ -35,10 +35,13 @@ fi
 #Determine which analysis folder was input
 if [[ "$1" == assembly ]]; then
 	#Select the appropriaete assembly reads input absolute path
-	if [[ "$3" == *assemblyTrinity* || "$3" == *assemblyStringtie*  ]]; then
+	if [[ "$4" == *assemblyTrinity* || "$4" == *assemblyStringtie*  ]]; then
 		inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	elif [[ "$3" == *assemblyTrinity* || "$3" == *assemblyStringtie*  ]]; then
+	elif [[ "$4" == *assembly*Trinity* || "$4" == *assembly*Stringtie*  ]]; then
 		inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	else
+		echo "Invalid assembly folder input... exiting!"
+		ecit 1
 	fi
 	#Set the inputs path
 	inputsPath="$inputsPath"/"$4"
