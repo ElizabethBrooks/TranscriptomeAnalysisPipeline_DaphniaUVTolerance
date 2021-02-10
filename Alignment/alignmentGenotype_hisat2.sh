@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N alignment_hisat2_jobOutput
+#$ -N alignmentGenotype_hisat2_jobOutput
 #$ -pe smp 8
 #$ -q debug
 #Script to perform hisat2 alignment of trimmed
