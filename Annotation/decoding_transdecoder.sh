@@ -4,6 +4,7 @@
 #$ -r n
 #$ -N decoding_transdecoder_jobOutput
 #$ -pe smp 1
+#$ -q debug
 #Script to predict coding regions from a de novo assembled transcriptome fasta file
 # using Transdecoder
 #Usage: qsub decoding_transdecoder.sh assembledTranscriptomeFolder
