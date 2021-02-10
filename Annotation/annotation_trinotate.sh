@@ -7,8 +7,8 @@
 #Script to use trinotate to generate an annotation report
 #Usage: qsub annotation_trinotate.sh transcriptomeFasta
 #Usage Ex: qsub annotation_trinotate.sh trimmed_run1E05_assemblyTrinity
-#Alternate usage Ex: qsub annotation_trinotate.sh PA42_cds
-#Alternate usage Ex: qsub annotation_trinotate.sh PA42_transcripts
+#Alternate usage Ex: qsub annotation_trinotate.sh PA42_v4.1_cds
+#Alternate usage Ex: qsub annotation_trinotate.sh PA42_v3.0_transcripts
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -20,7 +20,7 @@ softsPath=$(grep "trinotatePackage:" ../InputData/softwarePaths.txt | tr -d " " 
 #Retrieve sqlite database path
 sqliteDB=$(grep "trinotateSqlite:" ../InputData/databasePaths.txt | tr -d " " | sed "s/trinotateSqlite://g")
 #Determine input query transcriptome for blastp
-if [[ "$1" == *assemblyTrinity* ]]; then
+if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	inputsPath="$assemblyPath"/"$1"
@@ -33,7 +33,7 @@ if [[ "$1" == *assemblyTrinity* ]]; then
 	transdecoderPep="$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
 	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
 	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
-elif [[ "$1" == *assemblyGenome* ]]; then
+elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	inputsPath="$assemblyPath"/"$1"

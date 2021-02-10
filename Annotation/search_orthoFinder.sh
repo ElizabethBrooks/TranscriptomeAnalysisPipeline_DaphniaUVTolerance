@@ -51,12 +51,12 @@ for i in "${@:2}"; do #Skip first two argument
 		inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	elif [[ "$i" == *proteins ]]; then
 		#Retrieve genome reference absolute path for querying
-		inputsPath=$(grep "proteinSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
+		inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 		#Copy input fasta files
 		cp "$inputsPath" "$inputsDir"
 	elif [[ "$i" == *cds ]]; then
 		#Retrieve genome reference absolute path for querying
-		inputsPath=$(grep "codingSequences:" ../Archived/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
+		inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 		inputsPath=$(dirname "$inputsPath")
 		inputsPath=$(echo "$inputsPath"/decoded_transdecoder/*transdecoder.pep)
 		#Copy input fasta files
