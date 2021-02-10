@@ -4,6 +4,7 @@
 #$ -r n
 #$ -N clusterCds_cdhit_jobOutput
 #$ -pe smp 8
+#$ -q debug
 #Script to perform clustering of cds using cdhit
 #Usage: qsub clusterCds_cdhit.sh mergeBy clusterPercent sortedFolder genotypes
 #Usage Ex: qsub clusterCds_cdhit.sh trimmed_run1E05_assemblyTrinity 0.95

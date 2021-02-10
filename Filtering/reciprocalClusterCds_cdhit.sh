@@ -4,6 +4,7 @@
 #$ -r n
 #$ -N reciprocalClusterCds_cdhit_jobOutput
 #$ -pe smp 8
+#$ -q debug
 #Script to use cdhit to cluster the cds of a transcript set
 #Usage: qsub reciprocalClusterCds_cdhit.sh transcriptomeFasta clusterPercent
 #Usage Ex: qsub reciprocalClusterCds_cdhit.sh trimmed_run1E05_assemblyTrinity 0.90

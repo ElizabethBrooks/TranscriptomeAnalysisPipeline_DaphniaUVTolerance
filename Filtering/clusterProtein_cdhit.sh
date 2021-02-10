@@ -4,6 +4,7 @@
 #$ -r n
 #$ -N clusterProtein_cdhit_jobOutput
 #$ -pe smp 8
+#$ -q debug
 #Script to perform clustering of sequences using cdhit
 #the specified unique data (by sequence, ID, or both)
 #Usage: qsub clusterProtein_cdhit.sh mergeBy clusterPercent sortedFolder genotypes
