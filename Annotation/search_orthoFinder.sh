@@ -16,7 +16,7 @@
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
-   	echo "No folder name(s) supplied... exiting"
+   	echo "No arguments supplied... exiting"
    	exit 1
 fi
 #Set software path
