@@ -1,11 +1,8 @@
 # TranscriptomeAnalysisPipeline_DaphniaUVTolerance
 Repository for scripts used to analyze short paired-end RNA sequence reads for Daphnia UV tolerance treatments.
 
-## RNA-seq Analysis Pipeline - Reference Free Assembly
-![RNA-seq Analysis Pipeline - Reference Free Assembly](primaryWorkflow_dmelUV.png)
-
 ## RNA-seq Analysis Pipeline - Genome Guided Assembly
-![RNA-seq Analysis Pipeline - Genome Guided Assembly](alternateWorkflow_dmelUV.png)
+![RNA-seq Analysis Pipeline - Genome Guided Assembly](genomeGuidedAssemblyWorkflow_dmelUV.png)
 
 ## Running Scripts
 * The input and output paths need to be set using the *inputPaths.txt* and *outputPaths.txt* files in the *InputData* directory.
