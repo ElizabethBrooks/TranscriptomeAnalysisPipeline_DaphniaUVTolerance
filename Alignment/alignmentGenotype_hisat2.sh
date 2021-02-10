@@ -4,7 +4,6 @@
 #$ -r n
 #$ -N alignmentGenotype_hisat2_jobOutput
 #$ -pe smp 8
-#$ -q debug
 #Script to perform hisat2 alignment of trimmed
 # paired end reads
 #Note that a hisat2 genome refernce build folder needs to be generated first
