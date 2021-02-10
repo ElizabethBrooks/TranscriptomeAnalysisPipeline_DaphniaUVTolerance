@@ -38,7 +38,7 @@ if [[ "$1" == assembly ]]; then
 	if [[ "$4" == *assemblyTrinity* || "$4" == *assemblyStringtie*  ]]; then
 		inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	elif [[ "$4" == *assembly*Trinity* || "$4" == *assembly*Stringtie*  ]]; then
-		inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+		inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	else
 		echo "Invalid assembly folder input... exiting!"
 		ecit 1
