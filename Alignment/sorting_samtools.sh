@@ -9,6 +9,7 @@
 #Usage: qsub sorting_samtools.sh sortingTarget sortingMethod alignedFolder optionalAssembledFolder
 #Usage Ex: qsub sorting_samtools.sh genome coordinate aligned_hisat2_run3
 #Usage Ex: qsub sorting_samtools.sh assembly name aligned_hisat2_run1 trimmed_run1E05_assemblyTrinity
+#Usage Ex: qsub sorting_samtools.sh assembly name aligned_hisat2_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity
 
 #Required modules for ND CRC servers
 module load bio
@@ -34,9 +35,9 @@ fi
 #Determine which analysis folder was input
 if [[ "$1" == assembly ]]; then
 	#Select the appropriaete assembly reads input absolute path
-	if [[ "$4" == *assemblyTrinity* || "$4" == *assemblyStringtie*  ]]; then
+	if [[ "$3" == *assemblyTrinity* || "$3" == *assemblyStringtie*  ]]; then
 		inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	elif [[ "$4" == *assemblyTrinity* || "$4" == *assemblyStringtie*  ]]; then
+	elif [[ "$3" == *assemblyTrinity* || "$3" == *assemblyStringtie*  ]]; then
 		inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	fi
 	#Set the inputs path
