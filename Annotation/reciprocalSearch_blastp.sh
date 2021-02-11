@@ -14,9 +14,11 @@
 #Usage ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98 PA42_v4.1_proteins
 #Usage ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_cds
 #Usage ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_transcripts
-#Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity PA42_v3.0_proteins
+#Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity PA42_v4.1_proteins
 #Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98 PA42_v3.0_proteins
 #Usage ex: qsub reciprocalSearch_blastp.sh dnaRepair/Dmel_Svetec_2016/FlyBase_dnaRepair_Dmel_proteins.fasta PA42_v4.1_proteins
+#Usage ex: qsub reciprocalSearch_blastp.sh dnaRepair/Tcast_Guo_2019/DEGs_UVBvsCntrl_Tcast_proteins.fasta PA42_v4.1_proteins
+#Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity dnaRepair/Tcast_Guo_2019/DEGs_UVBvsCntrl_Tcast_proteins.fasta
 
 #Load necessary modules for ND CRC servers
 module load bio
@@ -86,20 +88,24 @@ fi
 if [[ "$2" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	reciprocalPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
+	dbTag="$2"
 elif [[ "$2" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	reciprocalPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	reciprocalPath=$(dirname "$reciprocalPath")
 	reciprocalPath=$(echo "$reciprocalPath"/decoded_transdecoder/*.transdecoder.pep)
+	dbTag="$2"
 elif [[ "$2" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	reciprocalPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	reciprocalPath=$(dirname "$reciprocalPath")
 	reciprocalPath=$(echo "$reciprocalPath"/decoded_transdecoder/*.transdecoder.pep)
+	dbTag="$2"
 else
-	#Error message
-	echo "Invalid genome fasta entered... exiting!"
-	exit 1
+	#Retrieve database absolute path for querying
+	reciprocalPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
+	reciprocalPath="$inputsPath"/"$1"
+	dbTag=$(echo "$2" | sed 's/\//_/g')
 fi
 #Check if DB of transcriptome exsists
 reciprocalDB=$(dirname "$reciprocalPath")
@@ -111,7 +117,7 @@ else #Make blastable DB of transcriptome
 	makeblastdb -in $reciprocalPath -dbtype prot
 fi
 #Set outputs absolute path
-outputFolder="$outputFolder"/reciprocalSearched_blastp_"$2"
+outputFolder="$outputFolder"/reciprocalSearched_blastp_"$dbTag"
 #Name output file of inputs
 inputOutFile="$outputFolder"/reciprocalSearched_blastp_summary.txt
 #Make output directory
