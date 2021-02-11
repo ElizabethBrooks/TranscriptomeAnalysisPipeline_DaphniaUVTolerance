@@ -105,7 +105,7 @@ else
 	#Retrieve database absolute path for querying
 	reciprocalPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
 	reciprocalPath="$inputsPath"/"$1"
-	dbTag=$(echo "$2" | sed 's/\//_/g')
+	dbTag=$(echo "$2" | sed 's/\//_/g' | sed 's/.fasta//g')
 fi
 #Check if DB of transcriptome exsists
 reciprocalDB=$(dirname "$reciprocalPath")
