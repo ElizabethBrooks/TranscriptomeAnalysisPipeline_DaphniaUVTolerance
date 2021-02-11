@@ -22,14 +22,14 @@ outPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | se
 if [[ "$1" == RBH ]]; then
 	#Set output file name
 	inputTag=$(echo $3 | sed 's/\//_/g')
-	dbTag=$(echo $3 | sed 's/\//_/g')
+	dbTag=$(echo $2 | sed 's/\//_/g')
 	outFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_summary.txt
 	#Add header to output summary file
 	echo "query,db,queryHits,dbHits,bestHits" > "$outFile"
 elif [[ "$1" == consensus ]]; then
 	#Set output file names
 	inputTag=$(echo $3 | sed 's/\//_/g')
-	dbTag=$(echo $3 | sed 's/\//_/g')
+	dbTag=$(echo $2 | sed 's/\//_/g')
 	outFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_consensusSummary.txt
 	outFileUnique="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_uniqueRBH.txt
 	#Add header to output summary file
