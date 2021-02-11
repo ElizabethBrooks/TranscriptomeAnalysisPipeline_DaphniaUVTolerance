@@ -67,6 +67,7 @@ else
 	#Retrieve database absolute path for querying
 	inputsPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
 	inputsPath="$inputsPath"/"$1"
+	outputFolder=$(dirname "$inputsPath")
 fi
 #Check if DB of transcriptome exsists
 inputDB=$(dirname "$inputsPath")
@@ -96,9 +97,9 @@ elif [[ "$2" == *transcripts ]]; then
 	reciprocalPath=$(dirname "$reciprocalPath")
 	reciprocalPath=$(echo "$reciprocalPath"/decoded_transdecoder/*.transdecoder.pep)
 else
-	#Retrieve database absolute path for querying
-	inputsPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
-	inputsPath="$inputsPath"/"$2"
+	#Error message
+	echo "Invalid genome fasta entered... exiting!"
+	exit 1
 fi
 #Check if DB of transcriptome exsists
 reciprocalDB=$(dirname "$reciprocalPath")
