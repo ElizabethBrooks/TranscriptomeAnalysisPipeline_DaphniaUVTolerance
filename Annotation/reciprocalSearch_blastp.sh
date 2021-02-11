@@ -18,7 +18,7 @@
 #Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98 PA42_v3.0_proteins
 #Usage ex: qsub reciprocalSearch_blastp.sh dnaRepair/Dmel_Svetec_2016/FlyBase_dnaRepair_Dmel_proteins.fasta PA42_v4.1_proteins
 #Usage ex: qsub reciprocalSearch_blastp.sh dnaRepair/Tcast_Guo_2019/DEGs_UVBvsCntrl_Tcast_proteins.fasta PA42_v4.1_proteins
-#Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity dnaRepair/Tcast_Guo_2019/DEGs_UVBvsCntrl_Tcast_proteins.fasta
+#Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity dnaRepair/Dmel_Svetec_2016/FlyBase_dnaRepair_Dmel_proteins.fasta
 
 #Load necessary modules for ND CRC servers
 module load bio
@@ -68,7 +68,7 @@ elif [[ "$1" == *transcripts ]]; then
 else
 	#Retrieve database absolute path for querying
 	inputsPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
-	inputsPath="$inputsPath"/"$1"
+	inputsPath="$inputsPath"/"$2"
 	outputFolder=$(dirname "$inputsPath")
 fi
 #Check if DB of transcriptome exsists
