@@ -13,6 +13,7 @@
 #Usage Ex: qsub searchRBH.sh PA42_v4.1_cds PA42_cds PA42_v4.1_proteins rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
 #Usage Ex: qsub searchRBH.sh PA42_v4.1_proteins PA42_v4.1_proteins PA42_v4.1_transcripts rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
 #Usage Ex: qsub searchRBH.sh PA42_v4.1_proteins PA42_v4.1_proteins PA42_v4.1_cds rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
+#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity E05 dnaRepair/Tcast_Guo_2019 rbhb_summary.txt
 
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -47,7 +48,8 @@ else
 	geno="$2"
 fi
 #Set outputs absolute path
-outputFolder="$inputsPath"/"$1"/reciprocalSearched_blastp_"$3"
+dbTag=$(echo $3 | sed 's/\//_/g')
+outputFolder="$inputsPath"/"$1"/reciprocalSearched_blastp_"$dbTag"
 #Set blast result paths
 inputDBPath="$outputFolder"/"blastp.outfmt6"
 inputRDBPath="$outputFolder"/"blastp_reciprocal.outfmt6"

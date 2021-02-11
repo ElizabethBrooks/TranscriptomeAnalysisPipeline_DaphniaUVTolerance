@@ -9,6 +9,7 @@
 #Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins dnaRepair/Dmel_Svetec_2016 Dmel
 #Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins dnaRepair/Tcast_Guo_2019 Dmel
+#Usage Ex: bash searchDriver.sh RBH dnaRepair/Tcast_Guo_2019 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -21,14 +22,16 @@ outPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | se
 if [[ "$1" == RBH ]]; then
 	#Set output file name
 	inputTag=$(echo $3 | sed 's/\//_/g')
-	outFile="$outPath"/RBHB/"$inputTag"_"$2"_blastp_summary.txt
+	dbTag=$(echo $3 | sed 's/\//_/g')
+	outFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_summary.txt
 	#Add header to output summary file
 	echo "query,db,queryHits,dbHits,bestHits" > "$outFile"
 elif [[ "$1" == consensus ]]; then
 	#Set output file names
 	inputTag=$(echo $3 | sed 's/\//_/g')
-	outFile="$outPath"/RBHB/"$inputTag"_"$2"_blastp_consensusSummary.txt
-	outFileUnique="$outPath"/RBHB/"$inputTag"_"$2"_blastp_uniqueRBH.txt
+	dbTag=$(echo $3 | sed 's/\//_/g')
+	outFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_consensusSummary.txt
+	outFileUnique="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_uniqueRBH.txt
 	#Add header to output summary file
 	echo "query,db,queryRBH,dbRBH,consensusRBH,queryUnique" > "$outFile"
 	echo "query,db,queryHit,dbHit" > "$outFileUnique"
@@ -38,7 +41,7 @@ else
 fi
 #Initialize variables
 counter=0
-inputOutFile="$outPath"/RBHB/"$inputTag"_"$2"_inputsSummary.txt
+inputOutFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_inputsSummary.txt
 #Loop through all input sets of treatments and perform t-test analsysis
 for i in "$@"; do
 	#Determine what type of data folder was input
@@ -104,7 +107,7 @@ if [ "$1" == plot ]; then
 	#Load necessary modules
 	module load R
 	#Retrieve output file name
-	outFile="$outPath"/reciprocalSearched_blastp/"$3"_"$2"_blastp_summary.txt
+	outFile="$outPath"/reciprocalSearched_blastp/"$inputTag"_"$dbTag"_blastp_summary.txt
 	#Usage: Rscript blastpStats_barPlots.r title blastpSummaryFile
 	echo "Plotting blastp results for $3 and $2..."
 	Rscript blastpStats_barPlots.r "$3" "$outFile"
