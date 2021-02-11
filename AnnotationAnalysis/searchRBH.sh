@@ -43,9 +43,8 @@ elif [[ "$1" == *transcripts ]]; then
 	inputsPath=$(dirname "$inputsPath")
 	geno="$1"
 else
-	#Error message
-	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
-	exit 1
+	inputsPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
+	geno="$2"
 fi
 #Set outputs absolute path
 outputFolder="$inputsPath"/"$1"/reciprocalSearched_blastp_"$3"

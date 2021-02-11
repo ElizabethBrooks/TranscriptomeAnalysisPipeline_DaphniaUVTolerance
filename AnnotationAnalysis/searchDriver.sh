@@ -7,6 +7,7 @@
 #Usage Ex: bash searchDriver.sh plot PA42_v3.0_proteins trimmed_run1
 #Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins sortedCoordinate_samtoolsHisat2_run2 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins dnaRepair/Dmel_Svetec_2016 Dmel
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -71,8 +72,11 @@ for i in "$@"; do
 			inputFolder=$(echo "$3""$i"_assembly"$genomeTag"Trinity)
 		fi
 	else
-		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
-		exit 1
+		if [[ "$i" == PA42* ]]; then
+			inputFolder="$i"
+		else
+			inputFolder="$3"
+		fi
 	fi
 	#Check input option
 	if [[ "$1" == RBH ]]; then #Skip first three arguments
