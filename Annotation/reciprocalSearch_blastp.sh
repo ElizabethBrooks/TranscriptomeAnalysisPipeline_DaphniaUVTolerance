@@ -55,6 +55,7 @@ elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 elif [[ "$1" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
+	outputFolder=$(dirname "$inputsPath")
 elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
@@ -68,7 +69,7 @@ elif [[ "$1" == *transcripts ]]; then
 else
 	#Retrieve database absolute path for querying
 	inputsPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
-	inputsPath="$inputsPath"/"$2"
+	inputsPath="$inputsPath"/"$1"
 	outputFolder=$(dirname "$inputsPath")
 fi
 #Check if DB of transcriptome exsists

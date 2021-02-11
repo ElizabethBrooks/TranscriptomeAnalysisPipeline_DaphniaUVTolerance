@@ -9,7 +9,7 @@
 #Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins dnaRepair/Dmel_Svetec_2016 Dmel
 #Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins dnaRepair/Tcast_Guo_2019 Dmel
-#Usage Ex: bash searchDriver.sh RBH dnaRepair/Tcast_Guo_2019 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash searchDriver.sh RBH dnaRepair/Dmel_Svetec_2016 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_v4.1_proteins
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
