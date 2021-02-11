@@ -7,7 +7,7 @@
 #$ -q debug
 #Script to use blastp to translate the nucleotide sequences of a reference genome
 # for searching a protein database
-#Usage: qsub reciprocalSearch_blastp.sh proteomeFasta genomeTranscripts
+#Usage: qsub reciprocalSearch_blastp.sh proteomeFastaDB proteomeFastaQuery
 #Usage ex: qsub reciprocalSearch_blastp.sh PA42_v4.1_proteins PA42_v4.1_proteins
 #Usage ex: qsub reciprocalSearch_blastp.sh PA42_v4.1_proteins PA42_v4.1_cds
 #Usage ex: qsub reciprocalSearch_blastp.sh PA42_v4.1_proteins PA42_v4.1_transcripts
@@ -16,6 +16,7 @@
 #Usage ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_transcripts
 #Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity PA42_v3.0_proteins
 #Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98 PA42_v3.0_proteins
+#Usage ex: qsub reciprocalSearch_blastp.sh dnaRepair/Dmel_Svetec_2016/FlyBase_dnaRepair_Dmel_proteins.fasta PA42_v4.1_proteins
 
 #Load necessary modules for ND CRC servers
 module load bio
@@ -63,9 +64,9 @@ elif [[ "$1" == *transcripts ]]; then
 	outputFolder=$(dirname "$inputsPath")
 	inputsPath=$(echo "$outputPath"/decoded_transdecoder/*transdecoder.pep)
 else
-	#Error message
-	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
-	exit 1
+	#Retrieve database absolute path for querying
+	inputsPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
+	inputsPath="$inputsPath"/"$1"
 fi
 #Check if DB of transcriptome exsists
 inputDB=$(dirname "$inputsPath")
@@ -95,9 +96,9 @@ elif [[ "$2" == *transcripts ]]; then
 	reciprocalPath=$(dirname "$reciprocalPath")
 	reciprocalPath=$(echo "$reciprocalPath"/decoded_transdecoder/*.transdecoder.pep)
 else
-	#Error message
-	echo "Invalid genome fasta entered... exiting!"
-	exit 1
+	#Retrieve database absolute path for querying
+	inputsPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
+	inputsPath="$inputsPath"/"$2"
 fi
 #Check if DB of transcriptome exsists
 reciprocalDB=$(dirname "$reciprocalPath")
