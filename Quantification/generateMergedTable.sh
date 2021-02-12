@@ -3,8 +3,10 @@
 #Usage ex: bash generateMergedTable.sh counted_htseq_run1 genome
 #Alternate usage: bash generateMergedTable.sh countedGenesFolder trimmedFolder assembly
 #Alternate usage ex: bash generateMergedTable.sh counted_htseq_run1 trimmed_run1 assemblyPA42_v4.1Trinity
+#Alternate usage ex: bash generateMergedTable.sh counted_htseq_run1 sortedCoordinate_samtoolsHisat2_run1 assemblyPA42_v4.1Trinity
 #Script to generate guide file and merge gene counts
 # using the merge_tables.py script
+
 #Load necessary modules for ND CRC servers
 module load bio
 #module load bio/python/2.7.14
@@ -29,8 +31,10 @@ if [[ "$2" == trimmed* || "$2" == sorted* ]]; then
 		exit 1
 	fi
 	#Set inputs path
+	inputCounts="$inputsDir"/"$2"_"$3"
 	inputsPath="$inputsDir"/"$2"_"$3"/"$1"
 	#Make output directory
+	mkdir "$inputCounts"
 	mkdir "$inputsPath"
 	#Check if the folder already exists
 	if [ $? -ne 0 ]; then
