@@ -2,7 +2,7 @@
 #Usage: bash generateMergedTable.sh countedGenesFolder genome
 #Usage ex: bash generateMergedTable.sh counted_htseq_run1 genome
 #Alternate usage: bash generateMergedTable.sh countedGenesFolder trimmedFolder assembly
-#Alternate usage ex: bash generateMergedTable.sh counted_htseq_run1 trimmed_run1 assemblyPA42_v4.1Trinity
+#Alternate usage ex: bash generateMergedTable.sh counted_htseq_run1 trimmed_run1 assemblyTrinity
 #Alternate usage ex: bash generateMergedTable.sh counted_htseq_run1 sortedCoordinate_samtoolsHisat2_run1 assemblyPA42_v4.1Trinity
 #Script to generate guide file and merge gene counts
 # using the merge_tables.py script

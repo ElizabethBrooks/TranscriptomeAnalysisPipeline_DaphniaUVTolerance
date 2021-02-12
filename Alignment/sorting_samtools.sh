@@ -138,9 +138,9 @@ for f1 in "$inputsPath"/"$3"/*/; do
 		echo samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam >> "$inputOutFile"
 	fi
 	#Clean up bam files depending on analysis
-	if [[ "$1"  == assembly ]]; then #Clean up excess bam files, if assemly was input
-		rm "$curAlignedSample"
-	fi
+	#if [[ "$1"  == assembly ]]; then #Clean up excess bam files, if assemly was input
+	#	rm "$curAlignedSample"
+	#fi
 done
 #Copy previous summaries
 cp "$inputsPath"/"$3"/*.txt "$outputFolder"

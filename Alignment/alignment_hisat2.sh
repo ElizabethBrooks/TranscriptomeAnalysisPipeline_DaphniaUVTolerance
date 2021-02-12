@@ -11,7 +11,7 @@
 #Usage Ex: qsub alignment_hisat2.sh genomeStats trimmed_run1 14239 dta
 #Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 23554 dta
 #Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity 23554
-#Alternate usage Ex: qsub alignment_hisat2.sh assemblyStats trimmed_run1 trimmed_run1E05_assemblyTrinity
+#Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 trimmed_run1E05_assemblyTrinity
 #Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
 
 #Required modules for ND CRC servers
@@ -25,10 +25,10 @@ fi
 #Determine which analysis folder was input
 if [[ "$1"  == assembly* ]]; then
 	#Determine the type of assembly
-	if [[ "$3" == *assemblyTrinity* ]]; then
+	if [[ "$3" == *assemblyTrinity* || "$3" == *assemblyStringtie* ]]; then
 		#Retrieve reads input absolute path
 		assemblyPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	elif [[ "$3" == *assemblyGenome* ]]; then
+	elif [[ "$3" == *assembly*Trinity* || "$3" == *assembly*Stringtie* ]]; then
 		#Retrieve reads input absolute path
 		assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	fi
