@@ -9,8 +9,8 @@ queryTag=$(echo "$2" | sed 's/\//_/g')
 
 #Set outputs
 outPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
-outFile="$outPath"/"$1"_"$2"_consensusSummary.txt
-outFileRBH="$outPath"/"$1"_"$2"_consensusRBH.txt
+outFile="$outPath"/RBHB/"$dbTag"_"$queryTag"_consensusSummary.txt
+outFileRBH="$outPath"/RBHB/"$dbTag"_"$queryTag"_consensusRBH.txt
 
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
