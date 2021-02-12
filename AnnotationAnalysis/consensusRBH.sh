@@ -8,8 +8,9 @@ dbTag=$(dirname "$1" | sed 's/\//_/g')
 queryTag=$(dirname "$2" | sed 's/\//_/g')
 
 #Set outputs
-outFile="$1"_"$2"_consensusSummary.txt
-outFileRBH="$1"_"$2"_consensusRBH.txt
+outPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
+outFile="$outPath"/"$1"_"$2"_consensusSummary.txt
+outFileRBH="$outPath"/"$1"_"$2"_consensusRBH.txt
 
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -39,11 +40,8 @@ elif [[ "$1" == *transcripts ]]; then
 else
 	dbPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
 	dbPath="$dbPath"/"$1"
-	dbPath=$(dirname "$dbPath")
 fi
-#Set query input absolute path
-consensusTag=$(dirname "$3" | sed 's/\//_/g')
-inputQueryFolder="$dbPath"/reciprocalSearched_blastp_"$consensusTag"
+
 #Determine input DB
 if [[ "$2" == *assemblyTrinity* || "$2" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
@@ -69,15 +67,12 @@ else
 	#Retrieve database absolute path for querying
 	queryPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
 	queryPath="$queryPath"/"$2"
-	queryPath=$(dirname "$queryPath")
 fi
-#Set query input absolute path
-consensusTag=$(dirname "$3" | sed 's/\//_/g')
-inputDBFolder="$queryPath"/reciprocalSearched_blastp_"$consensusTag"
 
 #Merge blast search results
-queryFileRBH="$inputQueryFolder"/"blastp_RBH.txt"
-dbFileRBH="$inputDBFolder"/"blastp_RBH.txt"
+consensusTag=$(dirname "$3" | sed 's/\//_/g')
+queryFileRBH="$queryPath"/reciprocalSearched_blastp_"$consensusTag"/"blastp_RBH.txt"
+dbFileRBH="$dbPath"/reciprocalSearched_blastp_"$consensusTag"/"blastp_RBH.txt"
 
 #Report inputs
 echo "Query: $queryFileRBH"
