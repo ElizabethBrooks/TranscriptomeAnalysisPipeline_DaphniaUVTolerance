@@ -35,14 +35,16 @@ if [[ "$2" == trimmed* || "$2" == sorted* ]]; then
 	inputsPath="$inputsDir"/"$2"_"$3"/"$1"
 	#Make output directory
 	mkdir "$inputCounts"
-	mkdir "$inputsPath"
 	#Check if the folder already exists
 	if [ $? -ne 0 ]; then
-		echo "The $inputsPath directory already exsists... please remove before proceeding."
+		echo "The $inputCounts directory already exsists... please remove before proceeding."
 		exit 1
 	fi
+	mkdir "$inputsPath"
 	#Copy counts for each genotype
-	cp "$inputsDir"/"$2"*"$3"/"$1"/* "$inputsPath"
+	for c in "$inputsDir"/"$2"*"$3"/"$1"/*/; do
+		cp -r "$c" "$inputsPath"/
+	done
 elif [[ "$2" == "genome" ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
