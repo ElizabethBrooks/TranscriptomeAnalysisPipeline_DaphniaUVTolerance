@@ -1,88 +1,79 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N consensusRBH_jobOutput
 #Script to filter reciprocal blast results for best hits
-#Usage: qsub consensusRBH.sh transcriptomeFasta genotype PA42File outFile
-#Usage Ex: qsub consensusRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt
-#Usage Ex: qsub consensusRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_cds trimmed_run1_PA42_proteins_RBH_summary.txt
-#Usage Ex: qsub consensusRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_transcripts trimmed_run1_PA42_proteins_RBH_summary.txt
-#Usage Ex: qsub consensusRBH.sh PA42_transcripts PA42_transcripts PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt
-#Usage Ex: qsub consensusRBH.sh PA42_cds PA42_cds PA42_proteins trimmed_run1_PA42_proteins_RBH_summary.txt
-#Usage Ex: qsub consensusRBH.sh PA42_proteins PA42_proteins PA42_transcripts trimmed_run1_PA42_proteins_RBH_summary.txt
-#Usage Ex: qsub consensusRBH.sh PA42_proteins PA42_proteins PA42_cds trimmed_run1_PA42_proteins_RBH_summary.txt
+#Usage: bash consensusRBH.sh proteomeQuery proteomeDB comparisonFile
+#Usage ex: bash consensusRBH.sh uvResponsive/Dmel_Svetec_2016 dnaDamageResponse/Dmel_Svetec_2016 PA42_v4.1_proteins
 
 #set output summary file path
-outFile="$4"
-outFileUnique="$5"
+dbTag=$(dirname "$1" | sed 's/\//_/g')
+queryTag=$(dirname "$2" | sed 's/\//_/g')
+
+#Set outputs
+outFile="$1"_"$2"_consensusSummary.txt
+outFileRBH="$1"_"$2"_consensusRBH.txt
 
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
 fi
 #Determine input query
-if [[ "$1" == *assembly* ]]; then
+if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
-	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	geno="$2"
-	#Set outputs absolute path
-	inputQueryFolder="$inputsPath"/"$1"/reciprocalSearched_blastp_"$3"
-elif [[ "$1" == PA42_proteins ]]; then
+	dbPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	dbPath="$dbPath"/"$1"
+elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
+	#Retrieve reads input absolute path
+	dbPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+	dbPath="$dbPath"/"$1"
+elif [[ "$1" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
-	inputsPath=$(dirname "$inputsPath")
-	geno="$2"
-	#Set outputs absolute path
-	inputQueryFolder="$inputsPath"/reciprocalSearched_blastp_"$3"
-elif [[ "$1" == PA42_cds ]]; then
+	dbPath=$(grep "proteinSequences:" ../InputData/inputsPath.txt | tr -d " " | sed "s/proteinSequences://g")
+	dbPath=$(dirname "$dbPath")
+elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	inputsPath=$(dirname "$inputsPath")
-	geno="$2"
-	#Set outputs absolute path
-	inputQueryFolder="$inputsPath"/reciprocalSearched_blastp_"$3"
-elif [[ "$1" == PA42_transcripts ]]; then
+	dbPath=$(grep "codingSequences:" ../InputData/inputsPath.txt | tr -d " " | sed "s/codingSequences://g")
+	dbPath=$(dirname "$dbPath")
+elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
-	inputsPath=$(dirname "$inputsPath")
-	geno="$2"
-	#Set outputs absolute path
-	inputQueryFolder="$inputsPath"/reciprocalSearched_blastp_"$3"
+	dbPath=$(grep "transcriptSequences:" ../InputData/inputsPath.txt | tr -d " " | sed "s/transcriptSequences://g")
+	dbPath=$(dirname "$dbPath")
 else
-	#Error message
-	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
-	exit 1
+	dbPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
+	dbPath="$dbPath"/"$1"
+	dbPath=$(dirname "$dbPath")
 fi
+#Set query input absolute path
+consensusTag=$(dirname "$3" | sed 's/\//_/g')
+inputQueryFolder="$dbPath"/reciprocalSearched_blastp_"$consensusTag"
 #Determine input DB
-if [[ "$3" == *assembly* ]]; then
+if [[ "$2" == *assemblyTrinity* || "$2" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
-	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
-	#Set outputs absolute path
-	inputDBFolder="$inputsPath"/"$1"/reciprocalSearched_blastp_"$3"
-elif [[ "$3" == PA42_proteins ]]; then
+	queryPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	queryPath="$queryPath"/"$2"
+elif [[ "$2" == *assembly*Trinity* || "$2" == *assembly*Stringtie* ]]; then
+	#Retrieve reads input absolute path
+	queryPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+	queryPath="$queryPath"/"$2"
+elif [[ "$2" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "proteinSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/proteinSequencesDB://g")
-	inputsPath=$(dirname "$inputsPath")
-	#Set outputs absolute path
-	inputDBFolder="$inputsPath"/reciprocalSearched_blastp_"$3"
-elif [[ "$3" == PA42_cds ]]; then
+	queryPath=$(grep "proteinSequences:" ../InputData/inputsPath.txt | tr -d " " | sed "s/proteinSequences://g")
+	queryPath=$(dirname "$queryPath")
+elif [[ "$2" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "codingSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/codingSequencesDB://g")
-	inputsPath=$(dirname "$inputsPath")
-	#Set outputs absolute path
-	inputDBFolder="$inputsPath"/reciprocalSearched_blastp_"$3"
-elif [[ "$3" == PA42_transcripts ]]; then
+	queryPath=$(grep "codingSequences:" ../InputData/inputsPath.txt | tr -d " " | sed "s/codingSequences://g")
+	queryPath=$(dirname "$queryPath")
+elif [[ "$2" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptSequencesDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/transcriptSequencesDB://g")
-	inputsPath=$(dirname "$inputsPath")
-	#Set outputs absolute path
-	inputDBFolder="$inputsPath"/reciprocalSearched_blastp_"$3"
+	queryPath=$(grep "transcriptSequences:" ../InputData/inputsPath.txt | tr -d " " | sed "s/transcriptSequences://g")
+	queryPath=$(dirname "$queryPath")
 else
-	#Error message
-	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
-	exit 1
+	#Retrieve database absolute path for querying
+	queryPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
+	queryPath="$queryPath"/"$2"
+	queryPath=$(dirname "$queryPath")
 fi
+#Set query input absolute path
+consensusTag=$(dirname "$3" | sed 's/\//_/g')
+inputDBFolder="$queryPath"/reciprocalSearched_blastp_"$consensusTag"
 
 #Merge blast search results
 queryFileRBH="$inputQueryFolder"/"blastp_RBH.txt"
@@ -96,32 +87,24 @@ echo "DB: $dbFileRBH"
 tail -n +2 $queryFileRBH > tmp1.txt
 tail -n +2 $dbFileRBH > tmp2.txt
 
-#Set outputs
-outFileRBH=$(echo "$outFile" | sed 's/consensusSummary/GENOTYPEConsensusRBH/g' | sed "s/GENOTYPE/$geno/g")
-
 #Pre-clean up
-echo "queryHit,dbHit,db" > $outFileRBH
+echo "queryHit,dbHit" > $outFileRBH
 
 #Loop over first set of annotations
-COUNTER=0
-while IFS=, read -r f1 f2 f3
+while IFS=, read -r f1 f2
 do
 	#Determine annotation sets
-	if grep -q "$f2,$f3" tmp2.txt; then #RBH
-		echo "$f1,$f2,$f3" >> $outFileRBH
-	else #Query unique
-		echo "$geno,$f3,$f1,$f2" >> $outFileUnique
-		COUNTER=$(($COUNTER+1))
+	if grep -q ",$f2" tmp2.txt; then #consensus RBH
+		echo "$f2" >> $outFileRBH
 	fi
 done < tmp1.txt
 
 #Check number of lines
-#echo "query,db,queryRBH,dbRBH,consensusRBH,queryUnique" > "$outFile"
-queryHits=$(wc -l "$queryFileRBH" | cut -d ' ' -f 1)
-dbHits=$(wc -l "$dbFileRBH" | cut -d ' ' -f 1)
+echo "query,db,consesus,queryRBH,dbRBH,consensusRBH" > "$outFile"
+queryHits=$(($(wc -l "$queryFileRBH" | cut -d ' ' -f 1)-1))
+dbHits=$(($(wc -l "$dbFileRBH" | cut -d ' ' -f 1)-1))
 consensusHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
-queryUnique=$COUNTER
-echo "$geno","$3","$queryHits","$dbHits","$consensusHits","$queryUnique" >> "$outFile"
+echo "$1","$2","$3","$queryHits","$dbHits","$consensusHits" >> "$outFile"
 
 #Clean up
 rm tmp*.txt

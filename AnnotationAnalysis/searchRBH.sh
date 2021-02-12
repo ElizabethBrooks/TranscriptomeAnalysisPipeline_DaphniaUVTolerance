@@ -5,15 +5,15 @@
 #$ -N searchRBH_jobOutput
 #$ -q debug
 #Script to filter reciprocal blast results for best hits
-#Usage: qsub searchRBH.sh transcriptomeFasta genotype PA42File outFile
-#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_v3.0_proteins rbhb_summary.txt
-#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_v3.0_cds rbhb_summary.txt
-#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity E05 PA42_v3.0_transcripts rbhb_summary.txt
-#Usage Ex: qsub searchRBH.sh PA42_v4.1_transcripts PA42_v4.1_transcripts PA42_v4.1_proteins rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
-#Usage Ex: qsub searchRBH.sh PA42_v4.1_cds PA42_cds PA42_v4.1_proteins rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
-#Usage Ex: qsub searchRBH.sh PA42_v4.1_proteins PA42_v4.1_proteins PA42_v4.1_transcripts rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
-#Usage Ex: qsub searchRBH.sh PA42_v4.1_proteins PA42_v4.1_proteins PA42_v4.1_cds rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
-#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity E05 dnaRepair/Tcast_Guo_2019 rbhb_summary.txt
+#Usage: qsub searchRBH.sh proteomeQuery proteomeDB outFile
+#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity PA42_v3.0_proteins rbhb_summary.txt
+#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity PA42_v3.0_cds rbhb_summary.txt
+#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity PA42_v3.0_transcripts rbhb_summary.txt
+#Usage Ex: qsub searchRBH.sh PA42_v4.1_transcripts PA42_v4.1_proteins rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
+#Usage Ex: qsub searchRBH.sh PA42_v4.1_cds PA42_v4.1_proteins rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
+#Usage Ex: qsub searchRBH.sh PA42_v4.1_proteins PA42_v4.1_transcripts rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
+#Usage Ex: qsub searchRBH.sh PA42_v4.1_proteins PA42_v4.1_cds rbhb_consensusSummary.txt rbhb_uniqueRBH.txt
+#Usage Ex: qsub searchRBH.sh trimmed_run1E05_assemblyTrinity dnaRepair/Tcast_Guo_2019 rbhb_summary.txt
 
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -23,29 +23,23 @@ fi
 if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	geno="$2"
 elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
-	geno="$2"
 elif [[ "$1" == *proteins ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 	inputsPath=$(dirname "$inputsPath")
-	geno="$1"
 elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	inputsPath=$(dirname "$inputsPath")
-	geno="$1"
 elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	inputsPath=$(dirname "$inputsPath")
-	geno="$1"
 else
 	inputsPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
-	geno="$2"
 fi
 #Set outputs absolute path
 dbTag=$(echo $3 | sed 's/\//_/g')
@@ -83,4 +77,4 @@ done < $inputDBPath
 queryHits=$(wc -l "$inputDBPath" | cut -d ' ' -f 1)
 dbHits=$(wc -l "$inputRDBPath" | cut -d ' ' -f 1)
 bestHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
-echo "$geno","$3","$queryHits","$dbHits","$bestHits" >> "$outFile"
+echo "$2","$3","$queryHits","$dbHits","$bestHits" >> "$outFile"

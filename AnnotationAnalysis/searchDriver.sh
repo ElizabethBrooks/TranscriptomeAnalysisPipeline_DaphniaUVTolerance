@@ -7,9 +7,10 @@
 #Usage Ex: bash searchDriver.sh plot PA42_v3.0_proteins trimmed_run1
 #Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins sortedCoordinate_samtoolsHisat2_run2 Y05 Y023_5 E05 R2 PA Sierra
 #Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins dnaRepair/Dmel_Svetec_2016 Dmel
-#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins dnaRepair/Tcast_Guo_2019 Dmel
-#Usage Ex: bash searchDriver.sh RBH dnaRepair/Dmel_Svetec_2016 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_v4.1_proteins
+#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins dnaDamageResponse/Dmel_Svetec_2016 Dmel
+#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins uvResponsive/Tcast_Guo_2019 Tcast
+#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins uvResponsive/Dmel_Svetec_2016 Dmel
+#Usage Ex: bash searchDriver.sh RBH dnaDamageResponse/Dmel_Svetec_2016 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_v4.1_proteins
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -26,15 +27,13 @@ if [[ "$1" == RBH ]]; then
 	outFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_summary.txt
 	#Add header to output summary file
 	echo "query,db,queryHits,dbHits,bestHits" > "$outFile"
-elif [[ "$1" == consensus ]]; then
+elif [[ "$1" == consensus* ]]; then
 	#Set output file names
 	inputTag=$(echo $3 | sed 's/\//_/g')
 	dbTag=$(echo $2 | sed 's/\//_/g')
 	outFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_consensusSummary.txt
-	outFileUnique="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_uniqueRBH.txt
 	#Add header to output summary file
-	echo "query,db,queryRBH,dbRBH,consensusRBH,queryUnique" > "$outFile"
-	echo "query,db,queryHit,dbHit" > "$outFileUnique"
+	echo "query,db,consensus,queryRBH,dbRBH,consensusRBH" > "$outFile"
 else
 	echo "Invalid analysis method entered... exiting!"
 	exit 1
@@ -95,9 +94,9 @@ for i in "$@"; do
 		if [ $counter -ge 3 ]; then
 			#Usage: qsub consensusRBH_blastp.sh transcriptomeFastaFolder
 			echo "Generating consensus RBH of $i blastp results for $3 and $2..."
-			qsub consensusRBH.sh "$inputFolder" "$i" "$2" "$outFile" "$outFileUnique"
+			qsub consensusRBH.sh "$inputFolder" "$i" "$2" "$outFile"
 			#Write inputs to summary file
-			echo "qsub consensusRBH.sh "$inputFolder" "$i" "$2" "$outFile" "$outFileUnique >> $inputOutFile
+			echo "qsub consensusRBH.sh "$inputFolder" "$i" "$2" "$outFile >> $inputOutFile
 		fi
 	fi
 	counter=$(($counter+1))

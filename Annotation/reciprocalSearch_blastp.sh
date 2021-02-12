@@ -16,9 +16,10 @@
 #Usage ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_transcripts
 #Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity PA42_v4.1_proteins
 #Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98 PA42_v3.0_proteins
-#Usage ex: qsub reciprocalSearch_blastp.sh dnaRepair/Dmel_Svetec_2016/FlyBase_dnaRepair_Dmel_proteins.fasta PA42_v4.1_proteins
-#Usage ex: qsub reciprocalSearch_blastp.sh dnaRepair/Tcast_Guo_2019/DEGs_UVBvsCntrl_Tcast_proteins.fasta PA42_v4.1_proteins
-#Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity dnaRepair/Dmel_Svetec_2016/FlyBase_dnaRepair_Dmel_proteins.fasta
+#Usage ex: qsub reciprocalSearch_blastp.sh dnaDamageResponse/Dmel_Svetec_2016/FlyBase_dnaDamageResponse_Dmel_proteins.fasta PA42_v4.1_proteins
+#Usage ex: qsub reciprocalSearch_blastp.sh uvResponsive/Tcast_Guo_2019/DEGs_UVBvsCntrl_Tcast_proteins.fasta PA42_v4.1_proteins
+#Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity dnaDamageResponse/Dmel_Svetec_2016/FlyBase_dnaDamageResponse_Dmel_proteins.fasta
+#Usage ex: qsub reciprocalSearch_blastp.sh uvResponsive/Tcast_Guo_2019/DEGs_UVBvsCntrl_Tcast_proteins.fasta dnaDamageResponse/Dmel_Svetec_2016/FlyBase_dnaDamageResponse_Dmel_proteins.fasta
 
 #Load necessary modules for ND CRC servers
 module load bio
