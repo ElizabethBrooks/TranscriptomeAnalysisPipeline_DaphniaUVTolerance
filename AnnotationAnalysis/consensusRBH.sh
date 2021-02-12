@@ -4,8 +4,8 @@
 #Usage ex: bash consensusRBH.sh uvResponsive/Dmel_Svetec_2016 dnaDamageResponse/Dmel_Svetec_2016 PA42_v4.1_proteins
 
 #set output summary file path
-dbTag=$(dirname "$1" | sed 's/\//_/g')
-queryTag=$(dirname "$2" | sed 's/\//_/g')
+dbTag=$(echo "$1" | sed 's/\//_/g')
+queryTag=$(echo "$2" | sed 's/\//_/g')
 
 #Set outputs
 outPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
