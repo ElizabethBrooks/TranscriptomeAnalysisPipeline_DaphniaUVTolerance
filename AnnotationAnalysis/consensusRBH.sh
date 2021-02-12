@@ -70,7 +70,7 @@ else
 fi
 
 #Merge blast search results
-consensusTag=$(dirname "$3" | sed 's/\//_/g')
+consensusTag=$(echo "$3" | sed 's/\//_/g')
 queryFileRBH="$queryPath"/reciprocalSearched_blastp_"$consensusTag"/"blastp_RBH.txt"
 dbFileRBH="$dbPath"/reciprocalSearched_blastp_"$consensusTag"/"blastp_RBH.txt"
 
