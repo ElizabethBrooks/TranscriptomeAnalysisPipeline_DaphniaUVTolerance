@@ -6,10 +6,10 @@
 #$ -q debug
 #Script to perform htseq-count counting of trimmed, aligned, then name sorted
 # paired end reads
-#Usage: qsub counting_htseq.sh sortedNameFolder analysisTarget
+#Usage: qsub counting_htseq.sh sortedNameFolder analysisTarget optionalGenotype
 #Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 genome
-#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity
-#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity
+#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity E05
+#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity E05
 
 #Required modules for ND CRC servers
 module load bio
@@ -42,6 +42,12 @@ else
 	echo "ERROR: Invalid sorted folder of bam files entered... exiting"
 	exit 1
 fi
+#Determine if a specific genotype was entered
+if [[ -z "$3" ]]; then #Argument was not entered
+	genotypeTag=""
+else
+	genotypeTag="$3"
+fi
 #Prepare for analysis
 dirFlag=0
 runNum=1
@@ -63,7 +69,7 @@ done
 #Name output file of inputs
 inputOutFile="$outputFolder"/counted_summary.txt
 #Loop through all sorted forward and reverse paired reads and store the file locations in an array
-for f1 in "$inputsDir"/*/*.bam; do
+for f1 in "$inputsDir"/*_"$genotypeTag"_*/*.bam; do
 	#Name of sorted and aligned file
 	curAlignedSample="$f1"
 	#Trim file paths from current sample folder name
