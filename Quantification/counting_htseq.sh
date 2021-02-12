@@ -9,6 +9,7 @@
 #Usage: qsub counting_htseq.sh sortedNameFolder analysisTarget optionalGenotype
 #Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 genome
 #Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity E05
+#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity E05
 
 #Required modules for ND CRC servers
 module load bio

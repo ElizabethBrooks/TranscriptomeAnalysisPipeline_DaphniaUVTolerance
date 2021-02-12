@@ -1,7 +1,8 @@
 #!/bin/bash
-#Usage: bash generateMergedTable.sh countedGenesFolder sampleSet
-#Usage Ex: bash generateMergedTable.sh counted_htseq_run1 sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity
-#Usage Ex: bash generateMergedTable.sh counted_htseq_run1 sortedName_samtoolsHisat2_run2 genome
+#Usage: bash generateMergedTable.sh countedGenesFolder genome
+#Usage ex: bash generateMergedTable.sh counted_htseq_run1 genome
+#Alternate usage: bash generateMergedTable.sh countedGenesFolder trimmedFolder assembly
+#Alternate usage ex: bash generateMergedTable.sh counted_htseq_run1 trimmed_run1 assemblyPA42_v4.1Trinity
 #Script to generate guide file and merge gene counts
 # using the merge_tables.py script
 #Load necessary modules for ND CRC servers
@@ -16,18 +17,32 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Determine what analysis method was used for the input folder of data
-if [[ "$3" == *assemblyTrinity* ]]; then
-	#Retrieve reads input absolute path
-	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	inputsPath="$inputsPath"/"$3"/"$2"/"$1"
-elif [[ "$1" == *assemblyGenome* ]]; then
-	#Retrieve reads input absolute path
-	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
-	inputsPath="$inputsPath"/"$3"/"$2"/"$1"
-elif [[ "$3" == "genome" ]]; then
+if [[ "$2" == trimmed* || "$2" == sorted* ]]; then
+	if [[ "$3" == *assemblyTrinity* || "$3" == *assemblyStringtie* ]]; then
+		#Retrieve reads input absolute path
+		inputsDir=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	elif [[ "$3" == *assembly*Trinity* || "$3" == *assembly*Stringtie* ]]; then
+		#Retrieve reads input absolute path
+		inputsDir=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+	else
+		echo "ERROR: Invalid assembly option entered... exiting!"
+		exit 1
+	fi
+	#Set inputs path
+	inputsPath="$inputsDir"/"$2"_"$3"/"$1"
+	#Make output directory
+	mkdir "$inputsPath"
+	#Check if the folder already exists
+	if [ $? -ne 0 ]; then
+		echo "The $inputsPath directory already exsists... please remove before proceeding."
+		exit 1
+	fi
+	#Copy counts for each genotype
+	cp "$inputsDir"/"$2"*"$3"/"$1"/* "$inputsPath"
+elif [[ "$2" == "genome" ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-	inputsPath="$inputsPath"/"$2"/"$1"
+	inputsPath="$inputsPath"/"$1"
 else
 	echo "ERROR: The counted files were not found... exiting"
 	exit 1
@@ -59,7 +74,7 @@ grep "Pool3" ../InputData/mergeCounts_guideFile_tags.txt | sed 's/^/Pool_3_/' > 
 cat "$outputsPath"/tmp*.txt >> "$outputsPath"/tmp.txt
 #Loop through all counted paired reads and append each sample tag
 # with the corresponding file path
-guideFile="$outputsPath"/tmp_mergeCounts_guideFile_"$3"_"$2"_"$1".txt
+guideFile="$outputsPath"/tmp_mergeCounts_guideFile_"$2"_""_"$1".txt
 cat ../InputData/mergeCounts_guideFile_tags.txt > "$guideFile"
 for f1 in "$inputsPath"/*/; do
 	currSample=$(basename "$f1" | sed "s/140327_I481_FCC3P1PACXX_L..//g")
@@ -74,7 +89,7 @@ cd ../util
 #Merge gene counts based on generated guide file
 python merge_tables.py "$guideFile"
 #Rename the output merged counts file
-mergedCounts="$outputsPath"/geneCounts_merged_"$3"_"$2"_"$1".txt
+mergedCounts="$outputsPath"/geneCounts_merged_"$2"_""_"$1".txt
 mv merged_counts.txt "$mergedCounts"
 #Print a script completion confirmation message
 echo "Merged table has been renamed $mergedCounts and moved!"
