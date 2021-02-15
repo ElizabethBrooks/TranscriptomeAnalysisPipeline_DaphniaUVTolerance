@@ -38,9 +38,6 @@ if [[ "$1"  == assembly* ]]; then
 	if [[ "$4" == *clusteredNucleotide* ]]; then
 		#Retrieve transcriptome reference absolute path for alignment
 		buildFile=$(echo "$buildInputsPath"/cdhitEst)
-	elif [[ "$4" == *clusteredProtein* ]]; then
-		#Retrieve transcriptome reference absolute path for alignment
-		buildFile=$(echo "$buildInputsPath"/cdhit)
 	else
 		#Retrieve transcriptome reference absolute path for alignment
 		buildFile=$(echo "$buildInputsPath"/*.fasta)

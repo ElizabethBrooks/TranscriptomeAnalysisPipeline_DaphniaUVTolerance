@@ -10,10 +10,10 @@
 #Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder maxIntronLength optionalDTA
 #Usage Ex: qsub alignment_hisat2.sh genomeStats trimmed_run1 14239 dta
 #Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 23554 dta
-#Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyGenomeTrinity
+#Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity
 #Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 trimmed_run1E05_assemblyTrinity
 #Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
-#Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyGenomeTrinity/clusteredNucleotides_cdhit_0.98
+#Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity/clusteredNucleotides_cdhit_0.98
 
 #Required modules for ND CRC servers
 module load bio
