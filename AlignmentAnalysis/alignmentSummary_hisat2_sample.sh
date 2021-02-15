@@ -1,16 +1,14 @@
 #!/bin/bash
 #Bash script to retrieve mapping stats
-#Usage: bash alignmentSummary_hisat2_sample.sh alignedSampleFolder alignmentMethod runNum
+#Usage: bash alignmentSummary_hisat2_sample.sh alignedSampleFolder alignmentMethod runNum outputFile
 #Usage Ex: bash alignmentSummary_hisat2_sample.sh aligned_hisat2_run1/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV hisat2 1
 #Alternate usage Ex: bash alignmentSummary_hisat2_sample.sh aligned_hisat2_run1/140327_I481_FCC3P1PACXX_L4_Pool_3_Y05_UV assembly_hisat2 1
 
-#Retrieve alignment analysis outputs absolute path
-outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
-#Set outputs directory
-outDir="$outputsPath"/AlignmentsAnalyzed
 #Prepare input and output file names
 runNum=run"$3"
 inputStats="$1"/alignedSummary.txt
+#Set outputs
+outDir=$(dirname "$4")
 outputStats="$outDir"/alignmentSummarized_"$2"
 #Retrieve sample name
 sampleName=$(basename "$1")

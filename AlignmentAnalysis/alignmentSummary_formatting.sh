@@ -1,13 +1,11 @@
 #!/bin/bash
 #Script to prepare alignment summary matrices
-#Usage: bash alignmentSummary_formatting.sh analysisTarget runNum targetGenotype
+#Usage: bash alignmentSummary_formatting.sh analysisTarget runNum targetGenotype outputFile
 #Usage Ex: bash alignmentSummary_formatting.sh tophat2 3 PA42
 #Alternate usage Ex: bash alignmentSummary_formatting.sh trimmed_run1E05_hisat2_run1 1 E05
 
-#Retrieve alignment analysis outputs absolute path
-outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
-#Set outputs directory and file
-outDir="$outputsPath"/AlignmentsAnalyzed
+#Set outputs
+outDir=$(dirname "$4")
 outFile="$outDir"/alignmentSummarized_"$1"_run"$2"_formatted.csv
 outFileTmp="$outDir"/alignmentSummarized_"$1"_run"$2"_tmp.csv
 #Set input path

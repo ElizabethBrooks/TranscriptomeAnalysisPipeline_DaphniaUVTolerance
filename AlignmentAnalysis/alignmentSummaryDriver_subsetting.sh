@@ -93,7 +93,7 @@ for i in "$@"; do
 			#Retrieve sample name
 			sampleName=$(basename "$f1")
 			#Retrieve sample summary based on alignment method
-			bash alignmentSummary"$analysisMethod"_sample.sh "$f1" "$analysisArg" "$runNum"
+			bash alignmentSummary"$analysisMethod"_sample.sh "$f1" "$analysisArg" "$runNum" "$outputStats"
 			#Combine summaries into one csv file
 			cat "$outputStats"_combined_run"$runNum".csv >> "$outputStats"_run"$runNum".csv
 			rm "$outputStats"_combined_run"$runNum".csv
@@ -101,10 +101,10 @@ for i in "$@"; do
 		echo "Alignment summaries have been merged!"
 		echo "Formatting $inputFolder merged alignment summary..."
 		#Run alignment summary formatting
-		bash alignmentSummary_formatting.sh "$analysisArg" "$runNum" "$genotype"
+		bash alignmentSummary_formatting.sh "$analysisArg" "$runNum" "$genotype" "$outputStats"
 		echo "Merged alignment summary has been formatted!"
 		echo "Generating median values..."
-		bash alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" $numGenotypes "$genotype"
+		bash alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" $numGenotypes "$genotype" "$outputStats"
 		echo "Median values have been generated!"
 	fi
 	counter=$(($counter+1))

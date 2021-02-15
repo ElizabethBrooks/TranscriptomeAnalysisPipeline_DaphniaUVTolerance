@@ -1,13 +1,11 @@
 #!/bin/bash
 #Script to prepare alignment summary matrices
-#Usage: bash alignmentSummary_genotypeMedians.sh analysisTarget runNum
+#Usage: bash alignmentSummary_genotypeMedians.sh analysisTarget runNum outputFile
 #Usage Ex: bash alignmentSummary_genotypeMedians.sh tophat2 3 numGenotypes
 #Alternate usage Ex: bash alignmentSummary_genotypeMedians.sh hisat2_run1 1 6
 
-#Retrieve alignment analysis outputs absolute path
-outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
-#Set outputs directory and file
-outDir="$outputsPath"/AlignmentsAnalyzed
+#Set outputs
+outDir=$(dirname "$4")
 outFile="$outDir"/alignmentSummarized_"$1"_run"$2"_medians.csv
 outFileTmp="$outDir"/alignmentSummarized_"$1"_run"$2"_tmp.csv
 #Set input path
