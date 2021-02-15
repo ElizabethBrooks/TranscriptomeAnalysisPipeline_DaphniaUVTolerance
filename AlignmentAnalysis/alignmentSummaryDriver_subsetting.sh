@@ -24,11 +24,11 @@ elif [[ "$1"  == sorted* || "$1"  == trimmed* ]]; then
 	if [[ "$1" == trimmed* ]]; then
 		#Retrieve reads input absolute path
 		inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-		#Set genome tag
-		genomeTag="$3"
 	elif [[ "$1" == sorted* ]]; then
 		#Retrieve reads input absolute path
 		inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+		#Set genome tag
+		genomeTag="$3"
 	fi
 	#Retrieve directory name from input folder path
 	fileName="$2"
