@@ -99,12 +99,13 @@ for i in "$@"; do
 			rm "$outputStats"_combined_run"$runNum".csv
 		done
 		echo "Alignment summaries have been merged!"
-		echo "Formatting $inputFolder merged alignment summary..."
+		echo "Formatting merged alignment summary..."
 		#Run alignment summary formatting
 		bash alignmentSummary_formatting.sh "$analysisArg" "$runNum" "$genotype" "$outputStats"
 		echo "Merged alignment summary has been formatted!"
+		#Generate median values for each genotype
 		echo "Generating median values..."
-		bash alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" $numGenotypes "$genotype" "$outputStats"
+		bash alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" "$numGenotypes" "$outputStats"
 		echo "Median values have been generated!"
 	fi
 	counter=$(($counter+1))

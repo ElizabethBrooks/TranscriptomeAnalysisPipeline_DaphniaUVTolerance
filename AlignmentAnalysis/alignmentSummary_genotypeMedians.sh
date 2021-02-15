@@ -1,6 +1,6 @@
 #!/bin/bash
 #Script to prepare alignment summary matrices
-#Usage: bash alignmentSummary_genotypeMedians.sh analysisTarget runNum outputFile
+#Usage: bash alignmentSummary_genotypeMedians.sh analysisTarget runNum numGenotypes outputFile
 #Usage Ex: bash alignmentSummary_genotypeMedians.sh tophat2 3 numGenotypes
 #Alternate usage Ex: bash alignmentSummary_genotypeMedians.sh hisat2_run1 1 6
 
