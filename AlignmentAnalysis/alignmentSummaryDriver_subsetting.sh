@@ -1,7 +1,7 @@
 #!/bin/bash
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummaryDriver_subsetting.sh alignmentFolder optionalAssemblyFolder genotypeList optionalRunList
-#Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_hisat2 PA42_v4.1 run1 run2
+#Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_hisat2 PA42_v4.1 run1
 #Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_tophat2 PA42_v4.1 run1 run2 run3
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh trimmed_run1 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsHisat2_run1 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
