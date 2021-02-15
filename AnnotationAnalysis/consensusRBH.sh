@@ -90,7 +90,7 @@ while IFS=, read -r f1 f2
 do
 	#Determine annotation sets
 	if grep -q ",$f2" tmp2.txt; then #consensus RBH
-		echo "$f2" >> $outFileRBH
+		echo "$f1,$f2" >> $outFileRBH
 	fi
 done < tmp1.txt
 
