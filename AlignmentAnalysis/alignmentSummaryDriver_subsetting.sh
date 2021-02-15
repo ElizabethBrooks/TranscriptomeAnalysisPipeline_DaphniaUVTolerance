@@ -5,7 +5,7 @@
 #Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_tophat2 run1 run2 run3
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh trimmed_run1 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsHisat2_run1 aligned_hisat2_run1 PA42_v4.1 E05 Y05 R2 Y023_5 PA Sierra
-#Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsTophat2_run1 aligned_hisat2_run1 PA42_v4.1 E05 Y05 R2 Y023_5 PA Sierra
+#Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsHisat2_run2 aligned_hisat2_run1 PA42_v3.0 E05 Y05 R2 Y023_5 PA Sierra
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then

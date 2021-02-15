@@ -10,9 +10,10 @@
 #Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder maxIntronLength optionalDTA
 #Usage Ex: qsub alignment_hisat2.sh genomeStats trimmed_run1 14239 dta
 #Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 23554 dta
-#Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 sortedCoordinate_samtoolsHisat2_run2E05_assemblyGenomeTrinity 23554
+#Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyGenomeTrinity
 #Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 trimmed_run1E05_assemblyTrinity
 #Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
+#Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyGenomeTrinity/clusteredNucleotides_cdhit_0.98
 
 #Required modules for ND CRC servers
 module load bio
@@ -32,10 +33,15 @@ if [[ "$1"  == assembly* ]]; then
 		#Retrieve reads input absolute path
 		assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	fi
+	if [[ "$3" == *clusteredNucleotide* ]]; then
+		#Retrieve transcriptome reference absolute path for alignment
+		buildFile="$assemblyPath"/"$3"/"cdhitEst"
+	else
+		#Retrieve transcriptome reference absolute path for alignment
+		buildFile="$assemblyPath"/"$3"/"Trinity.fasta"
+	fi
 	#Retrieve build transcriptome files absolute path
 	buildInputsPath="$assemblyPath"/"$3"
-	#Retrieve transcriptome reference absolute path for alignment
-	buildFile="$assemblyPath"/"$3"/"Trinity.fasta"
 	#Retrieve alignment outputs absolute path
 	outputsPath="$assemblyPath"/"$3"
 	#Determine if intron lengths were entered

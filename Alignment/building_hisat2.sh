@@ -10,7 +10,7 @@
 #Usage ex: qsub building_hisat2.sh trimmed_run1
 #Alternate usage ex: qsub building_hisat2.sh trimmed_run1E05_assemblyTrinity
 #Alternate usage ex: qsub building_hisat2.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity
-#Alternate usage ex: qsub building_hisat2.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98
+#Alternate usage ex: qsub building_hisat2.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity/clusteredNucleotides_cdhit_0.98
 
 #Required modules for ND CRC servers
 module load bio
@@ -26,14 +26,22 @@ if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve build outputs absolute path
 	outputsPath="$outputsPath"/"$1"
 	#Retrieve transcriptome reference absolute path for alignment
-	buildFile=$(echo "$outputsPath"/*.fasta)
+	if [[ "$1" == *clusteredNucleotide* ]]; then
+		buildFile="$outputsPath"/"cdhitEst"
+	else
+		buildFile="$outputsPath"/"Trinity.fasta"
+	fi
 elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
 	outputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	#Retrieve build outputs absolute path
 	outputsPath="$outputsPath"/"$1"
 	#Retrieve transcriptome reference absolute path for alignment
-	buildFile=$(echo "$outputsPath"/*.fasta)
+	if [[ "$1" == *clusteredNucleotide* ]]; then
+		buildFile="$outputsPath"/"cdhitEst"
+	else
+		buildFile="$outputsPath"/"Trinity.fasta"
+	fi
 elif [[ "$1"  == trimmed* ]]; then
 	#Retrieve genome reference absolute path for alignment
 	buildFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
@@ -42,14 +50,6 @@ elif [[ "$1"  == trimmed* ]]; then
 else
 	echo "Input analysis target (genome or assembly folder) is not valid... exiting!"
 	exit 1
-fi
-#Determine if the input is clustered
-if [[ "$1" == *clusteredNucleotide* ]]; then
-	#Retrieve genome reference and features paths
-	buildFile=$(echo "$outputsPath"/cdhitEst)
-elif [[ "$1" == *clusteredProtein* ]]; then
-	#Retrieve genome reference and features paths
-	buildFile=$(echo "$outputsPath"/cdhit)
 fi
 #Move to outputs directory
 cd "$outputsPath"
