@@ -59,7 +59,7 @@ for i in "$@"; do
 			exit 1
 		fi
 		#Set outputs directory
-		outputsPath="$inputFolder"
+		outputsPath=$(dirname "$inputFolder")
 		outDir="$outputsPath"/AlignmentsAnalyzed
 		mkdir "$outDir"
 		#Determine what analysis method was used for the input folder of data
