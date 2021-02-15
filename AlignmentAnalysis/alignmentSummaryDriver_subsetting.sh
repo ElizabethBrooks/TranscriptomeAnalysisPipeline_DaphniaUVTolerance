@@ -12,18 +12,14 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-#Retrieve alignment analysis outputs absolute path
-outputsPath=$(grep "alignmentAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/alignmentAnalysis://g")
-#Set outputs directory
-outDir="$outputsPath"/AlignmentsAnalyzed
-#Set number of genotypes
-numGenotypes=6
 #Determine which analysis folder was input
 if [[ "$1"  == aligned* ]]; then
 	#Retrieve input alignment summary absolute path
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	fileName="$1"
 	analysisInput=""
+	#Set number of genotypes
+	numGenotypes=6
 elif [[ "$1"  == sorted* || "$1"  == trimmed* ]]; then
 	if [[ "$1" == trimmed* ]]; then
 		#Retrieve reads input absolute path
@@ -35,6 +31,8 @@ elif [[ "$1"  == sorted* || "$1"  == trimmed* ]]; then
 	#Retrieve directory name from input folder path
 	fileName="$2"
 	analysisInput="$1"
+	#Set number of genotypes
+	numGenotypes=1
 else
 	echo "ERROR: The input folder of aligned or assembled files were not found... exiting"
 	exit 1
@@ -60,6 +58,10 @@ for i in "$@"; do
 			echo "ERROR: Input folder for analysis is not a valid option... exiting!"
 			exit 1
 		fi
+		#Set outputs directory
+		outputsPath="$inputFolder"
+		outDir="$outputsPath"/AlignmentsAnalyzed
+		mkdir "$outDir"
 		#Determine what analysis method was used for the input folder of data
 		if [[ "$fileName" == *"hisat2"*  ]]; then
 			#Set analysis method for folder naming
@@ -100,8 +102,10 @@ for i in "$@"; do
 		echo "Formatting $inputFolder merged alignment summary..."
 		#Run alignment summary formatting
 		bash alignmentSummary_formatting.sh "$analysisArg" "$runNum" "$genotype"
-		bash alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" $numGenotypes "$genotype"
 		echo "Merged alignment summary has been formatted!"
+		echo "Generating median values..."
+		bash alignmentSummary_genotypeMedians.sh "$analysisArg" "$runNum" $numGenotypes "$genotype"
+		echo "Median values have been generated!"
 	fi
 	counter=$(($counter+1))
 done
