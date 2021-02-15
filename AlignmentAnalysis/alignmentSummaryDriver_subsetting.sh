@@ -25,10 +25,10 @@ if [[ "$1"  == aligned* ]]; then
 	fileName="$1"
 	analysisInput=""
 elif [[ "$1"  == sorted* || "$1"  == trimmed* ]]; then
-	if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
+	if [[ "$1" == trimmed* ]]; then
 		#Retrieve reads input absolute path
 		inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
+	elif [[ "$1" == sorted* ]]; then
 		#Retrieve reads input absolute path
 		inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	fi
