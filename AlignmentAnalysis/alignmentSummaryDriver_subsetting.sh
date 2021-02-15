@@ -1,8 +1,8 @@
 #!/bin/bash
 #Bash script to retrieve mapping stats
 #Usage: bash alignmentSummaryDriver_subsetting.sh alignmentFolder optionalAssemblyFolder genotypeList optionalRunList
-#Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_hisat2 PA42 run1 run2
-#Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_tophat2 PA42 run1 run2 run3
+#Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_hisat2 PA42_v4.1 run1 run2
+#Usage Ex: bash alignmentSummaryDriver_subsetting.sh aligned_tophat2 PA42_v4.1 run1 run2 run3
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh trimmed_run1 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsHisat2_run1 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
 #Alternate usage Ex: bash alignmentSummaryDriver_subsetting.sh sortedCoordinate_samtoolsTophat2_run1 aligned_hisat2_run1 E05 Y05 R2 Y023_5 PA Sierra
@@ -25,8 +25,13 @@ if [[ "$1"  == aligned* ]]; then
 	fileName="$1"
 	analysisInput=""
 elif [[ "$1"  == sorted* || "$1"  == trimmed* ]]; then
-	#Retrieve reads input absolute path
-	inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+	if [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
+		#Retrieve reads input absolute path
+		inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
+		#Retrieve reads input absolute path
+		inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+	fi
 	#Retrieve directory name from input folder path
 	fileName="$2"
 	analysisInput="$1"
