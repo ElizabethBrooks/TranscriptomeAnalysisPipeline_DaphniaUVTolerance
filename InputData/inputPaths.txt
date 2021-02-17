@@ -9,6 +9,7 @@ transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/da
 codingSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/PA42_v4.1_cds/PA42.4.1.cds_longest.fasta
 proteinSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/PA42_v4.1_proteins/PA42.4.1.pep_longest.fasta
 geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources_PA42_v4.1/PA42.4.1.fasta.gene_trans_map
+geneCDSMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources_PA42_v4.1/PA42.4.1.fasta.gene_cds_map
 annotations: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/AnnotationAnalysis
 geneSets: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_Results
 databases: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases

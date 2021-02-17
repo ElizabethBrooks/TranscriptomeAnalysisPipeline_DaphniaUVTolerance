@@ -53,7 +53,7 @@ elif [[ "$1" == *cds ]]; then
 	outputFolder="$inputsPath"/annotated_trinotate
 	#Set input paths
 	trinotateDB="$outputFolder"/Trinotate.sqlite
-	geneTransMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	geneTransMap=$(grep "geneCDSMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneCDSMap://g")
 	transcriptFasta=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	transdecoderPep="$inputsPath"/decoded_transdecoder/*.transdecoder.pep
 	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6

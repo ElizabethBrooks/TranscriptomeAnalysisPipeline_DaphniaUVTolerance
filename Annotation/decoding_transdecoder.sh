@@ -52,7 +52,7 @@ elif [[ "$1" == *cds ]]; then
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 	#Retrieve genome reference and features paths
-	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	geneMap=$(grep "geneCDSMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneCDSMap://g")
 	#Set output path
 	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == *transcripts ]]; then
