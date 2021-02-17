@@ -13,7 +13,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 
-#Retrieve gene ontology data path
+#Retrieve experimental design data path
 designPath="../InputData/expDesign_olympics.csv"
 #Retrieve analysis inputs path
 inputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")

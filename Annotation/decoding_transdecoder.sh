@@ -10,8 +10,8 @@
 #Usage: qsub decoding_transdecoder.sh assembledTranscriptomeFolder
 #Usage Ex: qsub decoding_transdecoder.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98
 #Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98
-#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_cds
-#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_transcripts
+#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_cds
+#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_transcripts
 
 #Load necessary modules for ND CRC servers
 module load bio
@@ -48,7 +48,7 @@ elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	#Retrieve genome reference and features paths
-	multiFASTA=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
+	multiFASTA="$inputsPath"
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 	#Retrieve genome reference and features paths
@@ -59,7 +59,7 @@ elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	#Retrieve genome reference and features paths
-	multiFASTA=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
+	multiFASTA="$inputsPath"
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 	#Retrieve genome reference and features paths
