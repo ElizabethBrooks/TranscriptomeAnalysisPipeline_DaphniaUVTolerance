@@ -37,10 +37,10 @@ plotMDS(list, col=rep(1:3, each=3))
 dev.off()
 #Draw a heatmap of individual RNA-seq samples using moderated 
 # log-counts-per-million before normalization
-jpeg("exactTest_plotHeatMapBefore.jpg")
-logcpm <- cpm(list, log=TRUE)
-heatmap(logcpm)
-dev.off()
+#jpeg("exactTest_plotHeatMapBefore.jpg")
+#logcpm <- cpm(list, log=TRUE)
+#heatmap(logcpm)
+#dev.off()
 
 #There is no purpose in analysing genes that are not expressed in either 
 # experimental condition, so genes are first filtered on expression levels
@@ -91,7 +91,7 @@ write.table(resultsTbl, file="exactTest_topTags.csv", sep=",", row.names=TRUE)
 #Look at the counts-per-million in individual samples for the top genes
 o <- order(tested$table$PValue)
 cpm(list)[o[1:10],]
-#View the total number of differentially expressed genes at 5% FDR
+#View the total number of differentially expressed genes at a p-value of 0.05
 summary(decideTests(tested))
 
 #Plot log-fold change against log-counts per million, with DE genes highlighted
@@ -106,9 +106,3 @@ dev.off()
 jpeg("exactTest_plotMA.jpg")
 plotSmear(tested)
 dev.off()
-
-#Format the DE genes into a vector suitable for use with goseq
-#genes=as.integer(p.adjust(tested$table$PValue[tested$table$logFC!=0],method="BH")<.05)
-#names(genes)=row.names(tested$table[tested$table$logFC!=0,])
-#table(genes)
-

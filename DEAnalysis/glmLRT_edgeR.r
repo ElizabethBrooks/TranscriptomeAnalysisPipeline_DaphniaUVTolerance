@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-#Usage: Rscript glmLRT_edgeR.r countsFile startColumn endColumn factorGroupingFile
-#Usage Ex: Rscript glmLRT_edgeR.r cleaned.csv 1 24 expDesign_Olympics_GRP1.csv
+#Usage: Rscript glmLRT_edgeR.r countsFile startColumn endColumn factorGroupingFile FDR
+#Usage Ex: Rscript glmLRT_edgeR.r cleaned.csv 1 24 expDesign_Olympics_GRP1.csv 0.10
 #R script to perform statistical analysis of gene count tables using edgeR two way ANOVA
 
 #Install edgeR and statmod, this should only need to be done once
@@ -16,7 +16,7 @@ library("statmod")
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 #Test if there is one input argument
-if (length(args)!=4) {
+if (length(args)!=5) {
   stop("Two file names and a range of columns must be supplied.n", call.=FALSE)
 }
 
@@ -25,6 +25,8 @@ countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
 #head(countsTable)
 #Import grouping factor
 targets <- read.csv(file=args[4], row.names="sample")
+#Retrieve input FDR cutoff
+fdrCut=as.numeric(args[5])
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$genotype,sep="."))
@@ -111,7 +113,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblAllPairwise <- topTags(test.allPairs, n=nrow(test.allPairs$table))$table
-tagsTblAllPairwise.keep <- tagsTblAllPairwise$FDR <= 0.05
+tagsTblAllPairwise.keep <- tagsTblAllPairwise$FDR <= fdrCut
 tagsTblAllPairwise.out <- tagsTblAllPairwise[tagsTblAllPairwise.keep,]
 write.table(tagsTblAllPairwise.out, file="glmLRT_allPairwise_topTags.csv", sep=",", row.names=TRUE)
 
@@ -133,7 +135,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblE05Pairwise <- topTags(treat.E05.UVvsVIS, n=nrow(treat.E05.UVvsVIS$table))$table
-tagsTblE05Pairwise.keep <- tagsTblE05Pairwise$FDR <= 0.05
+tagsTblE05Pairwise.keep <- tagsTblE05Pairwise$FDR <= fdrCut
 tagsTblE05Pairwise.out <- tagsTblE05Pairwise[tagsTblE05Pairwise.keep,]
 write.table(tagsTblE05Pairwise.out, file="glmLRT_E05Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
 
@@ -155,7 +157,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblR2Pairwise <- topTags(treat.R2.UVvsVIS, n=nrow(treat.R2.UVvsVIS$table))$table
-tagsTblR2Pairwise.keep <- tagsTblR2Pairwise$FDR <= 0.05
+tagsTblR2Pairwise.keep <- tagsTblR2Pairwise$FDR <= fdrCut
 tagsTblR2Pairwise.out <- tagsTblR2Pairwise[tagsTblR2Pairwise.keep,]
 write.table(tagsTblR2Pairwise.out, file="glmLRT_R2Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
 
@@ -177,7 +179,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblY023Pairwise <- topTags(treat.Y023.UVvsVIS, n=nrow(treat.Y023.UVvsVIS$table))$table
-tagsTblY023Pairwise.keep <- tagsTblY023Pairwise$FDR <= 0.05
+tagsTblY023Pairwise.keep <- tagsTblY023Pairwise$FDR <= fdrCut
 tagsTblY023Pairwise.out <- tagsTblY023Pairwise[tagsTblY023Pairwise.keep,]
 write.table(tagsTblY023Pairwise.out, file="glmLRT_Y023Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
 
@@ -199,7 +201,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblY05Pairwise <- topTags(treat.Y05.UVvsVIS, n=nrow(treat.Y05.UVvsVIS$table))$table
-tagsTblY05Pairwise.keep <- tagsTblY05Pairwise$FDR <= 0.05
+tagsTblY05Pairwise.keep <- tagsTblY05Pairwise$FDR <= fdrCut
 tagsTblY05Pairwise.out <- tagsTblY05Pairwise[tagsTblY05Pairwise.keep,]
 write.table(tagsTblY05Pairwise.out, file="glmLRT_Y05Pairwise_topTags_filtered.csv", sep=",", row.names=TRUE)
 
@@ -218,7 +220,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblUVANOVA <- topTags(test.anov.UV, n=nrow(test.anov.UV$table))$table
-tagsTblUVANOVA.keep <- tagsTblUVANOVA$FDR <= 0.05
+tagsTblUVANOVA.keep <- tagsTblUVANOVA$FDR <= fdrCut
 tagsTblUVANOVA.out <- tagsTblUVANOVA[tagsTblUVANOVA.keep,]
 write.table(tagsTblUVANOVA.out, file="glmLRT_UV1WayANOVA_topTags.csv", sep=",", row.names=TRUE)
 
@@ -237,7 +239,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblVISANOVA <- topTags(test.anov.VIS, n=nrow(test.anov.VIS$table))$table
-tagsTblVISANOVA.keep <- tagsTblVISANOVA$FDR <= 0.05
+tagsTblVISANOVA.keep <- tagsTblVISANOVA$FDR <= fdrCut
 tagsTblVISANOVA.out <- tagsTblVISANOVA[tagsTblVISANOVA.keep,]
 write.table(tagsTblVISANOVA.out, file="glmLRT_VIS1WayANOVA_topTags.csv", sep=",", row.names=TRUE)
 
@@ -257,7 +259,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVA <- topTags(test.anov.UVVIS, n=nrow(test.anov.UVVIS$table))$table
-tagsTblANOVA.keep <- tagsTblANOVA$FDR <= 0.05
+tagsTblANOVA.keep <- tagsTblANOVA$FDR <= fdrCut
 tagsTblANOVA.out <- tagsTblANOVA[tagsTblANOVA.keep,]
 write.table(tagsTblANOVA.out, file="glmLRT_2WayANOVA_UVvsVIS_topTags.csv", sep=",", row.names=TRUE)
 
@@ -271,7 +273,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVA.filtered <- topTags(treat.anov.UVVIS, n=nrow(treat.anov.UVVIS$table))$table
-tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR <= 0.05
+tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR <= fdrCut
 tagsTblANOVA.filtered.out <- tagsTblANOVA.filtered[tagsTblANOVA.filtered.keep,]
 write.table(tagsTblANOVA.filtered.out, file="glmLRT_2WayANOVA_UVvsVIS_topTags_filtered.csv", sep=",", row.names=TRUE)
 
@@ -291,7 +293,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVATN <- topTags(test.anov.TN, n=nrow(test.anov.TN$table))$table
-tagsTblANOVATN.keep <- tagsTblANOVATN$FDR <= 0.05
+tagsTblANOVATN.keep <- tagsTblANOVATN$FDR <= fdrCut
 tagsTblANOVATN.out <- tagsTblANOVATN[tagsTblANOVATN.keep,]
 write.table(tagsTblANOVATN.out, file="glmLRT_2WayANOVA_TvsN_topTags.csv", sep=",", row.names=TRUE)
 
@@ -305,7 +307,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVATN.filtered <- topTags(treat.anov.TN, n=nrow(treat.anov.TN$table))$table
-tagsTblANOVATN.filtered.keep <- tagsTblANOVATN.filtered$FDR <= 0.05
+tagsTblANOVATN.filtered.keep <- tagsTblANOVATN.filtered$FDR <= fdrCut
 tagsTblANOVATN.filtered.out <- tagsTblANOVATN.filtered[tagsTblANOVATN.filtered.keep,]
 write.table(tagsTblANOVATN.filtered.out, file="glmLRT_2WayANOVA_TvsN_topTags_filtered.csv", sep=",", row.names=TRUE)
 
@@ -326,7 +328,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVAInter <- topTags(test.anov.Inter, n=nrow(test.anov.Inter$table))$table
-tagsTblANOVAInter.keep <- tagsTblANOVAInter$FDR <= 0.05
+tagsTblANOVAInter.keep <- tagsTblANOVAInter$FDR <= fdrCut
 tagsTblANOVAInter.out <- tagsTblANOVAInter[tagsTblANOVAInter.keep,]
 write.table(tagsTblANOVAInter.out, file="glmLRT_2WayANOVA_interaction_topTags.csv", sep=",", row.names=TRUE)
 
@@ -340,6 +342,6 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Generate table of DE genes
 tagsTblANOVAInter.filtered <- topTags(treat.anov.Inter, n=nrow(treat.anov.Inter$table))$table
-tagsTblANOVAInter.filtered.keep <- tagsTblANOVAInter.filtered$FDR <= 0.05
+tagsTblANOVAInter.filtered.keep <- tagsTblANOVAInter.filtered$FDR <= fdrCut
 tagsTblANOVAInter.filtered.out <- tagsTblANOVAInter.filtered[tagsTblANOVAInter.filtered.keep,]
 write.table(tagsTblANOVAInter.filtered.out, file="glmQLF_2WayANOVA_interaction_topTags_filtered.csv", sep=",", row.names=TRUE)
