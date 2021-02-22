@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-#Usage: Rscript exactTest_edgeR.r countsFile.csv startColPos endColPos
-#Usage Ex: Rscript exactTest_edgeR.r genome_sortedName_samtoolsHisat2_run1_counted_htseq_run1 31 36
+#Usage: Rscript exactTest_edgeR.r countsFile.csv startColPos endColPos FDR
+#Usage Ex: Rscript exactTest_edgeR.r genome_sortedName_samtoolsHisat2_run1_counted_htseq_run1 31 36 0.10
 #R script to perform statistical analysis of gene count tables using edgeR exact test
 
 #Install edgeR, this should only need to be done once
@@ -14,7 +14,7 @@ library("edgeR")
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 #Test if there is one input argument
-if (length(args)!=3) {
+if (length(args)!=4) {
   stop("One file name and a range of columns must be supplied.n", call.=FALSE)
 }
 
@@ -25,6 +25,8 @@ head(countsTable)
 group <- factor(c(rep("ctrl",3),rep("treat",3)))
 #Create DGE list object
 list <- DGEList(counts=countsTable,group=group)
+#Retrieve input FDR cutoff
+fdrCut=as.numeric(args[4])
 
 #Plot the library sizes before normalization
 jpeg("exactTest_plotBarsBefore.jpg")
@@ -87,6 +89,10 @@ write.table(tested, file="exactTest.csv", sep=",", row.names=TRUE)
 #Create results table of DE genes
 resultsTbl <- topTags(tested, n=nrow(tested$table))$table
 write.table(resultsTbl, file="exactTest_topTags.csv", sep=",", row.names=TRUE)
+#Create filtered results table of DE genes
+resultsTbl.keep <- resultsTbl$FDR <= fdrCut
+resultsTblFiltered <- resultsTbl[resultsTbl.keep,]
+write.table(resultsTblFiltered, file="exactTest_topTags_filtered.csv", sep=",", row.names=TRUE)
 
 #Look at the counts-per-million in individual samples for the top genes
 o <- order(tested$table$PValue)

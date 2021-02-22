@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to run Rscripts that perform DE analysis of gene count tables
-#Usage: bash exactTest_subset_edgeR.sh sample
-#Usage Ex: bash exactTest_subset_edgeR.sh R2
+#Usage: bash exactTest_subset_edgeR.sh sample FDR
+#Usage Ex: bash exactTest_subset_edgeR.sh R2 0.10
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -15,9 +15,11 @@ fi
 #Retrieve analysis inputs path
 inputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
 inFile="$inputsPath"/cleaned.csv
+#Set FDR cut off
+fdrCut=$2
 
 #Create directory for output files
-outDir="$inputsPath"/exactTest"$1"Analysis
+outDir="$inputsPath"/exactTest"$1"Analysis_FDR"$fdrCut"
 mkdir $outDir
 
 #Convert TXT formatted counts to CSV
@@ -30,7 +32,7 @@ colNumStart=$(($(head -1 "$inFile" | tr "," "\n" | grep -n "$1" | head -1 | cut 
 colNumEnd=$(($colNumStart+5))
 
 #Perform DE analysis using edgeR and output analysis results to a txt file
-Rscript exactTest_edgeR.r "$inFile" $colNumStart $colNumEnd > "$outDir"/analysisResults.txt
+Rscript exactTest_edgeR.r "$inFile" $colNumStart $colNumEnd $fdrCut > "$outDir"/analysisResults.txt
 
 #Fix formatting and headers for the normalized counts table and exact test stats
 #sed -i 's/"//g' stats_normalizedCounts.csv

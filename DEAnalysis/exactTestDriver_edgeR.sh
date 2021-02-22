@@ -6,6 +6,9 @@
 #Load module for R
 #module load bio
 
+#Set FDR cut off
+fdrCut=0.10
+
 #Check for input arguments of sample names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -14,5 +17,5 @@ fi
 
 #Loop through all input sets of treatments and perform t-test analsysis
 for i in "$@"; do
-	bash exactTest_subset_edgeR.sh $i
+	bash exactTest_subset_edgeR.sh $i $fdrCut
 done
