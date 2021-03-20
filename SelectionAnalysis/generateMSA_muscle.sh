@@ -1,8 +1,13 @@
 #!/bin/bash
 
+#Load necessary modules
+module load bio
+
 #Retrieve inputs path
 inputPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 refPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
+#Set outputs path
+outPath=$(dirname $refPath)
 
 #Loop over all genes in the reference
 grep ">" "$refPath" | sed "s/-CDS//g" | sed "s/>//g" > col1.txt
@@ -14,6 +19,8 @@ while IFS= read -r line; do
 	gFile=$line"_cds_allDaphnia.fasta"
 	grep "^>$gTag" tmpPA42_v4.1.fasta | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$gFile"
 	
+	#Output Status message
+	echo "Generating MSA for $line..."
 	#Loop over all input samples
 	for i in "$@"; do
 		#Prepare multiline cds fasta to retrieve seqs
@@ -24,12 +31,14 @@ while IFS= read -r line; do
 		#Retrieve selected coding sequences and convert back to multiline fasta format
 		grep "^>$rbhTag" tmp"$i".fasta | sed 's/NEWLINE/\n/g' | sed "s/^>$rbhTag.*/>$i_$rbhTag/g" >> "$gFile"
 		#Create MSA
-		mFile=$line"_cds_allDaphnia_aligned.fasta"
+		mFile="$outPath"/"$line"_cds_allDaphnia_aligned.fasta
 		muscle -in "$gFile" -out "$mFile"
 		#Clean up
 		rm tmp*.fasta
 		rm "$gFile"
 	done
+	#Output status message
+	echo "$line MSA created: $mFile"
 done < col1.txt
 
 #Clean up
