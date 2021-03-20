@@ -30,15 +30,17 @@ while IFS= read -r line; do
 		rbhTag=$(grep "$pTag" "$inputPath"/sortedCoordinate_samtoolsHisat2_run1"$i"_assemblyPA42_v4.1Trinity/reciprocalSearched_blastp_PA42_v4.1_proteins/blastp_RBH.txt | cut -d ',' -f 1)
 		#Retrieve selected coding sequences and convert back to multiline fasta format
 		grep "^>$rbhTag" tmp"$i".fasta | sed 's/NEWLINE/\n/g' | sed "s/^>$rbhTag.*/>$i_$rbhTag/g" >> "$gFile"
-		#Create MSA
-		mFile="$outPath"/"$line"_cds_allDaphnia_aligned.fasta
-		muscle -in "$gFile" -out "$mFile"
-		#Clean up
-		rm tmp*.fasta
-		rm "$gFile"
 	done
+
+	#Create MSA
+	mFile="$outPath"/"$line"_cds_allDaphnia_aligned.fasta
+	muscle -in "$gFile" -out "$mFile"
 	#Output status message
 	echo "$line MSA created: $mFile"
+	
+	#Clean up
+	rm tmp*.fasta
+	rm "$gFile"
 done < col1.txt
 
 #Clean up
