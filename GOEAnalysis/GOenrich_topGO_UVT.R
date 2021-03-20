@@ -5,52 +5,14 @@
 #Load the libraries
 library(filesstrings)
 library(topGO)
-library(edgeR)
 library(GO.db)
 library(reshape2)
 library(ggplot2)
 library(Rgraphviz)
-library(statmod)
 
 #Import gene count data for the Olympics
-countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/geneCounts_cleaned_PA42_v4.1.csv", row.names="gene")[ ,1:24]
-#Import grouping factor
-targets <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/expDesign_Olympics.csv", row.names="sample")
-#Set FDR cutoff
-fdrCut=0.10
-
-#Setup a design matrix
-group <- factor(paste(targets$treatment,targets$genotype,sep="."))
-#Create DGE list object
-list <- DGEList(counts=countsTable,group=group)
-colnames(list) <- targets$sample
-
-#Retain genes only if it is expressed at a minimum level
-keep <- filterByExpr(list)
-list <- list[keep, , keep.lib.sizes=FALSE]
-
-#Use TMM normalization to eliminate composition biases between libraries
-list <- calcNormFactors(list)
-#Write normalized counts to file
-normList <- cpm(list, normalized.lib.sizes=TRUE)
-
-#The experimental design is specified with a one-way layout, 
-# where one coefficient is assigned to each group
-design <- model.matrix(~ 0 + group)
-colnames(design) <- levels(group)
-
-#Estimate the NB dispersion
-list <- estimateDisp(list, design, robust=TRUE)
-#Estimate and plot the QL dispersions
-fit <- glmQLFit(list, design, robust=TRUE)
-
-#Test whether the average across all tolerant groups is equal to the average across
-#all not tolerant groups, to examine the overall effect of tolerance
-con.TvsN <- makeContrasts(TvsN = (UV.Y05 + VIS.Y05 + UV.E05 + VIS.E05)/4
-                          - (UV.Y023 + VIS.Y023 + UV.R2 + VIS.R2)/4,
-                          levels=design)
-#Look at genes expressed across all UV groups using QL F-test
-test.anov.TN <- glmQLFTest(fit, contrast=con.TvsN)
+countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/DEGs_UVBvsCntrl_Tcast_pvalues.csv")
+#countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/Dmel_Svetec_2016_uvResponsiveGenes_pvalues.csv")
 
 
 #GO enrichment
@@ -59,9 +21,8 @@ GOmaps <- readMappings(file="/home/mae/Documents/RNASeq_Workshop_ND/gene2GO_PA42
 
 #Create named list of all genes (gene universe) and p-values. The gene universe is set to be
 #the list of all genes contained in the gene2GO list of annotated genes.
-DGE_results_table <- test.anov.TN$table
-list_genes <- as.numeric(DGE_results_table$PValue)
-list_genes <- setNames(list_genes, rownames(DGE_results_table))
+list_genes <- as.numeric(countsTable$pval)
+list_genes <- setNames(list_genes, rownames(countsTable))
 list_genes_filtered <- list_genes[names(list_genes) %in% names(GOmaps)]
 
 #Create function to return list of interesting DE genes (0 == not significant, 1 == significant)

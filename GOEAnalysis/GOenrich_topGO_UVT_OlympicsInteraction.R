@@ -97,7 +97,7 @@ BP_Cellular_response_DNA_damage_stimulus <- "GO:0006974"
 MF_Single_stranded_DNA_binding <- "GO:0003697"
 MF_Damaged_DNA_binding <- "GO:0003684"
 
-#pdf(file="/home/mae/Documents/RNASeq_Workshop_ND/All_Genes_TopSigGO_Density_OlympicsInteraction.pdf")
+pdf(file="/home/mae/Documents/RNASeq_Workshop_ND/GSEA_UVT_OlympicsInteraction.pdf")
 showGroupDensity(CC_GO_data, whichGO = CC_DNA_repair_complex, ranks = TRUE)
 showGroupDensity(BP_GO_data, whichGO = BP_DNA_integrity_checkpoint, ranks = TRUE)
 showGroupDensity(BP_GO_data, whichGO = BP_Response_UV, ranks = TRUE)
@@ -105,4 +105,4 @@ showGroupDensity(BP_GO_data, whichGO = BP_Mitotic_cell_cycle_checkpoint, ranks =
 showGroupDensity(BP_GO_data, whichGO = BP_Cellular_response_DNA_damage_stimulus, ranks = TRUE)
 showGroupDensity(MF_GO_data, whichGO = MF_Single_stranded_DNA_binding, ranks = TRUE)
 showGroupDensity(MF_GO_data, whichGO = MF_Damaged_DNA_binding, ranks = TRUE)
-#dev.off()
+dev.off()

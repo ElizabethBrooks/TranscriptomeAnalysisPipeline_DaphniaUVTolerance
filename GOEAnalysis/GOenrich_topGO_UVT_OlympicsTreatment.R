@@ -104,7 +104,7 @@ CC_GO_data <- new('topGOdata', ontology = 'CC', allGenes = list_genes_filtered,
                   geneSel = get_interesting_DE_genes, nodeSize = 10, annot = annFUN.gene2GO, 
                   gene2GO = GOmaps)
 
-#showGroupDensity for UV tolerance assocaited GO terms
+#UV tolerance assocaited GO terms
 CC_DNA_repair_complex <- "GO:1990391"
 BP_DNA_integrity_checkpoint <- "GO:0031570"
 BP_Response_UV <- "GO:0009411"
@@ -113,7 +113,8 @@ BP_Cellular_response_DNA_damage_stimulus <- "GO:0006974"
 MF_Single_stranded_DNA_binding <- "GO:0003697"
 MF_Damaged_DNA_binding <- "GO:0003684"
 
-#pdf(file="/home/mae/Documents/RNASeq_Workshop_ND/All_Genes_TopSigGO_Density_OlympicsInteraction.pdf")
+#showGroupDensity for UV tolerance assocaited GO terms
+pdf(file="/home/mae/Documents/RNASeq_Workshop_ND/GSEA_UVT_OlympicsTreatment.pdf")
 showGroupDensity(CC_GO_data, whichGO = CC_DNA_repair_complex, ranks = TRUE)
 showGroupDensity(BP_GO_data, whichGO = BP_DNA_integrity_checkpoint, ranks = TRUE)
 showGroupDensity(BP_GO_data, whichGO = BP_Response_UV, ranks = TRUE)
@@ -121,4 +122,4 @@ showGroupDensity(BP_GO_data, whichGO = BP_Mitotic_cell_cycle_checkpoint, ranks =
 showGroupDensity(BP_GO_data, whichGO = BP_Cellular_response_DNA_damage_stimulus, ranks = TRUE)
 showGroupDensity(MF_GO_data, whichGO = MF_Single_stranded_DNA_binding, ranks = TRUE)
 showGroupDensity(MF_GO_data, whichGO = MF_Damaged_DNA_binding, ranks = TRUE)
-#dev.off()
+dev.off()
