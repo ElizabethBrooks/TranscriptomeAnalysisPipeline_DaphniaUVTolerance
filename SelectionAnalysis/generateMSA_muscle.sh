@@ -1,4 +1,8 @@
 #!/bin/bash
+#$ -M ebrooks5@nd.edu
+#$ -m abe
+#$ -r n
+#$ -N generateMSA_jobOutput
 
 #Load necessary modules
 module load bio
@@ -29,7 +33,8 @@ while IFS= read -r line; do
 		pTag=$line"-pep"
 		rbhTag=$(grep "$pTag" "$inputPath"/sortedCoordinate_samtoolsHisat2_run1"$i"_assemblyPA42_v4.1Trinity/reciprocalSearched_blastp_PA42_v4.1_proteins/blastp_RBH.txt | cut -d ',' -f 1)
 		#Retrieve selected coding sequences and convert back to multiline fasta format
-		grep "^>$rbhTag" tmp"$i".fasta | sed 's/NEWLINE/\n/g' | sed "s/$rbhTag.*/$i_$rbhTag/g" >> "$gFile"
+		sTag="$i"_"$rbhTag"
+		grep "^>$rbhTag" tmp"$i".fasta | sed 's/NEWLINE/\n/g' | sed "s/^>$rbhTag.*/>$sTag/g" >> "$gFile"
 	done
 
 	#Create MSA
