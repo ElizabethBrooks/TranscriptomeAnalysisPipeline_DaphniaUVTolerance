@@ -13,15 +13,16 @@ refPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed 
 #Set outputs path
 outPath=$(dirname "$1")
 
+#Prepare multiline cds fasta to retrieve seqs
+tmpRef="$colRefFile"_tmpPA42_v4.1.fasta
+cat "$refPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRef"
+
 #Loop over all genes in the reference
 colRefFile="$1"
 while IFS= read -r line; do
-	#Prepare multiline cds fasta to retrieve seqs
-	tmpRef="$outPath"/tmpPA42_v4.1_"$line".fasta
-	cat "$refPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRef"
 	#Retrieve selected coding sequences and convert back to multiline fasta format
 	gTag=$line"-CDS"
-	gFile="$outPath"/"$line"_cds_allDaphnia.fasta
+	gFile="$outPath"/tmp_cds_allDaphnia_"$line".fasta
 	grep "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$gFile"
 	
 	#Output Status message
@@ -29,7 +30,7 @@ while IFS= read -r line; do
 	#Loop over all input samples
 	for i in "${@:2}"; do
 		#Prepare multiline cds fasta to retrieve seqs
-		tmpSample="$outPath"/tmp"$i"_"$line".fasta
+		tmpSample="$outPath"/tmp_"$i"_"$line".fasta
 		inSampleC="$inputPath"/sortedCoordinate_samtoolsHisat2_run1"$i"_assemblyPA42_v4.1Trinity/decoded_transdecoder/Trinity.fasta.transdecoder.cds
 		cat "$inSample" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpSample"
 		#Retrieve gene associated with RBHB
@@ -48,9 +49,9 @@ while IFS= read -r line; do
 	echo "$line MSA created: $mFile"
 
 	#Clean up
-	rm "$outPath"/tmp*.fasta
-	rm "$gFile"
+	rm "$outPath"/tmp_*_"$line".fasta
 done < "$colRefFile"
 
 #Clean up
+rm "$tmpRef"
 rm "$colRefFile"
