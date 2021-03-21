@@ -9,7 +9,7 @@ outPath=$(grep "MSA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/MSA://g"
 grep ">" "$refPath" | sed "s/-CDS//g" | sed "s/>//g" > "$outPath"/col1.txt
 
 #Split the reference gene set into segments
-split -l 1500 "$outPath"/col1.txt "$outPath"/colRef
+split -l 1000 "$outPath"/col1.txt "$outPath"/colRef
 
 #Generate MSAs for each segment
 for i in "$outPath"/colRef*; do
