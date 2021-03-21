@@ -32,7 +32,7 @@ while IFS= read -r line; do
 		#Prepare multiline cds fasta to retrieve seqs
 		tmpSample="$outPath"/tmp_"$i"_"$line".fasta
 		inSampleC="$inputPath"/sortedCoordinate_samtoolsHisat2_run1"$i"_assemblyPA42_v4.1Trinity/decoded_transdecoder/Trinity.fasta.transdecoder.cds
-		cat "$inSample" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpSample"
+		cat "$inSampleC" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpSample"
 		#Retrieve gene associated with RBHB
 		pTag=$line"-pep"
 		inSampleP="$inputPath"/sortedCoordinate_samtoolsHisat2_run1"$i"_assemblyPA42_v4.1Trinity/reciprocalSearched_blastp_PA42_v4.1_proteins/blastp_RBH.txt
@@ -46,7 +46,7 @@ while IFS= read -r line; do
 	mFile="$outPath"/"$line"_cds_allDaphnia_aligned.fasta
 	muscle -in "$gFile" -out "$mFile"
 	#Output status message
-	echo "$line MSA created: $mFile"
+	echo "MSA created for $line: $mFile"
 
 	#Clean up
 	rm "$outPath"/tmp_*_"$line".fasta
