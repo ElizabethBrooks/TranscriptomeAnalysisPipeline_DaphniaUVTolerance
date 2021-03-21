@@ -12,3 +12,4 @@ reciprocalSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 orthoFinder: /scratch365/ebrooks5/rnaseq
 GSEA: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_Results
 alignmentAnalysis: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
+MSA: /scratch365/ebrooks5/rnaseq
