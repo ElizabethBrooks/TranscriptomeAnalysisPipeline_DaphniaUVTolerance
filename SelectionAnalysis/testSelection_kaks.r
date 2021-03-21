@@ -3,10 +3,13 @@
 #BiocManager::install("seqinr")
 
 #Load the libraries
-#library(seqinr)
+library(seqinr)
+
+#Retrieve input file name of gene counts
+args = commandArgs(trailingOnly=TRUE)
 
 #Import file with protein alignments
-s <- read.alignment(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/gene4487_cds_allDaphnia_aligned.fasta", format = "fasta")
+s <- read.alignment(file=args[1], format = "fasta")
 
 #Generate ka ks values
 kaks(s)

@@ -17,24 +17,28 @@ outPath=$(dirname "$1")
 colRefFile="$1"
 while IFS= read -r line; do
 	#Prepare multiline cds fasta to retrieve seqs
-	cat "$refPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$outPath"/tmpPA42_v4.1.fasta
+	tmpRef="$outPath"/tmpPA42_v4.1_"$line".fasta
+	cat "$refPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRef"
 	#Retrieve selected coding sequences and convert back to multiline fasta format
 	gTag=$line"-CDS"
 	gFile="$outPath"/"$line"_cds_allDaphnia.fasta
-	grep "^>$gTag" "$outPath"/tmpPA42_v4.1.fasta | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$gFile"
+	grep "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$gFile"
 	
 	#Output Status message
 	echo "Generating MSA for $line..."
 	#Loop over all input samples
 	for i in "${@:2}"; do
 		#Prepare multiline cds fasta to retrieve seqs
-		cat "$inputPath"/sortedCoordinate_samtoolsHisat2_run1"$i"_assemblyPA42_v4.1Trinity/decoded_transdecoder/Trinity.fasta.transdecoder.cds | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$outPath"/tmp"$i".fasta
+		tmpSample="$outPath"/tmp"$i"_"$line".fasta
+		inSampleC="$inputPath"/sortedCoordinate_samtoolsHisat2_run1"$i"_assemblyPA42_v4.1Trinity/decoded_transdecoder/Trinity.fasta.transdecoder.cds
+		cat "$inSample" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpSample"
 		#Retrieve gene associated with RBHB
 		pTag=$line"-pep"
-		rbhTag=$(grep "$pTag" "$inputPath"/sortedCoordinate_samtoolsHisat2_run1"$i"_assemblyPA42_v4.1Trinity/reciprocalSearched_blastp_PA42_v4.1_proteins/blastp_RBH.txt | cut -d ',' -f 1)
+		inSampleP="$inputPath"/sortedCoordinate_samtoolsHisat2_run1"$i"_assemblyPA42_v4.1Trinity/reciprocalSearched_blastp_PA42_v4.1_proteins/blastp_RBH.txt
+		rbhTag=$(grep "$pTag" "$inSampleP" | cut -d ',' -f 1)
 		#Retrieve selected coding sequences and convert back to multiline fasta format
 		sTag="$i"_"$rbhTag"
-		grep "^>$rbhTag" "$outPath"/tmp"$i".fasta | sed 's/NEWLINE/\n/g' | sed "s/^>$rbhTag.*/>$sTag/g" >> "$gFile"
+		grep "^>$rbhTag" "$tmpSample" | sed 's/NEWLINE/\n/g' | sed "s/^>$rbhTag.*/>$sTag/g" >> "$gFile"
 	done
 
 	#Create MSA
