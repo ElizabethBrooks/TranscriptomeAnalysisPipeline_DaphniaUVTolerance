@@ -62,6 +62,8 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 	curSampleNoPath=$(basename $curSampleNoPath)
 	#Create directory for current sample outputs
 	mkdir "$outputFolder"/"$curSampleNoPath"
+	#Filter bam files based on mapq scores to get rid of low quality reads
+	#samtools view -q 30 -b in.bam > aligned_reads.q30.bam
 	#Perform variant calling using Samtools bcftools
 	#Also normalize the vcf file
 	echo "Sample $curSampleNoPath variant are being called..."
