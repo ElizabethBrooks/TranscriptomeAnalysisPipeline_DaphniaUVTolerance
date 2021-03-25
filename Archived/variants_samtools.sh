@@ -73,5 +73,9 @@ for f1 in "$inputsPath"/"$1"/*/*.bam; do
 	echo "bcftools mpileup -Ou -f" "$genomeFile" "$curAlignedSample" "| bcftools call -Ou -mv | bcftools norm -f" "$genomeFile" "Oz -o" "$outputFolder""/""$curSampleNoPath"".vcf.gz" >> "$inputOutFile"
 	echo "Sample $curSampleNoPath variants have been called!"
 done
+#Merge vcf files to genreate genotypes for all individuals at all of the unique positions present across the files
+#bcftools merge 1_vcf.gz 2_vcf.gz --threads 16 --missing-to-ref --merge both -O z -o Full_merged.vcf_new.gz
+#Create a consesnsus sequence by applying vcf variants to a reference fasta file
+#bcftools consensus -f reference.fasta -o out.fa Full_merged.vcf_new.gz
 #Copy previous summaries
 cp "$inputsPath"/"$1"/*.txt "$outputFolder"
