@@ -20,10 +20,8 @@ countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
 group <- factor(c(rep("ctrl",3),rep("treat",3)))
 #Create DGE list object
 list <- DGEList(counts=countsTable,group=group)
-#Retrieve input FDR cutoff
-fdrCut=as.numeric(args[4])
 #Retrieve input genotype
-genotype <- args[5]
+genotype <- args[4]
 
 #There is no purpose in analysing genes that are not expressed in either 
 # experimental condition, so genes are first filtered on expression levels
