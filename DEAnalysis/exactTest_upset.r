@@ -39,13 +39,26 @@ m = make_comb_mat(lt)
 #UpSet(sizeDown, comb_col="#0000FF", bg_col="#F0F0FF", bg_pt_col="#CCCCFF")
 #dev.off()
 
+cs = comb_size(m)
+ht = UpSet(m, comb_col="#0000FF", bg_col="#F0F0FF", bg_pt_col="#CCCCFF", top_annotation = upset_top_annotation(m, ylim = c(0, 1.1*max(cs))))
+ht = draw(ht)
+co = column_order(ht)
+nc = ncol(m)
+plot <- decorate_annotation("Intersection\nsize", {
+  grid.text(cs[co], 
+            x = 1:nc, 
+            y = unit(cs[co], "native") + unit(1, "mm"), 
+            gp = gpar(fontsize = 5), 
+            just = "bottom",
+            default.units = "native")
+})
+
 size = m[comb_degree(m) >= 2]
 cs = comb_size(size)
 ht = UpSet(size, comb_col="#0000FF", bg_col="#F0F0FF", bg_pt_col="#CCCCFF", top_annotation = upset_top_annotation(size, ylim = c(0, 1.1*max(cs))))
 ht = draw(ht)
 co = column_order(ht)
 nc = ncol(size)
-pdf("/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/plotExactTests_combinedDDR_2UpNums_PA42_v4.1.pdf")
 plot <- decorate_annotation("Intersection\nsize", {
   grid.text(cs[co], 
             x = 1:nc, 
