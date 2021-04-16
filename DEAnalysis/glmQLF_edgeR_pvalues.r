@@ -68,8 +68,8 @@ write.table(tagsTblANOVA, file="glmQLF_2WayANOVA_UVvsVIS_topTags.csv", sep=",", 
 
 #Test whether the average across all tolerant groups is equal to the average across
 #all not tolerant groups, to examine the overall effect of tolerance
-con.TvsN <- makeContrasts(TvsN = (UV.Y05 + VIS.Y05 + UV.E05 + VIS.E05)/4
-  - (UV.Y023 + VIS.Y023 + UV.R2 + VIS.R2)/4,
+con.TvsN <- makeContrasts(TvsN = (UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
+  - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4,
   levels=design)
 
 #Look at genes expressed across all UV groups using QL F-test
@@ -81,8 +81,8 @@ write.table(tagsTblANOVATN, file="glmQLF_2WayANOVA_TvsN_topTags.csv", sep=",", r
 #Test whether there is an interaction effect
 con.Inter <- makeContrasts(Inter = ((UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
   - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4)
-  - ((UV.Y05 + VIS.Y05 + UV.E05 + VIS.E05)/4
-  - (UV.Y023 + VIS.Y023 + UV.R2 + VIS.R2)/4),
+  - ((UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
+  - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4),
   levels=design)
 
 #Look at genes expressed across all UV groups using QL F-test

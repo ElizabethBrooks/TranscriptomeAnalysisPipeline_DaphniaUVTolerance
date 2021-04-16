@@ -6,13 +6,13 @@
 #module load bio
 
 #Retrieve experimental design data path
-designPath="../InputData/expDesign_olympics.csv"
+designPath="../InputData/expDesign_Olympics.csv"
 #Retrieve analysis inputs path
 inputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
 inFile="$inputsPath"/cleaned.csv
 
 #Create directory for output files
-outDir="$inputsPath"/glm"$1"Analysis
+outDir="$inputsPath"/glmAnalysis
 mkdir $outDir
 
 #Perform DE analysis using glmLRT in edgeR 

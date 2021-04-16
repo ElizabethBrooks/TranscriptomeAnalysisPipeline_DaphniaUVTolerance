@@ -13,8 +13,8 @@ library(ggplot2)
 library(Rgraphviz)
 
 #Import gene count data & specify genotype
-countsTable <- read.csv(file= "geneCounts_cleaned_PA42_v4.1.csv", 
-                        row.names="gene")[ ,1:6]
+countsTable <- read.csv(file= "/home/mae/Documents/RNASeq_Workshop_ND/geneCounts_cleaned_PA42_v4.1.csv", 
+                        row.names="gene")[ ,31:36]
 genotype <- unlist(strsplit(colnames(countsTable)[1], '_'))[1] #this is extremely messy but it should work for genotype of any length
 
 #Add grouping factor
@@ -41,7 +41,7 @@ resultsTbl <- topTags(tested, n=nrow(tested$table))$table
 
 #GO enrichment
 #Read in custom GO annotations
-GOmaps <- readMappings(file='gene2GO_PA42_v4.1_transcripts.map',  sep='\t',  IDsep=',')
+GOmaps <- readMappings(file="/home/mae/Documents/RNASeq_Workshop_ND/gene2GO_PA42_v4.1_transcripts.map",  sep='\t',  IDsep=',')
 
 #Create named list of all genes (gene universe) and p-values. The gene universe is set to be
 #the list of all genes contained in the gene2GO list of annotated genes.
