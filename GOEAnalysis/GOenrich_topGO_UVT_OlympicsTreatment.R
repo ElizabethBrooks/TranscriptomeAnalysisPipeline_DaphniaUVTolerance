@@ -52,23 +52,6 @@ con.UVvsVIS <- makeContrasts(UVvsVIS = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
 #Look at genes expressed across all UV groups using QL F-test
 test.anov.UVVIS <- glmQLFTest(fit, contrast=con.UVvsVIS)
 
-#Test whether the average across all tolerant groups is equal to the average across
-#all not tolerant groups, to examine the overall effect of tolerance
-con.TvsN <- makeContrasts(TvsN = (UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
-                          - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4,
-                          levels=design)
-#Look at genes expressed across all UV groups using QL F-test
-test.anov.TN <- glmQLFTest(fit, contrast=con.TvsN)
-
-#Test whether there is an interaction effect
-con.Inter <- makeContrasts(Inter = ((UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
-                                    - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4)
-                           - ((UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
-                              - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4),
-                           levels=design)
-#Look at genes expressed across all UV groups using QL F-test
-test.anov.Inter <- glmQLFTest(fit, contrast=con.Inter)
-
 
 #GO enrichment
 #Read in custom GO annotations

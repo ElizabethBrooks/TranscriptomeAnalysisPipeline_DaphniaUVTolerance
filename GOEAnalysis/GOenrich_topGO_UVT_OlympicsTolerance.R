@@ -46,8 +46,8 @@ fit <- glmQLFit(list, design, robust=TRUE)
 
 #Test whether the average across all tolerant groups is equal to the average across
 #all not tolerant groups, to examine the overall effect of tolerance
-con.TvsN <- makeContrasts(TvsN = (UV.Y05 + VIS.Y05 + UV.E05 + VIS.E05)/4
-                          - (UV.Y023 + VIS.Y023 + UV.R2 + VIS.R2)/4,
+con.TvsN <- makeContrasts(TvsN = (UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
+                          - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4,
                           levels=design)
 #Look at genes expressed across all UV groups using QL F-test
 test.anov.TN <- glmQLFTest(fit, contrast=con.TvsN)
