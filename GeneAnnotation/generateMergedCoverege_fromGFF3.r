@@ -40,8 +40,9 @@ dest = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sorted
 #High DE ex: scaffold_9 dp_gene6568 2352829-2354488
 geneLoc = "scaffold_9"
 geneName = "dp_gene6588"
-geneStart = 2352829
-geneEnd = 2354488
+extBy = 100
+geneStart = 2352829 - extBy
+geneEnd = 2354488 + extBy
 
 #Merge UV bam files
 transReg <- transcriptsBy(geneDB, by="gene")
@@ -84,8 +85,8 @@ plotTracks(c(geneTr, alTr),
            thinBoxFeature = "UTR", 
            collapse = FALSE,
            col.coverage = "green",
-           fill.coverage = "blue",
-           extend.left = 100, 
-           extend.right = 100)
+           fill.coverage = "blue")
+           #extend.left = 100, 
+           #extend.right = 100,
            #col.mates = "purple", 
            #col.gap = "orange"

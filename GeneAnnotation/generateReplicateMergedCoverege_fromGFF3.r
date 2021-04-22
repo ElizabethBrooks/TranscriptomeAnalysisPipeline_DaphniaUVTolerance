@@ -29,20 +29,21 @@ destUV = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sort
 destVIS = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/mergedGeneRegion_VIS.bam"
 
 #Index input bam files, if they have not already been indexed
-indexBam(inputBamUV1)
-indexBam(inputBamUV2)
-indexBam(inputBamUV3)
-indexBam(inputBamVIS1)
-indexBam(inputBamVIS2)
-indexBam(inputBamVIS3)
+#indexBam(inputBamUV1)
+#indexBam(inputBamUV2)
+#indexBam(inputBamUV3)
+#indexBam(inputBamVIS1)
+#indexBam(inputBamVIS2)
+#indexBam(inputBamVIS3)
 
 #Set gene region name and coordinates
 #Random ex: scaffold_1 dp_gene1 2873-4893, scaffold_1 dp_gene10 189307-194728, scaffold_1 dp_gene100 1175334-1176811, scaffold_2 dp_gene1319 95-3193
 #High DE ex: scaffold_9 dp_gene6568 2352829-2354488
 geneLoc = "scaffold_9"
 geneName = "dp_gene6588"
-geneStart = 2352829
-geneEnd = 2354488
+extBy = 100
+geneStart = 2352829 - extBy
+geneEnd = 2354488 + extBy
 
 #Merge UV bam files
 transRegUV <- transcriptsBy(geneDB, by="gene")
@@ -67,7 +68,7 @@ geneTr <- GeneRegionTrack(geneDB,
                           name = geneName)
 
 #View features in gene model
-feature(geneTr)
+#feature(geneTr)
 #head(gene(geneTr))
 #head(transcript(geneTr))
 #head(exon(geneTr))
@@ -80,15 +81,14 @@ feature(geneTr)
 #hTrVIS <- DataTrack(destVIS, isPaired = TRUE, type = "h", name = "CoverageVIS")
 
 #Create the alignment tracks
-alTrUV1 <- AlignmentsTrack(inputBamUV1, isPaired = TRUE, name = "AlignmentsUV1", type = "coverage")
-alTrUV2 <- AlignmentsTrack(inputBamUV2, isPaired = TRUE, name = "AlignmentsUV2", type = "coverage")
-alTrUV3 <- AlignmentsTrack(inputBamUV3, isPaired = TRUE, name = "AlignmentsUV3", type = "coverage")
-alTrVIS1 <- AlignmentsTrack(inputBamVIS1, isPaired = TRUE, name = "AlignmentsVIS1", type = "coverage")
-alTrVIS2 <- AlignmentsTrack(inputBamVIS2, isPaired = TRUE, name = "AlignmentsVIS2", type = "coverage")
-alTrVIS3 <- AlignmentsTrack(inputBamVIS3, isPaired = TRUE, name = "AlignmentsVIS3", type = "coverage")
+alTrUV <- AlignmentsTrack(destUV, isPaired = TRUE, name = "AlignmentsUV", type = "coverage")
+alTrVIS <- AlignmentsTrack(destVIS, isPaired = TRUE, name = "AlignmentsVIS", type = "coverage")
+
+#Generate track overlay
+#ot <- OverlayTrack(trackList = list(alTrUV, alTrVIS))
 
 #Plot all data tracks
-plotTracks(c(geneTr, alTrUV1, alTrUV2, alTrUV3, alTrVIS1, alTrVIS2, alTrVIS3), 
+plotTracks(c(geneTr, alTrUV, alTrVIS), 
            from = geneStart,
            to = geneEnd, 
            chromosome = geneLoc, 
@@ -98,8 +98,8 @@ plotTracks(c(geneTr, alTrUV1, alTrUV2, alTrUV3, alTrVIS1, alTrVIS2, alTrVIS3),
            thinBoxFeature = "UTR", 
            collapse = FALSE,
            col.coverage = "green",
-           fill.coverage = "blue",
-           extend.left = 100, 
-           extend.right = 100)
+           fill.coverage = "blue")
+           #extend.left = 100, 
+           #extend.right = 100,
            #col.mates = "purple", 
-           #col.gap = "orange"
+           #col.gap = "orange",
