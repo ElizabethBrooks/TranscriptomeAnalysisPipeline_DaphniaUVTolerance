@@ -45,16 +45,16 @@ extBy = 100
 geneStart = 2352829 - extBy
 geneEnd = 2354488 + extBy
 
+#Retrieve gene features
+transReg <- transcriptsBy(geneDB, by="gene")
+transRange <- transReg[[geneName]]
+
 #Merge UV bam files
-transRegUV <- transcriptsBy(geneDB, by="gene")
-transRangeUV <- transRegUV[[geneName]]
-mergeBam(files=c(inputBamUV1, inputBamUV2, inputBamUV3), region=transRangeUV, destination=destUV, overwrite=TRUE)
+mergeBam(files=c(inputBamUV1, inputBamUV2, inputBamUV3), region=transRange, destination=destUV, overwrite=TRUE)
 indexBam(destUV)
 
 #Merge VIS bam files
-transRegVIS <- transcriptsBy(geneDB, by="gene")
-transRangeVIS <- transRegVIS[[geneName]]
-mergeBam(files=c(inputBamVIS1, inputBamVIS2, inputBamVIS3), region=transRangeVIS, destination=destVIS, overwrite=TRUE)
+mergeBam(files=c(inputBamVIS1, inputBamVIS2, inputBamVIS3), region=transRange, destination=destVIS, overwrite=TRUE)
 indexBam(destVIS)
 
 #Create the gene region track for specified chromosome or scaffold

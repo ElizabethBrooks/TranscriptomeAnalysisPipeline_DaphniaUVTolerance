@@ -13,17 +13,17 @@ library(Rsamtools)
 options(ucscChromosomeNames=FALSE)
 
 #Retrieve input gff file path
-inputGFF = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/PA42.4.1_cleaned.gff"
+inputGFF = "/home/mae/Documents/RNASeq_Workshop_ND/dp_gene15097.gff"
 #Store gff3 file as TxDb object
 geneDB <- makeTxDbFromGFF(file=inputGFF, organism="Daphnia melanica")
 
 #Retrieve input bam files
-inputBamUV1 = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_UV/accepted_hits.bam"
-inputBamUV2 = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_UV/accepted_hits.bam"
-inputBamUV3 = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_UV/accepted_hits.bam"
-inputBamVIS1 = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_VIS/accepted_hits.bam"
-inputBamVIS2 = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_VIS/accepted_hits.bam"
-inputBamVIS3 = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_VIS/accepted_hits.bam"
+inputBamUV1 = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_UV/filtered.bam"
+inputBamUV2 = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_UV/filtered.bam"
+inputBamUV3 = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_UV/filtered.bam"
+inputBamVIS1 = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_VIS/filtered.bam"
+inputBamVIS2 = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_VIS/filtered.bam"
+inputBamVIS3 = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_VIS/filtered.bam"
 
 #Index input bam files, if they have not already been indexed
 #indexBam(inputBamUV1)
@@ -47,7 +47,7 @@ geneTr <- GeneRegionTrack(geneDB,
                           chromosome = geneLoc, 
                           start = geneStart,  
                           end = geneEnd, 
-                          #collapseTranscripts = "longest",
+                          collapseTranscripts = "longest",
                           col="blue",
                           fill="green",
                           size=8,
@@ -77,12 +77,12 @@ ot <- OverlayTrack(trackList = list(alTrUV1, alTrUV2, alTrUV3, alTrVIS1, alTrVIS
 #dt <- DataTrack(alTrUV1, alTrUV2, alTrUV3, alTrVIS1, alTrVIS2, alTrVIS3)
 
 #Plot all data tracks
-jpeg(file=paste("/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/filteredCoverage_",geneName,".jpeg"), width=900, height=400)
+jpeg(file=paste("/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/sortedCoordinate_samtoolsHisat2_run2/filteredLongestCoverage_",geneName,".jpeg"), width=900, height=400)
 plotTracks(c(geneTr, ot), 
            from = geneStart,
            to = geneEnd, 
            chromosome = geneLoc,
-           showId = TRUE,
+           #showId = TRUE,
            exonAnnotation = "feature",
            fontcolor.exon = 1,
            fontsize.exon = 8,
@@ -91,9 +91,9 @@ plotTracks(c(geneTr, ot),
            extend.left = 500, 
            extend.right = 500,
            alpha.title = 1)
-           #stackedBars = TRUE,
-           #col.coverage = "green",
-           #fill.coverage = "blue",
-           #col.mates = "purple", 
-           #col.gap = "orange"
+#stackedBars = TRUE,
+#col.coverage = "green",
+#fill.coverage = "blue",
+#col.mates = "purple", 
+#col.gap = "orange"
 dev.off()
