@@ -63,6 +63,6 @@ for f in "$inputsDir"/*/"$type".bam; do
 	bcftools filter --IndelGap 5 "$path"/"$type"_calls.norm.bcf -Ob -o "$path"/"$type"_calls.norm.flt-indels.bcf
 	echo bcftools filter --IndelGap 5 "$path"/"$type"_calls.norm.bcf -Ob -o "$path"/"$type"_calls.norm.flt-indels.bcf >> "$inputOutFile"
 	#Include sites where FILTER is true
-	bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$path"/"$type"_calls.norm.flt-indels.bcf > "$path"/"$type"_filtered_excluded.bcf
-	echo bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$path"/"$type"_calls.norm.flt-indels.bcf ">" "$path"/"$type"_filtered_excluded.bcf >> "$inputOutFile"
+	bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$path"/"$type"_calls.norm.flt-indels.bcf > "$path"/"$type"_filtered.bcf
+	echo bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$path"/"$type"_calls.norm.flt-indels.bcf ">" "$path"/"$type"_filtered.bcf >> "$inputOutFile"
 done
