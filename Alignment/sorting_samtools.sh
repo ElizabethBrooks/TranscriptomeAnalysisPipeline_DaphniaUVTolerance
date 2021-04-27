@@ -113,9 +113,9 @@ for f1 in "$inputsPath"/"$3"/*/; do
 	echo samtools sort -@ 8 -n -o "$outputFolder"/"$curSampleNoPath"/sortedName.bam -T /tmp/"$curSampleNoPath".sortedName.bam "$curAlignedSample" >> "$inputOutFile"
 	#Determine which sorting method is to be performed
 	if [[ "$methodTag" == "Coordinate" ]]; then
-		#Run fixmate to update paired-end flags for singletons
+		#Run fixmate -m to update paired-end flags for singletons
 		echo "Sample $curSampleNoPath singleton flags are being updated..."
-		samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam
+		samtools fixmate -m "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam
 		echo "Sample $curSampleNoPath singleton flags have been updated!"
 		#Clean up
 		rm "$outputFolder"/"$curSampleNoPath"/sortedName.bam
@@ -125,17 +125,23 @@ for f1 in "$inputsPath"/"$3"/*/; do
 		samtools sort "$flags" -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam -T /tmp/"$curSampleNoPath".sorted.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam
 		echo "Sample $curSampleNoPath has been sorted!"
 		rm "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam
+		#Remove duplicate reads
+		samtools markdup -r "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam "$outputFolder"/"$curSampleNoPath"/noDups.bam
 		#Add run inputs to output summary file
-		echo samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam >> "$inputOutFile"
+		echo samtools fixmate -m "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam >> "$inputOutFile"
 		echo samtools sort "$flags" -o "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam -T /tmp/"$curSampleNoPath".sorted.bam "$outputFolder"/"$curSampleNoPath"/sortedFixed.bam >> "$inputOutFile"
+		echo samtools markdup -r "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam "$outputFolder"/"$curSampleNoPath"/noDups.bam >> "$inputOutFile"
 	else
-		#Run fixmate to update paired-end flags for singletons
+		#Run fixmate -m to update paired-end flags for singletons
 		echo "Sample $curSampleNoPath singleton flags are being updated..."
-		samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam
+		samtools fixmate -m "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam
 		echo "Sample $curSampleNoPath singleton flags have been updated!"
 		rm "$outputFolder"/"$curSampleNoPath"/sortedName.bam
+		#Remove duplicate reads
+		samtools markdup -r "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam "$outputFolder"/"$curSampleNoPath"/noDups.bam
 		#Add run inputs to output summary file
-		echo samtools fixmate "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam >> "$inputOutFile"
+		echo samtools fixmate -m "$outputFolder"/"$curSampleNoPath"/sortedName.bam "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam >> "$inputOutFile"
+		echo samtools markdup -r "$outputFolder"/"$curSampleNoPath"/accepted_hits.bam "$outputFolder"/"$curSampleNoPath"/noDups.bam >> "$inputOutFile"
 	fi
 	#Clean up bam files depending on analysis
 	#if [[ "$1"  == assembly ]]; then #Clean up excess bam files, if assemly was input
