@@ -2,17 +2,14 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N counting_htseq_jobOutput
-#Script to perform variant calling
-#Usage: qsub variantCalling_samtools.sh sortedNameFolder analysisTarget
-#Usage Ex: qsub variantCalling_samtools.sh sortedName_samtoolsHisat2_run3 genome
-#Usage Ex: qsub variantCalling_samtools.sh sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity
-#Usage Ex: qsub variantCalling_samtools.sh sortedName_samtoolsHisat2_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity
+#$ -N filterSZ_jobOutput
+#Script to perform bam read quaity filtering
+#Usage: qsub filterByZS.sh sortedNameFolder analysisTarget
+#Usage Ex: qsub filterByZS.sh sortedCoordinate_samtoolsHisat2_run3 genome
 
 #Required modules for ND CRC servers
 module load bio
-#module load bio/python/2.7.14
-#module load bio/htseq/0.11.2
+
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"

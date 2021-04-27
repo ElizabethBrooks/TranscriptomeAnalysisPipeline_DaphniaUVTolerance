@@ -2,18 +2,15 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N counting_htseq_jobOutput
+#$ -N variantCalling_jobOutput
 #Script to perform variant calling
-#Usage: qsub variantCalling_samtools.sh sortedNameFolder analysisTarget
-#Usage Ex: qsub variantCalling_samtools.sh sortedName_samtoolsHisat2_run3 genome filteredMapQ
-#Usage Ex: qsub variantCalling_samtools.sh sortedName_samtoolsHisat2_run3 genome filteredZS
-#Usage Ex: qsub variantCalling_samtools.sh sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity filteredMapQ
-#Usage Ex: qsub variantCalling_samtools.sh sortedName_samtoolsHisat2_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity filteredMapQ
+#Usage: qsub variantCalling_bcftools.sh sortedNameFolder analysisTarget
+#Usage Ex: qsub variantCalling_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
+#Usage Ex: qsub variantCalling_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
 
 #Required modules for ND CRC servers
 module load bio
-#module load bio/python/2.7.14
-#module load bio/htseq/0.11.2
+
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
@@ -42,7 +39,7 @@ else
 	exit 1
 fi
 #Name output file of inputs
-inputOutFile="$outputFolder"/counted_summary.txt
+inputOutFile="$inputsDir"/variantCalling_summary.txt
 
 #Retrieve input bam file type
 type="$3"
@@ -52,14 +49,20 @@ for f in "$inputsDir"/*/"$type".bam; do
 	path=$(dirname $f)
 	#Calculate the read coverage of positions in the genome
 	bcftools mpileup -Ob -o "$path"/"$type"_raw.bcf -f "$genomeFile" "$f" 
+	echo bcftools mpileup -Ob -o "$path"/"$type"_raw.bcf -f "$genomeFile" "$f" >> "$inputOutFile"
 	#Detect the single nucleotide polymorphisms 
 	bcftools call -mv -Ob -o "$path"/"$type"_calls.vcf.gz "$path"/"$type"_raw.bcf 
+	echo bcftools call -mv -Ob -o "$path"/"$type"_calls.vcf.gz "$path"/"$type"_raw.bcf >> "$inputOutFile"
 	#Index vcf file
 	bcftools index "$path"/"$type"_calls.vcf.gz
+	echo bcftools index "$path"/"$type"_calls.vcf.gz >> "$inputOutFile"
 	#Normalize indels
 	bcftools norm -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf
+	echo bcftools norm -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf >> "$inputOutFile"
 	#Filter adjacent indels within 5bp
 	bcftools filter --IndelGap 5 "$path"/"$type"_calls.norm.bcf -Ob -o "$path"/"$type"_calls.norm.flt-indels.bcf
+	echo bcftools filter --IndelGap 5 "$path"/"$type"_calls.norm.bcf -Ob -o "$path"/"$type"_calls.norm.flt-indels.bcf >> "$inputOutFile"
 	#Include sites where FILTER is true
 	bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$path"/"$type"_calls.norm.flt-indels.bcf > "$path"/"$type"_filtered_excluded.bcf
+	echo bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$path"/"$type"_calls.norm.flt-indels.bcf ">" "$path"/"$type"_filtered_excluded.bcf >> "$inputOutFile"
 done

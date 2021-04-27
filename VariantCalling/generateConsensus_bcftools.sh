@@ -2,10 +2,11 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N filterMapQ_jobOutput
-#Script to perform bam read quaity filtering
-#Usage: qsub filterByMapQ.sh sortedNameFolder analysisTarget
-#Usage Ex: qsub filterByMapQ.sh sortedCoordinate_samtoolsHisat2_run3 genome
+#$ -N consensus_jobOutput
+#Script to generate a consensus sequence using called variants
+#Usage: qsub generateConsensus_bcftools.sh sortedNameFolder analysisTarget
+#Usage Ex: qsub generateConsensus_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
+#Usage Ex: qsub generateConsensus_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
 
 #Required modules for ND CRC servers
 module load bio
@@ -15,6 +16,8 @@ if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
+#Retrieve genome features absolute path for alignment
+genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Determine what analysis method was used for the input folder of data
 if [[ "$2" == *assemblyTrinity* || "$2" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
@@ -36,7 +39,12 @@ else
 	exit 1
 fi
 
-#Keep only unique read alignments usingthe mapq score of 60 
-for f in "$inputsDir"/*/accepted_hits.bam; do 
-	echo "Processing file $f";  path=$(dirname $f); samtools view -bq 60 $f > "$path"/filteredMapQ.bam
+#Retrieve input bam file type
+type="$3"
+#Loop over MapQ filtered bam files
+for f in "$inputsDir"/*/"$type".bam; do
+	echo "Processing file $f"
+	path=$(dirname $f)
+	#Generate consensus sequence
+	cat "$genomeFile" | bcftools consensus "$path"/"$type"_calls.vcf.gz > "$path"/"$type"_consensus.fa
 done
