@@ -20,7 +20,7 @@ if [ $# -eq 0 ]; then
    	exit 1
 fi
 #Retrieve genome features absolute path for alignment
-genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
+genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Determine what analysis method was used for the input folder of data
 if [[ "$2" == *assemblyTrinity* || "$2" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
@@ -51,13 +51,13 @@ for f in "$inputsDir"/*/"$type".bam; do
 	echo "Processing file $f"
 	path=$(dirname $f)
 	#Calculate the read coverage of positions in the genome
-	bcftools mpileup -Ob -o "$path"/"$type"_raw.bcf -f "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/GCA_900092285.2_PA42_4.1_genomic.fasta" "$f" 
+	bcftools mpileup -Ob -o "$path"/"$type"_raw.bcf -f "$genomeFile" "$f" 
 	#Detect the single nucleotide polymorphisms 
 	bcftools call -mv -Ob -o "$path"/"$type"_calls.vcf.gz "$path"/"$type"_raw.bcf 
 	#Index vcf file
 	bcftools index "$path"/"$type"_calls.vcf.gz
 	#Normalize indels
-	bcftools norm -f "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/GCA_900092285.2_PA42_4.1_genomic.fasta" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf
+	bcftools norm -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf
 	#Filter adjacent indels within 5bp
 	bcftools filter --IndelGap 5 "$path"/"$type"_calls.norm.bcf -Ob -o "$path"/"$type"_calls.norm.flt-indels.bcf
 	#Include sites where FILTER is true
