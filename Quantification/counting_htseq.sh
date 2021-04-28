@@ -79,20 +79,20 @@ for f1 in "$inputsDir"/*/*.bam; do
 		#--secondary-alignments ignore --supplementary-alignments ignore
 		#Flag to output features in sam format
 		#-o "$outputFolder"/"$curSampleNoPath"/counted.sam
-		htseq-count -f bam -s no -m union -t gene -i ID "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
+		htseq-count -f bam -a 60 -s no -m union -t gene -i ID "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
 		#Add run inputs to output summary file
 		echo "$curSampleNoPath" >> "$inputOutFile"
-		echo "htseq-count -f bam -s no -m union -t gene -i ID" "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> "$inputOutFile"
+		echo "htseq-count -f bam -a 60 -s no -m union -t gene -i ID" "$curAlignedSample" "$genomeFile" ">" "$outputFolder"/"$curSampleNoPath"/counts.txt >> "$inputOutFile"
 	elif [[ "$1"  == sortedCoordinate* ]]; then
 		#Use coordinate sorted flag
 		#https://github.com/simon-anders/htseq/issues/37
 		#--secondary-alignments ignore --supplementary-alignments ignore
 		#Flag to output features in sam format
 		#-o "$outputFolder"/"$curSampleNoPath"/counted.sam
-		htseq-count -f bam -r pos -s no -m union -t gene -i ID "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
+		htseq-count -f bam -a 60 -r pos -s no -m union -t gene -i ID "$curAlignedSample" "$genomeFile" > "$outputFolder"/"$curSampleNoPath"/counts.txt
 		#Add run inputs to output summary file
 		echo "$curSampleNoPath" >> "$inputOutFile"
-		echo "htseq-count -f bam -r pos -s no -m union -t gene -i ID" "$curAlignedSample" "$genomeFile" ">" "$outputFolder""/""$curSampleNoPath""/counts.txt" >> "$inputOutFile"
+		echo "htseq-count -f bam -a 60 -r pos -s no -m union -t gene -i ID" "$curAlignedSample" "$genomeFile" ">" "$outputFolder""/""$curSampleNoPath""/counts.txt" >> "$inputOutFile"
 	else
 		echo "ERROR: The bam file "$f1" was not found... exiting"
 		exit 1
