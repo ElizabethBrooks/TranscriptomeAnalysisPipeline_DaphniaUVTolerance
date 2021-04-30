@@ -16,11 +16,11 @@ genomeFile=$(grep "cleanedFeatures" ../InputData/inputPaths.txt | tr -d " " | se
 #Retrieve outputs path
 outDir=$(grep "geneModels" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneModels://g")
 #Make output directory
-mkdir "$outDir"
+mkdir "$outDir"_"$2"
 
 #Retrieve aligned files path
 bamPath=$(grep "aligningGenome" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-bamPath="$bamPath"/"$1"_"$2"
+bamPath="$bamPath"/"$1"
 
 #Set input bam file paths
 inputBam1="$bamPath"/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_UV/"$2".bam
