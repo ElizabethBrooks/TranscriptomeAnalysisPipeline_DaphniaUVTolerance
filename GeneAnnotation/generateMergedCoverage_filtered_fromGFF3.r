@@ -83,7 +83,7 @@ ot <- OverlayTrack(trackList = list(alTrUV1, alTrUV2, alTrUV3, alTrVIS1, alTrVIS
 #dt <- DataTrack(alTrUV1, alTrUV2, alTrUV3, alTrVIS1, alTrVIS2, alTrVIS3)
 
 #Plot all data tracks
-jpeg(file=paste(outPath,"/filteredCoverage_",geneName,".jpeg"), width=900, height=400)
+jpeg(file=paste(outPath,"/filteredCoverage_",geneName,".jpeg", sep = ""), width=900, height=400)
 plotTracks(c(geneTr, ot), 
            from = geneStart,
            to = geneEnd, 
