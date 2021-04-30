@@ -9,6 +9,9 @@ library(GenomicFeatures)
 library(Gviz)
 library(Rsamtools)
 
+#Retrieve input arguments
+args = commandArgs(trailingOnly=TRUE)
+
 #Turn off UCSC chromosome names to switch to custom naming
 options(ucscChromosomeNames=FALSE)
 
