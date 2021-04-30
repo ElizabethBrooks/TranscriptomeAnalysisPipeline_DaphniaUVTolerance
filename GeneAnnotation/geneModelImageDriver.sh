@@ -4,8 +4,9 @@
 #$ -r n
 #$ -N geneModelImages_jobOutput
 #Script to generate images for each single gene model
-#Usage: qsub geneModelImageDriver.sh sortedNameFolder
-#Usage Ex: qsub geneModelImageDriver.sh sortedCoordinate_samtoolsHisat2_run3
+#Usage: qsub geneModelImageDriver.sh sortedNameFolder bamType
+#Usage Ex: qsub geneModelImageDriver.sh sortedCoordinate_samtoolsHisat2_run3 filteredMapQ
+#Usage Ex: qsub geneModelImageDriver.sh sortedCoordinate_samtoolsHisat2_run3 accepted_hits
 
 #Load module for servers
 module load bio
@@ -22,12 +23,12 @@ bamPath=$(grep "aligningGenome" ../InputData/outputPaths.txt | tr -d " " | sed "
 bamPath="$bamPath"/"$1"
 
 #Set input bam file paths
-inputBam1="$bamPath"/"140327_I481_FCC3P1PACXX_L2_Pool_1_PA_UV/filteredMapQ.bam"
-inputBam2="$bamPath"/"140327_I481_FCC3P1PACXX_L3_Pool_2_PA_UV/filteredMapQ.bam"
-inputBam3="$bamPath"/"140327_I481_FCC3P1PACXX_L4_Pool_3_PA_UV/filteredMapQ.bam"
-inputBam4="$bamPath"/"140327_I481_FCC3P1PACXX_L2_Pool_1_PA_VIS/filteredMapQ.bam"
-inputBam5="$bamPath"/"140327_I481_FCC3P1PACXX_L3_Pool_2_PA_VIS/filteredMapQ.bam"
-inputBam6="$bamPath"/"140327_I481_FCC3P1PACXX_L4_Pool_3_PA_VIS/filteredMapQ.bam"
+inputBam1="$bamPath"/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_UV/"$2".bam
+inputBam2="$bamPath"/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_UV/"$2".bam
+inputBam3="$bamPath"/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_UV/"$2".bam
+inputBam4="$bamPath"/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_VIS/"$2".bam
+inputBam5="$bamPath"/140327_I481_FCC3P1PACXX_L3_Pool_2_PA_VIS/"$2".bam
+inputBam6="$bamPath"/140327_I481_FCC3P1PACXX_L4_Pool_3_PA_VIS/"$2".bam
 
 #Set output file header
 outIDs="$outDir"/multipleModels_geneIDs.csv
