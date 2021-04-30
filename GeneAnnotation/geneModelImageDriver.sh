@@ -39,6 +39,9 @@ grep "Name=" "$genomeFile" | cut -f 9 | cut -d "=" -f 3 > "$outDir"/tmpIDs.csv
 #Loop over each gene ID
 while IFS=, read -r geneName
 do
+	#Output status message
+	echo "Processing gene $geneName..."
+	
 	#Count the number of lines for each gene and the first mRNA
 	numRNA=$(($(grep -w "$geneName" "$genomeFile" | grep "mRNA-1" | wc -l)+1))
 	numGene=$(grep -w "$geneName" "$genomeFile" | wc -l)
