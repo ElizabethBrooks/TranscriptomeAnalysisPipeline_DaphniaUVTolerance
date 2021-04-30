@@ -20,7 +20,7 @@ mkdir "$outDir"
 
 #Retrieve aligned files path
 bamPath=$(grep "aligningGenome" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-bamPath="$bamPath"/"$1"
+bamPath="$bamPath"/"$1"_"$2"
 
 #Set input bam file paths
 inputBam1="$bamPath"/140327_I481_FCC3P1PACXX_L2_Pool_1_PA_UV/"$2".bam
