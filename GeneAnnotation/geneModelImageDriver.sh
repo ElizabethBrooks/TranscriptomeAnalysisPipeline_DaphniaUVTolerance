@@ -41,7 +41,7 @@ while IFS=, read -r geneName
 do
 	#Output status message
 	echo "Processing gene $geneName..."
-	
+
 	#Count the number of lines for each gene and the first mRNA
 	numRNA=$(($(grep -w "$geneName" "$genomeFile" | grep "mRNA-1" | wc -l)+1))
 	numGene=$(grep -w "$geneName" "$genomeFile" | wc -l)
@@ -51,7 +51,7 @@ do
 		#Set output gene gff path
 		geneGff="$outDir"/"$geneName"_geneModel.gff 
 		#Retrieve assocaited gff lines
-		grep -w "$geneName" > "$geneGff"
+		grep -w "$geneName" "$genomeFile" > "$geneGff"
 		#Retrieve input values
 		scaffoldName=$(grep -w "Name=$geneName" "$genomeFile" | cut -f 1)
 		geneStart=$(grep -w "Name=$geneName" "$genomeFile" | cut -f 4)
