@@ -46,5 +46,5 @@ for f in "$inputsDir"/*/"$type".bam; do
 	echo "Processing file $f"
 	path=$(dirname $f)
 	#Generate consensus sequence
-	cat "$genomeFile" | bcftools consensus "$path"/"$type"_calls.vcf.gz > "$path"/"$type"_consensus.fa
+	cat "$genomeFile" | bcftools consensus "$path"/"$type"_calls.norm.flt-indels.bcf > "$path"/"$type"_consensus.fa
 done
