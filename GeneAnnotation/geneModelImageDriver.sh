@@ -15,8 +15,9 @@ module load bio
 genomeFile=$(grep "cleanedFeatures" ../InputData/inputPaths.txt | tr -d " " | sed "s/cleanedFeatures://g")
 #Retrieve outputs path
 outDir=$(grep "geneModels" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneModels://g")
+outDir="$outDir"_"$2"
 #Make output directory
-mkdir "$outDir"_"$2"
+mkdir "$outDir"
 
 #Retrieve aligned files path
 bamPath=$(grep "aligningGenome" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
