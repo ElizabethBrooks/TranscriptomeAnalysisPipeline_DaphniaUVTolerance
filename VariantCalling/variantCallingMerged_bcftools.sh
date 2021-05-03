@@ -49,11 +49,15 @@ mkdir "$outFolder"
 inputOutFile="$outFolder"/variantCalling_summary.txt
 
 #Add file type to end of each sample path
-typeTag=/"$3".bam
-sed -e "s/$/$typeTag/g" "$inputBamList" > tmpList.txt
+type=/"$3".bam
+typeTag=$(echo $type | sed "s/\//SLASH/g")
+sed -e "s/$/$typeTag/" "$inputBamList" > tmpList.txt
 #Add directory to beginning of each sample path
-inDirTag="$inputsDir"/
-sed -i -e "s/^/$inDirTag/g" tmpList.txt
+inDir="$inputsDir"/
+inDirTag=$(echo $inDir | sed "s/\//SLASH/g")
+sed -i -e "s/^/$inDirTag/" tmpList.txt
+#Add in slashes
+sed -i "s/SLASH/\//g" tmpList.txt
 
 #Output status mesasge
 echo "Generating variants for the following input set of bam files: "
