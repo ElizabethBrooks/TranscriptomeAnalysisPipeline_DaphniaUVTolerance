@@ -49,11 +49,11 @@ for f in "$inputsDir"/*/"$type".bam; do
 	echo "Processing file $f"
 	path=$(dirname $f)
 	#Calculate the read coverage of positions in the genome
-	bcftools mpileup --threads 8 -Ob -d 8000 -o "$path"/"$type"_raw.bcf -f "$genomeFile" "$f" 
-	echo bcftools mpileup --threads 8 -Ob -d 8000 -o "$path"/"$type"_raw.bcf -f "$genomeFile" "$f" >> "$inputOutFile"
+	bcftools mpileup --threads 8 -d 8000 -Q 20 -Ob -o "$path"/"$type"_raw.bcf -f "$genomeFile" "$f" 
+	echo bcftools mpileup --threads 8 -d 8000 -Q 20 -Ob -o "$path"/"$type"_raw.bcf -f "$genomeFile" "$f" >> "$inputOutFile"
 	#Detect the single nucleotide polymorphisms 
-	bcftools call --threads 8 -mv -Ob -o "$path"/"$type"_calls.vcf.gz "$path"/"$type"_raw.bcf 
-	echo bcftools call --threads 8 -mv -Ob -o "$path"/"$type"_calls.vcf.gz "$path"/"$type"_raw.bcf >> "$inputOutFile"
+	bcftools call --threads 8 -mv -Oz -o "$path"/"$type"_calls.vcf.gz "$path"/"$type"_raw.bcf 
+	echo bcftools call --threads 8 -mv -Oz -o "$path"/"$type"_calls.vcf.gz "$path"/"$type"_raw.bcf >> "$inputOutFile"
 	#Index vcf file
 	bcftools index --threads 8 "$path"/"$type"_calls.vcf.gz
 	echo bcftools index --threads 8 "$path"/"$type"_calls.vcf.gz >> "$inputOutFile"

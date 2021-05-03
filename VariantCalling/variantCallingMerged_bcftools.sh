@@ -65,11 +65,11 @@ echo "Generating variants for the following input set of bam files: "
 cat tmpList.txt
 
 #Calculate the read coverage of positions in the genome
-bcftools mpileup --threads 8 -Ob -d 8000 -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt
-echo bcftools mpileup --threads 8 -Ob -d 8000 -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt >> "$inputOutFile"
+bcftools mpileup --threads 8 -d 8000 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt
+echo bcftools mpileup --threads 8 -d 8000 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt >> "$inputOutFile"
 #Detect the single nucleotide polymorphisms 
-bcftools call --threads 8 -mv -Ob -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
-echo bcftools call --threads 8 -mv -Ob -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf >> "$inputOutFile"
+bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
+echo bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf >> "$inputOutFile"
 #Index vcf file
 bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz
 echo bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz >> "$inputOutFile"
