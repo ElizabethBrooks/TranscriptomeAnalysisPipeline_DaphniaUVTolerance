@@ -56,7 +56,8 @@ inDirTag="$inputsDir"/
 sed -i -e 's/^/$inDirTag/' tmpList.txt
 
 #Output status mesasge
-echo "Generating variants for input set of bam files..."
+echo "Generating variants for the following input set of bam files: "
+cat tmpList.txt
 
 #Calculate the read coverage of positions in the genome
 bcftools mpileup -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt
