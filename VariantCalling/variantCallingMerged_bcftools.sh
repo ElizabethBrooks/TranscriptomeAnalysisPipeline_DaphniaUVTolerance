@@ -50,10 +50,10 @@ inputOutFile="$outFolder"/variantCalling_summary.txt
 
 #Add file type to end of each sample path
 typeTag=/"$3".bam
-sed -e "s/$/$typeTag/" "$inputBamList" > tmpList.txt
+sed -e "s/$/$typeTag/g" "$inputBamList" > tmpList.txt
 #Add directory to beginning of each sample path
 inDirTag="$inputsDir"/
-sed -i -e "s/^/$inDirTag/" tmpList.txt
+sed -i -e "s/^/$inDirTag/g" tmpList.txt
 
 #Output status mesasge
 echo "Generating variants for the following input set of bam files: "
