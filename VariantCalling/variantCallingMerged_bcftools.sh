@@ -60,6 +60,9 @@ sed -i -e "s/^/$inDirTag/" tmpList.txt
 #Add in slashes
 sed -i "s/SLASH/\//g" tmpList.txt
 
+#Retrieve input bam file type
+type="$3"
+
 #Output status mesasge
 echo "Generating variants for the following input set of bam files: "
 cat tmpList.txt
