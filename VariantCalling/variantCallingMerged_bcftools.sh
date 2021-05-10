@@ -6,8 +6,8 @@
 #$ -N variantCallingMerged_jobOutput
 #Script to perform variant calling
 #Usage: qsub variantCallingMerged_bcftools.sh sortedNameFolder analysisTarget
-#Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
-#Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
+#Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ genotype
+#Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS genotype
 
 #Required modules for ND CRC servers
 module load bio
@@ -46,13 +46,22 @@ inputBamList=../InputData/bamList_Olympics_bcftools.txt
 #Make output folder
 outFolder="$inputsDir"/variantCalling_"$3"
 mkdir "$outFolder"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
+
 #Name output file of inputs
 inputOutFile="$outFolder"/variantCalling_summary.txt
 
+#Select lines associated with input genotype
+genotype=_"$4"_
+grep "$genotype" "$inputBamList" > tmpList_genotype.txt
 #Add file type to end of each sample path
 type=/"$3".bam
 typeTag=$(echo $type | sed "s/\//SLASH/g")
-sed -e "s/$/$typeTag/" "$inputBamList" > tmpList.txt
+sed -e "s/$/$typeTag/" tmpList_genotype.txt > tmpList.txt
 #Add directory to beginning of each sample path
 inDir="$inputsDir"/
 inDirTag=$(echo $inDir | sed "s/\//SLASH/g")
@@ -68,8 +77,8 @@ echo "Generating variants for the following input set of bam files: "
 cat tmpList.txt
 
 #Calculate the read coverage of positions in the genome
-bcftools mpileup --threads 8 -d 8000 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt
-echo bcftools mpileup --threads 8 -d 8000 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt >> "$inputOutFile"
+bcftools mpileup --threads 8 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt
+echo bcftools mpileup --threads 8 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt >> "$inputOutFile"
 #Detect the single nucleotide polymorphisms 
 bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
 echo bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf >> "$inputOutFile"
@@ -80,11 +89,11 @@ echo bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz >> "$inputOutF
 bcftools norm --threads 8 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.norm.bcf
 echo bcftools norm --threads 8 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.norm.bcf >> "$inputOutFile"
 #Filter adjacent indels within 5bp
-bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf
-echo bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf >> "$inputOutFile"
+#bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf
+#echo bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf >> "$inputOutFile"
 #Include sites where FILTER is true
 #bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf > "$outFolder"/"$type"_filtered.bcf
 #echo bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf ">" "$outFolder"/"$type"_filtered.bcf >> "$inputOutFile"
 
 #Clean up
-rm tmpList.txt
+rm tmpList*.txt
