@@ -5,9 +5,9 @@
 #$ -pe smp 8
 #$ -N variantCallingMerged_jobOutput
 #Script to perform variant calling
-#Usage: qsub variantCallingMerged_bcftools.sh sortedNameFolder analysisTarget
-#Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ genotype
-#Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS genotype
+#Usage: qsub variantCallingMerged_bcftools.sh sortedNameFolder analysisTarget filterType
+#Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
+#Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
 
 #Required modules for ND CRC servers
 module load bio
@@ -42,6 +42,8 @@ else
 fi
 #Set input bam list
 inputBamList=../InputData/bamList_Olympics_bcftools.txt
+#Set input sample names
+inputSampleList=../InputData/sampleList_Olympics_bcftools.txt
 
 #Make output folder
 outFolder="$inputsDir"/variantCalling_"$3"
@@ -56,12 +58,12 @@ fi
 inputOutFile="$outFolder"/variantCalling_summary.txt
 
 #Select lines associated with input genotype
-genotype=_"$4"_
-grep "$genotype" "$inputBamList" > tmpList_genotype.txt
+#genotype=_"$4"_
+#grep "$genotype" "$inputBamList" > tmpList_genotype.txt
 #Add file type to end of each sample path
 type=/"$3".bam
 typeTag=$(echo $type | sed "s/\//SLASH/g")
-sed -e "s/$/$typeTag/" tmpList_genotype.txt > tmpList.txt
+sed -e "s/$/$typeTag/" "$inputBamList" > tmpList.txt
 #Add directory to beginning of each sample path
 inDir="$inputsDir"/
 inDirTag=$(echo $inDir | sed "s/\//SLASH/g")
@@ -77,8 +79,8 @@ echo "Generating variants for the following input set of bam files: "
 cat tmpList.txt
 
 #Calculate the read coverage of positions in the genome
-bcftools mpileup --threads 8 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt
-echo bcftools mpileup --threads 8 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt >> "$inputOutFile"
+bcftools mpileup --threads 8 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -S "$inputSampleList"
+echo bcftools mpileup --threads 8 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -S "$inputSampleList" >> "$inputOutFile"
 #Detect the single nucleotide polymorphisms 
 bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
 echo bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf >> "$inputOutFile"
