@@ -48,5 +48,5 @@ inputOutFile="$outFolder"/consensus_summary.txt
 type="$3"
 
 #Generate consensus sequence
-cat "$genomeFile" | bcftools consensus "$outFolder"/"$type"_calls.norm.flt-indels.bcf > "$outFolder"/"$type"_consensus.fa
-echo cat "$genomeFile" | bcftools consensus "$outFolder"/"$type"_calls.norm.flt-indels.bcf ">" "$outFolder"/"$type"_consensus.fa > "$inputOutFile"
+cat "$genomeFile" | bcftools consensus "$outFolder"/"$type"_calls.norm.flt-qual.bcf > "$outFolder"/"$type"_consensus.fa
+echo cat "$genomeFile" | bcftools consensus "$outFolder"/"$type"_calls.norm.flt-qual.bcf ">" "$outFolder"/"$type"_consensus.fa > "$inputOutFile"

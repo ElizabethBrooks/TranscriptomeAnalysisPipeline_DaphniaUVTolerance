@@ -94,8 +94,8 @@ echo bcftools norm --threads 8 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.g
 #bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf
 #echo bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf >> "$inputOutFile"
 #Include sites where FILTER is true
-#bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf > "$outFolder"/"$type"_filtered.bcf
-#echo bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf ">" "$outFolder"/"$type"_filtered.bcf >> "$inputOutFile"
+bcftools filter --threads 8 -i '%QUAL>998' "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qual.bcf
+echo bcftools filter --threads 8 -i '%QUAL>998' "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qual.bcf >> "$inputOutFile"
 
 #Clean up
 rm tmpList*.txt
