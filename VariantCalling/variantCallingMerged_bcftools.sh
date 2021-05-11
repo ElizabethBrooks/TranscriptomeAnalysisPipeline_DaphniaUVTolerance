@@ -43,7 +43,7 @@ fi
 #Set input bam list
 inputBamList=../InputData/bamList_Olympics_bcftools.txt
 #Set input sample names
-inputSampleList=../InputData/sampleList_Olympics_bcftools.txt
+inputSampleList=../InputData/sampleList_Olympics_bcftools.tsv
 
 #Make output folder
 outFolder="$inputsDir"/variantCalling_"$3"
