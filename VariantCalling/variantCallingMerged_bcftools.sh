@@ -47,12 +47,12 @@ inputBamList=../InputData/bamList_Olympics_bcftools.txt
 
 #Make output folder
 outFolder="$inputsDir"/variantCalling_"$3"
-mkdir "$outFolder"
+#mkdir "$outFolder"
 #Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#if [ $? -ne 0 ]; then
+#	echo "The $outFolder directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 #Name output file of inputs
 inputOutFile="$outFolder"/variantCalling_summary.txt
@@ -87,18 +87,21 @@ cat tmpList.txt
 #Index vcf file
 #bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz
 #echo bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz >> "$inputOutFile"
-#Turn on left alignment and normalize indels
-#bcftools norm --threads 8 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.norm.bcf
-#echo bcftools norm --threads 8 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.norm.bcf >> "$inputOutFile"
+#Turn on left alignment, normalize indels, and collapse multi allelic sites
+bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf
+echo bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf >> "$inputOutFile"
 #Filter adjacent indels within 5bp
-#bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf
-#echo bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf >> "$inputOutFile"
+#bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.normCollapse.bcf -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf
+#echo bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.normCollapse.bcf -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf >> "$inputOutFile"
 #Include sites where FILTER is true
-bcftools filter --threads 8 -i '%QUAL>20 && INFO/DP>10' "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf
-echo bcftools filter --threads 8 -i '%QUAL>20 && INFO/DP>10' "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf >> "$inputOutFile"
-#Include sites where FILTER is true
+bcftools filter --threads 8 -i '%QUAL>20 && INFO/DP>10' "$outFolder"/"$type"_calls.normCollapse.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf
+echo bcftools filter --threads 8 -i '%QUAL>20 && INFO/DP>10' "$outFolder"/"$type"_calls.normCollapse.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf >> "$inputOutFile"
+#Include sites where FILTER is false
 bcftools filter --threads 8 -e 'GT="het"' "$outFolder"/"$type"_calls.flt-qualDP.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf
 echo bcftools filter --threads 8 "-e 'GT=\"het\"'" "$outFolder"/"$type"_calls.flt-qualDP.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf >> "$inputOutFile"
+#Include sites where FILTER is false
+bcftools filter --threads 8 -e 'GT="RR"' "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf
+echo bcftools filter --threads 8 "-e 'GT=\"RR\"'" "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf >> "$inputOutFile"
 
 #Clean up
 rm tmpList*.txt
