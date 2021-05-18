@@ -10,7 +10,7 @@
 #Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
 
 #Required modules for ND CRC servers
-module load bio
+#module load bio
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -79,23 +79,26 @@ echo "Generating variants for the following input set of bam files: "
 cat tmpList.txt
 
 #Calculate the read coverage of positions in the genome
-bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt
-echo bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt >> "$inputOutFile"
+#bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt
+#echo bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt >> "$inputOutFile"
 #Detect the single nucleotide polymorphisms 
-bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
-echo bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf >> "$inputOutFile"
+#bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
+#echo bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf >> "$inputOutFile"
 #Index vcf file
-bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz
-echo bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz >> "$inputOutFile"
+#bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz
+#echo bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz >> "$inputOutFile"
 #Turn on left alignment and normalize indels
-bcftools norm --threads 8 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.norm.bcf
-echo bcftools norm --threads 8 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.norm.bcf >> "$inputOutFile"
+#bcftools norm --threads 8 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.norm.bcf
+#echo bcftools norm --threads 8 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.norm.bcf >> "$inputOutFile"
 #Filter adjacent indels within 5bp
 #bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf
 #echo bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf >> "$inputOutFile"
 #Include sites where FILTER is true
-bcftools filter --threads 8 -i '%QUAL>998' "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qual.bcf
-echo bcftools filter --threads 8 -i '%QUAL>998' "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qual.bcf >> "$inputOutFile"
+bcftools filter --threads 8 -i '%QUAL>20 && INFO/DP>10' "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf
+echo bcftools filter --threads 8 -i '%QUAL>20 && INFO/DP>10' "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf >> "$inputOutFile"
+#Include sites where FILTER is true
+bcftools filter --threads 8 -e 'GT="het"' "$outFolder"/"$type"_calls.flt-qualDP.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf
+echo bcftools filter --threads 8 "-e 'GT=\"het\"'" "$outFolder"/"$type"_calls.flt-qualDP.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf >> "$inputOutFile"
 
 #Clean up
 rm tmpList*.txt
