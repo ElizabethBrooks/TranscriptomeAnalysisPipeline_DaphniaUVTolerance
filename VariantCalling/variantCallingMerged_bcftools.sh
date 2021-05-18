@@ -10,7 +10,7 @@
 #Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
 
 #Required modules for ND CRC servers
-#module load bio
+module load bio
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -47,12 +47,12 @@ inputBamList=../InputData/bamList_Olympics_bcftools.txt
 
 #Make output folder
 outFolder="$inputsDir"/variantCalling_"$3"
-#mkdir "$outFolder"
+mkdir "$outFolder"
 #Check if the folder already exists
-#if [ $? -ne 0 ]; then
-#	echo "The $outFolder directory already exsists... please remove before proceeding."
-#	exit 1
-#fi
+if [ $? -ne 0 ]; then
+	echo "The $outFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
 
 #Name output file of inputs
 inputOutFile="$outFolder"/variantCalling_summary.txt
@@ -79,18 +79,18 @@ echo "Generating variants for the following input set of bam files: "
 cat tmpList.txt
 
 #Calculate the read coverage of positions in the genome
-#bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt
-#echo bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt >> "$inputOutFile"
+bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt
+echo bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt >> "$inputOutFile"
 #Detect the single nucleotide polymorphisms 
-#bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
-#echo bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf >> "$inputOutFile"
+bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
+echo bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf >> "$inputOutFile"
 #Index vcf file
-#bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz
-#echo bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz >> "$inputOutFile"
+bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz
+echo bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz >> "$inputOutFile"
 
-#Filter adjacent indels within 5bp
-bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf
-echo bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf >> "$inputOutFile"
+#Filter adjacent SNPs and indels within 2bp
+bcftools filter --threads 8 -g 2 -G 2 "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf
+echo bcftools filter --threads 8 -g 2 -G 2 "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf >> "$inputOutFile"
 #Turn on left alignment, normalize indels, and collapse multi allelic sites
 bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-indels.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf
 echo bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-indels.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf >> "$inputOutFile"
