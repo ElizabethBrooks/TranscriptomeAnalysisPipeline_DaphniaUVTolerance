@@ -87,12 +87,14 @@ cat tmpList.txt
 #Index vcf file
 #bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz
 #echo bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz >> "$inputOutFile"
-#Turn on left alignment, normalize indels, and collapse multi allelic sites
-bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf
-echo bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf >> "$inputOutFile"
+
 #Filter adjacent indels within 5bp
-#bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.normCollapse.bcf -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf
-#echo bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.normCollapse.bcf -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf >> "$inputOutFile"
+bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf
+echo bcftools filter --threads 8 --IndelGap 5 "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf >> "$inputOutFile"
+#Turn on left alignment, normalize indels, and collapse multi allelic sites
+bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-indels.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf
+echo bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-indels.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf >> "$inputOutFile"
+
 #Include sites where FILTER is true
 bcftools filter --threads 8 -i '%QUAL>20 && INFO/DP>10' "$outFolder"/"$type"_calls.normCollapse.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf
 echo bcftools filter --threads 8 -i '%QUAL>20 && INFO/DP>10' "$outFolder"/"$type"_calls.normCollapse.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf >> "$inputOutFile"
