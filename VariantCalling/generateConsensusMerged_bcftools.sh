@@ -48,9 +48,9 @@ inputOutFile="$outFolder"/consensus_summary.txt
 type="$3"
 
 #Index bcf file
-bcftools index "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf
-echo bcftools index "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf > "$inputOutFile"
+bcftools index "$outFolder"/"$type"_calls.normCollapse.bcf
+echo bcftools index "$outFolder"/"$type"_calls.normCollapse.bcf > "$inputOutFile"
 
 #Generate consensus sequence
-cat "$genomeFile" | bcftools consensus "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf > "$outFolder"/"$type"_consensus.fa
-echo cat "$genomeFile" | bcftools consensus "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf ">" "$outFolder"/"$type"_consensus.fa >> "$inputOutFile"
+cat "$genomeFile" | bcftools consensus "$outFolder"/"$type"_calls.normCollapse.bcf > "$outFolder"/"$type"_consensus.fa
+echo cat "$genomeFile" | bcftools consensus "$outFolder"/"$type"_calls.normCollapse.bcf ">" "$outFolder"/"$type"_consensus.fa >> "$inputOutFile"

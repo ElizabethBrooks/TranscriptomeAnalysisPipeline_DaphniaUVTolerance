@@ -88,22 +88,26 @@ echo bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$ou
 bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz
 echo bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz >> "$inputOutFile"
 
-#Filter adjacent SNPs and indels within 2bp
-bcftools filter --threads 8 -g 2 -G 2 "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf
-echo bcftools filter --threads 8 -g 2 -G 2 "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf >> "$inputOutFile"
-#Turn on left alignment, normalize indels, and collapse multi allelic sites
-bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-indels.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf
-echo bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-indels.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf >> "$inputOutFile"
-
-#Include sites where FILTER is true
-bcftools filter --threads 8 -i '%QUAL>20 && INFO/DP>10' "$outFolder"/"$type"_calls.normCollapse.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf
-echo bcftools filter --threads 8 -i '%QUAL>20 && INFO/DP>10' "$outFolder"/"$type"_calls.normCollapse.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf >> "$inputOutFile"
-#Include sites where FILTER is false
+#Include sites with quality > 20 
+# and average read depth > 10
+bcftools filter --threads 8 -i '%QUAL>20 && INFO/DP>10' "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf
+echo bcftools filter --threads 8 -i '%QUAL>20 && INFO/DP>10' "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf >> "$inputOutFile"
+#Exclude hetoerozygous sites
 bcftools filter --threads 8 -e 'GT="het"' "$outFolder"/"$type"_calls.flt-qualDP.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf
 echo bcftools filter --threads 8 "-e 'GT=\"het\"'" "$outFolder"/"$type"_calls.flt-qualDP.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf >> "$inputOutFile"
-#Include sites where FILTER is false
+#Exclude sites homozygous for the reference
 bcftools filter --threads 8 -e 'GT="RR"' "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf
 echo bcftools filter --threads 8 "-e 'GT=\"RR\"'" "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf >> "$inputOutFile"
+#Filter adjacent indels within 2bp
+bcftools filter --threads 8 -G 2 "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf
+echo bcftools filter --threads 8 -G 2 "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf >> "$inputOutFile"
+#Filter adjacent SNPs within 2bp
+bcftools filter --threads 8 -g 2 "$outFolder"/"$type"_calls.flt-indels.bcf -Ob -o "$outFolder"/"$type"_calls.flt-SNPs.bcf
+echo bcftools filter --threads 8 -g 2 "$outFolder"/"$type"_calls.flt-indels.bcf -Ob -o "$outFolder"/"$type"_calls.flt-SNPs.bcf >> "$inputOutFile"
+
+#Turn on left alignment, normalize indels, and collapse multi allelic sites
+bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-SNPs.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf
+echo bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-SNPs.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf >> "$inputOutFile"
 
 #Clean up
 rm tmpList*.txt
