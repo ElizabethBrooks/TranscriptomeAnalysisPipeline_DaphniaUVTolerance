@@ -82,8 +82,8 @@ echo "Generating variants for the following input set of bam files: "
 cat tmpList.txt
 
 #Calculate the read coverage of positions in the genome
-bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -s "$inputSampleList"
-echo bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -s "$inputSampleList" >> "$inputOutFile"
+bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -S "$inputSampleList"
+echo bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -S "$inputSampleList" >> "$inputOutFile"
 
 #Detect the single nucleotide polymorphisms 
 bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
