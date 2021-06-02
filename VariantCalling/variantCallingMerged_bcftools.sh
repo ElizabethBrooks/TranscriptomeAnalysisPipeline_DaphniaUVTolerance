@@ -40,13 +40,14 @@ else
 	echo "ERROR: Invalid sorted folder of bam files entered... exiting"
 	exit 1
 fi
+
 #Set input bam list
 inputBamList=../InputData/bamList_Olympics_bcftools.txt
 #Set input sample names
-#inputSampleList=../InputData/sampleList_Olympics_bcftools.tsv
+inputSampleList=../InputData/sampleList_Olympics_bcftools.txt
 
 #Make output folder
-outFolder="$inputsDir"/variantCalling_"$3"
+outFolder="$inputsDir"/variantCallingSamples_"$3"
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -56,7 +57,6 @@ fi
 
 #Name output file of inputs
 inputOutFile="$outFolder"/variantCalling_summary.txt
-
 #Name output file of filtering info
 outputsFile="$outFolder"/variantCalling_filteredVariantNums.txt
 
@@ -82,8 +82,9 @@ echo "Generating variants for the following input set of bam files: "
 cat tmpList.txt
 
 #Calculate the read coverage of positions in the genome
-bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt
-echo bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt >> "$inputOutFile"
+bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -s "$inputSampleList"
+echo bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -s "$inputSampleList" >> "$inputOutFile"
+
 #Detect the single nucleotide polymorphisms 
 bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
 echo bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf >> "$inputOutFile"
@@ -134,7 +135,7 @@ bcftools filter --threads 8 -g 2 "$outFolder"/"$type"_calls.flt-indels.bcf | gre
 bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-SNPs.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf
 echo bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-SNPs.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf >> "$inputOutFile"
 echo "Turn on left alignment, normalize indels, and collapse multi allelic sites: " >> "$outputsFile"
-bcftools filter -i '%QUAL<1001' "$outFolder"/"$type"_calls.flt-SNPs.bcf | grep "^scaffold" | wc -l >> "$outputsFile"
+bcftools filter -i '%QUAL<1001' "$outFolder"/"$type"_calls.normCollapse.bcf | grep "^scaffold" | wc -l >> "$outputsFile"
 
 #Clean up
 rm tmpList*.txt
