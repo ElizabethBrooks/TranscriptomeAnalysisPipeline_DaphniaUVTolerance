@@ -77,30 +77,34 @@ echo "Generating variants for the following input set of bam files: " > "$inputO
 cat tmpList.txt >> "$inputOutFile"
 
 while read -r line; do
+	#Clean up sample tag
+	tag=$(dirname $line)
+	tag=$(basename $tag)
+
 	#Output status message
 	echo "Processing sample: "
 	echo "$line"
 
 	#Mark duplicates and sort
-	picard MarkDuplicates I="$line" O="$outFolder"/"$type"_mDups.bam M="$outFolder"/"$type"_marked_dup_metrics.txt
-	echo picard MarkDuplicates I="$line" O="$outFolder"/"$type"_mDups.bam M="$outFolder"/"$type"_marked_dup_metrics.txt >> "$inputOutFile"
+	picard MarkDuplicates I="$line" O="$outFolder"/"$tag"_mDups.bam M="$outFolder"/"$tag"_marked_dup_metrics.txt
+	echo picard MarkDuplicates I="$line" O="$outFolder"/"$tag"_mDups.bam M="$outFolder"/"$tag"_marked_dup_metrics.txt >> "$inputOutFile"
 
 	#Split reads with N in cigar
-	gatk SplitNCigarReads -R "$genomeFile" -I "$outFolder"/"$type"_mDups.bam -O "$outFolder"/"$type"_split.bam
-	echo gatk SplitNCigarReads -R "$genomeFile" -I "$outFolder"/"$type"_mDups.bam -O "$outFolder"/"$type"_split.bam >> "$inputOutFile"
+	gatk SplitNCigarReads -R "$genomeFile" -I "$outFolder"/"$tag"_mDups.bam -O "$outFolder"/"$tag"_split.bam
+	echo gatk SplitNCigarReads -R "$genomeFile" -I "$outFolder"/"$tag"_mDups.bam -O "$outFolder"/"$tag"_split.bam >> "$inputOutFile"
 
 	#Generate recalibration table for Base Quality Score Recalibration (BQSR)
-	#gatk BaseRecalibrator -I "$outFolder"/"$type"_split.bam -R "$genomeFile" --known-sites sites_of_variation.vcf -O "$outFolder"/"$type"_recal_data.table
+	#gatk BaseRecalibrator -I "$outFolder"/"$tag"_split.bam -R "$genomeFile" --known-sites sites_of_variation.vcf -O "$outFolder"/"$tag"_recal_data.table
 
 	#Apply base quality score recalibration
-	#gatk ApplyBQSR -R "$genomeFile" -I "$outFolder"/"$type"_split.bam --bqsr-recal-file "$outFolder"/"$type"_recal_data.table -O "$outFolder"/"$type"_recal.bam
+	#gatk ApplyBQSR -R "$genomeFile" -I "$outFolder"/"$tag"_split.bam --bqsr-recal-file "$outFolder"/"$tag"_recal_data.table -O "$outFolder"/"$tag"_recal.bam
 
 	#Evaluate and compare base quality score recalibration (BQSR) tables
-	#gatk AnalyzeCovariates -bqsr "$outFolder"/"$type"_recal_data.table -plots "$outFolder"/"$type"_AnalyzeCovariates.pdf
+	#gatk AnalyzeCovariates -bqsr "$outFolder"/"$tag"_recal_data.table -plots "$outFolder"/"$tag"_AnalyzeCovariates.pdf
 
 	#Call germline SNPs and indels via local re-assembly of haplotypes
-	gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$outFolder"/"$type"_split.bam -O "$outFolder"/"$type"_hap.g.vcf.gz -ERC GVCF
-	echo gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$outFolder"/"$type"_split.bam -O "$outFolder"/"$type"_hap.g.vcf.gz -ERC GVCF >> "$inputOutFile"
+	gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$outFolder"/"$tag"_split.bam -O "$outFolder"/"$tag"_hap.g.vcf.gz -ERC GVCF
+	echo gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$outFolder"/"$tag"_split.bam -O "$outFolder"/"$tag"_hap.g.vcf.gz -ERC GVCF >> "$inputOutFile"
 done < tmpList.txt
 
 #Clean up
