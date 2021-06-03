@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -pe smp 8
+#$ -pe smp 4
 #$ -N variantCallingMerged_jobOutput
 #Script to perform variant calling
 #Usage: qsub variantCallingMerged_bcftools.sh sortedNameFolder analysisTarget filterType
@@ -47,7 +47,7 @@ inputBamList=../InputData/bamList_Olympics_bcftools.txt
 inputSampleList=../InputData/sampleList_Olympics_bcftools.txt
 
 #Make output folder
-outFolder="$inputsDir"/variantCallingSamplesBcftools_"$3"
+outFolder="$inputsDir"/variantCallingBcftools_"$3"
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -80,16 +80,16 @@ echo "Generating variants for the following input set of bam files: " > "$inputO
 cat tmpList.txt >> "$inputOutFile"
 
 #Calculate the read coverage of positions in the genome
-bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -S "$inputSampleList"
-echo bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -S "$inputSampleList" >> "$inputOutFile"
+bcftools mpileup --threads 4 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -S "$inputSampleList"
+echo bcftools mpileup --threads 4 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -S "$inputSampleList" >> "$inputOutFile"
 
 #Detect the single nucleotide polymorphisms 
-bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
-echo bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf >> "$inputOutFile"
+bcftools call --threads 4 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
+echo bcftools call --threads 4 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf >> "$inputOutFile"
 
 #Index vcf file
-bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz
-echo bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz >> "$inputOutFile"
+bcftools index --threads 4 "$outFolder"/"$type"_calls.vcf.gz
+echo bcftools index --threads 4 "$outFolder"/"$type"_calls.vcf.gz >> "$inputOutFile"
 
 #Clean up
 rm tmpList*.txt

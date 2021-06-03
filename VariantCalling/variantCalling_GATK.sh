@@ -2,7 +2,6 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -pe smp 8
 #$ -N variantCallingGATK_jobOutput
 #Script to perform variant calling
 #Usage: qsub variantCallingMerged_bcftools.sh sortedNameFolder analysisTarget filterType
@@ -81,7 +80,7 @@ while read -r line; do
 	#Output status message
 	echo "Processing sample: "
 	echo "$line"
-	
+
 	#Mark duplicates and sort
 	java -jar picard.jar MarkDuplicates I="$line" O="$outFolder"/"$type"_mDups.bam M="$outFolder"/"$type"_marked_dup_metrics.txt
 	echo java -jar picard.jar MarkDuplicates I="$line" O="$outFolder"/"$type"_mDups.bam M="$outFolder"/"$type"_marked_dup_metrics.txt >> "$inputOutFile"
