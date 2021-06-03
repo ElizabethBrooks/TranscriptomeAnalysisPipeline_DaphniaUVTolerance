@@ -3,11 +3,11 @@
 #$ -m abe
 #$ -r n
 #$ -pe smp 8
-#$ -N variantCallingMerged_jobOutput
+#$ -N variantCallingGATK_jobOutput
 #Script to perform variant calling
 #Usage: qsub variantCallingMerged_bcftools.sh sortedNameFolder analysisTarget filterType
-#Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
-#Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
+#Usage Ex: qsub variantCallingGATK_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
+#Usage Ex: qsub variantCallingGATK_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
 
 #Required modules for ND CRC servers
 module load bio
@@ -43,11 +43,9 @@ fi
 
 #Set input bam list
 inputBamList=../InputData/bamList_Olympics_bcftools.txt
-#Set input sample names
-inputSampleList=../InputData/sampleList_Olympics_bcftools.txt
 
 #Make output folder
-outFolder="$inputsDir"/variantCallingSamplesBcftools_"$3"
+outFolder="$inputsDir"/variantCallingGATK_"$3"
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -79,17 +77,42 @@ type="$3"
 echo "Generating variants for the following input set of bam files: " > "$inputOutFile"
 cat tmpList.txt >> "$inputOutFile"
 
-#Calculate the read coverage of positions in the genome
-bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -S "$inputSampleList"
-echo bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt -S "$inputSampleList" >> "$inputOutFile"
+while read -r line; do
+	#Output status message
+	echo "Processing sample: "
+	echo "$line"
+	
+	#Mark duplicates and sort
+	java -jar picard.jar MarkDuplicates I="$line" O="$outFolder"/"$type"_mDups.bam M="$outFolder"/"$type"_marked_dup_metrics.txt
+	echo java -jar picard.jar MarkDuplicates I="$line" O="$outFolder"/"$type"_mDups.bam M="$outFolder"/"$type"_marked_dup_metrics.txt >> "$inputOutFile"
 
-#Detect the single nucleotide polymorphisms 
-bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf 
-echo bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf >> "$inputOutFile"
+	#Split reads with N in cigar
+	gatk SplitNCigarReads -R "$genomeFile" -I "$outFolder"/"$type"_mDups.bam -O "$outFolder"/"$type"_split.bam
+	echo gatk SplitNCigarReads -R "$genomeFile" -I "$outFolder"/"$type"_mDups.bam -O "$outFolder"/"$type"_split.bam >> "$inputOutFile"
 
-#Index vcf file
-bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz
-echo bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz >> "$inputOutFile"
+	#Generate recalibration table for Base Quality Score Recalibration (BQSR)
+	#gatk BaseRecalibrator \
+	#	-I "$outFolder"/"$type"_split.bam \
+	#	-R "$genomeFile" \
+	#	--known-sites sites_of_variation.vcf \
+	#	-O "$outFolder"/"$type"_recal_data.table
+
+	#Apply base quality score recalibration
+	#gatk ApplyBQSR \
+	#	-R "$genomeFile" \
+	#	-I "$outFolder"/"$type"_split.bam \
+	#	--bqsr-recal-file "$outFolder"/"$type"_recal_data.table \
+	#	-O "$outFolder"/"$type"_recal.bam
+
+	#Evaluate and compare base quality score recalibration (BQSR) tables
+	#gatk AnalyzeCovariates \
+	#    -bqsr "$outFolder"/"$type"_recal_data.table \
+	#    -plots "$outFolder"/"$type"_AnalyzeCovariates.pdf
+
+	#Call germline SNPs and indels via local re-assembly of haplotypes
+	gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$outFolder"/"$type"_split.bam -O "$outFolder"/"$type"_hap.g.vcf.gz -ERC GVCF
+	echo gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$outFolder"/"$type"_split.bam -O "$outFolder"/"$type"_hap.g.vcf.gz -ERC GVCF >> "$inputOutFile"
+done < tmpList.txt
 
 #Clean up
-rm tmpList*.txt
+rm tmpList.txt
