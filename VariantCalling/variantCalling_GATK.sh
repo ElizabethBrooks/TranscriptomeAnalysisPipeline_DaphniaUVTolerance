@@ -41,7 +41,7 @@ else
 fi
 
 #Set input bam list
-inputBamList=../InputData/bamList_Olympics_bcftools.txt
+inputBamList=../InputData/fileList_Olympics.txt
 
 #Make output folder
 outFolder="$inputsDir"/variantCallingGATK_"$3"
