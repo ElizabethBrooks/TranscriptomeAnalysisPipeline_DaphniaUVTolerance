@@ -40,12 +40,11 @@ else
 	exit 1
 fi
 
-#Set input file list
-inputsDir="$inputsDir"/variantCallingGATK_"$3"
+#Set input bam list
 inputBamList=../InputData/fileList_Olympics.txt
 
 #Make output folder
-outFolder="$inputsDir"/variantsCalled
+outFolder="$inputsDir"/variantCallingGATK_"$3"
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -56,6 +55,27 @@ fi
 #Name output file of inputs
 inputOutFile="$outFolder"/variantCalling_summary.txt
 
+#Create first outputs directory
+inputsDir="$inputsDir"/variantCallingGATK_"$3"
+mkdir "$inputsDir"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $inputsDir directory already exsists... please remove before proceeding."
+	exit 1
+fi
+
+#Make second output folder
+outFolder="$inputsDir"/variantsPreped
+mkdir "$outFolder"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
+
+#Name output file of inputs
+inputOutFile="$outFolder"/variantPrep_summary.txt
+
 #Select lines associated with input genotype
 #genotype=_"$4"_
 #grep "$genotype" "$inputBamList" > tmpList_genotype.txt
@@ -64,7 +84,7 @@ type=/"$3".bam
 typeTag=$(echo $type | sed "s/\//SLASH/g")
 sed -e "s/$/$typeTag/" "$inputBamList" > tmpList.txt
 #Add directory to beginning of each sample path
-inDir="$inputsDir"/variantsPreped/
+inDir="$inputsDir"/
 inDirTag=$(echo $inDir | sed "s/\//SLASH/g")
 sed -i -e "s/^/$inDirTag/" tmpList.txt
 #Add in slashes
@@ -86,9 +106,26 @@ while read -r line; do
 	echo "Processing sample: "
 	echo "$tag"
 
-	#Call germline SNPs and indels via local re-assembly of haplotypes
-	gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$outFolder"/"$tag"_RG.bam -O "$outFolder"/"$tag"_hap.g.vcf.gz -ERC GVCF
-	echo gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$outFolder"/"$tag"_RG.bam -O "$outFolder"/"$tag"_hap.g.vcf.gz -ERC GVCF >> "$inputOutFile"
+	#Mark duplicates and sort
+	picard MarkDuplicates I="$line" O="$outFolder"/"$tag"_mDups.bam M="$outFolder"/"$tag"_marked_dup_metrics.txt
+	echo picard MarkDuplicates I="$line" O="$outFolder"/"$tag"_mDups.bam M="$outFolder"/"$tag"_marked_dup_metrics.txt >> "$inputOutFile"
+
+	#Split reads with N in cigar
+	gatk SplitNCigarReads -R "$genomeFile" -I "$outFolder"/"$tag"_mDups.bam -O "$outFolder"/"$tag"_split.bam
+	echo gatk SplitNCigarReads -R "$genomeFile" -I "$outFolder"/"$tag"_mDups.bam -O "$outFolder"/"$tag"_split.bam >> "$inputOutFile"
+
+	#Generate recalibration table for Base Quality Score Recalibration (BQSR)
+	#gatk BaseRecalibrator -I "$outFolder"/"$tag"_split.bam -R "$genomeFile" --known-sites sites_of_variation.vcf -O "$outFolder"/"$tag"_recal_data.table
+
+	#Apply base quality score recalibration
+	#gatk ApplyBQSR -R "$genomeFile" -I "$outFolder"/"$tag"_split.bam --bqsr-recal-file "$outFolder"/"$tag"_recal_data.table -O "$outFolder"/"$tag"_recal.bam
+
+	#Evaluate and compare base quality score recalibration (BQSR) tables
+	#gatk AnalyzeCovariates -bqsr "$outFolder"/"$tag"_recal_data.table -plots "$outFolder"/"$tag"_AnalyzeCovariates.pdf
+
+	#Add read group info
+	java -jar picard.jar AddOrReplaceReadGroups I="$tag"_split.bam O="$tag"_RG.bam RGID=1 RGLB=lib1 RGPL=illumina RGPU=unit1 RGSM="$tag"
+	echo java -jar picard.jar AddOrReplaceReadGroups I="$tag"_split.bam O="$tag"_RG.bam RGID=1 RGLB=lib1 RGPL=illumina RGPU=unit1 RGSM="$tag" >> "$inputOutFile"
 done < tmpList.txt
 
 #Clean up

@@ -3,8 +3,8 @@
 #$ -m abe
 #$ -r n
 #$ -pe smp 4
-#$ -N variantCallingGATK_jobOutput
-#Script to perform variant calling
+#$ -N variantComboGATK_jobOutput
+#Script to combine variants across samples
 #Usage: qsub variantCombo_GATK.sh sortedNameFolder analysisTarget filterType numScaffolds
 #Usage Ex: qsub variantCombo_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ 496
 #Usage Ex: qsub variantCombo_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS 496
@@ -41,12 +41,13 @@ else
 	exit 1
 fi
 
-#Set input bam list
+#Set input file and sample lists
+inputsDir="$inputsDir"/variantCallingGATK_"$3"
 inputFileList=../InputData/fileList_Olympics.txt
 inputSampleList=../InputData/sampleList_Olympics.txt
 
 #Make output folder
-outFolder="$inputsDir"/variantCallingGATK_"$3"
+outFolder="$inputsDir"/variantsCombo
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -64,7 +65,7 @@ inputOutFile="$outFolder"/variantCombo_summary.txt
 typeTag=_hap.g.vcf.gz
 sed -e "s/$/$typeTag/" "$inputFileList" > tmpList.txt
 #Add directory to beginning of each sample path
-inDir="$outFolder"/
+inDir="$inputsDir"/variantsCalled/
 inDirTag=$(echo $inDir | sed "s/\//SLASH/g")
 sed -i -e "s/^/$inDirTag/" tmpList.txt
 #Add in slashes
