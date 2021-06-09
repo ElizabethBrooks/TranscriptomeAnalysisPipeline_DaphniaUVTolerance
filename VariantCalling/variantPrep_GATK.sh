@@ -115,8 +115,8 @@ while read -r line; do
 	#gatk AnalyzeCovariates -bqsr "$outFolder"/"$tag"_recal_data.table -plots "$outFolder"/"$tag"_AnalyzeCovariates.pdf
 
 	#Add read group info
-	java -jar picard.jar AddOrReplaceReadGroups I="$tag"_split.bam O="$tag"_RG.bam RGID=1 RGLB=lib1 RGPL=illumina RGPU=unit1 RGSM="$tag"
-	echo java -jar picard.jar AddOrReplaceReadGroups I="$tag"_split.bam O="$tag"_RG.bam RGID=1 RGLB=lib1 RGPL=illumina RGPU=unit1 RGSM="$tag" >> "$inputOutFile"
+	picard AddOrReplaceReadGroups I="$tag"_split.bam O="$tag"_RG.bam RGID=1 RGLB=lib1 RGPL=illumina RGPU=unit1 RGSM="$tag"
+	echo picard AddOrReplaceReadGroups I="$tag"_split.bam O="$tag"_RG.bam RGID=1 RGLB=lib1 RGPL=illumina RGPU=unit1 RGSM="$tag" >> "$inputOutFile"
 done < tmpList.txt
 
 #Clean up
