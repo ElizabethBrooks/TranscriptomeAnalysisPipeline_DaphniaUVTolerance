@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N variantPrepGATK_jobOutput
-#Script to perform variant calling
+#Script to perform variant prep
 #Usage: qsub variantPrep_GATK.sh sortedNameFolder analysisTarget filterType
 #Usage Ex: qsub variantPrep_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
 #Usage Ex: qsub variantPrep_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
