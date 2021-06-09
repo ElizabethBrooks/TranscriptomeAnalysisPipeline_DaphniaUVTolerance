@@ -43,15 +43,6 @@ fi
 #Set input bam list
 inputBamList=../InputData/fileList_Olympics.txt
 
-#Make output folder
-outFolder="$inputsDir"/variantCallingGATK_"$3"
-mkdir "$outFolder"
-#Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
-
 #Name output file of inputs
 inputOutFile="$outFolder"/variantCalling_summary.txt
 
