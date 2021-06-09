@@ -47,16 +47,16 @@ inputBamList=../InputData/fileList_Olympics.txt
 inputOutFile="$outFolder"/variantCalling_summary.txt
 
 #Create first outputs directory
-inputsDir="$inputsDir"/variantCallingGATK_"$3"
-mkdir "$inputsDir"
+outFolder="$inputsDir"/variantCallingGATK_"$3"
+mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
-	echo "The $inputsDir directory already exsists... please remove before proceeding."
+	echo "The $outFolder directory already exsists... please remove before proceeding."
 	exit 1
 fi
 
 #Make second output folder
-outFolder="$inputsDir"/variantsPreped
+outFolder="$outFolder"/variantsPreped
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then

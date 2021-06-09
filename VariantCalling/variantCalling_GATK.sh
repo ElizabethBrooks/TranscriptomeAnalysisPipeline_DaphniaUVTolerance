@@ -59,10 +59,7 @@ inputOutFile="$outFolder"/variantCalling_summary.txt
 #Select lines associated with input genotype
 #genotype=_"$4"_
 #grep "$genotype" "$inputBamList" > tmpList_genotype.txt
-#Add file type to end of each sample path
-type=/"$3".bam
-typeTag=$(echo $type | sed "s/\//SLASH/g")
-sed -e "s/$/$typeTag/" "$inputBamList" > tmpList.txt
+
 #Add directory to beginning of each sample path
 inDir="$inputsDir"/variantsPreped/
 inDirTag=$(echo $inDir | sed "s/\//SLASH/g")
@@ -78,13 +75,9 @@ echo "Generating variants for the following input set of bam files: " > "$inputO
 cat tmpList.txt >> "$inputOutFile"
 
 while read -r line; do
-	#Clean up sample tag
-	tag=$(dirname $line)
-	tag=$(basename $tag)
-
 	#Output status message
 	echo "Processing sample: "
-	echo "$tag"
+	echo "$line"
 
 	#Call germline SNPs and indels via local re-assembly of haplotypes
 	gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$outFolder"/"$tag"_RG.bam -O "$outFolder"/"$tag"_hap.g.vcf.gz -ERC GVCF
