@@ -2,11 +2,11 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N variantCallingGATK_jobOutput
+#$ -N variantPrepGATK_jobOutput
 #Script to perform variant calling
-#Usage: qsub variantCalling_GATK.sh sortedNameFolder analysisTarget filterType
-#Usage Ex: qsub variantCalling_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
-#Usage Ex: qsub variantCalling_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
+#Usage: qsub variantPrep_GATK.sh sortedNameFolder analysisTarget filterType
+#Usage Ex: qsub variantPrep_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
+#Usage Ex: qsub variantPrep_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
 
 #Required modules for ND CRC servers
 module load bio
