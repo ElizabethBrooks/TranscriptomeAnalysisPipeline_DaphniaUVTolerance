@@ -42,7 +42,7 @@ else
 fi
 
 #Set input bam list
-inputBamList=../InputData/bamList_Olympics_bcftools.txt
+inputBamList=../InputData/fileList_Olympics.txt
 #Set input sample names
 #inputSampleList=../InputData/sampleList_Olympics_bcftools.txt
 

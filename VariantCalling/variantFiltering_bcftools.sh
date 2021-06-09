@@ -42,7 +42,7 @@ else
 fi
 
 #Set input bam list
-inputBamList=../InputData/bamList_Olympics_bcftools.txt
+inputBamList=../InputData/bamList_Olympics.txt
 
 #Make output folder
 outFolder="$inputsDir"/"$3"

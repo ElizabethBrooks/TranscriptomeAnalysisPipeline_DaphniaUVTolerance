@@ -83,7 +83,7 @@ while read -r line; do
 
 	#Output status message
 	echo "Processing sample: "
-	echo "$line"
+	echo "$tag"
 
 	#Mark duplicates and sort
 	picard MarkDuplicates I="$line" O="$outFolder"/"$tag"_mDups.bam M="$outFolder"/"$tag"_marked_dup_metrics.txt

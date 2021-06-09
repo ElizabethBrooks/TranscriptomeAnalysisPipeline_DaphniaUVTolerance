@@ -5,9 +5,9 @@
 #$ -pe smp 4
 #$ -N variantCallingGATK_jobOutput
 #Script to perform variant calling
-#Usage: qsub variantCombo_GATK.sh sortedNameFolder analysisTarget filterType
-#Usage Ex: qsub variantCombo_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
-#Usage Ex: qsub variantCombo_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
+#Usage: qsub variantCombo_GATK.sh sortedNameFolder analysisTarget filterType numScaffolds
+#Usage Ex: qsub variantCombo_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ 496
+#Usage Ex: qsub variantCombo_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS 496
 
 #Required modules for ND CRC servers
 module load bio
@@ -42,8 +42,8 @@ else
 fi
 
 #Set input bam list
-inputBamList=../InputData/bamList_Olympics_bcftools.txt
-inputSampleList=../InputData/sampleList_Olympics_bcftools.txt
+inputFileList=../InputData/fileList_Olympics.txt
+inputSampleList=../InputData/sampleList_Olympics.txt
 
 #Make output folder
 outFolder="$inputsDir"/variantCallingGATK_"$3"
@@ -59,28 +59,30 @@ inputOutFile="$outFolder"/variantCombo_summary.txt
 
 #Select lines associated with input genotype
 #genotype=_"$4"_
-#grep "$genotype" "$inputBamList" > tmpList_genotype.txt
+#grep "$genotype" "$inputFileList" > tmpList_genotype.txt
 #Add file type to end of each sample path
-type=/"$3".bam
-typeTag=$(echo $type | sed "s/\//SLASH/g")
-sed -e "s/$/$typeTag/" "$inputBamList" > tmpList1.txt
+typeTag=_hap.g.vcf.gz
+sed -e "s/$/$typeTag/" "$inputFileList" > tmpList.txt
 #Add directory to beginning of each sample path
-inDir="$inputsDir"/
+inDir="$outFolder"/
 inDirTag=$(echo $inDir | sed "s/\//SLASH/g")
-sed -i -e "s/^/$inDirTag/" tmpList1.txt
+sed -i -e "s/^/$inDirTag/" tmpList.txt
 #Add in slashes
-sed -i "s/SLASH/\//g" tmpList1.txt
+sed -i "s/SLASH/\//g" tmpList.txt
 
 #Add sample names to each path line
-cut -f1 "$inputSampleList" > tmpList2.txt
-paste -d tmpList1.txt tmpList2.txt > tmpList_full.txt
+paste -d "$inputSampleList" tmpList.txt > tmpList_full.txt
 
 #Output status mesasge
-echo "Generating variants for the following input set of bam files: " > "$inputOutFile"
+echo "Combining variants for the following input set of gvcf files: " > "$inputOutFile"
 cat tmpList_full.txt >> "$inputOutFile"
 
-gatk --java-options "-Xmx4g -Xms4g" GenomicsDBImport --genomicsdb-workspace-path "$outFolder" -L scaffold_1-scaffold_496 --sample-name-map tmpList_full.txt --tmp-dir "$scratchPath" --reader-threads 4
-echo gatk --java-options "-Xmx4g -Xms4g" GenomicsDBImport --genomicsdb-workspace-path "$outFolder" -L scaffold_1-scaffold_496 --sample-name-map tmpList_full.txt --tmp-dir "$scratchPath" --reader-threads 4 >> "$inputOutFile"
+#Combine gvcf files from multiple samples over the specified interval
+for i in {1..496}; do
+	echo "Combining variants for the following scaffold: $i"
+	gatk --java-options "-Xmx4g -Xms4g" GenomicsDBImport --genomicsdb-workspace-path "$outFolder" -L scaffold_"$i" --sample-name-map tmpList_full.txt --tmp-dir "$scratchPath" --reader-threads 4
+	echo gatk --java-options "-Xmx4g -Xms4g" GenomicsDBImport --genomicsdb-workspace-path "$outFolder" -L scaffold_"$i" --sample-name-map tmpList_full.txt --tmp-dir "$scratchPath" --reader-threads 4 >> "$inputOutFile"
+done
 
 #Clean up
 rm tmpList*.txt
