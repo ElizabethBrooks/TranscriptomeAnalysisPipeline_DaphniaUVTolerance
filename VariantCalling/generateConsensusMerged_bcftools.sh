@@ -41,6 +41,7 @@ fi
 
 #Make output folder
 outFolder="$inputsDir"/variantCallingBcftools_"$3"
+inputsDir="$inputsDir"/variantCallingBcftools_"$3"/variantsFiltered
 #Name output file of inputs
 inputOutFile="$outFolder"/consensus_summary.txt
 
@@ -48,9 +49,9 @@ inputOutFile="$outFolder"/consensus_summary.txt
 type="$3"
 
 #Index bcf file
-bcftools index "$outFolder"/"$type"_calls.normCollapse.bcf
-echo bcftools index "$outFolder"/"$type"_calls.normCollapse.bcf > "$inputOutFile"
+bcftools index "$inputsDir"/"$type"_calls.normCollapse.bcf
+echo bcftools index "$inputsDir"/"$type"_calls.normCollapse.bcf > "$inputOutFile"
 
 #Generate consensus sequence
-cat "$genomeFile" | bcftools consensus "$outFolder"/"$type"_calls.normCollapse.bcf > "$outFolder"/"$type"_consensus.fa
-echo cat "$genomeFile" | bcftools consensus "$outFolder"/"$type"_calls.normCollapse.bcf ">" "$outFolder"/"$type"_consensus.fa >> "$inputOutFile"
+cat "$genomeFile" | bcftools consensus "$inputsDir"/"$type"_calls.normCollapse.bcf > "$outFolder"/"$type"_consensus.fa
+echo cat "$genomeFile" | bcftools consensus "$inputsDir"/"$type"_calls.normCollapse.bcf ">" "$outFolder"/"$type"_consensus.fa >> "$inputOutFile"
