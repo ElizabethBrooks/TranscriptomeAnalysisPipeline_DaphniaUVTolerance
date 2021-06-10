@@ -1,12 +1,9 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N generateTranscriptsCufflinks_jobOutput
 #Script to generate a multi FASTA file for all transcripts in a GFF file
-#Usage: qsub generateTranscripts_cufflinks.sh sortedNameFolder analysisTarget
-#Usage Ex: qsub generateTranscripts_cufflinks.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
-#Usage Ex: qsub generateTranscripts_cufflinks.sh genomeReference
+#Usage: bash generateTranscripts_cufflinks.sh sortedNameFolder analysisTarget
+#Usage Ex: bash generateTranscripts_cufflinks.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
+#Usage Ex: bash generateTranscripts_cufflinks.sh sortedCoordinate_samtoolsHisat2_run3 variantCalling_filteredMapQ
+#Usage Ex: bash generateTranscripts_cufflinks.sh genomeReference
 
 #Required modules for ND CRC servers
 module load bio
@@ -29,6 +26,8 @@ if [[ "$1" == sorted* ]]; then
 elif [[ "$1" == genomeReference ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+	#Update gff file coordinates
+	../util/python gtf_fixer_to_gffread.py "$genomeFeatFile" "$inputsPath"
 else
 	echo "ERROR: Invalid sorted folder of bam files entered... exiting"
 	exit 1
@@ -39,7 +38,7 @@ outputsPath=$(dirname "$inputsPath")
 inputOutFile="$outputsPath"/generateTranscipts_summary.txt
 
 #Generate a fasta index file using samtools
-#samtools faidx "$genomeFile"
+samtools faidx "$inputsPath"
 
 #Generate a FASTA file with the DNA sequences for all transcripts in the GFF file
 gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" 
