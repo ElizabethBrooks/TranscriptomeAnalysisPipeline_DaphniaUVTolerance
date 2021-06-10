@@ -41,10 +41,10 @@ outputsPath=$(grep "scratch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/
 outputsDir="$outputsPath"/"$1"_"$2"
 mkdir "$outputsDir"
 #Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outputsDir directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#if [ $? -ne 0 ]; then
+#	echo "The $outputsDir directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 #Set input bam list
 inputBamList=../InputData/fileList_Olympics.txt
@@ -54,21 +54,21 @@ inputOutFile="$outFolder"/variantCalling_summary.txt
 
 #Create first outputs directory
 outFolder="$outputsDir"/variantCallingGATK_"$3"
-mkdir "$outFolder"
+#mkdir "$outFolder"
 #Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#if [ $? -ne 0 ]; then
+#	echo "The $outFolder directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 #Make second output folder
 outFolder="$outFolder"/variantsPreped
-mkdir "$outFolder"
+#mkdir "$outFolder"
 #Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#if [ $? -ne 0 ]; then
+#	echo "The $outFolder directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 #Name output file of inputs
 inputOutFile="$outFolder"/variantPrep_summary.txt
