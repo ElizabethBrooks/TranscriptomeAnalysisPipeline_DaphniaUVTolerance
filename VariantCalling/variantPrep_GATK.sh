@@ -72,6 +72,7 @@ fi
 
 #Name output file of inputs
 inputOutFile="$outFolder"/variantPrep_summary.txt
+inputsFile="$outFolder"/variantFiles_summary.txt
 
 #Select lines associated with input genotype
 #genotype=_"$4"_
@@ -79,20 +80,20 @@ inputOutFile="$outFolder"/variantPrep_summary.txt
 #Add file type to end of each sample path
 type=/"$3".bam
 typeTag=$(echo $type | sed "s/\//SLASH/g")
-sed -e "s/$/$typeTag/" "$inputBamList" > tmpList.txt
+sed -e "s/$/$typeTag/" "$inputBamList" > "$inputsFile"
 #Add directory to beginning of each sample path
 inDir="$inputsDir"/
 inDirTag=$(echo $inDir | sed "s/\//SLASH/g")
-sed -i -e "s/^/$inDirTag/" tmpList.txt
+sed -i -e "s/^/$inDirTag/" "$inputsFile"
 #Add in slashes
-sed -i "s/SLASH/\//g" tmpList.txt
+sed -i "s/SLASH/\//g" "$inputsFile"
 
 #Retrieve input bam file type
 type="$3"
 
 #Output status mesasge
 echo "Generating variants for the following input set of bam files: " > "$inputOutFile"
-cat tmpList.txt >> "$inputOutFile"
+cat "$inputsFile" >> "$inputOutFile"
 
 while read -r line; do
 	#Clean up sample tag
@@ -123,7 +124,4 @@ while read -r line; do
 	#Add read group info
 	picard AddOrReplaceReadGroups I="$outFolder"/"$tag"_split.bam O="$outFolder"/"$tag"_RG.bam RGID=1 RGLB=lib1 RGPL=illumina RGPU=unit1 RGSM="$tag"
 	echo picard AddOrReplaceReadGroups I="$outFolder"/"$tag"_split.bam O="$outFolder"/"$tag"_RG.bam RGID=1 RGLB=lib1 RGPL=illumina RGPU=unit1 RGSM="$tag" >> "$inputOutFile"
-done < tmpList.txt
-
-#Clean up
-rm tmpList.txt
+done < "$inputsFile"

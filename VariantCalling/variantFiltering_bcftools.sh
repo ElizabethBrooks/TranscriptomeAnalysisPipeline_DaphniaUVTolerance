@@ -60,7 +60,7 @@ outputsFile="$outFolder"/variantFiltering_stats.txt
 type="$3"
 
 #Check total variants
-echo "Total variants: " > "$outputsFile"
+echo "Total variants from reads with MQ > 60: " > "$outputsFile"
 bcftools filter -i '%QUAL<1001' "$inputsDir"/"$type"_calls.vcf.gz | grep "^scaffold" | wc -l >> "$outputsFile"
 
 #Include sites with quality > 20 
