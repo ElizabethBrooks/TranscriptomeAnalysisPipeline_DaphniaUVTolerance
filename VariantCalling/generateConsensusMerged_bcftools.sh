@@ -40,7 +40,7 @@ else
 fi
 
 #Make output folder
-outFolder="$inputsDir"/variantCalling_"$3"
+outFolder="$inputsDir"/variantCallingBcftools_"$3"
 #Name output file of inputs
 inputOutFile="$outFolder"/consensus_summary.txt
 

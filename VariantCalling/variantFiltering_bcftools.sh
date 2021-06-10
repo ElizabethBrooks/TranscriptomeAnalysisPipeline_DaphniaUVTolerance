@@ -6,8 +6,8 @@
 #$ -N variantFiltering_jobOutput
 #Script to perform variant filtering
 #Usage: qsub variantFiltering_bcftools.sh sortedNameFolder analysisTarget variantsFolder
-#Usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome variantCallingBcftools_filteredMapQ
-#Usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome variantCallingGATK_filteredZS
+#Usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
+#Usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
 
 #Required modules for ND CRC servers
 module load bio
@@ -45,7 +45,7 @@ fi
 inputBamList=../InputData/bamList_Olympics.txt
 
 #Make output folder
-outFolder="$inputsDir"/"$3"/variantsFiltered
+outFolder="$inputsDir"/variantCallingBcftools_"$3"/variantsFiltered
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
