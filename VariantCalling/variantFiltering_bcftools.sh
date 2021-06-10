@@ -41,11 +41,9 @@ else
 	exit 1
 fi
 
-#Set input bam list
-inputBamList=../InputData/bamList_Olympics.txt
-
 #Make output folder
-outFolder="$inputsDir"/variantCallingBcftools_"$3"/variantsFiltered
+inputsDir="$inputsDir"/variantCallingBcftools_"$3"
+outFolder="$inputsDir"/variantsFiltered
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -58,38 +56,24 @@ inputOutFile="$outFolder"/variantFiltering_summary.txt
 #Name output file of filtering info
 outputsFile="$outFolder"/variantFiltering_stats.txt
 
-#Select lines associated with input genotype
-#genotype=_"$4"_
-#grep "$genotype" "$inputBamList" > tmpList_genotype.txt
-#Add file type to end of each sample path
-type=/"$3".bam
-typeTag=$(echo $type | sed "s/\//SLASH/g")
-sed -e "s/$/$typeTag/" "$inputBamList" > tmpList.txt
-#Add directory to beginning of each sample path
-inDir="$inputsDir"/
-inDirTag=$(echo $inDir | sed "s/\//SLASH/g")
-sed -i -e "s/^/$inDirTag/" tmpList.txt
-#Add in slashes
-sed -i "s/SLASH/\//g" tmpList.txt
-
 #Retrieve input bam file type
 type="$3"
 
 #Check total variants
 echo "Total variants: " > "$outputsFile"
-bcftools filter -i '%QUAL<1001' "$outFolder"/"$type"_calls.vcf.gz | grep "^scaffold" | wc -l >> "$outputsFile"
+bcftools filter -i '%QUAL<1001' "$inputsDir"/"$type"_calls.vcf.gz | grep "^scaffold" | wc -l >> "$outputsFile"
 
 #Include sites with quality > 20 
-bcftools filter --threads 4 -i '%QUAL>20' "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf
-echo bcftools filter --threads 4 -i '%QUAL>20' "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf >> "$inputOutFile"
+bcftools filter --threads 4 -i '%QUAL>20' "$inputsDir"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-qual.bcf
+echo bcftools filter --threads 4 -i '%QUAL>20' "$inputsDir"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-qual.bcf >> "$inputOutFile"
 echo "Sites with quality > 20: " >> "$outputsFile"
-bcftools filter --threads 4 -i '%QUAL>20' "$outFolder"/"$type"_calls.vcf.gz | grep "^scaffold" | wc -l >> "$outputsFile"
+bcftools filter --threads 4 -i '%QUAL>20' "$inputsDir"/"$type"_calls.vcf.gz | grep "^scaffold" | wc -l >> "$outputsFile"
 
 #Include sites with average read depth > 10
-bcftools filter --threads 4 -i 'INFO/DP>10' "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf
-echo bcftools filter --threads 4 -i 'INFO/DP>10' "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf >> "$inputOutFile"
+bcftools filter --threads 4 -i 'INFO/DP>10' "$outFolder"/"$type"_calls.flt-qual.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf
+echo bcftools filter --threads 4 -i 'INFO/DP>10' "$outFolder"/"$type"_calls.flt-qual.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf >> "$inputOutFile"
 echo "Sites with average read depth > 10: " >> "$outputsFile"
-bcftools filter --threads 4 -i 'INFO/DP>10' "$outFolder"/"$type"_calls.vcf.gz | grep "^scaffold" | wc -l >> "$outputsFile"
+bcftools filter --threads 4 -i 'INFO/DP>10' "$outFolder"/"$type"_calls.flt-qual.bcf | grep "^scaffold" | wc -l >> "$outputsFile"
 
 #Exclude hetoerozygous sites
 bcftools filter --threads 4 -e 'GT="het"' "$outFolder"/"$type"_calls.flt-qualDP.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf
@@ -118,8 +102,7 @@ bcftools filter --threads 4 -g 2 "$outFolder"/"$type"_calls.flt-indels.bcf | gre
 #Turn on left alignment, normalize indels, and collapse multi allelic sites
 bcftools norm --threads 4 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-SNPs.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf
 echo bcftools norm --threads 4 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-SNPs.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf >> "$inputOutFile"
+
+#Check final number variants
 echo "Turn on left alignment, normalize indels, and collapse multi allelic sites: " >> "$outputsFile"
 bcftools filter -i '%QUAL<1001' "$outFolder"/"$type"_calls.normCollapse.bcf | grep "^scaffold" | wc -l >> "$outputsFile"
-
-#Clean up
-rm tmpList*.txt
