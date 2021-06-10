@@ -36,11 +36,11 @@ fi
 
 #Name output file of inputs
 outputsPath=$(dirname "$inputsPath")
-inputOutFile="$outFolder"/generateTranscipts_summary.txt
+inputOutFile="$outputsPath"/generateTranscipts_summary.txt
 
 #Generate a fasta index file using samtools
 #samtools faidx "$genomeFile"
 
 #Generate a FASTA file with the DNA sequences for all transcripts in the GFF file
-gffread -w "$outFolder"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" 
-echo gffread -w "$outFolder"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" > "$inputOutFile"
+gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" 
+echo gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" > "$inputOutFile"
