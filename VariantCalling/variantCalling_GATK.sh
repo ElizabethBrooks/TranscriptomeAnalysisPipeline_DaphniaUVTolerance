@@ -4,9 +4,9 @@
 #$ -r n
 #$ -N variantCallingGATK_jobOutput
 #Script to perform variant calling
-#Usage: qsub variantCalling_GATK.sh sortedNameFolder analysisTarget filterType
-#Usage Ex: qsub variantCalling_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
-#Usage Ex: qsub variantCalling_GATK.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
+#Usage: qsub variantCalling_GATK.sh sortedNameFolder analysisTarget
+#Usage Ex: qsub variantCalling_GATK.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
+#Usage Ex: qsub variantCalling_GATK.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredZS
 
 #Required modules for ND CRC servers
 module load bio
@@ -18,27 +18,10 @@ if [ $# -eq 0 ]; then
 fi
 
 #Retrieve genome features absolute path for alignment
-genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-#Determine what analysis method was used for the input folder of data
-if [[ "$2" == *assemblyTrinity* || "$2" == *assemblyStringtie* ]]; then
-	#Retrieve reads input absolute path
-	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	inputsDir="$inputsPath"/"$2"/"$1"
-	outputsPath="$inputsPath"/"$2"
-elif [[ "$2" == *assembly*Trinity* || "$2" == *assembly*Stringtie* ]]; then
-	#Retrieve reads input absolute path
-	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
-	inputsDir="$inputsPath"/"$2"/"$1"
-	outputsPath="$inputsPath"/"$2"
-elif [[ "$2" == genome ]]; then
-	#Retrieve sorted reads input absolute path
-	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-	inputsDir="$inputsPath"/"$1"
-	outputsPath="$inputsPath"
-else
-	echo "ERROR: Invalid sorted folder of bam files entered... exiting"
-	exit 1
-fi
+genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+#Retrieve inputs absolute path
+inputsPath=$(grep "scratch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/scratch://g")
+inputsDir="$inputsPath"/"$1"/"$2"
 
 #Set input file list
 inputsDir="$inputsDir"/variantCallingGATK_"$3"
@@ -77,11 +60,14 @@ cat tmpList.txt >> "$inputOutFile"
 while read -r line; do
 	#Output status message
 	echo "Processing sample: "
-	echo "$line"
+	echo "$line"_RG.bam
+
+	#Index input bam
+	samtools index "$line"_RG.bam
 
 	#Call germline SNPs and indels via local re-assembly of haplotypes
-	gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$outFolder"/"$tag"_RG.bam -O "$outFolder"/"$tag"_hap.g.vcf.gz -ERC GVCF
-	echo gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$outFolder"/"$tag"_RG.bam -O "$outFolder"/"$tag"_hap.g.vcf.gz -ERC GVCF >> "$inputOutFile"
+	gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$line"_RG.bam -O "$line"_hap.g.vcf.gz -ERC GVCF
+	echo gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$line"_RG.bam -O "$line"_hap.g.vcf.gz -ERC GVCF >> "$inputOutFile"
 done < tmpList.txt
 
 #Clean up

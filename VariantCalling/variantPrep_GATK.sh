@@ -24,19 +24,25 @@ if [[ "$2" == *assemblyTrinity* || "$2" == *assemblyStringtie* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
 	inputsDir="$inputsPath"/"$2"/"$1"
-	outputsPath="$inputsPath"/"$2"
 elif [[ "$2" == *assembly*Trinity* || "$2" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
 	inputsDir="$inputsPath"/"$2"/"$1"
-	outputsPath="$inputsPath"/"$2"
 elif [[ "$2" == genome ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	inputsDir="$inputsPath"/"$1"
-	outputsPath="$inputsPath"
 else
 	echo "ERROR: Invalid sorted folder of bam files entered... exiting"
+	exit 1
+fi
+#Retrieve outputs absolute path
+outputsPath=$(grep "scratch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/scratch://g")
+outputsDir="$outputsPath"/"$1"_"$2"
+mkdir "$outputsDir"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputsDir directory already exsists... please remove before proceeding."
 	exit 1
 fi
 
@@ -47,7 +53,7 @@ inputBamList=../InputData/fileList_Olympics.txt
 inputOutFile="$outFolder"/variantCalling_summary.txt
 
 #Create first outputs directory
-outFolder="$inputsDir"/variantCallingGATK_"$3"
+outFolder="$outputsDir"/variantCallingGATK_"$3"
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then

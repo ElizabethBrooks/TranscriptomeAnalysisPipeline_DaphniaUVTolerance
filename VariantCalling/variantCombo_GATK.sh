@@ -19,27 +19,10 @@ if [ $# -eq 0 ]; then
 fi
 
 #Retrieve genome features absolute path for alignment
-scratchPath=$(grep "scratch" ../InputData/outputPaths.txt | tr -d " " | sed "s/scratch://g")
-#Determine what analysis method was used for the input folder of data
-if [[ "$2" == *assemblyTrinity* || "$2" == *assemblyStringtie* ]]; then
-	#Retrieve reads input absolute path
-	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	inputsDir="$inputsPath"/"$2"/"$1"
-	outputsPath="$inputsPath"/"$2"
-elif [[ "$2" == *assembly*Trinity* || "$2" == *assembly*Stringtie* ]]; then
-	#Retrieve reads input absolute path
-	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
-	inputsDir="$inputsPath"/"$2"/"$1"
-	outputsPath="$inputsPath"/"$2"
-elif [[ "$2" == genome ]]; then
-	#Retrieve sorted reads input absolute path
-	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-	inputsDir="$inputsPath"/"$1"
-	outputsPath="$inputsPath"
-else
-	echo "ERROR: Invalid sorted folder of bam files entered... exiting"
-	exit 1
-fi
+scratchPath=$(grep "scratch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/scratch://g")
+#Retrieve inputs absolute path
+inputsPath=$(grep "scratch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/scratch://g")
+inputsDir="$inputsPath"/"$1"/"$2"
 
 #Set input file and sample lists
 inputsDir="$inputsDir"/variantCallingGATK_"$3"

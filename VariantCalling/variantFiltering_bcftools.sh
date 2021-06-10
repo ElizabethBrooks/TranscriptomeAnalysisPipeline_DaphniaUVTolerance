@@ -45,7 +45,7 @@ fi
 inputBamList=../InputData/bamList_Olympics.txt
 
 #Make output folder
-outFolder="$inputsDir"/"$3"
+outFolder="$inputsDir"/"$3"/variantsFiltered
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
