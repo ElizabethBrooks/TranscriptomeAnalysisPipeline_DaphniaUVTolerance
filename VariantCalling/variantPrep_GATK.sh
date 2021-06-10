@@ -91,7 +91,7 @@ sed -i "s/SLASH/\//g" tmpList.txt
 type="$3"
 
 #Output status mesasge
-echo "Generating variants for the following input set of bam files: " > "$inputOutFile"
+echo "Generating variants for the following input set of bam files: " >> "$inputOutFile"
 cat tmpList.txt >> "$inputOutFile"
 
 while read -r line; do

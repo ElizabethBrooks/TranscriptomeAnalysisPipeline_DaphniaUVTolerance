@@ -23,15 +23,20 @@ if [[ "$1" == sorted* ]]; then
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	type=$(echo "$2" | cut -d"_" -f2)
 	inputsPath="$inputsPath"/"$1"/"$2"
-	#Update gff file coordinates
-	cp "$genomeFeatFile" "$inputsPath"/"$type"_consensusFeatures_tmp.gff
+	inputFeatFile="$inputsPath"/"$type"_consensusFeatures.gff
 	inputsPath="$inputsPath"/"$type"_consensus.fa
-	genomeFeatFile="$inputsPath"/"$type"_consensusFeatures.gff
+	#Generate a fasta index file using samtools
+	samtools faidx "$inputsPath"
+	#Update gff file coordinates
+	#cp "$genomeFeatFile" "$inputFeatFile"
 	cd ../util
-	python gtf_fixer_to_gffreads.py "$inputsPath"/"$type"_consensusFeatures_tmp.gff "$inputsPath" > "$genomeFeatFile"
+	#python gtf_fixer_to_gffreads.py "$inputFeatFile" "$inputsPath"
+	perl cufftrim.pl "$inputsPath".fai "$genomeFeatFile" > "$inputFeatFile"
 elif [[ "$1" == genomeReference ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+	#Generate a fasta index file using samtools
+	samtools faidx "$inputsPath"
 else
 	echo "ERROR: Invalid sorted folder of bam files entered... exiting"
 	exit 1
@@ -40,9 +45,6 @@ fi
 #Name output file of inputs
 outputsPath=$(dirname "$inputsPath")
 inputOutFile="$outputsPath"/generateTranscipts_summary.txt
-
-#Generate a fasta index file using samtools
-samtools faidx "$inputsPath"
 
 #Generate a FASTA file with the DNA sequences for all transcripts in the GFF file
 gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" 
