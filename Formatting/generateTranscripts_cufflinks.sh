@@ -22,12 +22,15 @@ if [[ "$1" == sorted* ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	type=$(echo "$2" | cut -d"_" -f2)
+	inputsPath="$inputsPath"/"$1"/"$2"
+	#Update gff file coordinates
+	cp "$genomeFeatFile" "$inputsPath"/"$type"_consensusFeatures.gff
+	genomeFeatFile="$inputsPath"/"$type"_consensusFeatures.gff
 	inputsPath="$inputsPath"/"$1"/"$2"/"$type"_consensus.fa
+	../util/python gtf_fixer_to_gffread.py "$genomeFeatFile" "$inputsPath"
 elif [[ "$1" == genomeReference ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-	#Update gff file coordinates
-	../util/python gtf_fixer_to_gffread.py "$genomeFeatFile" "$inputsPath"
 else
 	echo "ERROR: Invalid sorted folder of bam files entered... exiting"
 	exit 1
