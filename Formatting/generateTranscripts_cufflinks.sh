@@ -24,11 +24,11 @@ if [[ "$1" == sorted* ]]; then
 	type=$(echo "$2" | cut -d"_" -f2)
 	inputsPath="$inputsPath"/"$1"/"$2"
 	#Update gff file coordinates
-	cp "$genomeFeatFile" "$inputsPath"/"$type"_consensusFeatures.gff
-	genomeFeatFile="$inputsPath"/"$type"_consensusFeatures.gff
+	cp "$genomeFeatFile" "$inputsPath"/"$type"_consensusFeatures_tmp.gff
 	inputsPath="$inputsPath"/"$type"_consensus.fa
+	genomeFeatFile="$inputsPath"/"$type"_consensusFeatures.gff
 	cd ../util
-	python gtf_fixer_to_gffreads.py "$genomeFeatFile" "$inputsPath"
+	python gtf_fixer_to_gffreads.py "$inputsPath"/"$type"_consensusFeatures_tmp.gff "$inputsPath" > "$genomeFeatFile"
 elif [[ "$1" == genomeReference ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
