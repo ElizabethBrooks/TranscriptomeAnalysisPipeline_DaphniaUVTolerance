@@ -1,6 +1,6 @@
 #Script to replace end positions of a GTF file with the sequence size of a single line FASTA file.
 #by Victor Gambarini
-#usage: python gtf_fixer_to_gffread.py file.gtf file.fasta
+#usage: python gtf_fixer_to_gffreads.py file.gtf file.fasta
 
 import sys
 file_gtf = open(sys.argv[1])
