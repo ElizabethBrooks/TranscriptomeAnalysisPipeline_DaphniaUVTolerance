@@ -42,7 +42,7 @@ errorOut="$outputsPath"/generateTransciptsError_summary.txt
 samtools faidx "$inputsPath"
 
 #Generate a FASTA file with the DNA sequences for all transcripts in the GFF file
-gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" > "$errorOut"
+gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" 2> "$errorOut"
 echo "Generate fasta file with the DNA sequences for all transcripts in the updated GFF file" > "$inputOutFile"
 echo gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" >> "$inputOutFile"
 
@@ -54,7 +54,7 @@ if [[ "$1" == sorted* ]]; then
 		#Output status message
 		echo "Find: $find & Replace: $replace"
 		#Update coordinates in feature file
-		sed "s/\t$find\t/\t$replace\t/g" "$inputFeatFile"
+		sed -i "s/\t$find\t/\t$replace\t/g" "$inputFeatFile"
 		#Generate a FASTA file with the DNA sequences for all transcripts in the updated GFF file
 		gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile"
 		echo "Generate fasta file with the DNA sequences for all transcripts in the updated GFF file" >> "$inputOutFile"
