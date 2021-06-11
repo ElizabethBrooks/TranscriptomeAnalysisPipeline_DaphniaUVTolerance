@@ -25,6 +25,9 @@ if [[ "$1" == sorted* ]]; then
 	inputsPath="$inputsPath"/"$1"/"$2"
 	inputFeatFile="$inputsPath"/"$type"_consensusFeatures.gff
 	inputsPath="$inputsPath"/"$type"_consensus.fa
+	#Copy the genome features file
+	rm "$inputFeatFile"
+	cp "$genomeFeatFile" "$inputFeatFile"
 elif [[ "$1" == genomeReference ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
@@ -43,7 +46,7 @@ samtools faidx "$inputsPath"
 
 #Generate a FASTA file with the DNA sequences for all transcripts in the GFF file
 gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" 2> "$errorOut"
-echo "Generate fasta file with the DNA sequences for all transcripts in the updated GFF file" > "$inputOutFile"
+echo "Generate fasta file with the DNA sequences for all transcripts in the GFF file" > "$inputOutFile"
 echo gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" >> "$inputOutFile"
 
 #Find each error coordinate and replace with the correct one
@@ -55,9 +58,10 @@ if [[ "$1" == sorted* ]]; then
 		echo "Find: $find & Replace: $replace"
 		#Update coordinates in feature file
 		sed -i "s/\t$find\t/\t$replace\t/g" "$inputFeatFile"
-		#Generate a FASTA file with the DNA sequences for all transcripts in the updated GFF file
-		gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile"
-		echo "Generate fasta file with the DNA sequences for all transcripts in the updated GFF file" >> "$inputOutFile"
-		echo gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" >> "$inputOutFile"
 	done < "$errorOut"
 fi
+
+#Generate a FASTA file with the DNA sequences for all transcripts in the updated GFF file
+gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$inputFeatFile"
+echo "Generate fasta file with the DNA sequences for all transcripts in the updated GFF file" >> "$inputOutFile"
+echo gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$inputFeatFile" >> "$inputOutFile"
