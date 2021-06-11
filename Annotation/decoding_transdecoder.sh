@@ -49,10 +49,10 @@ elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
-	#Retrieve genome reference and features paths
-	multiFASTA="$inputsPath"
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
+	#Retrieve genome reference and features paths
+	multiFASTA="$inputsPath"
 	#Retrieve genome reference and features paths
 	geneMap=$(grep "geneCDSMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneCDSMap://g")
 	#Set output path
@@ -60,10 +60,10 @@ elif [[ "$1" == *cds ]]; then
 elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
-	#Retrieve genome reference and features paths
-	multiFASTA="$inputsPath"
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
+	#Retrieve genome reference and features paths
+	multiFASTA="$inputsPath"
 	#Retrieve genome reference and features paths
 	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	#Set output path
@@ -72,24 +72,23 @@ elif [[ "$1" == sorted* ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 	inputsPath="$inputsPath"/"$1"/"$2"/transcripts_cufflinks.fa
-	#Retrieve genome reference and features paths
-	multiFASTA="$inputsPath"
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 	#Retrieve genome reference and features paths
-	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	multiFASTA="$inputsPath"
+	#Retrieve genome reference and features paths
+	geneMap="$outputsPath"/transcripts_cufflinks.fa.gene_trans_map
 	#Set output path
 	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == genome ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-	#Retrieve genome reference and features paths
-	multiFASTA=$(dirname "$inputsPath")
-	multiFASTA="$multiFASTA"/transcripts_cufflinks.fa
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 	#Retrieve genome reference and features paths
-	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	multiFASTA="$outputsPath"/transcripts_cufflinks.fa
+	#Retrieve genome reference and features paths
+	geneMap="$outputsPath"/transcripts_cufflinks.fa.gene_trans_map
 	#Set output path
 	outputFolder="$outputsPath"/"decoded_transdecoder"
 else
