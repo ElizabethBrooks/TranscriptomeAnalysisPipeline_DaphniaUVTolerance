@@ -49,8 +49,8 @@ echo gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genom
 #Find each error coordinate and replace with the correct one
 if [[ "$1" == sorted* ]]; then
 	while read -r line; do
-		find=$(cut -d" " -f5 "$line" | sed "s/)//g" | sed "s/(//g")
-		replace=$(cut -d" " -f12 "$line")
+		find=$(echo "$line" | cut -d" " -f5 | sed "s/)//g" | sed "s/(//g")
+		replace=$(echo "$line" | cut -d" " -f12)
 		#Output status message
 		echo "Find: $find & Replace: $replace"
 		#Update coordinates in feature file
