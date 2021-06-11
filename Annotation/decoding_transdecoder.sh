@@ -129,7 +129,7 @@ TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
 echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
 echo "Finished generating transdecoder open reading frame predictions!"
 echo "Beginning transdecoder coding region selection..."
-if [[ "$1" == PA42* || "$1" == sorted* ]]; then
+if [[ "$1" == PA42* || "$1" == sorted*  || "$1" == genome ]]; then
 	TransDecoder.Predict -t "$multiFASTA" --no_refine_starts
 	#Output run commands to summary file
 	echo "TransDecoder.Predict -t" "$multiFASTA" "--no_refine_starts" >> "$inputOutFile"
