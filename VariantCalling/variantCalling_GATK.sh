@@ -5,8 +5,7 @@
 #$ -N variantCallingGATK_jobOutput
 #Script to perform variant calling
 #Usage: qsub variantCalling_GATK.sh sortedNameFolder analysisTarget
-#Usage Ex: qsub variantCalling_GATK.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
-#Usage Ex: qsub variantCalling_GATK.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredZS
+#Usage Ex: qsub variantCalling_GATK.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingGATK_filteredMapQ
 
 #Required modules for ND CRC servers
 module load bio
@@ -21,10 +20,9 @@ fi
 genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve inputs absolute path
 inputsPath=$(grep "scratch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/scratch://g")
-inputsDir="$inputsPath"/"$1"/"$2"
+inputsDir="$inputsPath"/"$1"/"$2"/variantsPreped
 
 #Set input file list
-inputsDir="$inputsDir"/variantCallingGATK_"$3"
 inputBamList=../InputData/fileList_Olympics.txt
 
 #Make output folder
