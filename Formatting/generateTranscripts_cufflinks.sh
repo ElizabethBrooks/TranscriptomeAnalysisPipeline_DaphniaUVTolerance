@@ -25,18 +25,9 @@ if [[ "$1" == sorted* ]]; then
 	inputsPath="$inputsPath"/"$1"/"$2"
 	inputFeatFile="$inputsPath"/"$type"_consensusFeatures.gff
 	inputsPath="$inputsPath"/"$type"_consensus.fa
-	#Generate a fasta index file using samtools
-	samtools faidx "$inputsPath"
-	#Update gff file coordinates
-	#cp "$genomeFeatFile" "$inputFeatFile"
-	cd ../util
-	#python gtf_fixer_to_gffreads.py "$inputFeatFile" "$inputsPath"
-	perl cufftrim.pl "$inputsPath".fai "$genomeFeatFile" > "$inputFeatFile"
 elif [[ "$1" == genomeReference ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-	#Generate a fasta index file using samtools
-	samtools faidx "$inputsPath"
 else
 	echo "ERROR: Invalid sorted folder of bam files entered... exiting"
 	exit 1
@@ -45,7 +36,28 @@ fi
 #Name output file of inputs
 outputsPath=$(dirname "$inputsPath")
 inputOutFile="$outputsPath"/generateTranscipts_summary.txt
+errorOut="$outputsPath"/generateTransciptsError_summary.txt
+
+#Generate a fasta index file using samtools
+samtools faidx "$inputsPath"
 
 #Generate a FASTA file with the DNA sequences for all transcripts in the GFF file
-gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" 
-echo gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" > "$inputOutFile"
+gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" > "$errorOut"
+echo "Generate fasta file with the DNA sequences for all transcripts in the updated GFF file" > "$inputOutFile"
+echo gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" >> "$inputOutFile"
+
+#Find each error coordinate and replace with the correct one
+if [[ "$1" == sorted* ]]; then
+	while read -r line; do
+		find=$(cut -d" " -f5 "$line" | sed "s/)//g" | sed "s/(//g")
+		replace=$(cut -d" " -f12 "$line")
+		#Output status message
+		echo "Find: $find & Replace: $replace"
+		#Update coordinates in feature file
+		sed "s/\t$find\t/\t$replace\t/g" "$inputFeatFile"
+		#Generate a FASTA file with the DNA sequences for all transcripts in the updated GFF file
+		gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile"
+		echo "Generate fasta file with the DNA sequences for all transcripts in the updated GFF file" >> "$inputOutFile"
+		echo gffread -w "$outputsPath"/transcripts_cufflinks.fa -g "$inputsPath" "$genomeFeatFile" >> "$inputOutFile"
+	done < "$errorOut"
+fi

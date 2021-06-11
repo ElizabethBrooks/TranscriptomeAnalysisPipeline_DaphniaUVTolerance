@@ -1,12 +1,8 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N consensusMerged_jobOutput
 #Script to generate a consensus sequence using called variants
-#Usage: qsub generateConsensusMerged_bcftools.sh sortedNameFolder analysisTarget
-#Usage Ex: qsub generateConsensusMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
-#Usage Ex: qsub generateConsensusMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
+#Usage: bash generateConsensusMerged_bcftools.sh sortedNameFolder analysisTarget
+#Usage Ex: bash generateConsensusMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
+#Usage Ex: bash generateConsensusMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
 
 #Required modules for ND CRC servers
 module load bio
