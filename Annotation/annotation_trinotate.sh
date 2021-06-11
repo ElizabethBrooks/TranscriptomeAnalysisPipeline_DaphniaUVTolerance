@@ -8,6 +8,7 @@
 #Usage Ex: qsub annotation_trinotate.sh trimmed_run1E05_assemblyTrinity
 #Alternate usage Ex: qsub annotation_trinotate.sh PA42_v4.1_cds
 #Alternate usage Ex: qsub annotation_trinotate.sh PA42_v3.0_transcripts
+#Usage ex: qsub annotation_trinotate.sh sortedCoordinate_samtoolsHisat2_run3 filteredMapQ
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -26,12 +27,9 @@ if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Set outputs absolute path
 	outputFolder="$assemblyPath"/"$1"/annotated_trinotate
 	#Set input paths
-	trinotateDB="$outputFolder"/Trinotate.sqlite
 	geneTransMap="$inputsPath"/Trinity.fasta.gene_trans_map
 	transcriptFasta="$inputsPath"/Trinity.fasta
 	transdecoderPep="$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
-	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
-	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
 elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
 	assemblyPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
@@ -39,12 +37,9 @@ elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Set outputs absolute path
 	outputFolder="$assemblyPath"/"$1"/annotated_trinotate
 	#Set input paths
-	trinotateDB="$outputFolder"/Trinotate.sqlite
 	geneTransMap="$inputsPath"/Trinity.fasta.gene_trans_map
 	transcriptFasta="$inputsPath"/Trinity.fasta
 	transdecoderPep="$inputsPath"/decoded_transdecoder/Trinity.fasta.transdecoder.pep
-	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
-	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
 elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
@@ -52,12 +47,9 @@ elif [[ "$1" == *cds ]]; then
 	inputsPath=$(dirname "$inputsPath")
 	outputFolder="$inputsPath"/annotated_trinotate
 	#Set input paths
-	trinotateDB="$outputFolder"/Trinotate.sqlite
 	geneTransMap=$(grep "geneCDSMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneCDSMap://g")
 	transcriptFasta=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
 	transdecoderPep="$inputsPath"/decoded_transdecoder/*.transdecoder.pep
-	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
-	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
 elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
@@ -65,17 +57,28 @@ elif [[ "$1" == *transcripts ]]; then
 	inputsPath=$(dirname "$inputsPath")
 	outputFolder="$inputsPath"/annotated_trinotate
 	#Set input paths
-	trinotateDB="$outputFolder"/Trinotate.sqlite
 	geneTransMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	transcriptFasta=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 	transdecoderPep="$inputsPath"/decoded_transdecoder/*.transdecoder.pep
-	swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
-	pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
+elif [[ "$1" == sorted* ]]; then
+	#Retrieve sorted reads input absolute path
+	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
+	inputsPath="$inputsPath"/"$1"/variantCallingBcftools_"$2"
+	#Set outputs absolute path
+	outputFolder="$inputsPath"/annotated_trinotate
+	#Set input paths
+	geneTransMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	transcriptFasta="$inputsPath"/transcripts_cufflinks.fa
+	transdecoderPep="$inputsPath"/decoded_transdecoder/*.transdecoder.pep
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
+#Set input paths
+trinotateDB="$outputFolder"/Trinotate.sqlite
+swissprotBlastpDB="$inputsPath"/searched_blastp_swissprot/blastp.outfmt6
+pfamDB="$inputsPath"/searched_hmmscan/TrinotatePFAM.out
 #Make output directory
 mkdir "$outputFolder"
 #Check if the folder already exists

@@ -12,6 +12,7 @@
 #Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_cds
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_transcripts
+#Usage ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
 
 #Load necessary modules for ND CRC servers
 module load bio
@@ -66,6 +67,18 @@ elif [[ "$1" == *transcripts ]]; then
 	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 	#Set output path
 	outputFolder="$outputsPath"/"decoded_transdecoder"
+elif [[ "$1" == sorted* ]]; then
+	#Retrieve sorted reads input absolute path
+	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
+	inputsPath="$inputsPath"/"$1"/"$2"/transcripts_cufflinks.fa
+	#Retrieve genome reference and features paths
+	multiFASTA="$inputsPath"
+	#Set outputs absolute path
+	outputsPath=$(dirname $inputsPath)
+	#Retrieve genome reference and features paths
+	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	#Set output path
+	outputFolder="$outputsPath"/"decoded_transdecoder"
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
@@ -104,7 +117,7 @@ TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
 echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
 echo "Finished generating transdecoder open reading frame predictions!"
 echo "Beginning transdecoder coding region selection..."
-if [[ "$1" == PA42* ]]; then
+if [[ "$1" == PA42* || "$1" == sorted* ]]; then
 	TransDecoder.Predict -t "$multiFASTA" --no_refine_starts
 	#Output run commands to summary file
 	echo "TransDecoder.Predict -t" "$multiFASTA" "--no_refine_starts" >> "$inputOutFile"
