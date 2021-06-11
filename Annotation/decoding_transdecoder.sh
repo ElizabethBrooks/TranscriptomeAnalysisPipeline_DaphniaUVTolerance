@@ -13,6 +13,7 @@
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_cds
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_transcripts
 #Usage ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
+#Usage ex: qsub decoding_transdecoder.sh genome
 
 #Load necessary modules for ND CRC servers
 module load bio
@@ -73,6 +74,18 @@ elif [[ "$1" == sorted* ]]; then
 	inputsPath="$inputsPath"/"$1"/"$2"/transcripts_cufflinks.fa
 	#Retrieve genome reference and features paths
 	multiFASTA="$inputsPath"
+	#Set outputs absolute path
+	outputsPath=$(dirname $inputsPath)
+	#Retrieve genome reference and features paths
+	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+	#Set output path
+	outputFolder="$outputsPath"/"decoded_transdecoder"
+elif [[ "$1" == genome ]]; then
+	#Retrieve genome reference absolute path for querying
+	inputsPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+	#Retrieve genome reference and features paths
+	multiFASTA=$(dirname "$inputsPath")
+	multiFASTA="$multiFASTA"/transcripts_cufflinks.fa
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 	#Retrieve genome reference and features paths
