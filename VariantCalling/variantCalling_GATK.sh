@@ -26,7 +26,8 @@ inputsDir="$inputsPath"/"$1"/"$2"/variantsPreped
 inputBamList=../InputData/fileList_Olympics.txt
 
 #Make output folder
-outFolder="$inputsDir"/variantsCalled
+outFolder=$(dirname $inputsDir)
+outFolder="$outFolder"/variantsCalled
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -36,20 +37,6 @@ fi
 
 #Name output file of inputs
 inputOutFile="$outFolder"/variantCalling_summary.txt
-
-#Select lines associated with input genotype
-#genotype=_"$4"_
-#grep "$genotype" "$inputBamList" > tmpList_genotype.txt
-
-#Add directory to beginning of each sample path
-inDir="$inputsDir"/variantsPreped/
-inDirTag=$(echo $inDir | sed "s/\//SLASH/g")
-sed -i -e "s/^/$inDirTag/" tmpList.txt
-#Add in slashes
-sed -i "s/SLASH/\//g" tmpList.txt
-
-#Retrieve input bam file type
-type="$3"
 
 #Output status mesasge
 echo "Generating variants for the following input set of bam files: " > "$inputOutFile"
@@ -64,8 +51,8 @@ while read -r line; do
 	samtools index "$line"_RG.bam
 
 	#Call germline SNPs and indels via local re-assembly of haplotypes
-	gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$line"_RG.bam -O "$line"_hap.g.vcf.gz -ERC GVCF
-	echo gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$line"_RG.bam -O "$line"_hap.g.vcf.gz -ERC GVCF >> "$inputOutFile"
+	gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$inputsDir"/"$line"_RG.bam -O "$outFolder"/"$line"_hap.g.vcf.gz -ERC GVCF
+	echo gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$inputsDir"/"$line"_RG.bam -O "$outFolder"/"$line"_hap.g.vcf.gz -ERC GVCF >> "$inputOutFile"
 done < tmpList.txt
 
 #Clean up
