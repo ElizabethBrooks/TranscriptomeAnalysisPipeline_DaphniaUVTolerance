@@ -40,20 +40,17 @@ inputOutFile="$outFolder"/variantCalling_summary.txt
 
 #Output status mesasge
 echo "Generating variants for the following input set of bam files: " > "$inputOutFile"
-cat tmpList.txt >> "$inputOutFile"
+cat "$inputBamList" >> "$inputOutFile"
 
 while read -r line; do
 	#Output status message
 	echo "Processing sample: "
-	echo "$line"_RG.bam
+	echo "$inputsDir"/"$line"_RG.bam
 
 	#Index input bam
-	samtools index "$line"_RG.bam
+	samtools index "$inputsDir"/"$line"_RG.bam
 
 	#Call germline SNPs and indels via local re-assembly of haplotypes
 	gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$inputsDir"/"$line"_RG.bam -O "$outFolder"/"$line"_hap.g.vcf.gz -ERC GVCF
 	echo gatk --java-options "-Xmx4g" HaplotypeCaller  -R "$genomeFile" -I "$inputsDir"/"$line"_RG.bam -O "$outFolder"/"$line"_hap.g.vcf.gz -ERC GVCF >> "$inputOutFile"
-done < tmpList.txt
-
-#Clean up
-rm tmpList.txt
+done < "$inputBamList"
