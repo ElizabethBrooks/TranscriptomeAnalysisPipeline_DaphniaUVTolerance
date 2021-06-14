@@ -20,7 +20,7 @@ fi
 genomeFile=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 #Retrieve inputs absolute path
 inputsPath=$(grep "scratch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/scratch://g")
-inputsDir="$inputsPath"/"$1"/"$2"/variantsPreped
+inputsDir="$inputsPath"/"$1"_genome/"$2"/variantsPreped
 
 #Set input file list
 inputBamList=../InputData/fileList_Olympics.txt
