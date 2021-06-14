@@ -20,11 +20,11 @@ fi
 grep ">" "$refPath" | sed "s/-CDS//g" | sed "s/>//g" > "$outPath"/col1.txt
 
 #Split the reference gene set into segments
-split -l 1000 "$outPath"/col1.txt "$outPath"/colRef
+split -l 2000 "$outPath"/col1.txt "$outPath"/colRef
 
 #Generate MSAs for each segment
 for i in "$outPath"/colRef*; do
-	qsub generateMSA_muscle.sh "$i" "$@"
+	qsub generateMSA_cds_muscle.sh "$i" "$@"
 done
 
 #Clean up

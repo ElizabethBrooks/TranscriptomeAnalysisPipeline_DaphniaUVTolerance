@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N generateMSA_jobOutput
+#$ -N generateMSA_cds_jobOutput
 
 #Load necessary modules
 module load bio
@@ -14,11 +14,11 @@ refPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed 
 outPath=$(dirname "$1")
 
 #Prepare multiline cds fasta to retrieve seqs
+colRefFile="$1"
 tmpRef="$colRefFile"_tmpPA42_v4.1.fasta
 cat "$refPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRef"
 
 #Loop over all genes in the reference
-colRefFile="$1"
 while IFS= read -r line; do
 	#Retrieve selected coding sequences and convert back to multiline fasta format
 	gTag=$line"-CDS"
