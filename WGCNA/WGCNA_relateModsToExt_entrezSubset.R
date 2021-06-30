@@ -101,21 +101,6 @@ verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
                    cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2)
 dev.off()
 
-module = "lightcyan"
-column = match(module, modNames);
-moduleGenes = moduleColors==module;
-
-#sizeGrWindow(7, 7);
-jpeg("MMvsGS_tolerance_lightcyan.jpg", width = 960, height = 480)
-par(mfrow = c(1,1));
-verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
-                   abs(geneTraitSignificance[moduleGenes, 1]),
-                   xlab = paste("Module Membership in", module, "module"),
-                   ylab = "Gene significance for tolerance",
-                   main = paste("Module membership vs. gene significance\n"),
-                   cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2)
-dev.off()
-
 # Create the starting data frame
 geneInfo0 = data.frame(geneID = geneIDList,
                        uniprotID = uniprotIDList,
@@ -168,21 +153,6 @@ moduleGenes = moduleColors==module;
 
 #sizeGrWindow(7, 7);
 jpeg("MMvsGS_treatment_yellow.jpg", width = 960, height = 480)
-par(mfrow = c(1,1));
-verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
-                   abs(geneTraitSignificance[moduleGenes, 1]),
-                   xlab = paste("Module Membership in", module, "module"),
-                   ylab = "Gene significance for treatment",
-                   main = paste("Module membership vs. gene significance\n"),
-                   cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2)
-dev.off()
-
-module = "brown"
-column = match(module, modNames);
-moduleGenes = moduleColors==module;
-
-#sizeGrWindow(7, 7);
-jpeg("MMvsGS_treatment_brown.jpg", width = 960, height = 480)
 par(mfrow = c(1,1));
 verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
                    abs(geneTraitSignificance[moduleGenes, 1]),
