@@ -1,6 +1,6 @@
 #Set working directory
 #workingDir = args[1];
-workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1"
+workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/entrezSubset"
 setwd(workingDir); 
 
 # Load the WGCNA package
@@ -10,12 +10,12 @@ library(WGCNA)
 options(stringsAsFactors = FALSE);
 
 # Load the expression and trait data saved in the first part
-lnames = load(file = "PA42_v4.1_dataInput.RData");
+lnames = load(file = "PA42_v4.1_entrezSubset_dataInput.RData");
 #The variable lnames contains the names of loaded variables.
 #lnames
 
 # Load network data saved in the second part.
-lnames = load(file = "PA42_v4.1_networkConstruction_auto_threshold8.RData");
+lnames = load(file = "PA42_v4.1_networkConstruction_auto.RData");
 #lnames
 
 nGenes = ncol(datExpr)
@@ -24,7 +24,7 @@ nSamples = nrow(datExpr)
 
 # Calculate topological overlap anew: this could be done more efficiently by saving the TOM
 # calculated during module detection, but let us do it again here.
-dissTOM = 1-TOMsimilarityFromExpr(datExpr, power = 8);
+dissTOM = 1-TOMsimilarityFromExpr(datExpr, power = 7);
 # Transform dissTOM with a power to make moderately strong connections more visible in the heatmap
 plotTOM = dissTOM^10;
 # Set diagonal to NA for a nicer plot

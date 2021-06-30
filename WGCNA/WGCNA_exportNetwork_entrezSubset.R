@@ -1,6 +1,6 @@
 #Set working directory
 #workingDir = args[1];
-workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1"
+workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/entrezSubset"
 setwd(workingDir); 
 
 # Load the WGCNA package
@@ -15,7 +15,7 @@ lnames = load(file = "PA42_v4.1_entrezSubset_dataInput.RData");
 #lnames
 
 # Load network data saved in the second part.
-lnames = load(file = "PA42_v4.1_networkConstruction_auto_threshold7.RData");
+lnames = load(file = "PA42_v4.1_networkConstruction_auto.RData");
 #lnames
 
 

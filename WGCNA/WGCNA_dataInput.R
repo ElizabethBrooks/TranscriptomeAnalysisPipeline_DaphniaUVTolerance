@@ -22,6 +22,26 @@ countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicReso
 #targets <- read.csv(file=args[5], row.names="sample")
 targets <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_WGCNA_Olympics.csv", row.names="sample")
 
+#Filter input genes to those with known entrez IDs
+annotIn = read.csv(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts.csv", sep="\t");
+annotUniprot = read.csv(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts_uniprot.csv", sep="\t");
+annot <- cbind(annotIn,annotUniprot)
+
+#Retrieve uniprot to enztrez ID mapping file
+annotMap = read.csv(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts_uniprotEntrezMap.csv", sep="\t");
+
+#Check if each uniprot ID has an entrez ID mapping
+for(var in 1:nrow(annot))
+{
+  annot$entrezID[var] <- ifelse(annot[var,18] %in% annotMap[,1], annotMap[grep(annot[var,18], annotMap[,1]),2], ".")
+}
+
+#Retrieve the subset of genes with entrez IDs
+annotTable <- subset(annot, entrezID!=".")
+
+#Write tables to csv files
+write.csv(annot,"geneAnnotations.csv", row.names = FALSE)
+
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$tolerance,sep="."))
 #cbind(targets,Group=group)

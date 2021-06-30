@@ -1,6 +1,6 @@
 #Set working directory
 #workingDir = args[1];
-workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1"
+workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/entrezSubset"
 setwd(workingDir); 
 
 # Load the WGCNA package
@@ -10,16 +10,16 @@ library(WGCNA)
 options(stringsAsFactors = FALSE);
 
 # Load the expression and trait data saved in the first part
-lnames = load(file = "PA42_v4.1_dataInput.RData");
+lnames = load(file = "PA42_v4.1_entrezSubset_dataInput.RData");
 #The variable lnames contains the names of loaded variables.
 #lnames
 
 # Load network data saved in the second part.
-lnames = load(file = "PA42_v4.1_networkConstruction_auto_threshold8.RData");
+lnames = load(file = "PA42_v4.1_networkConstruction_auto.RData");
 #lnames
 
 
-annot = read.csv(file = "geneAnnotations.csv");
+annot = read.csv(file = "geneAnnotations_entrezSubset.csv");
 #dim(annot)
 #names(annot)
 probes = names(datExpr)
@@ -86,12 +86,12 @@ names(geneTraitSignificance) = paste("GS.", names(tolerance), sep="");
 names(GSPvalue) = paste("p.GS.", names(tolerance), sep="");
 
 #Plot MM vs GS for tolerance modules
-module = "lightcyan"
+module = "red"
 column = match(module, modNames);
 moduleGenes = moduleColors==module;
 
 #sizeGrWindow(7, 7);
-jpeg("MMvsGS_tolerance_lightcyan.jpg", width = 960, height = 480)
+jpeg("MMvsGS_tolerance_red.jpg", width = 960, height = 480)
 par(mfrow = c(1,1));
 verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
                    abs(geneTraitSignificance[moduleGenes, 1]),
@@ -101,12 +101,12 @@ verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
                    cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2)
 dev.off()
 
-module = "lightgreen"
+module = "lightcyan"
 column = match(module, modNames);
 moduleGenes = moduleColors==module;
 
 #sizeGrWindow(7, 7);
-jpeg("MMvsGS_tolerance_lightgreen.jpg", width = 960, height = 480)
+jpeg("MMvsGS_tolerance_lightcyan.jpg", width = 960, height = 480)
 par(mfrow = c(1,1));
 verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
                    abs(geneTraitSignificance[moduleGenes, 1]),
@@ -162,12 +162,12 @@ names(GSPvalue) = paste("p.GS.", names(treatment), sep="");
 
 
 #Plot MM vs GS for treatment modules
-module = "pink"
+module = "yellow"
 column = match(module, modNames);
 moduleGenes = moduleColors==module;
 
 #sizeGrWindow(7, 7);
-jpeg("MMvsGS_treatment_pink.jpg", width = 960, height = 480)
+jpeg("MMvsGS_treatment_yellow.jpg", width = 960, height = 480)
 par(mfrow = c(1,1));
 verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
                    abs(geneTraitSignificance[moduleGenes, 1]),
