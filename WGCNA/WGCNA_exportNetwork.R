@@ -1,92 +1,68 @@
-#=====================================================================================
-#
-#  Code chunk 1
-#
-#=====================================================================================
-
-
-# Display the current working directory
-getwd();
-# If necessary, change the path below to the directory where the data files are stored. 
-# "." means current directory. On Windows use a forward slash / instead of the usual \.
-workingDir = ".";
+#Set working directory
+#workingDir = args[1];
+workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1"
 setwd(workingDir); 
+
 # Load the WGCNA package
 library(WGCNA)
+
 # The following setting is important, do not omit.
 options(stringsAsFactors = FALSE);
+
 # Load the expression and trait data saved in the first part
-lnames = load(file = "FemaleLiver-01-dataInput.RData");
+lnames = load(file = "PA42_v4.1_entrezSubset_dataInput.RData");
 #The variable lnames contains the names of loaded variables.
-lnames
+#lnames
+
 # Load network data saved in the second part.
-lnames = load(file = "FemaleLiver-02-networkConstruction-auto.RData");
-lnames
-
-
-#=====================================================================================
-#
-#  Code chunk 2
-#
-#=====================================================================================
+lnames = load(file = "PA42_v4.1_networkConstruction_auto_threshold7.RData");
+#lnames
 
 
 # Recalculate topological overlap
-TOM = TOMsimilarityFromExpr(datExpr, power = 6);
+#TOM = TOMsimilarityFromExpr(datExpr, power = 7);
 # Read in the annotation file
-annot = read.csv(file = "GeneAnnotation.csv");
+#annot = read.csv(file = "GeneAnnotation.csv");
 # Select module
-module = "brown";
+#module = "brown";
 # Select module probes
-probes = names(datExpr)
-inModule = (moduleColors==module);
-modProbes = probes[inModule];
+#probes = names(datExpr)
+#inModule = (moduleColors==module);
+#modProbes = probes[inModule];
 # Select the corresponding Topological Overlap
-modTOM = TOM[inModule, inModule];
-dimnames(modTOM) = list(modProbes, modProbes)
+#modTOM = TOM[inModule, inModule];
+#dimnames(modTOM) = list(modProbes, modProbes)
 # Export the network into an edge list file VisANT can read
-vis = exportNetworkToVisANT(modTOM,
-                            file = paste("VisANTInput-", module, ".txt", sep=""),
-                            weighted = TRUE,
-                            threshold = 0,
-                            probeToGene = data.frame(annot$substanceBXH, annot$gene_symbol) )
+#vis = exportNetworkToVisANT(modTOM,
+#                            file = paste("VisANTInput-", module, ".txt", sep=""),
+#                            weighted = TRUE,
+#                            threshold = 0,
+#                            probeToGene = data.frame(annot$substanceBXH, annot$gene_symbol) )
 
 
-#=====================================================================================
-#
-#  Code chunk 3
-#
-#=====================================================================================
+#Prepare data for VisANT
+#nTop = 30;
+#IMConn = softConnectivity(datExpr[, modProbes]);
+#top = (rank(-IMConn) <= nTop)
+#vis = exportNetworkToVisANT(modTOM[top, top],
+#                            file = paste("VisANTInput-", module, "-top30.txt", sep=""),
+#                            weighted = TRUE,
+#                            threshold = 0,
+#                            probeToGene = data.frame(annot$substanceBXH, annot$gene_symbol) )
 
 
-nTop = 30;
-IMConn = softConnectivity(datExpr[, modProbes]);
-top = (rank(-IMConn) <= nTop)
-vis = exportNetworkToVisANT(modTOM[top, top],
-                            file = paste("VisANTInput-", module, "-top30.txt", sep=""),
-                            weighted = TRUE,
-                            threshold = 0,
-                            probeToGene = data.frame(annot$substanceBXH, annot$gene_symbol) )
-
-
-#=====================================================================================
-#
-#  Code chunk 4
-#
-#=====================================================================================
-
-
+#Prepare data for cytoscape
 # Recalculate topological overlap if needed
-TOM = TOMsimilarityFromExpr(datExpr, power = 6);
+TOM = TOMsimilarityFromExpr(datExpr, power = 7);
 # Read in the annotation file
-annot = read.csv(file = "GeneAnnotation.csv");
+annot = read.csv(file = "geneAnnotations_entrezSubset.csv");
 # Select modules
-modules = c("brown", "red");
+modules = c("red", "lightcyan", "yellow", "brown");
 # Select module probes
 probes = names(datExpr)
 inModule = is.finite(match(moduleColors, modules));
 modProbes = probes[inModule];
-modGenes = annot$gene_symbol[match(modProbes, annot$substanceBXH)];
+modGenes = annot$entrezID[match(modProbes, annot$gene)];
 # Select the corresponding Topological Overlap
 modTOM = TOM[inModule, inModule];
 dimnames(modTOM) = list(modProbes, modProbes)
@@ -99,4 +75,3 @@ cyt = exportNetworkToCytoscape(modTOM,
                                nodeNames = modProbes,
                                altNodeNames = modGenes,
                                nodeAttr = moduleColors[inModule]);
-
