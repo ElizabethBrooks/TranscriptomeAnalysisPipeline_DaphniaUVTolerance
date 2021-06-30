@@ -18,8 +18,12 @@ if [ $? -ne 0 ]; then
 fi
 
 #Retrieve factor grouping file
-grpFile="../InputData/expDesign_Olympics.csv"
+grpFile="../InputData/expDesign_WGCNA_Olympics.csv"
 cp "$grpFile" "$inputsPath"
+
+#Pre-clean up
+cd "$outputsPath"
+rm *.RData
 
 #Prepare input data for WGCNA using R
 Rscript WGCNA_dataInput.r "$outputsPath" "$inputsPath"/"cleaned.csv" $2 $3 "$inputsPath"/"expDesign_Olympics.csv"

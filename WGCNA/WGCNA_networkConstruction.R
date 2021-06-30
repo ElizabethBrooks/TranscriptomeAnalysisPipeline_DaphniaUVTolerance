@@ -1,5 +1,6 @@
 #Set working directory
-workingDir = args[1];
+#workingDir = args[1];
+workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1"
 setwd(workingDir); 
 
 # Load the WGCNA package
@@ -13,12 +14,12 @@ options(stringsAsFactors = FALSE);
 # Any error here may be ignored but you may want to update WGCNA if you see one.
 # Caution: skip this line if you run RStudio or other third-party R environments. 
 # See note above.
-enableWGCNAThreads()
+#enableWGCNAThreads()
 
 # Load the data saved in the first part
-lnames = load(file = "PA42_v4.1_WGCNA_inputData.RData");
+lnames = load(file = "PA42_v4.1_entrezSubset_dataInput.RData");
 #The variable lnames contains the names of loaded variables.
-lnames
+#lnames
 
 
 # Choose a set of soft-thresholding powers
@@ -26,7 +27,8 @@ powers = c(c(1:10), seq(from = 12, to=20, by=2))
 # Call the network topology analysis function
 sft = pickSoftThreshold(datExpr, powerVector = powers, verbose = 5)
 # Plot the results:
-sizeGrWindow(9, 5)
+#sizeGrWindow(9, 5)
+jpeg("thresholdingPowers.jpg", width = 960, height = 480)
 par(mfrow = c(1,2));
 cex1 = 0.9;
 # Scale-free topology fit index as a function of the soft-thresholding power
@@ -42,20 +44,22 @@ plot(sft$fitIndices[,1], sft$fitIndices[,5],
      xlab="Soft Threshold (power)",ylab="Mean Connectivity", type="n",
      main = paste("Mean connectivity"))
 text(sft$fitIndices[,1], sft$fitIndices[,5], labels=powers, cex=cex1,col="red")
+dev.off()
 
 
 #Construct the network in blocks of the specified size
-net = blockwiseModules(datExpr, power = 6,
+net = blockwiseModules(datExpr, power = 7,
                        TOMType = "unsigned", minModuleSize = 30,
                        reassignThreshold = 0, mergeCutHeight = 0.25,
                        numericLabels = TRUE, pamRespectsDendro = FALSE,
                        saveTOMs = TRUE,
-                       saveTOMFileBase = "PA42TOM", 
+                       saveTOMFileBase = "PA42TOM_threshold7", 
                        verbose = 3, maxBlockSize = 15000)
 
 
 # open a graphics window
-sizeGrWindow(12, 9)
+#sizeGrWindow(12, 9)
+jpeg("clusterDendrogram_threshold7.jpg", width = 960, height = 960)
 # Convert labels to colors for plotting
 mergedColors = labels2colors(net$colors)
 # Plot the dendrogram and the module colors underneath
@@ -63,6 +67,7 @@ plotDendroAndColors(net$dendrograms[[1]], mergedColors[net$blockGenes[[1]]],
                     "Module colors",
                     dendroLabels = FALSE, hang = 0.03,
                     addGuide = TRUE, guideHang = 0.05)
+dev.off()
 
 
 #Add module colors
@@ -71,5 +76,5 @@ moduleColors = labels2colors(net$colors)
 MEs = net$MEs;
 geneTree = net$dendrograms[[1]];
 save(MEs, moduleLabels, moduleColors, geneTree, 
-     file = "PA42_v4.1_networkConstruction_auto.RData")
+     file = "PA42_v4.1_networkConstruction_auto_threshold7.RData")
 

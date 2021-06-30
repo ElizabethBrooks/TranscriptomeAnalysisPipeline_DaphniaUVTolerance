@@ -14,9 +14,57 @@ options(stringsAsFactors = FALSE);
 workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1"
 setwd(workingDir); 
 
+
 #Import gene count data
 #countsTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
-countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/cleaned.csv", row.names="gene")[ ,1:24]
+countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/cleaned.csv")[ ,1:25]
+
+#Filter input genes to those with known entrez IDs
+annotIn = read.csv(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts.csv", sep="\t");
+annotUniprot = read.csv(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts_uniprot.csv", sep="\t");
+annot <- cbind(annotIn,annotUniprot)
+#dim(annot)
+#names(annot)
+#probes2annot = match(countsTable[,1], annot[,1])
+# The following is the number or probes without annotation:
+#sum(is.na(probes2annot))
+# Should return 0.
+
+#Retrieve uniprot to enztrez ID mapping file
+annotMap = read.csv(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts_uniprotEntrezMap.csv", sep="\t");
+#gene2annot = match(annot[,18], annotMap[,1])
+#annotGenes <- merge(annot, annotMap)
+#geneTable <- merge(countsTable, annotGenes)
+
+#Check if each uniprot ID has an entrez ID mapping
+for(var in 1:nrow(annot))
+{
+  annot$entrezID[var] <- ifelse(annot[var,18] %in% annotMap[,1], annotMap[grep(annot[var,18], annotMap[,1]),2], ".")
+}
+#Check if each gene ID has an entrez ID mapping
+for(var in 1:nrow(countsTable))
+{
+  countsTable$entrezID[var] <- ifelse(countsTable[var,1] %in% annot[,1], annot[grep(countsTable[var,1], annot[,1]),19], ".")
+}
+#Retrieve the subset of gene counts with entrez IDs
+annotTable <- subset(annot, entrezID!=".")
+geneTable <- subset(countsTable, entrezID!=".")
+
+#Write tables to csv files
+write.csv(annot,"geneAnnotations.csv", row.names = FALSE)
+write.csv(annotTable,"geneAnnotations_entrezSubset.csv", row.names = FALSE)
+write.csv(geneTable,"geneCounts_entrezSubset.csv", row.names = FALSE)
+
+
+# The following is the number of genes in the subset without entrez annotation:
+#gene2annot = match(geneTable[,26], annotMap[,2])
+#sum(is.na(gene2annot))
+# Should return 0.
+
+#Subset input gene counts
+countsSubset <- geneTable[,2:25]
+rownames(countsSubset) <- geneTable[,1]
+
 
 #Import grouping factor
 #targets <- read.csv(file=args[5], row.names="sample")
@@ -26,7 +74,7 @@ targets <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/TranscriptomeAn
 group <- factor(paste(targets$treatment,targets$tolerance,sep="."))
 #cbind(targets,Group=group)
 #Create DGE list object
-list <- DGEList(counts=countsTable,group=group)
+list <- DGEList(counts=countsSubset,group=group)
 colnames(list) <- targets$sample
 
 #Retain genes only if it is expressed at a minimum level
@@ -48,8 +96,7 @@ normList <- cpm(list, normalized.lib.sizes=TRUE)
 
 #Transpose the input data
 datExpr0 = as.data.frame(t(normList));
-names(datExpr0) = rownames(normList);
-rownames(datExpr0) = names(countsTable);
+rownames(datExpr0) = names(countsSubset);
 
 
 #Check the genes across all samples
@@ -76,18 +123,18 @@ sampleTree = hclust(dist(datExpr0), method = "average");
 # The user should change the dimensions if the window is too large or too small.
 #sizeGrWindow(12,9)
 #pdf(file = "sampleClustering.pdf", width = 12, height = 9);
-jpeg("sampleClustering_cutLine.jpg", width = 480, height = 480)
+jpeg("sampleClustering_cutLine_entrezSubset.jpg", width = 480, height = 480)
 par(cex = 0.6);
 par(mar = c(0,4,2,0))
 plot(sampleTree, main = "Sample clustering to detect outliers", sub="", xlab="", cex.lab = 1.5, 
      cex.axis = 1.5, cex.main = 2)
 # Plot a line to show the cut
-abline(h = 8500, col = "red");
+abline(h = 7800, col = "red");
 dev.off()
 
 
 # Determine cluster under the line
-clust = cutreeStatic(sampleTree, cutHeight = 8500, minSize = 10)
+clust = cutreeStatic(sampleTree, cutHeight = 7800, minSize = 10)
 table(clust)
 # clust 1 contains the samples we want to keep.
 keepSamples = (clust==1)
@@ -125,4 +172,4 @@ dev.off()
 
 
 #Save the formatted data for input to the next stage of analysis
-save(datExpr, datTraits, file = "PA42_v4.1_dataInput.RData")
+save(datExpr, datTraits, file = "PA42_v4.1_entrezSubset_dataInput.RData")
