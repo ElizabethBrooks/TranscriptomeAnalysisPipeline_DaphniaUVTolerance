@@ -10,12 +10,12 @@ library(WGCNA)
 options(stringsAsFactors = FALSE);
 
 # Load the expression and trait data saved in the first part
-lnames = load(file = "PA42_v4.1_entrezSubset_dataInput.RData");
+lnames = load(file = "PA42_v4.1_dataInput.RData");
 #The variable lnames contains the names of loaded variables.
 #lnames
 
 # Load network data saved in the second part.
-lnames = load(file = "PA42_v4.1_networkConstruction_auto_threshold7.RData");
+lnames = load(file = "PA42_v4.1_networkConstruction_auto_threshold8.RData");
 #lnames
 
 
@@ -53,13 +53,13 @@ lnames = load(file = "PA42_v4.1_networkConstruction_auto_threshold7.RData");
 
 #Prepare data for cytoscape
 # Recalculate topological overlap if needed
-TOM = TOMsimilarityFromExpr(datExpr, power = 7);
+TOM = TOMsimilarityFromExpr(datExpr, power = 8);
 # Read in the annotation file
-annot = read.csv(file = "geneAnnotations_entrezSubset.csv");
+annot = read.csv(file = "geneAnnotations.csv");
 
 
 # Select modules
-modules = c("red");
+modules = c("pink");
 # Select module probes
 probes = names(datExpr)
 inModule = is.finite(match(moduleColors, modules));
@@ -80,7 +80,7 @@ cyt = exportNetworkToCytoscape(modTOM,
 
 
 # Select modules
-modules = c("lightcyan");
+modules = c("brown");
 # Select module probes
 probes = names(datExpr)
 inModule = is.finite(match(moduleColors, modules));
@@ -103,7 +103,7 @@ cyt = exportNetworkToCytoscape(modTOM,
 # Read in the annotation file
 annot = read.csv(file = "geneAnnotations_entrezSubset.csv");
 # Select modules
-modules = c("yellow");
+modules = c("lightgreen");
 # Select module probes
 probes = names(datExpr)
 inModule = is.finite(match(moduleColors, modules));
@@ -124,7 +124,7 @@ cyt = exportNetworkToCytoscape(modTOM,
 
 
 # Select modules
-modules = c("brown");
+modules = c("lightcyan");
 # Select module probes
 probes = names(datExpr)
 inModule = is.finite(match(moduleColors, modules));

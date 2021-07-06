@@ -11,6 +11,7 @@
 #Set outputs path
 #outputsPath="$outputsPath"/WGCNA_results
 outputsPath="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1"
+outputsPath="$outputsPath"/allGenes
 mkdir "$outputsPath"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -21,10 +22,6 @@ fi
 #Retrieve factor grouping file
 #grpFile="../InputData/expDesign_WGCNA_Olympics.csv"
 #cp "$grpFile" "$inputsPath"
-
-#Pre-clean up
-cd "$outputsPath"
-rm *.RData
 
 #Prepare input data for WGCNA using R
 #Rscript WGCNA_dataInput.r "$outputsPath" "$inputsPath"/"cleaned.csv" $2 $3 "$inputsPath"/"expDesign_Olympics.csv"

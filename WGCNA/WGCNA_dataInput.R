@@ -41,6 +41,7 @@ annotTable <- subset(annot, entrezID!=".")
 
 #Write tables to csv files
 write.csv(annot,"geneAnnotations.csv", row.names = FALSE)
+write.csv(annotTable,"geneAnnotations_entrezSubset.csv", row.names = FALSE)
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$tolerance,sep="."))
