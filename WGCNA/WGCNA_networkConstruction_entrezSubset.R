@@ -53,7 +53,7 @@ net = blockwiseModules(datExpr, power = 7,
                        reassignThreshold = 0, mergeCutHeight = 0.25,
                        numericLabels = TRUE, pamRespectsDendro = FALSE,
                        saveTOMs = TRUE,
-                       saveTOMFileBase = "PA42TOM", 
+                       saveTOMFileBase = "blockwiseTOM", 
                        verbose = 3, maxBlockSize = 15000)
 
 

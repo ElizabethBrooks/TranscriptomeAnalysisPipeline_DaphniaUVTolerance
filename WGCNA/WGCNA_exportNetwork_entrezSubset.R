@@ -71,30 +71,98 @@ dimnames(modTOM) = list(modProbes, modProbes)
 
 # Export the network into edge and node list files Cytoscape can read
 cyt = exportNetworkToCytoscape(modTOM,
-                               edgeFile = paste("CytoscapeInput_weight0.1-edges-", paste(modules, collapse="-"), ".txt", sep=""),
+                               edgeFile = paste("CytoscapeInput_weight0.15-edges-", paste(modules, collapse="-"), ".txt", sep=""),
 #                               nodeFile = paste("CytoscapeInput-nodes-", paste(modules, collapse="-"), ".txt", sep=""),
                                weighted = TRUE,
-                               threshold = 0.1,
+                               threshold = 0.15,
                                nodeNames = modProbes,
                                altNodeNames = modGenes,
                                nodeAttr = moduleColors[inModule])
 
+
+# Select modules
+modules = c("royalblue");
+# Select module probes
+probes = names(datExpr)
+inModule = is.finite(match(moduleColors, modules));
+modProbes = probes[inModule];
+modGenes = annot$entrezID[match(modProbes, annot$gene)];
+# Select the corresponding Topological Overlap
+modTOM = TOM[inModule, inModule];
+dimnames(modTOM) = list(modProbes, modProbes)
+
 # Export the network into edge and node list files Cytoscape can read
 cyt = exportNetworkToCytoscape(modTOM,
-                               edgeFile = paste("CytoscapeInput_weight0.2-edges-", paste(modules, collapse="-"), ".txt", sep=""),
+                               edgeFile = paste("CytoscapeInput_weight0.15-edges-", paste(modules, collapse="-"), ".txt", sep=""),
                                #                               nodeFile = paste("CytoscapeInput-nodes-", paste(modules, collapse="-"), ".txt", sep=""),
                                weighted = TRUE,
-                               threshold = 0.2,
+                               threshold = 0.15,
                                nodeNames = modProbes,
                                altNodeNames = modGenes,
                                nodeAttr = moduleColors[inModule])
 
+
+# Select modules
+modules = c("salmon");
+# Select module probes
+probes = names(datExpr)
+inModule = is.finite(match(moduleColors, modules));
+modProbes = probes[inModule];
+modGenes = annot$entrezID[match(modProbes, annot$gene)];
+# Select the corresponding Topological Overlap
+modTOM = TOM[inModule, inModule];
+dimnames(modTOM) = list(modProbes, modProbes)
+
 # Export the network into edge and node list files Cytoscape can read
 cyt = exportNetworkToCytoscape(modTOM,
-                               edgeFile = paste("CytoscapeInput_weight0.25-edges-", paste(modules, collapse="-"), ".txt", sep=""),
+                               edgeFile = paste("CytoscapeInput_weight0.15-edges-", paste(modules, collapse="-"), ".txt", sep=""),
                                #                               nodeFile = paste("CytoscapeInput-nodes-", paste(modules, collapse="-"), ".txt", sep=""),
                                weighted = TRUE,
-                               threshold = 0.25,
+                               threshold = 0.15,
+                               nodeNames = modProbes,
+                               altNodeNames = modGenes,
+                               nodeAttr = moduleColors[inModule])
+
+
+# Select modules
+modules = c("red");
+# Select module probes
+probes = names(datExpr)
+inModule = is.finite(match(moduleColors, modules));
+modProbes = probes[inModule];
+modGenes = annot$entrezID[match(modProbes, annot$gene)];
+# Select the corresponding Topological Overlap
+modTOM = TOM[inModule, inModule];
+dimnames(modTOM) = list(modProbes, modProbes)
+
+# Export the network into edge and node list files Cytoscape can read
+cyt = exportNetworkToCytoscape(modTOM,
+                               edgeFile = paste("CytoscapeInput_weight0.15-edges-", paste(modules, collapse="-"), ".txt", sep=""),
+                               #                               nodeFile = paste("CytoscapeInput-nodes-", paste(modules, collapse="-"), ".txt", sep=""),
+                               weighted = TRUE,
+                               threshold = 0.15,
+                               nodeNames = modProbes,
+                               altNodeNames = modGenes,
+                               nodeAttr = moduleColors[inModule])
+
+
+# Select modules
+modules = c("yellow", "royalblue", "salmon", "red");
+# Select module probes
+probes = names(datExpr)
+inModule = is.finite(match(moduleColors, modules));
+modProbes = probes[inModule];
+modGenes = annot$entrezID[match(modProbes, annot$gene)];
+# Select the corresponding Topological Overlap
+modTOM = TOM[inModule, inModule];
+dimnames(modTOM) = list(modProbes, modProbes)
+
+# Export the network into edge and node list files Cytoscape can read
+cyt = exportNetworkToCytoscape(modTOM,
+                               edgeFile = paste("CytoscapeInput_weight0.15-edges-", paste(modules, collapse="-"), ".txt", sep=""),
+                               nodeFile = paste("CytoscapeInput_weight0.15-edges-nodes-", paste(modules, collapse="-"), ".txt", sep=""),
+                               weighted = TRUE,
+                               threshold = 0.15,
                                nodeNames = modProbes,
                                altNodeNames = modGenes,
                                nodeAttr = moduleColors[inModule])

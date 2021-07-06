@@ -25,13 +25,16 @@ nSamples = nrow(datExpr)
 # Calculate topological overlap anew: this could be done more efficiently by saving the TOM
 # calculated during module detection, but let us do it again here.
 dissTOM = 1-TOMsimilarityFromExpr(datExpr, power = 7);
+#Construct the network in blocks of the specified size
+#net = blockwiseModules(datExpr, loadTOM = TRUE)
+#dissTOM = 1-net
 # Transform dissTOM with a power to make moderately strong connections more visible in the heatmap
-plotTOM = dissTOM^10;
+plotTOM = dissTOM^7;
 # Set diagonal to NA for a nicer plot
 diag(plotTOM) = NA;
 # Call the plot function
 #sizeGrWindow(9,9)
-jpeg("networkHeatmap.jpg", width = 960, height = 960)
+jpeg("networkHeatmap_dissTOM7.jpg", width = 960, height = 960)
 TOMplot(plotTOM, geneTree, moduleColors, main = "Network heatmap plot, all genes")
 dev.off()
 

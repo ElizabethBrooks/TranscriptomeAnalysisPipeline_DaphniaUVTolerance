@@ -101,6 +101,22 @@ verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
                    cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2)
 dev.off()
 
+#Plot MM vs GS for tolerance modules
+module = "salmon"
+column = match(module, modNames);
+moduleGenes = moduleColors==module;
+
+#sizeGrWindow(7, 7);
+jpeg("MMvsGS_tolerance_salmon.jpg", width = 960, height = 480)
+par(mfrow = c(1,1));
+verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
+                   abs(geneTraitSignificance[moduleGenes, 1]),
+                   xlab = paste("Module Membership in", module, "module"),
+                   ylab = "Gene significance for tolerance",
+                   main = paste("Module membership vs. gene significance\n"),
+                   cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2)
+dev.off()
+
 # Create the starting data frame
 geneInfo0 = data.frame(geneID = geneIDList,
                        uniprotID = uniprotIDList,
@@ -162,6 +178,22 @@ verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
                    cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2)
 dev.off()
 
+#Plot MM vs GS for treatment modules
+module = "royalblue"
+column = match(module, modNames);
+moduleGenes = moduleColors==module;
+
+#sizeGrWindow(7, 7);
+jpeg("MMvsGS_treatment_royalblue.jpg", width = 960, height = 480)
+par(mfrow = c(1,1));
+verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
+                   abs(geneTraitSignificance[moduleGenes, 1]),
+                   xlab = paste("Module Membership in", module, "module"),
+                   ylab = "Gene significance for treatment",
+                   main = paste("Module membership vs. gene significance\n"),
+                   cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2)
+dev.off()
+
 # Create the starting data frame
 geneInfo0 = data.frame(geneID = geneIDList,
                        uniprotID = uniprotIDList,
@@ -187,3 +219,4 @@ geneOrder = order(geneInfo0$moduleColor, -abs(geneInfo0$GS.treatment));
 geneInfo = geneInfo0[geneOrder, ]
 
 write.csv(geneInfo, file = "geneInfo_treatment.csv")
+

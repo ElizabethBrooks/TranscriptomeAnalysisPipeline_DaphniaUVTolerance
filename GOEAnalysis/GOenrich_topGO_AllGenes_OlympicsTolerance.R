@@ -155,3 +155,22 @@ printGraph(MF_GO_data, MF_GO_results, firstSigNodes = 5,
            fn.prefix = "/home/mae/Documents/RNASeq_Workshop_ND/all_genes_MF_GO_OlympicsTolerance", useInfo = "all", pdfSW = TRUE)
 printGraph(CC_GO_data, CC_GO_results, firstSigNodes = 5, 
            fn.prefix = "/home/mae/Documents/RNASeq_Workshop_ND/all_genes_CC_GO_OlympicsTolerance", useInfo = "all", pdfSW = TRUE)
+
+#showGroupDensity for UV tolerance assocaited GO terms
+CC_DNA_repair_complex <- "GO:1990391"
+BP_DNA_integrity_checkpoint <- "GO:0031570"
+BP_Response_UV <- "GO:0009411"
+BP_Mitotic_cell_cycle_checkpoint <- "GO:0007093"
+BP_Cellular_response_DNA_damage_stimulus <- "GO:0006974"
+MF_Single_stranded_DNA_binding <- "GO:0003697"
+MF_Damaged_DNA_binding <- "GO:0003684"
+
+pdf(file="/home/mae/Documents/RNASeq_Workshop_ND/GSEA_UVT_OlympicsTolerance.pdf")
+showGroupDensity(CC_GO_data, whichGO = CC_DNA_repair_complex, ranks = TRUE)
+showGroupDensity(BP_GO_data, whichGO = BP_DNA_integrity_checkpoint, ranks = TRUE)
+showGroupDensity(BP_GO_data, whichGO = BP_Response_UV, ranks = TRUE)
+showGroupDensity(BP_GO_data, whichGO = BP_Mitotic_cell_cycle_checkpoint, ranks = TRUE)
+showGroupDensity(BP_GO_data, whichGO = BP_Cellular_response_DNA_damage_stimulus, ranks = TRUE)
+showGroupDensity(MF_GO_data, whichGO = MF_Single_stranded_DNA_binding, ranks = TRUE)
+showGroupDensity(MF_GO_data, whichGO = MF_Damaged_DNA_binding, ranks = TRUE)
+dev.off()
