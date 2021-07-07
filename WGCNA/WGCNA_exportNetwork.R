@@ -15,7 +15,7 @@ lnames = load(file = "PA42_v4.1_dataInput.RData");
 #lnames
 
 # Load network data saved in the second part.
-lnames = load(file = "PA42_v4.1_networkConstruction_auto_threshold8.RData");
+lnames = load(file = "PA42_v4.1_networkConstruction_auto_threshold8_signed.RData");
 #lnames
 
 

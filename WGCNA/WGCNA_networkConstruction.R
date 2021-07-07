@@ -49,17 +49,17 @@ dev.off()
 
 #Construct the network in blocks of the specified size
 net = blockwiseModules(datExpr, power = 8,
-                       TOMType = "unsigned", minModuleSize = 30,
+                       TOMType = "signed", minModuleSize = 30,
                        reassignThreshold = 0, mergeCutHeight = 0.25,
                        numericLabels = TRUE, pamRespectsDendro = FALSE,
                        saveTOMs = TRUE,
-                       saveTOMFileBase = "PA42TOM_threshold8", 
+                       saveTOMFileBase = "PA42TOM_threshold8_signed", 
                        verbose = 3, maxBlockSize = 15000)
 
 
 # open a graphics window
 #sizeGrWindow(12, 9)
-jpeg("clusterDendrogram_threshold8.jpg", width = 960, height = 960)
+jpeg("clusterDendrogram_threshold8_signed.jpg", width = 960, height = 960)
 # Convert labels to colors for plotting
 mergedColors = labels2colors(net$colors)
 # Plot the dendrogram and the module colors underneath
@@ -76,5 +76,5 @@ moduleColors = labels2colors(net$colors)
 MEs = net$MEs;
 geneTree = net$dendrograms[[1]];
 save(MEs, moduleLabels, moduleColors, geneTree, 
-     file = "PA42_v4.1_networkConstruction_auto_threshold8.RData")
+     file = "PA42_v4.1_networkConstruction_auto_threshold8_signed.RData")
 
