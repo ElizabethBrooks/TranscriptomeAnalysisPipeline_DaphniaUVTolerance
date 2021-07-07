@@ -1,4 +1,5 @@
 #Draw UpSet plots of gene sets
+
 #if (!requireNamespace("BiocManager", quietly=TRUE))
 #  install.packages("BiocManager")
 #BiocManager::install("ComplexHeatmap")
@@ -74,7 +75,6 @@ plot <- decorate_annotation("Intersection\nsize", {
             just = "bottom",
             default.units = "native")
 })
-dev.off()
 
 #m1 = make_comb_mat(lt, mode = "distinct")
 #m2 = make_comb_mat(lt, mode = "intersect")

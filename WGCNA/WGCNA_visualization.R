@@ -1,6 +1,6 @@
 #Set working directory
 #workingDir = args[1];
-workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1"
+workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/allGenes"
 setwd(workingDir); 
 
 # Load the WGCNA package
@@ -25,15 +25,6 @@ nSamples = nrow(datExpr)
 # Calculate topological overlap anew: this could be done more efficiently by saving the TOM
 # calculated during module detection, but let us do it again here.
 dissTOM = 1-TOMsimilarityFromExpr(datExpr, power = 8);
-# Transform dissTOM with a power to make moderately strong connections more visible in the heatmap
-plotTOM = dissTOM^10;
-# Set diagonal to NA for a nicer plot
-diag(plotTOM) = NA;
-# Call the plot function
-#sizeGrWindow(9,9)
-jpeg("networkHeatmap.jpg", width = 960, height = 960)
-TOMplot(plotTOM, geneTree, moduleColors, main = "Network heatmap plot, all genes")
-dev.off()
 
 
 #Generate a network heatmap for a subset of genes
@@ -115,4 +106,15 @@ jpeg("eigengenesHeatmap_tolerance.jpg", width = 960, height = 960)
 par(cex = 1.0)
 plotEigengeneNetworks(MET, "Eigengene adjacency heatmap", marHeatmap = c(3,4,2,2),
                       plotDendrograms = FALSE, xLabelsAngle = 90)
+dev.off()
+
+
+# Transform dissTOM with a power to make moderately strong connections more visible in the heatmap
+plotTOM = dissTOM^7;
+# Set diagonal to NA for a nicer plot
+diag(plotTOM) = NA;
+# Call the plot function
+#sizeGrWindow(9,9)
+jpeg("networkHeatmap.jpg", width = 960, height = 960)
+TOMplot(plotTOM, geneTree, moduleColors, main = "Network heatmap plot, all genes")
 dev.off()

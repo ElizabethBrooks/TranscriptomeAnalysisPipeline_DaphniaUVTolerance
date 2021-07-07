@@ -11,7 +11,7 @@ options(stringsAsFactors = FALSE);
 
 #Set working directory
 #workingDir = args[1];
-workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1"
+workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/allGenes"
 setwd(workingDir); 
 
 #Import gene count data

@@ -25,16 +25,16 @@ fi
 
 #Prepare input data for WGCNA using R
 #Rscript WGCNA_dataInput.r "$outputsPath" "$inputsPath"/"cleaned.csv" $2 $3 "$inputsPath"/"expDesign_Olympics.csv"
-Rscript WGCNA_dataInput.r
+Rscript WGCNA_dataInput.R
 
 #Construct networks
-Rscript WGCNA_networkConstruction.r
+Rscript WGCNA_networkConstruction.R
 
 #Relate modules to external traits
-Rscript WGCNA_relateModsToExt.r
+Rscript WGCNA_relateModsToExt.R
 
 #Visualize WGCNA data
-Rscript WGCNA_visualization.r
+Rscript WGCNA_visualization.R
 
 #Construct networks
-Rscript WGCNA_exportNetwork.r
+Rscript WGCNA_exportNetwork.R
