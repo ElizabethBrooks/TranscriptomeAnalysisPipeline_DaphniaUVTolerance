@@ -38,3 +38,7 @@ Rscript WGCNA_visualization.R
 
 #Construct networks
 Rscript WGCNA_exportNetwork.R
+
+#Plot proportion of modules represented by DEG effects
+Rscript stackedBarPlot_effectSubsets.R
+Rscript stackedBarPlot_effectSubsets_filtered.R

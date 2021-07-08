@@ -36,9 +36,9 @@ list <- calcNormFactors(list)
 countsTableNorm <- cpm(list, normalized.lib.sizes=TRUE)
 
 #Import DEGs
-geneCountsInter <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_interaction_topTags_filtered.csv")
-geneCountsTreat <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_UVvsVIS_topTags_filtered.csv")
-geneCountsTol <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_TvsN_topTags_filtered.csv")
+geneCountsInter <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_interaction_topTags.csv")
+geneCountsTreat <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_UVvsVIS_topTags.csv")
+geneCountsTol <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_TvsN_topTags.csv")
 SETInterIn <- geneCountsInter[,1]
 SETTreatIn <- geneCountsTreat[,1]
 SETTolIn <- geneCountsTol[,1]
@@ -64,6 +64,10 @@ for(var in 1:nrow(annot))
 
 #Retrieve the subset of genes with entrez IDs
 annotTable <- subset(annot, entrezID!=".")
+
+#Write tables to csv files
+write.csv(annot,"geneAnnotations.csv", row.names = FALSE)
+write.csv(annotTable,"geneAnnotations_entrezSubset.csv", row.names = FALSE)
 
 # The following is the % of genes in the subset without entrez annotation:
 print("% interaction effect DEGs without entrez IDs: ")
