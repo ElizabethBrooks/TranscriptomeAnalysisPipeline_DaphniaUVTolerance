@@ -33,7 +33,7 @@ group <- factor(paste(targets$treatment,targets$genotype,sep="."))
 #cbind(targets,Group=group)
 #Create DGE list object
 list <- DGEList(counts=countsTable,group=group)
-colnames(list) <- targets$sample
+colnames(list) <- rownames(targets)
 
 #Plot the library sizes before normalization
 jpeg("glmQLF_plotBarsBefore.jpg")

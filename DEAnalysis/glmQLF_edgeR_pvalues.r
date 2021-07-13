@@ -27,7 +27,7 @@ group <- factor(paste(targets$treatment,targets$genotype,sep="."))
 #cbind(targets,Group=group)
 #Create DGE list object
 list <- DGEList(counts=countsTable,group=group)
-colnames(list) <- targets$sample
+colnames(list) <- rownames(targets)
 
 #Retain genes only if it is expressed at a minimum level
 keep <- filterByExpr(list)
