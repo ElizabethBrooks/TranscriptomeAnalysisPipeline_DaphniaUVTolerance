@@ -7,10 +7,10 @@ library(edgeR)
 library(ggplot2)
 
 # Load the expression and trait data saved in the first part
-lnames1 = load(file = "PA42_v4.1_dataInputTol.RData");
+lnames1 = load(file = "PA42_v4.1_dataInputTreat.RData");
 
 # Load network data saved in the second part.
-lnames2 = load(file = "PA42_v4.1_networkConstructionTol_auto_threshold8_signed.RData");
+lnames2 = load(file = "PA42_v4.1_networkConstructionTreat_auto_threshold8_signed.RData");
 
 #Import gene count data for the Olympics
 countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/geneCounts_cleaned_PA42_v4.1.csv", row.names="gene")[ ,1:24]
@@ -54,7 +54,7 @@ colorSets <- data.frame(Mean=double(), Color=character(), Sample=character(), st
 for(var in 1:length(colorList))
 {
   #Prepare and add VIS data
-  meanVIS <- as.data.frame(unname(meanSETVIS[names(datExprTol[which(names(datExprTol)[moduleColors==colorList[var]] %in% names(meanSETVIS))])]))
+  meanVIS <- as.data.frame(unname(meanSETVIS[names(datExprTreat[which(names(datExprTreat)[moduleColors==colorList[var]] %in% names(meanSETVIS))])]))
   if(length(meanVIS) > 0){
     namesVIS <- as.data.frame(rep(colorList[var], length(meanVIS)))
     sampleVIS <- as.data.frame(rep("VIS", length(meanVIS)))
@@ -64,7 +64,7 @@ for(var in 1:length(colorList))
     colorSets <- rbind(colorSets,colorSetVIS)
   }
   #Prepare and add UV data
-  meanUV <- as.data.frame(unname(meanSETUV[names(datExprTol[which(names(datExprTol)[moduleColors==colorList[var]] %in% names(meanSETUV))])]))
+  meanUV <- as.data.frame(unname(meanSETUV[names(datExprTreat[which(names(datExprTreat)[moduleColors==colorList[var]] %in% names(meanSETUV))])]))
   if(length(meanUV) > 0){
     namesUV <- as.data.frame(rep(colorList[var], length(meanUV)))
     sampleUV <- as.data.frame(rep("UV", length(meanUV)))
@@ -74,7 +74,7 @@ for(var in 1:length(colorList))
     colorSets <- rbind(colorSets,colorSetUV)
   }
   #Prepare and add tolerant genotype data
-  meanTol <- as.data.frame(unname(meanSETTol[names(datExprTol[which(names(datExprTol)[moduleColors==colorList[var]] %in% names(meanSETTol))])]))
+  meanTol <- as.data.frame(unname(meanSETTol[names(datExprTreat[which(names(datExprTreat)[moduleColors==colorList[var]] %in% names(meanSETTol))])]))
   if(length(meanTol) > 0){
     namesTol <- as.data.frame(rep(colorList[var], length(meanTol)))
     sampleTol <- as.data.frame(rep("Tol", length(meanTol)))
@@ -84,7 +84,7 @@ for(var in 1:length(colorList))
     colorSets <- rbind(colorSets,colorSetTol)
   }
   #Prepare and add not tolerant genotype data
-  meanNTol <- as.data.frame(unname(meanSETNTol[names(datExprTol[which(names(datExprTol)[moduleColors==colorList[var]] %in% names(meanSETNTol))])]))
+  meanNTol <- as.data.frame(unname(meanSETNTol[names(datExprTreat[which(names(datExprTreat)[moduleColors==colorList[var]] %in% names(meanSETNTol))])]))
   if(length(meanNTol) > 0){
     namesNTol <- as.data.frame(rep(colorList[var], length(meanNTol)))
     sampleNTol <- as.data.frame(rep("NTol", length(meanNTol)))
