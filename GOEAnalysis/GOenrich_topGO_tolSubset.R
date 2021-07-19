@@ -16,14 +16,13 @@ library(statmod)
 countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/geneCounts_cleaned_PA42_v4.1.csv", row.names="gene")[ ,1:24]
 #Import grouping factor
 targets <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/expDesign_Olympics.csv", row.names="sample")
-#Set FDR cutoff
-fdrCut=0.10
+
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$genotype,sep="."))
 #Create DGE list object
 list <- DGEList(counts=countsTable,group=group)
-colnames(list) <- targets$sample
+colnames(list) <- rownames(targets)
 
 #Retain genes only if it is expressed at a minimum level
 keep <- filterByExpr(list)
