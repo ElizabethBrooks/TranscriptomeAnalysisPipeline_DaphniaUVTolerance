@@ -16,10 +16,8 @@ library(statmod)
 workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/effectSubsets"
 setwd(workingDir); 
 
-#Import gene pvalue data
-#pTable <- read.csv(file="geneInfoTreat_treatment.csv")
 # Load the expression and trait data saved in the first part
-lnames1 = load(file = "PA42_v4.1_dataInputInter.RData");
+#lnames1 = load(file = "PA42_v4.1_dataInputInter.RData");
 # Load network data saved in the second part.
 lnames2 = load(file = "PA42_v4.1_networkConstructionTreat_auto_threshold8_signed.RData");
 
@@ -71,33 +69,28 @@ GOmaps <- readMappings(file="/home/mae/Documents/RNASeq_Workshop_ND/gene2GO_PA42
 
 
 #Get module color list
-colorList = unique(moduleColors)
+colorList = unique(pTable$moduleColor)
 
 #Check the module of each gene
+moduleList <- data.frame(geneID=names(moduleLabels), color=moduleColors, number=unname(moduleLabels), stringsAsFactors=FALSE)
 DGE_results_table <- test.anov.Inter$table
-for(var in 1:nrow(DGE_results_table))
-{
-  for(var2 in 1:length(colorList))
-  {
-    if(rownames(DGE_results_table[var,]) %in% names(datExprInter)[moduleColors==colorList[var2]]){
-      DGE_results_table$color[var] <- colorList[var2]
-    } 
-  }
-}
-#Replace blanks with NA
-DGE_results_table[DGE_results_table == ""] <- "NA"
+DGE_results_table$geneID <- rownames(DGE_results_table)
+DGE_results_table <- merge(DGE_results_table, moduleList, by = c("geneID"), all = TRUE)
+
+#Replace NAs with 0s
+DGE_results_table[is.na(DGE_results_table)] <- 0
 
 #Create named list of all genes (gene universe) and p-values. The gene universe is set to be
 #the list of all genes contained in the gene2GO list of annotated genes.
-list_genes <- DGE_results_table$color
-list_genes <- setNames(list_genes, rownames(DGE_results_table))
+list_genes <- as.numeric(DGE_results_table$number)
+list_genes <- setNames(list_genes, DGE_results_table$geneID)
 list_genes_filtered <- list_genes[names(list_genes) %in% names(GOmaps)]
 
 #Create function to return list of interesting DE genes (0 == not significant, 1 == significant)
 get_interesting_DE_genes <- function(geneUniverse){
   interesting_DE_genes <- rep(0, length(geneUniverse))
   for(i in 1:length(geneUniverse)){
-    if(geneUniverse[i] == "brown"){
+    if(geneUniverse[i] == 1){
       interesting_DE_genes[i] = 1
     }
   }
@@ -130,8 +123,12 @@ MF_GO_results <- runTest(MF_GO_data, statistic = 'Fisher')
 CC_GO_results <- runTest(CC_GO_data, statistic = 'Fisher')
 
 #If you want to see names of GO terms (can filter for only significant ones if you want...etc.)
-#head(names(BP_GO_results@score))
-#geneData(BP_GO_results)
+head(names(BP_GO_results@score))
+geneData(BP_GO_results)
+head(names(MF_GO_results@score))
+geneData(MF_GO_results)
+head(names(CC_GO_results@score))
+geneData(CC_GO_results)
 
 #Visualization/plot stuff
 #Store p-values as named list... ('score(x)' or 'x@score' returns named list of p-val's 
@@ -141,7 +138,7 @@ pval_MF_GO <- score(MF_GO_results)
 pval_CC_GO <- score(CC_GO_results)
 
 #plot histogram to see range of p-values
-pdf(file="/home/mae/Documents/RNASeq_Workshop_ND/All_Genes_pValueRanges_OlympicsInteraction.pdf")
+pdf(file="effectSubsets_module1Ranges_OlympicsInteraction.pdf")
 par(mfrow=c(3, 1),mar=c(1,1,1,1))
 hist(pval_BP_GO, 35, xlab = "p-values", main = "Range of BP GO term p-values")
 hist(pval_MF_GO, 35, xlab = "p-values", main = "Range of MF GO term p-values")
@@ -170,7 +167,7 @@ BP_topSigGO_ID <- BP_GO_results_table[1, 'GO.ID']
 MF_topSigGO_ID <- MF_GO_results_table[1, 'GO.ID']
 CC_topSigGO_ID <- CC_GO_results_table[1, 'GO.ID']
 
-pdf(file="/home/mae/Documents/RNASeq_Workshop_ND/All_Genes_TopSigGO_Density_OlympicsInteraction.pdf")
+pdf(file="effectSubsets_module1TopSigGO_Density_OlympicsInteraction.pdf")
 showGroupDensity(BP_GO_data, whichGO = BP_topSigGO_ID, ranks = TRUE)
 showGroupDensity(MF_GO_data, whichGO = MF_topSigGO_ID, ranks = TRUE)
 showGroupDensity(CC_GO_data, whichGO = CC_topSigGO_ID, ranks = TRUE)
@@ -178,11 +175,11 @@ dev.off()
 
 #printGraph to plot subgraphs induced by the most significant GO terms...saves to a file
 printGraph(BP_GO_data, BP_GO_results, firstSigNodes = 5, 
-           fn.prefix = "/home/mae/Documents/RNASeq_Workshop_ND/all_genes_BP_GO_OlympicsInteraction", useInfo = "all", pdfSW = TRUE)
+           fn.prefix = "effectSubsets_module1Ranges_BP_GO_OlympicsInteraction", useInfo = "all", pdfSW = TRUE)
 printGraph(MF_GO_data, MF_GO_results, firstSigNodes = 5, 
-           fn.prefix = "/home/mae/Documents/RNASeq_Workshop_ND/all_genes_MF_GO_OlympicsInteraction", useInfo = "all", pdfSW = TRUE)
+           fn.prefix = "effectSubsets_module1Ranges_MF_GO_OlympicsInteraction", useInfo = "all", pdfSW = TRUE)
 printGraph(CC_GO_data, CC_GO_results, firstSigNodes = 5, 
-           fn.prefix = "/home/mae/Documents/RNASeq_Workshop_ND/all_genes_CC_GO_OlympicsInteraction", useInfo = "all", pdfSW = TRUE)
+           fn.prefix = "effectSubsets_module1Ranges_CC_GO_OlympicsInteraction", useInfo = "all", pdfSW = TRUE)
 
 #showGroupDensity for UV tolerance assocaited GO terms
 CC_DNA_repair_complex <- "GO:1990391"
@@ -193,7 +190,7 @@ BP_Cellular_response_DNA_damage_stimulus <- "GO:0006974"
 MF_Single_stranded_DNA_binding <- "GO:0003697"
 MF_Damaged_DNA_binding <- "GO:0003684"
 
-pdf(file="/home/mae/Documents/RNASeq_Workshop_ND/GSEA_UVT_OlympicsTolerance.pdf")
+pdf(file="effectSubsets_module1GSEA_UVT_OlympicsTolerance.pdf")
 showGroupDensity(CC_GO_data, whichGO = CC_DNA_repair_complex, ranks = TRUE)
 showGroupDensity(BP_GO_data, whichGO = BP_DNA_integrity_checkpoint, ranks = TRUE)
 showGroupDensity(BP_GO_data, whichGO = BP_Response_UV, ranks = TRUE)
