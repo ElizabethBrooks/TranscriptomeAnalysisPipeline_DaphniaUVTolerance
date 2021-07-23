@@ -14,4 +14,4 @@ geneCDSMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicReso
 annotations: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/AnnotationAnalysis
 geneSets: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_Results
 databases: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases
-geneCounts: /home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv
+geneCounts: /Users/bamflappy/PfrenderLab/PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv
