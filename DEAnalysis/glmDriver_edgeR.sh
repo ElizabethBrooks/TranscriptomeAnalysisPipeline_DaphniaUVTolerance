@@ -16,14 +16,18 @@ fi
 #Retrieve experimental design data path
 designPath="../InputData/expDesign_Olympics.csv"
 #Retrieve analysis inputs path
-inputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
-inFile="$inputsPath"/cleaned.csv
+inFile=$(grep "geneCounts:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneCounts://g")
 #Set FDR cut off
 fdrCut=0.10
 
 #Create directory for output files
-outDir="$inputsPath"/glm"$1"Analysis_FDR"$fdrCut"
+outDir="/Users/bamflappy/PfrenderLab/DEA_PA42_v4.1/glm"$1"Analysis_FDR"$fdrCut
 mkdir $outDir
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputsPath directory already exsists... please remove before proceeding."
+	exit 1
+fi
 
 #Determine analysis method
 if [[ "$1" == "LRT" ]]; then
@@ -40,7 +44,7 @@ fi
 #Move produced tables
 for f in *.csv; do
 	file="$f"
-	sed -i 's/"//g' "$file"
+	sed -i '' 's/"//g' "$file"
 	#Fix header
 	tail -n+2 "$file" > tmpTail.csv
 	head -1 "$file" | sed -e 's/^/gene,/' > tmpHeader.csv

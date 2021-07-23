@@ -1,26 +1,27 @@
 #if (!requireNamespace("BiocManager", quietly=TRUE))
 #  install.packages("BiocManager")
-#BiocManager::install("WGCNA")
+#BiocManager::install("edgeR")
 
 #Load the WGCNA and edgeR packages
 library(WGCNA);
-library("edgeR")
+#library("edgeR")
 
 #The following setting is important, do not omit.
 options(stringsAsFactors = FALSE);
 
 #Set working directory
-#workingDir = args[1];
-workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/effectSubsets"
+workingDir = args[1];
+#workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/effectSubsets"
 setwd(workingDir); 
 
 
 #Import gene count data
-#countsTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
-countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/cleaned.csv", row.names="gene", header=TRUE)[ ,1:24]
+countsTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
+#countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/cleaned.csv", row.names="gene", header=TRUE)[ ,1:24]
 
 #Import grouping factor
-targets <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_WGCNA_Olympics.csv", row.names="sample")
+targets <- read.csv(file=args[5], row.names="sample")
+#targets <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_WGCNA_Olympics.csv", row.names="sample")
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$tolerance,sep="."))
@@ -36,9 +37,12 @@ list <- calcNormFactors(list)
 countsTableNorm <- cpm(list, normalized.lib.sizes=TRUE)
 
 #Import DEGs
-geneCountsInter <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_interaction_topTags.csv")
-geneCountsTreat <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_UVvsVIS_topTags.csv")
-geneCountsTol <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_TvsN_topTags.csv")
+geneCountsInter <- read.csv(file=args[6])
+geneCountsTreat <- read.csv(file=args[7])
+geneCountsTol <- read.csv(file=args[8])
+#geneCountsInter <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_interaction_topTags.csv")
+#geneCountsTreat <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_UVvsVIS_topTags.csv")
+#geneCountsTol <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_TvsN_topTags.csv")
 SETInterIn <- geneCountsInter[,1]
 SETTreatIn <- geneCountsTreat[,1]
 SETTolIn <- geneCountsTol[,1]
@@ -49,12 +53,15 @@ normListTreat <- countsTableNorm[rownames(countsTableNorm) %in% SETTreatIn,]
 normListTol <- countsTableNorm[rownames(countsTableNorm) %in% SETTolIn,]
 
 #Import annotation data
-annotIn = read.csv(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts.csv", sep="\t");
-annotUniprot = read.csv(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts_uniprot.csv", sep="\t");
+annotIn = read.csv(file = args[9], sep="\t");
+annotUniprot = read.csv(file = args[10], sep="\t");
+#annotIn = read.csv(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts.csv", sep="\t");
+#annotUniprot = read.csv(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts_uniprot.csv", sep="\t");
 annot <- cbind(annotIn,annotUniprot)
 
 #Retrieve uniprot to enztrez ID mapping file
-annotMap = read.csv(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts_uniprotEntrezMap.csv", sep="\t");
+annotMap = read.csv(file = args[11], sep="\t");
+#annotMap = read.csv(file = "/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts_uniprotEntrezMap.csv", sep="\t");
 
 #Check if each uniprot ID has an entrez ID mapping
 for(var in 1:nrow(annot))
@@ -169,8 +176,8 @@ datExprTol = datExpr0Tol
 
 
 # remove columns that hold information we do not need.
-#allTraits = read.csv(args[5]);
-allTraits = read.csv("/home/mae/Documents/RNASeq_Workshop_ND/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_WGCNA_Olympics.csv");
+allTraits = read.csv(args[5]);
+#allTraits = read.csv("/home/mae/Documents/RNASeq_Workshop_ND/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_WGCNA_Olympics.csv");
 #dim(allTraits)
 #names(allTraits)
 
