@@ -4,10 +4,13 @@
 
 #Load the WGCNA and edgeR packages
 library(WGCNA);
-#library("edgeR")
+library("edgeR")
 
 #The following setting is important, do not omit.
 options(stringsAsFactors = FALSE);
+
+#Retrieve input file name of gene counts
+args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
 workingDir = args[1];
@@ -33,7 +36,6 @@ keep <- filterByExpr(list)
 list <- list[keep, , keep.lib.sizes=FALSE]
 #Use TMM normalization to eliminate composition biases between libraries
 list <- calcNormFactors(list)
-#Write normalized counts to file
 countsTableNorm <- cpm(list, normalized.lib.sizes=TRUE)
 
 #Import DEGs

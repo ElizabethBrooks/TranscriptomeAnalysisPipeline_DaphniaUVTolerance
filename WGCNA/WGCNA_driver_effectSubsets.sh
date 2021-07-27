@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to run Rscripts that perform DE analysis of gene count tables
-#Usage: bash WGCNA_driver_effectSubsets.sh countsFolder
-#Usage ex: bash WGCNA_driver_effectSubsets.sh sortedCoordinate_samtoolsHisat2_run3
+#Usage: bash WGCNA_driver_effectSubsets.sh
+#Usage ex: bash WGCNA_driver_effectSubsets.sh
 
 #Retrieve statistics outputs absolute path
 #outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
@@ -10,8 +10,7 @@
 
 #Set outputs path
 #outputsPath="$outputsPath"/WGCNA_results
-outputsPath="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1"
-outputsPath="$outputsPath"/effectSubsets
+outputsPath="/Users/bamflappy/PfrenderLab/WGCNA_PA42_v4.1"
 mkdir "$outputsPath"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -24,14 +23,14 @@ fi
 #cp "$grpFile" "$inputsPath"
 
 #Prepare inputs
-workingDir="/Users/bamflappy/PfrenderLab/WGCNA_PA42_v4.1"
+workingDir=$outputsPath
 countsTable="/Users/bamflappy/PfrenderLab/PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv"
 fromCol=1
 toCol=24
-targets="../InputData/expDesign_WGCNA_Olympics.csv"
+targets="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_WGCNA_Olympics.csv"
 geneCountsInter="/Users/bamflappy/PfrenderLab/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_interaction_topTags.csv"
-geneCountsTreat="/Users/bamflappy/PfrenderLab/PA42_v4.1/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_UVvsVIS_topTags.csv"
-geneCountsTol="/Users/bamflappy/PfrenderLab/PA42_v4.1/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_TvsN_topTags.csv"
+geneCountsTreat="/Users/bamflappy/PfrenderLab/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_UVvsVIS_topTags.csv"
+geneCountsTol="/Users/bamflappy/PfrenderLab/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_TvsN_topTags.csv"
 annotIn="/Users/bamflappy/PfrenderLab/PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts.csv"
 annotUniprot="/Users/bamflappy/PfrenderLab/PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts_uniprot.csv"
 annotMap="/Users/bamflappy/PfrenderLab/PA42_v4.1/trinotate_annotation_report_PA42_v4.1_transcripts_uniprotEntrezMap.csv"
