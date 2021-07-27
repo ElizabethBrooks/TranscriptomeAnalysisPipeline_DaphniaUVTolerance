@@ -1,3 +1,6 @@
+#Retrieve input file name of gene counts
+args = commandArgs(trailingOnly=TRUE)
+
 #Set working directory
 workingDir = args[1];
 #workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/effectSubsets"
