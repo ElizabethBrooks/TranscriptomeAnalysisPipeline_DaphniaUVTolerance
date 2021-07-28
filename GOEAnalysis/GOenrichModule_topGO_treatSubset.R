@@ -84,18 +84,18 @@ list_genes_filtered <- list_genes[names(list_genes) %in% names(GOmaps)]
 
 #Create data frame to hold the module number, color, total genes, significant genes, 
 # and top significant BP, MF, and CC GO terms
-moduleBPResults = data.frame(matrix(ncol = 10, nrow = highest))
+numMods <- length(unique(unname(moduleLabels)))+1
+moduleBPResults = data.frame(matrix(ncol = 10, nrow = numMods))
 colnames(moduleBPResults) <- c("number","color","total","sig","topID","topTerm","annotated","topSig","topExpected","topWeight")
-moduleMFResults = data.frame(matrix(ncol = 10, nrow = highest))
+moduleMFResults = data.frame(matrix(ncol = 10, nrow = numMods))
 colnames(moduleMFResults) <- c("number","color","total","sig","topID","topTerm","annotated","topSig","topExpected","topWeight")
-moduleCCResults = data.frame(matrix(ncol = 10, nrow = highest))
+moduleCCResults = data.frame(matrix(ncol = 10, nrow = numMods))
 colnames(moduleCCResults) <- c("number","color","total","sig","topID","topTerm","annotated","topSig","topExpected","topWeight")
 
 #Loop through each module
 lowest <- min(unique(unname(moduleLabels)))
-numMods <- highest
 var <- 0
-for(j in lowest:numMods){
+for(j in lowest:highest){
   #Create function to return list of interesting DE genes (0 == not significant, 1 == significant)
   get_interesting_DE_genes <- function(geneUniverse){
     interesting_DE_genes <- rep(0, length(geneUniverse))
@@ -142,7 +142,7 @@ for(j in lowest:numMods){
   
   #Summary BP functions
   moduleBPResults$number[var] <- j
-  if(j < numMods){
+  if(j < highest){
     moduleBPResults$color[var] <- head(moduleList[moduleList$number %in% j,2],1)
   }
   moduleBPResults$total[var] <- numGenes(BP_GO_data)
@@ -156,7 +156,7 @@ for(j in lowest:numMods){
   
   #Summary MF functions
   moduleMFResults$number[var] <- j
-  if(j < numMods){
+  if(j < highest){
     moduleMFResults$color[var] <- head(moduleList[moduleList$number %in% j,2],1)
   }
   moduleMFResults$total[var] <- numGenes(MF_GO_data)
@@ -170,7 +170,7 @@ for(j in lowest:numMods){
   
   #Summary CC functions
   moduleCCResults$number[var] <- j
-  if(j < numMods){
+  if(j < highest){
     moduleCCResults$color[var] <- head(moduleList[moduleList$number %in% j,2],1)
   }
   moduleCCResults$total[var] <- numGenes(CC_GO_data)
