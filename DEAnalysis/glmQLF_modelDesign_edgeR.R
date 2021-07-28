@@ -31,8 +31,8 @@ countsTable <- read.csv(file="/Users/bamflappy/PfrenderLab/PA42_v4.1/geneCounts_
 #head(countsTable)
 #Import grouping factor
 #targets <- read.csv(file=args[4], row.names="sample")
-targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_binned_Olympics.csv", row.names="sample")
-#targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_Olympics.csv", row.names="sample")
+#targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_binned_Olympics.csv", row.names="sample")
+targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_Olympics.csv", row.names="sample")
 #Retrieve input FDR cutoff
 #fdrCut=as.numeric(args[5])
 #fdrCut=0.10
@@ -87,22 +87,22 @@ plotMDS(list, col=colors[group], pch=points[group])
 #Define each treatment combination as a group
 #The experimental design is parametrized with a one-way layout, 
 # where one coefficient is assigned to each group
-#design <- model.matrix(~ 0 + group)
-#colnames(design) <- levels(group)
+design <- model.matrix(~ 0 + group)
+colnames(design) <- levels(group)
 #design
 
 
 #Nested interaction formula
 #Make sure that VIS is the reference level
-targets$treatment <- relevel(factor(targets$treatment), ref="VIS")
+#targets$treatment <- relevel(factor(targets$treatment), ref="VIS")
 #Form the design matrix to consider all the levels of genotype for each treatment
-design <- model.matrix(~treatment + treatment:genotype, data=targets)
+#design <- model.matrix(~treatment + treatment:genotype, data=targets)
 
 
 #Factorial model
 #Interaction at any time
 ##design <- model.matrix(~treatment * genotype, data=targets)
-design <- model.matrix(~treatment + genotype + treatment:genotype, data=targets)
+#design <- model.matrix(~treatment + genotype + treatment:genotype, data=targets)
 
 
 #Next, the NB dispersion is estimated
@@ -120,7 +120,28 @@ colnames(fit)
 
 
 #Make the desired contrasts
-#This is the baseline UV vs VIS comparison of treatment effect
-#qlf <- glmQLFTest(fit, coef=2)
+my.contrasts <- makeContrasts(
+  UVvsVIS.E05 = UV.E05-VIS.E05,
+  UVvsVIS.R2 = UV.R2-VIS.R2,
+  UVvsVIS.Y05 = UV.Y05-VIS.Y05,
+  UVvsVIS.Y023 = UV.Y023-VIS.Y023,
+  UVvsVIS.Y023 = UV.Y023-VIS.Y023,
+  levels=design)
 
+#Test E05 contrast baseline differences between the UV and the VIS
+qlf.E05 <- glmQLFTest(fit, contrast=my.contrasts[,"UVvsVIS.E05"])
+summary(decideTests(qlf.E05))
+plotMD(qlf.E05)
+#Test E05 contrast baseline differences between the UV and the VIS
+qlf.R2 <- glmQLFTest(fit, contrast=my.contrasts[,"UVvsVIS.R2"])
+summary(decideTests(qlf.R2))
+plotMD(qlf.R2)
+#Test E05 contrast baseline differences between the UV and the VIS
+qlf.Y05 <- glmQLFTest(fit, contrast=my.contrasts[,"UVvsVIS.Y05"])
+summary(decideTests(qlf.Y05))
+plotMD(qlf.Y05)
+#Test E05 contrast baseline differences between the UV and the VIS
+qlf.Y023 <- glmQLFTest(fit, contrast=my.contrasts[,"UVvsVIS.Y023"])
+summary(decideTests(qlf.Y023))
+plotMD(qlf.Y023)
 
