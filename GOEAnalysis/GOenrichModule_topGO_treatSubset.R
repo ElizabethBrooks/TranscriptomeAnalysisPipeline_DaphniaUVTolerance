@@ -52,15 +52,14 @@ list <- estimateDisp(list, design, robust=TRUE)
 #Estimate and plot the QL dispersions
 fit <- glmQLFit(list, design, robust=TRUE)
 
-#Test whether there is an interaction effect
-con.Inter <- makeContrasts(Inter = ((UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
-                                    - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4)
-                           - ((UV.Y05 + VIS.Y05 + UV.E05 + VIS.E05)/4
-                              - (UV.Y023 + VIS.Y023 + UV.R2 + VIS.R2)/4),
-                           levels=design)
+#Test whether the average across all UV groups is equal to the average across
+#all VIS groups, to examine the overall effect of treatment
+con.UVvsVIS <- makeContrasts(UVvsVIS = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
+                             - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4,
+                             levels=design)
 #Look at genes expressed across all UV groups using QL F-test
-test.anov.Inter <- glmQLFTest(fit, contrast=con.Inter)
-summary(decideTests(test.anov.Inter))
+test.anov.UVVIS <- glmQLFTest(fit, contrast=con.UVvsVIS)
+summary(decideTests(test.anov.UVVIS))
 
 
 #GO enrichment
@@ -69,12 +68,13 @@ GOmaps <- readMappings(file="/Users/bamflappy/PfrenderLab/PA42_v4.1/gene2GO_PA42
 
 #Match gene to its geneID, module color, and module number
 moduleList <- data.frame(geneID=names(moduleLabels), color=moduleColors, number=unname(moduleLabels), stringsAsFactors=FALSE)
-DGE_results_table <- test.anov.Inter$table
+DGE_results_table <- test.anov.UVVIS$table
 DGE_results_table$geneID <- rownames(DGE_results_table)
 DGE_results_table <- merge(DGE_results_table, moduleList, by = c("geneID"), all = TRUE)
 
-#Replace NAs with 0s
-DGE_results_table[is.na(DGE_results_table)] <- length(unique(unname(moduleLabels)))
+#Replace NAs with an unused module number
+highest <- max(unique(unname(moduleLabels)))+1
+DGE_results_table[is.na(DGE_results_table)] <- highest
 
 #Create named list of all genes (gene universe) and p-values. The gene universe is set to be
 #the list of all genes contained in the gene2GO list of annotated genes.
@@ -84,17 +84,18 @@ list_genes_filtered <- list_genes[names(list_genes) %in% names(GOmaps)]
 
 #Create data frame to hold the module number, color, total genes, significant genes, 
 # and top significant BP, MF, and CC GO terms
-numMods <- length(unique(unname(moduleLabels)))+1
-moduleBPResults = data.frame(matrix(ncol = 10, nrow = numMods))
+moduleBPResults = data.frame(matrix(ncol = 10, nrow = highest))
 colnames(moduleBPResults) <- c("number","color","total","sig","topID","topTerm","annotated","topSig","topExpected","topWeight")
-moduleMFResults = data.frame(matrix(ncol = 10, nrow = numMods))
+moduleMFResults = data.frame(matrix(ncol = 10, nrow = highest))
 colnames(moduleMFResults) <- c("number","color","total","sig","topID","topTerm","annotated","topSig","topExpected","topWeight")
-moduleCCResults = data.frame(matrix(ncol = 10, nrow = numMods))
+moduleCCResults = data.frame(matrix(ncol = 10, nrow = highest))
 colnames(moduleCCResults) <- c("number","color","total","sig","topID","topTerm","annotated","topSig","topExpected","topWeight")
 
-#Loop thrpugh each module
-numMods <- length(unique(unname(moduleLabels)))
-for(j in 0:numMods){
+#Loop through each module
+lowest <- min(unique(unname(moduleLabels)))
+numMods <- highest
+var <- 0
+for(j in lowest:numMods){
   #Create function to return list of interesting DE genes (0 == not significant, 1 == significant)
   get_interesting_DE_genes <- function(geneUniverse){
     interesting_DE_genes <- rep(0, length(geneUniverse))
@@ -137,11 +138,11 @@ for(j in 0:numMods){
                                   topNodes = length(list_CC_GO_terms))
   
   #Set row number
-  var <- j+1
+  var <- var+1
   
   #Summary BP functions
   moduleBPResults$number[var] <- j
-  if(var <= numMods){
+  if(j < numMods){
     moduleBPResults$color[var] <- head(moduleList[moduleList$number %in% j,2],1)
   }
   moduleBPResults$total[var] <- numGenes(BP_GO_data)
@@ -155,7 +156,7 @@ for(j in 0:numMods){
   
   #Summary MF functions
   moduleMFResults$number[var] <- j
-  if(var <= numMods){
+  if(j < numMods){
     moduleMFResults$color[var] <- head(moduleList[moduleList$number %in% j,2],1)
   }
   moduleMFResults$total[var] <- numGenes(MF_GO_data)
@@ -169,7 +170,7 @@ for(j in 0:numMods){
   
   #Summary CC functions
   moduleCCResults$number[var] <- j
-  if(var <= numMods){
+  if(j < numMods){
     moduleCCResults$color[var] <- head(moduleList[moduleList$number %in% j,2],1)
   }
   moduleCCResults$total[var] <- numGenes(CC_GO_data)
@@ -184,6 +185,6 @@ for(j in 0:numMods){
 
 
 #Write the resulting tables to files
-write.table(moduleBPResults, file="GOAnalysis/moduleTopGO_BPResults_treatSubset.csv", sep=",", row.names=TRUE)
-write.table(moduleMFResults, file="GOAnalysis/moduleTopGO_MFResults_treatSubset.csv", sep=",", row.names=TRUE)
-write.table(moduleCCResults, file="GOAnalysis/moduleTopGO_CCResults_treatSubset.csv", sep=",", row.names=TRUE)
+write.table(moduleBPResults, file="GOAnalysis/moduleTopGO_BPResults_treatSubset.csv", sep=",", row.names=FALSE)
+write.table(moduleMFResults, file="GOAnalysis/moduleTopGO_MFResults_treatSubset.csv", sep=",", row.names=FALSE)
+write.table(moduleCCResults, file="GOAnalysis/moduleTopGO_CCResults_treatSubset.csv", sep=",", row.names=FALSE)
