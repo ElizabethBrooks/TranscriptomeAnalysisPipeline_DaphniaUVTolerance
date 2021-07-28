@@ -17,9 +17,9 @@ workingDir="/Users/bamflappy/PfrenderLab/WGCNA_PA42_v4.1"
 setwd(workingDir); 
 
 # Load the expression and trait data saved in the first part
-#lnames1 = load(file = "PA42_v4.1_dataInputInter.RData");
+#lnames1 = load(file = "PA42_v4.1_dataInputTol.RData");
 # Load network data saved in the second part.
-lnames2 = load(file = "PA42_v4.1_networkConstructionInter_auto_threshold8_signed.RData");
+lnames2 = load(file = "PA42_v4.1_networkConstructionTol_auto_threshold8_signed.RData");
 
 
 #Import gene count data for the Olympics
@@ -52,16 +52,14 @@ list <- estimateDisp(list, design, robust=TRUE)
 #Estimate and plot the QL dispersions
 fit <- glmQLFit(list, design, robust=TRUE)
 
-#Test whether there is an interaction effect
-con.Inter <- makeContrasts(Inter = ((UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
-                                    - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4)
-                           - ((UV.Y05 + VIS.Y05 + UV.E05 + VIS.E05)/4
-                              - (UV.Y023 + VIS.Y023 + UV.R2 + VIS.R2)/4),
-                           levels=design)
+#Test whether the average across all tolerant groups is equal to the average across
+#all not tolerant groups, to examine the overall effect of tolerance
+con.TvsN <- makeContrasts(TvsN = (UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
+                          - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4,
+                          levels=design)
 #Look at genes expressed across all UV groups using QL F-test
-test.anov.Inter <- glmQLFTest(fit, contrast=con.Inter)
-summary(decideTests(test.anov.Inter))
-
+test.anov.TN <- glmQLFTest(fit, contrast=con.TvsN)
+summary(decideTests(test.anov.TN))
 
 #GO enrichment
 #Read in custom GO annotations
@@ -184,6 +182,6 @@ for(j in 0:numMods){
 
 
 #Write the resulting tables to files
-write.table(moduleBPResults, file="GOAnalysis/moduleTopGO_BPResults_interSubset.csv", sep=",", row.names=TRUE)
-write.table(moduleMFResults, file="GOAnalysis/moduleTopGO_MFResults_interSubset.csv", sep=",", row.names=TRUE)
-write.table(moduleCCResults, file="GOAnalysis/moduleTopGO_CCResults_interSubset.csv", sep=",", row.names=TRUE)
+write.table(moduleBPResults, file="GOAnalysis/moduleTopGO_BPResults_tolSubset.csv", sep=",", row.names=TRUE)
+write.table(moduleMFResults, file="GOAnalysis/moduleTopGO_MFResults_tolSubset.csv", sep=",", row.names=TRUE)
+write.table(moduleCCResults, file="GOAnalysis/moduleTopGO_CCResults_tolSubset.csv", sep=",", row.names=TRUE)
