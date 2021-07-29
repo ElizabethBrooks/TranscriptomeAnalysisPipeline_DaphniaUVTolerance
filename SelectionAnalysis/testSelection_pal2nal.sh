@@ -1,5 +1,5 @@
 #!/bin/bash
-bash testSelection_pal2nal.sh
+#bash testSelection_pal2nal.sh
 
 #Set software path
 softwarePath=$(grep "pal2nal:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/pal2nal://g")
