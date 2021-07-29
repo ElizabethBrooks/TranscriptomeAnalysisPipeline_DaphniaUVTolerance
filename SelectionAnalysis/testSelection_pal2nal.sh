@@ -26,11 +26,12 @@ testConNuc="/afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42_v4.1/so
 testRefNuc="/afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources_PA42_v4.1/decoded_transdecoder/transcripts_cufflinks.fa.transdecoder.cds"
 
 #prepare consensus test data files
-gTag="p_gene9-mRNA-1.p1"
+gTag="dp_gene9-mRNA-1.p1"
 tmpConNuc="$outPath"/tmpConNuc.fa.cds
 tmpConSeq="$outPath"/tmpConSeq.fa.cds
 cat "$testConNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpConNuc"
 grep "^>$gTag" "$tmpConNuc" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > "$tmpConSeq"
+echo "Test consensus sequence: "
 cat "$tmpConSeq"
 
 #prepare reference test data files
@@ -38,6 +39,7 @@ tmpRefNuc="$outPath"/tmpRefNuc.fa.cds
 tmpRefSeq="$outPath"/tmpRefSeq.fa.cds
 cat "$testRefNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRefNuc"
 grep "^>$gTag" "$tmpRefNuc" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$tmpRefSeq"
+echo "Test reference sequence: "
 cat "$tmpRefSeq"
 
 
