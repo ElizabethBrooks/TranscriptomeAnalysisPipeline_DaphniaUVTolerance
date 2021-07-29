@@ -43,11 +43,11 @@ cat "$tmpRefSeq"
 
 #Usage:  pal2nal.pl  pep.aln  nuc.fasta  [nuc.fasta...]  [options]
 cd "$softwarePath"
-pal2nal.pl "$inPath"/"$testAln" "$tmpConSeq" "$tmpRefSeq" -output paml  -nogap  >  for_paml/test.codon
+#pal2nal.pl "$inPath"/"$testAln" "$tmpConSeq" "$tmpRefSeq" -output paml  -nogap  >  for_paml/test.codon
+ls
 
 #Move to directory of inputs for codeml
 #cd for_paml
-ls for_paml
 
 #Run codeml to retrieve ka ks values
 #You can find the output of codeml in "test.codeml"
