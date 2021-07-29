@@ -9,7 +9,7 @@ inPath=$(grep "MSA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/MSA://g")
 inPath="$outPath"/daphniaMSA_PA42_v4.1_pep
 
 #Set outputs path
-outPath=$(grep "kaks:" ../InputData/outputPaths.txt | tr -d " " | sed "s/MSA://g")
+outPath=$(grep "kaks:" ../InputData/outputPaths.txt | tr -d " " | sed "s/kaks://g")
 outPath="$outPath"/daphniaKaks_PA42_v4.1_pep
 
 #Check if the folder already exists
