@@ -16,10 +16,14 @@ refPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed 
 refPath=$(dirname $refPath)
 refPath="$refPath"/"decoded_transdecoder"/transcripts_cufflinks.fa.transdecoder.pep
 
-#Prepare multiline pep fasta to retrieve seqs
+#Prepare reference multiline pep fasta to retrieve seqs
 colRefFile="$1"
 tmpRef="$colRefFile"_tmpPA42_v4.1.fasta
 cat "$refPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRef"
+
+#Prepare input multiline pep fasta
+tmpSample="$outPath"/"$colRefFile"_tmpInput.fasta
+cat "$inputsPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpSample"
 
 #Loop over all genes in the reference
 outPath=$(dirname $colRefFile)
@@ -33,8 +37,6 @@ while IFS= read -r line; do
 	echo "Generating MSA for $line..."
 
 	#Prepare multiline pep fasta to retrieve seqs
-	tmpSample="$outPath"/tmp_"$line".fasta
-	cat "$inputsPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpSample"
 	grep "^>$gTag" "$tmpSample" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> "$gFile"
 
 	#Create MSA
@@ -44,11 +46,9 @@ while IFS= read -r line; do
 	
 	#Output status message
 	echo "MSA created for $line: $mFile"
-
-	#Clean up
-	rm "$outPath"/tmp_"$line".fasta
 done < "$colRefFile"
 
 #Clean up
+rm "$tmpSample"
 rm "$tmpRef"
 rm "$colRefFile"
