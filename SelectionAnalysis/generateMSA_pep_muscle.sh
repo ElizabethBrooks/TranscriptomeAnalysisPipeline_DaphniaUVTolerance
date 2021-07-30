@@ -3,6 +3,8 @@
 #$ -m abe
 #$ -r n
 #$ -N generateMSA_pep_jobOutput
+#Usage: qsub generateMSA_pep_muscle.sh sequenceSubset sampleSet variantCallingDir
+#Usage ex: qsub generateMSA_pep_muscle.sh A sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
 
 #Load necessary modules
 module load bio
@@ -40,12 +42,14 @@ while IFS= read -r line; do
 	grep "^>$gTag" "$tmpSample" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> "$gFile"
 
 	#Create MSA
-	fTag=$(echo $line | sed "s/DASH/_/g" | sed "s/PERIOD/_/g")
-	mFile="$outPath"/"$fTag"_pep_allDaphnia_aligned.fasta
+	mFile="$outPath"/"$gTag"_pep_allDaphnia_aligned.fasta
 	muscle -in "$gFile" -out "$mFile"
 	
 	#Output status message
 	echo "MSA created for $line: $mFile"
+
+	#Generate ka ks values
+	bash testSelection_pal2nalCodeml.sh "$gTag" "$2" "$3"
 done < "$colRefFile"
 
 #Clean up
