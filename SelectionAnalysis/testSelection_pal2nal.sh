@@ -20,38 +20,57 @@ if [ $? -ne 0 ]; then
 fi
 
 
-#Retrieve test data
-testAln="dp_gene9_mRNA_1_p1_pep_allDaphnia_aligned.fasta"
-testConNuc="/afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42_v4.1/sortedCoordinate_samtoolsHisat2_run3/variantCallingBcftools_filteredMapQ/decoded_transdecoder/transcripts_cufflinks.fa.transdecoder.cds"
-testRefNuc="/afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources_PA42_v4.1/decoded_transdecoder/transcripts_cufflinks.fa.transdecoder.cds"
+#Retrieve input data
+inAln="dp_gene9_mRNA_1_p1_pep_allDaphnia_aligned.fasta"
+inConNuc="/afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42_v4.1/sortedCoordinate_samtoolsHisat2_run3/variantCallingBcftools_filteredMapQ/decoded_transdecoder/transcripts_cufflinks.fa.transdecoder.cds"
+inRefNuc="/afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/genomicResources_PA42_v4.1/decoded_transdecoder/transcripts_cufflinks.fa.transdecoder.cds"
 
-#prepare consensus test data files
+#Set genotype tag
 gTag="dp_gene9-mRNA-1.p1"
+
+#prepare consensus data files
 tmpConNuc="$outPath"/tmpConNuc.fa.cds
 tmpConSeq="$outPath"/tmpConSeq.fa.cds
-cat "$testConNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpConNuc"
+cat "$inConNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpConNuc"
 grep "^>$gTag" "$tmpConNuc" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > "$tmpConSeq"
+rm "$tmpConNuc"
 echo "Test consensus sequence: "
 cat "$tmpConSeq"
 
-#prepare reference test data files
+#prepare reference data files
 tmpRefNuc="$outPath"/tmpRefNuc.fa.cds
 tmpRefSeq="$outPath"/tmpRefSeq.fa.cds
-cat "$testRefNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRefNuc"
+cat "$inRefNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRefNuc"
 grep "^>$gTag" "$tmpRefNuc" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$tmpRefSeq"
+rm "$tmpRefNuc"
 echo "Test reference sequence: "
 cat "$tmpRefSeq"
 
+#Prepare tree file
+echo "(>PA42_v4.1_$gTag, >Olympics_$gTag);" > "$outPath"/"$gTag".tree
+cat "$outPath"/"$gTag".tree
+
+#Prepare control file
+cp "$softwarePath"/for_paml/test.cnt "$outPath"/"$gTag".cnt
+sed -i "s/test\.codon/$gTag\.codon/g" "$outPath"/"$gTag".cnt
+sed -i "s/test\.tree/$gTag\.tree/g" "$outPath"/"$gTag".cnt
+sed -i "s/test\.codeml/$gTag\.codeml/g" "$outPath"/"$gTag".cnt
+cat "$outPath"/"$gTag".cnt
 
 #Usage:  pal2nal.pl  pep.aln  nuc.fasta  [nuc.fasta...]  [options]
 cd "$softwarePath"
-#pal2nal.pl "$inPath"/"$testAln" "$tmpConSeq" "$tmpRefSeq" -output paml  -nogap  >  for_paml/test.codon
-ls
+pal2nal.pl "$inPath"/"$inAln" "$tmpConSeq" "$tmpRefSeq" -output paml  -nogap  >  "$outPath"/"$gTag".codon
+cat "$outPath"/"$gTag".codon
+
+#Clean up
+rm "$tmpConSeq"
+rm "$tmpRefSeq"
 
 #Move to directory of inputs for codeml
-#cd for_paml
+cd "$outPath"
 
 #Run codeml to retrieve ka ks values
-#You can find the output of codeml in "test.codeml"
+#You can find the output of codeml in the .codeml file
 #Ks, Ka values are very end of the output file
-#codeml  test.cnt
+codeml  "$gTag".cnt
+cat "$gTag".codeml
