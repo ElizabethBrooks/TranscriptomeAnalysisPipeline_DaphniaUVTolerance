@@ -1,6 +1,6 @@
 #!/bin/bash
 #Script to generate MSAs for each gene in the reference set of peptide sequences
-#Usage: bash generateMSADriver_pep_muscle.sh sampleSet
+#Usage: bash generateMSADriver_pep_muscle.sh sampleSet variantCallingDir
 #Usage ex: bash generateMSADriver_pep_muscle.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
 
 #Retrieve input absolute path
@@ -13,13 +13,21 @@ refPath=$(dirname $refPath)
 refPath="$refPath"/"decoded_transdecoder"/transcripts_cufflinks.fa.transdecoder.pep
 
 #Set outputs path
-outPath=$(grep "MSA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/MSA://g")
-outPath="$outPath"/daphniaMSA_PA42_v4.1_pep
-
+outDir=$(grep "MSA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/MSA://g")
+outPath="$outDir"/daphniaMSA_PA42_v4.1_pep
 #Check if the folder already exists
 mkdir "$outPath"
 if [ $? -ne 0 ]; then
 	echo "The $outPath directory already exsists... please remove before proceeding."
+	exit 1
+fi
+
+#Set results path
+resultsDir="$outDir"/daphniaKaks_PA42_v4.1_pep
+#Check if the folder already exists
+mkdir "$resultsDir"
+if [ $? -ne 0 ]; then
+	echo "The $resultsDir directory already exsists... please remove before proceeding."
 	exit 1
 fi
 
@@ -32,6 +40,13 @@ split -l 2000 "$outPath"/col1.txt "$outPath"/colRef
 #Generate MSAs for each segment
 for i in "$outPath"/colRef*; do
 	qsub generateMSA_pep_muscle.sh "$i" "$@"
+done
+
+#Save ka ks values to final results file
+resultsFile="$resultsDir"/PA42_v4.1_kaksResults.txt
+echo "t  S  N  dN/dS  dN  dS" > "$resultsFile"
+for i in "$resultsDir"/*.codeml; do
+	tail -1 "$i" >> "$resultsFile"
 done
 
 #Clean up
