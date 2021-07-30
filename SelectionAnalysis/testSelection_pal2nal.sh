@@ -1,6 +1,9 @@
 #!/bin/bash
 #bash testSelection_pal2nal.sh
 
+#Load necessary module
+module load bio
+
 #Set software path
 softwarePath=$(grep "pal2nal:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/pal2nal://g")
 
@@ -71,5 +74,5 @@ cd "$outPath"
 #Run codeml to retrieve ka ks values
 #You can find the output of codeml in the .codeml file
 #Ks, Ka values are very end of the output file
-"$softwarePath"/codeml  "$gTag".cnt
+codeml  "$gTag".cnt
 cat "$gTag".codeml
