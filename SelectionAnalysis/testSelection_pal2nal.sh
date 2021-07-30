@@ -58,8 +58,7 @@ sed -i "s/test\.codeml/$gTag\.codeml/g" "$outPath"/"$gTag".cnt
 cat "$outPath"/"$gTag".cnt
 
 #Usage:  pal2nal.pl  pep.aln  nuc.fasta  [nuc.fasta...]  [options]
-cd "$softwarePath"
-pal2nal.pl "$inPath"/"$inAln" "$tmpConSeq" "$tmpRefSeq" -output paml  -nogap  >  "$outPath"/"$gTag".codon
+"$softwarePath"/pal2nal.pl "$inPath"/"$inAln" "$tmpConSeq" "$tmpRefSeq" -output paml  -nogap  >  "$outPath"/"$gTag".codon
 cat "$outPath"/"$gTag".codon
 
 #Clean up
@@ -72,5 +71,5 @@ cd "$outPath"
 #Run codeml to retrieve ka ks values
 #You can find the output of codeml in the .codeml file
 #Ks, Ka values are very end of the output file
-codeml  "$gTag".cnt
+"$softwarePath"/codeml  "$gTag".cnt
 cat "$gTag".codeml
