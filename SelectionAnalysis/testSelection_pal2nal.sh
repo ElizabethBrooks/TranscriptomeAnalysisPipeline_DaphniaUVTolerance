@@ -6,7 +6,7 @@ softwarePath=$(grep "pal2nal:" ../InputData/softwarePaths.txt | tr -d " " | sed 
 
 #Set inputs path
 inPath=$(grep "MSA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/MSA://g")
-inPath="$outPath"/daphniaMSA_PA42_v4.1_pep
+inPath="$inPath"/daphniaMSA_PA42_v4.1_pep
 
 #Set outputs path
 outPath=$(grep "kaks:" ../InputData/outputPaths.txt | tr -d " " | sed "s/kaks://g")
