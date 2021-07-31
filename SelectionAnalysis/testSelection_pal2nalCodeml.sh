@@ -14,7 +14,7 @@ inPath="$inPath"/daphniaMSA_PA42_v4.1_pep
 
 #Set outputs path
 outPath=$(grep "kaks:" ../InputData/outputPaths.txt | tr -d " " | sed "s/kaks://g")
-outPath="$outPath"/daphniaKaks_PA42_v4.1_pep
+outPath="$outPath"/daphniaKaks_PA42_v4.1
 
 #Set genotype tag
 gTag="$1"
@@ -81,3 +81,7 @@ codeml  "$gTag".cnt
 #cat "$gTag".codeml
 echo "Values of ka and ks have been generated!"
 
+#Clean up
+rm "$outPath"/"$gTag".codon
+rm "$outPath"/"$gTag".tree
+rm "$outPath"/"$gTag".cnt

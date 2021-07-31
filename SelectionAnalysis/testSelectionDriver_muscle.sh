@@ -4,8 +4,8 @@
 #$ -r n
 #$ -N testSelection_jobOutput
 #Script to generate MSAs for each gene in the reference set of peptide sequences
-#Usage: bash testSelectionDriver_muscle.sh sampleSet variantCallingDir
-#Usage ex: bash testSelectionDriver_muscle.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
+#Usage: qsub testSelectionDriver_muscle.sh sampleSet variantCallingDir
+#Usage ex: qsub testSelectionDriver_muscle.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
 
 #Load necessary modules
 module load bio
@@ -30,7 +30,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #Set results path
-resultsDir="$outDir"/daphniaKaks_PA42_v4.1_pep
+resultsDir="$outDir"/daphniaKaks_PA42_v4.1
 #Check if the folder already exists
 mkdir "$resultsDir"
 if [ $? -ne 0 ]; then
@@ -55,7 +55,7 @@ tmpRef="$colRefFile"_tmpPA42_v4.1.fasta
 cat "$refPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRef"
 
 #Prepare input multiline pep fasta
-tmpSample="$outPath"/"$colRefFile"_tmpInput.fasta
+tmpSample="$colRefFile"_tmpInput.fasta
 cat "$inputsPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpSample"
 
 #Save ka ks values to final results file
@@ -96,3 +96,4 @@ done < "$colRefFile"
 rm "$tmpSample"
 rm "$tmpRef"
 rm "$colRefFile"
+rm -r "$outPath"
