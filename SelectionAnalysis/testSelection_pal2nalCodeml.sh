@@ -66,10 +66,6 @@ echo "Generating codon alignment for $gTag..."
 "$softwarePath"/pal2nal.pl "$inPath"/"$inAln" "$tmpConSeq" "$tmpRefSeq" -output paml  -nogap  >  "$outPath"/"$gTag".codon
 #cat "$outPath"/"$gTag".codon
 
-#Clean up
-rm "$tmpConSeq"
-rm "$tmpRefSeq"
-
 #Move to directory of inputs for codeml
 cd "$outPath"
 
@@ -82,6 +78,9 @@ codeml  "$gTag".cnt
 echo "Values of ka and ks have been generated!"
 
 #Clean up
+rm "$inAln"
+rm "$tmpConSeq"
+rm "$tmpRefSeq"
 rm "$outPath"/"$gTag".codon
 rm "$outPath"/"$gTag".tree
 rm "$outPath"/"$gTag".cnt
