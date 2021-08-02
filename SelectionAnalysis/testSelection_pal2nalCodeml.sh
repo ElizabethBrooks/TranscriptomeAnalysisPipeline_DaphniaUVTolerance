@@ -77,6 +77,10 @@ codeml  "$gTag".cnt
 #cat "$gTag".codeml
 echo "Values of ka and ks have been generated!"
 
+#Output ka ks values
+kaks=$(tail -1 "$gTag".codeml)
+echo "$gTag  $kaks" >> "$resultsFile"
+
 #Clean up
 rm "$inAln"
 rm "$tmpConSeq"
