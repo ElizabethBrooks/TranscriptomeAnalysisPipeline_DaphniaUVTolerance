@@ -77,7 +77,8 @@ codeml  "$gTag".cnt
 #cat "$gTag".codeml
 echo "Values of ka and ks have been generated!"
 
-#Output ka ks values
+#Save ka ks values to final results file
+resultsFile=PA42_v4.1_kaksResults.txt
 kaks=$(tail -1 "$gTag".codeml)
 echo "$gTag  $kaks" >> "$resultsFile"
 
