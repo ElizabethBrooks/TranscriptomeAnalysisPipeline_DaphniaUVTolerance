@@ -63,7 +63,7 @@ sed -i "s/test\.codeml/$gTag\.codeml/g" "$outPath"/"$gTag".cnt
 
 #Usage:  pal2nal.pl  pep.aln  nuc.fasta  [nuc.fasta...]  [options]
 echo "Generating codon alignment for $gTag..."
-"$softwarePath"/pal2nal.pl "$inPath"/"$inAln" "$tmpConSeq" "$tmpRefSeq" -output paml  -nogap  >  "$outPath"/"$gTag".codon
+"$softwarePath"/pal2nal.pl "$inAln" "$tmpConSeq" "$tmpRefSeq" -output paml  -nogap  >  "$outPath"/"$gTag".codon
 #cat "$outPath"/"$gTag".codon
 
 #Move to directory of inputs for codeml
