@@ -71,7 +71,7 @@ while IFS= read -r line; do
 	grep "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$gFile"
 	
 	#Output Status message
-	echo "Generating MSA for $line..."
+	echo "Generating MSA for $gTag..."
 
 	#Prepare multiline pep fasta to retrieve seqs
 	grep "^>$gTag" "$tmpSample" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> "$gFile"
@@ -81,15 +81,13 @@ while IFS= read -r line; do
 	muscle -in "$gFile" -out "$mFile"
 	
 	#Output status message
-	echo "MSA created for $line: $mFile"
+	echo "MSA created for $gTag: $mFile"
 
 	#Clean up
 	rm "$gFile"
 
 	#Generate and save ka ks values
 	bash testSelection_pal2nalCodeml.sh "$gTag" "$1" "$2"
-	kaks=$(tail -1 "$gTag".codeml)
-	echo "$gTag  $kaks" >> "$resultsFile"
 done < "$colRefFile"
 
 #Clean up
