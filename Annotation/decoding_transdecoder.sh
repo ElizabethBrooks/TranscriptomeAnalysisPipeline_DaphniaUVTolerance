@@ -121,27 +121,35 @@ cd "$outputFolder"
 inputOutFile=$(echo "$1" | sed s'/\//./g')
 inputOutFile="$outputFolder"/"$inputOutFile"_decoded_transdecoder_summary.txt
 
-#Generate your best candidate open rading frame (ORF) predictions
 #Generate candidate ORFs
 echo "Beginning transdecoder open reading frame predictions..."
-if [[ "$2" == "longest" || "$2" == "Longest" ]]; then
-	TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap" --single_best_only
-else
-	TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
-fi
-
+TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
 #Output run commands to summary file
 echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
 echo "Finished generating transdecoder open reading frame predictions!"
+
+#Generate your best candidate open rading frame (ORF) predictions
 echo "Beginning transdecoder coding region selection..."
 if [[ "$1" == PA42* || "$1" == sorted*  || "$1" == genome ]]; then
-	TransDecoder.Predict -t "$multiFASTA" --no_refine_starts
-	#Output run commands to summary file
-	echo "TransDecoder.Predict -t" "$multiFASTA" "--no_refine_starts" >> "$inputOutFile"
+	if [[ "$2" == "longest" || "$2" == "Longest" ]]; then
+		TransDecoder.Predict -t "$multiFASTA" --no_refine_starts --single_best_only
+		#Output run commands to summary file
+		echo "TransDecoder.Predict -t" "$multiFASTA" "--no_refine_starts --single_best_only" >> "$inputOutFile"
+	else
+		TransDecoder.Predict -t "$multiFASTA" --no_refine_starts
+		#Output run commands to summary file
+		echo "TransDecoder.Predict -t" "$multiFASTA" "--no_refine_starts" >> "$inputOutFile"
+	fi
 else
-	TransDecoder.Predict -t "$multiFASTA"
-	#Output run commands to summary file
-	echo "TransDecoder.Predict -t" "$multiFASTA" >> "$inputOutFile"
+	if [[ "$2" == "longest" || "$2" == "Longest" ]]; then
+		TransDecoder.Predict -t "$multiFASTA" --single_best_only
+		#Output run commands to summary file
+		echo "TransDecoder.Predict -t $multiFASTA --single_best_only" >> "$inputOutFile"
+	else
+		TransDecoder.Predict -t "$multiFASTA"
+		#Output run commands to summary file
+		echo "TransDecoder.Predict -t" "$multiFASTA" >> "$inputOutFile"
+	fi
 fi
 echo "Finished transdecoder coding region selection!"
 echo "Decoding complete!"
