@@ -12,7 +12,7 @@
 #Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_cds
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_transcripts
-#Usage ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
+#Usage ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run3/variantCallingBcftools_filteredMapQ longest
 #Usage ex: qsub decoding_transdecoder.sh genome
 
 #Load necessary modules for ND CRC servers
@@ -71,7 +71,7 @@ elif [[ "$1" == *transcripts ]]; then
 elif [[ "$1" == sorted* ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-	inputsPath="$inputsPath"/"$1"/"$2"/transcripts_cufflinks.fa
+	inputsPath="$inputsPath"/"$1"/transcripts_cufflinks.fa
 	#Set outputs absolute path
 	outputsPath=$(dirname $inputsPath)
 	#Retrieve genome reference and features paths
@@ -120,11 +120,16 @@ cd "$outputFolder"
 #Name output file of inputs
 inputOutFile=$(echo "$1" | sed s'/\//./g')
 inputOutFile="$outputFolder"/"$inputOutFile"_decoded_transdecoder_summary.txt
+
 #Generate your best candidate open rading frame (ORF) predictions
-echo "Beginning decoding..."
 #Generate candidate ORFs
 echo "Beginning transdecoder open reading frame predictions..."
-TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
+if [[ "$2" == "longest" || "$2" == "Longest" ]]; then
+	TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap" --single_best_only
+else
+	TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
+fi
+
 #Output run commands to summary file
 echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
 echo "Finished generating transdecoder open reading frame predictions!"
