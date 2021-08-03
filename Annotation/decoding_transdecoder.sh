@@ -13,7 +13,7 @@
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_cds
 #Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_transcripts
 #Usage ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run3/variantCallingBcftools_filteredMapQ longest
-#Usage ex: qsub decoding_transdecoder.sh genome
+#Usage ex: qsub decoding_transdecoder.sh genome longest
 
 #Load necessary modules for ND CRC servers
 module load bio
