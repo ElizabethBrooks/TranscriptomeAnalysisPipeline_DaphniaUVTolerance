@@ -59,8 +59,8 @@ tmpSample="$colRefFile"_tmpInput.fasta
 cat "$inputsPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpSample"
 
 #Save ka ks values to final results file
-resultsFile="$resultsDir"/PA42_v4.1_kaksResults.txt
-echo "geneID  t  S  N  dN/dS  dN  dS" > "$resultsFile"
+resultsFile="$resultsDir"/kaksResults.txt
+echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 
 #Loop over all genes in the reference
 outPath=$(dirname $colRefFile)
@@ -90,8 +90,13 @@ while IFS= read -r line; do
 	bash testSelection_pal2nalCodeml.sh "$gTag" "$1" "$2"
 done < "$colRefFile"
 
+#Fix formatting of the results file
+finalResults="$resultsDir"/PA42_v4.1_Olympics_kaksResults.txt
+cat "$resultsFile" | sed "s/  /,/g" | sed "s/=,/=/g" | sed "s/ //g" | sed "s/pairwisecomparison,codonfrequencies\:F3x4\./NA,NA,NA,NA,NA,NA/g" | sed "s/dN\/dS=//g" | sed "s/dN=//g" | sed "s/dS=//g" | sed "s/t=//g" | sed "s/S=//g" | sed "s/N=//g" > "$finalResults"
+
 #Clean up
 rm "$tmpSample"
 rm "$tmpRef"
 rm "$colRefFile"
 rm -r "$outPath"
+rm "$resultsFile"
