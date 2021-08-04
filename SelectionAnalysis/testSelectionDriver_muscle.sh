@@ -59,7 +59,7 @@ tmpSample="$colRefFile"_tmpInput.fasta
 cat "$inputsPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpSample"
 
 #Save ka ks values to final results file
-resultsFile="$resultsDir"/kaksResults.txt
+resultsFile="$resultsDir"/kaksResults.csv
 echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 
 #Loop over all genes in the reference
@@ -91,7 +91,7 @@ while IFS= read -r line; do
 done < "$colRefFile"
 
 #Fix formatting of the results file
-finalResults="$resultsDir"/PA42_v4.1_Olympics_kaksResults.txt
+finalResults="$resultsDir"/PA42_v4.1_Olympics_kaksResults.csv
 cat "$resultsFile" | sed "s/  /,/g" | sed "s/=,/=/g" | sed "s/ //g" | sed "s/pairwisecomparison,codonfrequencies\:F3x4\./NA,NA,NA,NA,NA,NA/g" | sed "s/dN\/dS=//g" | sed "s/dN=//g" | sed "s/dS=//g" | sed "s/t=//g" | sed "s/S=//g" | sed "s/N=//g" > "$finalResults"
 
 #Clean up
