@@ -10,14 +10,8 @@
 #Load necessary modules
 module load bio
 
-#Retrieve input absolute path
-inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-inputsPath="$inputsPath"/"$1"/"$2"
-inputsPath="$inputsPath"/"decoded_transdecoder"/transcripts_cufflinks.fa.transdecoder.pep
 #Retrieve genome reference absolute path
-refPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-refPath=$(dirname $refPath)
-refPath="$refPath"/"decoded_transdecoder"/transcripts_cufflinks.fa.transdecoder.pep
+refPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 
 #Set outputs path
 outDir=$(grep "MSA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/MSA://g")
@@ -38,25 +32,14 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-#Generate a list of all genes in the reference
-colRefFile="$outPath"/col1.txt
-grep ">" "$refPath" | cut -d" " -f1 | sed "s/-/DASH/g" | sed "s/\./PERIOD/g" | sed "s/>//g" > "$colRefFile"
-
-#Split the reference gene set into segments
-#split -l 2000 "$outPath"/col1.txt "$outPath"/colRef
-
-#Generate MSAs for each segment
-#for i in "$outPath"/colRef*; do
-#	qsub generateMSA_pep_muscle.sh "$i" "$@"
-#done
+#Retrieve a list of all genes in the reference
+colRefIn=$(grep "genePEPMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genePEPMap://g")
+colRefFile="$resultsDir"/tmpCol.fasta
+cat "$colRefIn" | cut -f2 > "$colRefFile"
 
 #Prepare reference multiline pep fasta to retrieve seqs
-tmpRef="$colRefFile"_tmpPA42_v4.1.fasta
+tmpRef="$resultsDir"/tmpPA42_v4.1.fasta
 cat "$refPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRef"
-
-#Prepare input multiline pep fasta
-tmpSample="$colRefFile"_tmpInput.fasta
-cat "$inputsPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpSample"
 
 #Save ka ks values to final results file
 resultsFile="$resultsDir"/kaksResults.csv
@@ -67,14 +50,14 @@ outPath=$(dirname $colRefFile)
 while IFS= read -r line; do
 	#Retrieve selected peptide sequences and convert back to multiline fasta format
 	gTag=$(echo $line | sed "s/DASH/-/g" | sed "s/PERIOD/\./g")
-	gFile="$outPath"/tmp_pep_allDaphnia_"$line".fasta
-	grep "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$gFile"
-	
-	#Output Status message
-	echo "Generating MSA for $gTag..."
 
 	#Prepare multiline pep fasta to retrieve seqs
-	grep "^>$gTag" "$tmpSample" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> "$gFile"
+	gFile="$outPath"/tmp_pep_allDaphnia_"$line".fasta
+	grep "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$gFile"
+	grep "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> "$gFile"
+
+	#Output Status message
+	echo "Generating MSA for $gTag..."
 
 	#Create MSA
 	mFile="$outPath"/"$gTag"_pep_allDaphnia_aligned.fasta

@@ -1,4 +1,5 @@
 #!/bin/bash
+#Script to run pal2nal and generate ka ks values
 #Usae: bash testSelection_pal2nal.sh genotypeTag sampleSet variantCallingDir
 #Usae ex: bash testSelection_pal2nal.sh dp_gene9-mRNA-1.p1 sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
 
