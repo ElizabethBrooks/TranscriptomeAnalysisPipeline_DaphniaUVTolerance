@@ -2,9 +2,12 @@
 #Script to generate the longest CDS from the PA42 v4.1 gff and reference fasta
 #Usage: bash generateLongestCDS.sh
 
+#Load necessary module
+module load bio
+
 #Retrieve input files
-inputFeat=$(grep "genomeFeatures:" ../InputData/outputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
-inputRef=$(grep "genomeReference:" ../InputData/outputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+inputFeat=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
+inputRef=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 
 #Set output file names
 outCDS=$(dirname "$inputRef")
