@@ -84,9 +84,13 @@ kaks=$(tail -1 "$gTag".codeml)
 echo "$gTag  $kaks" >> "$resultsFile"
 
 #Clean up
+rm rst
+rm rst1
+rm rub
 rm "$inAln"
 rm "$tmpConSeq"
 rm "$tmpRefSeq"
 rm "$outPath"/"$gTag".codon
 rm "$outPath"/"$gTag".tree
 rm "$outPath"/"$gTag".cnt
+
