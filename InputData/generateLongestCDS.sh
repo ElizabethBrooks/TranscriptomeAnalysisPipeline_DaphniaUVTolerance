@@ -35,15 +35,15 @@ echo "Writing longest CDS to file: $outLongCDS"
 while IFS= read -r line; do
     #Check if current gene has multiple CDS ORF
     gTag=">$line"
-    gLong="$gTag"
     gLen=0
+    gLong="$gTag"
     numCDS=$(grep -w "$gTag" "$tmpCDS" | wc -l)
     if [ $numCDS -gt 1 ]; then
         #Get the longest CDS
         for i in $(seq 1 $numCDS); do
             #Initialize variables
             cTag=$(grep -w "$gTag" "$tmpCDS" | head -$i | tail -1 | cut -d" " -f1)
-            cStart=$(grep -w "$gTag" "$tmpCDS" | head -$i | tail -1 | cut -d" " -f3 | cut -d ")" -f2 | cut -d "-" -f2)
+            cStart=$(grep -w "$gTag" "$tmpCDS" | head -$i | tail -1 | cut -d" " -f3 | cut -d ")" -f2 | cut -d "-" -f1)
             cEnd=$(grep -w "$gTag" "$tmpCDS" | head -$i | tail -1 | cut -d" " -f3 | cut -d ")" -f2 | cut -d "-" -f2)
             cLen=$(($cEnd-$cStart))
             #Keep the longest CDS
