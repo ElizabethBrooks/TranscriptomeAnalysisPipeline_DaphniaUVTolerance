@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to run pal2nal and generate ka ks values
 #Usae: bash testSelection_pal2nal.sh genotypeTag sampleSet variantCallingDir
-#Usae ex: bash testSelection_pal2nal.sh dp_gene9-mRNA-1.p1 sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
+#Usae ex: bash testSelection_pal2nal.sh dp_gene9 sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
 
 #Load necessary module
 module load bio
@@ -37,7 +37,7 @@ inRefNuc="$refPath"/PA42_v4.1_longest_cds.fa
 tmpConNuc="$outPath"/"$gTag"_tmpConNuc.fa.cds
 tmpConSeq="$outPath"/"$gTag"_tmpConSeq.fa.cds
 cat "$inConNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpConNuc"
-grep "^>$gTag" "$tmpConNuc" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > "$tmpConSeq"
+grep -w "^>$gTag" "$tmpConNuc" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > "$tmpConSeq"
 rm "$tmpConNuc"
 #echo "Test consensus sequence: "
 #cat "$tmpConSeq"
@@ -46,7 +46,7 @@ rm "$tmpConNuc"
 tmpRefNuc="$outPath"/"$gTag"_tmpRefNuc.fa.cds
 tmpRefSeq="$outPath"/"$gTag"_tmpRefSeq.fa.cds
 cat "$inRefNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRefNuc"
-grep "^>$gTag" "$tmpRefNuc" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$tmpRefSeq"
+grep -w "^>$gTag" "$tmpRefNuc" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$tmpRefSeq"
 rm "$tmpRefNuc"
 #echo "Test reference sequence: "
 #cat "$tmpRefSeq"
