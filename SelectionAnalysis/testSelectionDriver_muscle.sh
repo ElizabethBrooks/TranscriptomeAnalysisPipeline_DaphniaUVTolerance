@@ -34,7 +34,7 @@ fi
 
 #Retrieve a list of all genes in the reference
 colRefIn=$(grep "genePEPMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genePEPMap://g")
-colRefFile="$resultsDir"/tmpCol.fasta
+colRefFile="$resultsDir"/tmpCol.txt
 cat "$colRefIn" | cut -f2 > "$colRefFile"
 
 #Prepare reference multiline pep fasta to retrieve seqs
