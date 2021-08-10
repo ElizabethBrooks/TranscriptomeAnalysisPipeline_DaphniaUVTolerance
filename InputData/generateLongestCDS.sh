@@ -27,7 +27,7 @@ cat "$colRefIn" | cut -f1 > "$tmpList"
 
 #Loop over each gene and retain longest CDS for each
 outLongCDS="$outDir"/PA42_v4.1_longestCDS.fa
-rm "$outLongCDS"
+[ -f $outLongCDS ] && rm $outLongCDS
 while IFS= read -r line; do
     #Check if current gene has multiple CDS ORF
     gTag=">$line"
