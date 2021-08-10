@@ -1,17 +1,20 @@
 #!/bin/bash
 #Script to generate the longest CDS from the PA42 v4.1 gff and reference fasta
-#Usage: qsub generateLongestCDS.sh
+#Usage: qsub generateLongestCDS.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
 
 #Load necessary module
 module load bio
 
 #Retrieve input files
-inputFeat=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
-inputRef=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
+inputsPath="$inputsPath"/"$1"/"$2"
+type=$(echo "$2" | cut -d"_" -f2)
+inputRef="$inputsPath"/"$type"_consensus.fa
+inputFeat="$inputsPath"/"$type"_consensusFeatures.gff
 
 #Set output file names
 outDir=$(dirname "$inputRef")
-outCDS="$outDir"/PA42_v4.1_CDS.fa
+outCDS="$outDir"/Olympics_cds.fa
 
 #Retrieve CDS
 echo "Retrieving CDS..."
@@ -19,16 +22,16 @@ echo "Retrieving CDS..."
 gffread "$inputFeat" -g "$inputRef" -x "$outCDS" -W -F
 
 #Create single line CDS file
-tmpCDS="$outDir"/tmpPA42_v4.1_longestCDS.fa
+tmpCDS="$outDir"/tmpOlympics_cds.fa
 cat "$outCDS" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpCDS"
 
 #Get list of CDS tags
-tmpList="$outDir"/tmpPA42_v4.1_longestCDSList.txt
+tmpList="$outDir"/tmpOlympics_longest_cdsList.txt
 colRefIn=$(grep "genePEPMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genePEPMap://g")
 cat "$colRefIn" | cut -f1 > "$tmpList"
 
 #Loop over each gene and retain longest CDS for each
-outLongCDS="$outDir"/PA42_v4.1_longestCDS.fa
+outLongCDS="$outDir"/Olympics_longest_cds.fa
 [ -f $outLongCDS ] && rm $outLongCDS
 cLen=0
 echo "Writing longest CDS to file: $outLongCDS"
@@ -55,7 +58,7 @@ while IFS= read -r line; do
         done
     fi
     #Output longest CDS
-    grep -w "$gLong" "$tmpCDS" | sed 's/NEWLINE/\n/g' >> "$outLongCDS"
+    grep -w "$gLong" "$tmpCDS" | sed 's/NEWLINE/\n/g' | sed "s/loc:scaffold_.*//g" | sed "s/ gene=.*//g" >> "$outLongCDS"
 done < "$tmpList"
 echo "File with longest CDS has been generated!"
 
