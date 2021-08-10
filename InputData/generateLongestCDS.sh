@@ -43,8 +43,8 @@ while IFS= read -r line; do
         for i in $(seq 1 $numCDS); do
             #Initialize variables
             cTag=$(grep -w "$gTag" "$tmpCDS" | head -$i | tail -1 | cut -d" " -f1)
-            cStart=$(grep -w "$gTag" "$tmpCDS" | head -$i | tail -1 | cut -d" " -f3 | cut -d ")" -f2 | cut -d "-" -f1)
-            cEnd=$(grep -w "$gTag" "$tmpCDS" | head -$i | tail -1 | cut -d" " -f3 | cut -d ")" -f2 | cut -d "-" -f2)
+            cStart=$(grep -w "$gTag" "$tmpCDS" | head -$i | tail -1 | grep "loc:scaffold_*" | sed "s/segs:.*//g" | sed "s/^>.*)//g" | cut -d "-" -f1)
+            cEnd=$(grep -w "$gTag" "$tmpCDS" | head -$i | tail -1 | grep "loc:scaffold_*" | sed "s/segs:.*//g" | sed "s/^>.*)//g"| cut -d "-" -f2)
             cLen=$(($cEnd-$cStart))
             #Keep the longest CDS
             if [ $cLen -gt $gLen ]; then
