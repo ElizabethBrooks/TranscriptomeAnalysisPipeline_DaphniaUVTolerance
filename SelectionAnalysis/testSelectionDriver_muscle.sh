@@ -34,7 +34,7 @@ fi
 
 #Retrieve a list of all genes in the reference
 colRefIn=$(grep "genePEPMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genePEPMap://g")
-colRefFile="$resultsDir"/tmpCol.txt
+colRefFile="$outPath"/tmpCol.txt
 cat "$colRefIn" | cut -f1 > "$colRefFile"
 
 #Prepare reference multiline pep fasta to retrieve seqs
@@ -46,7 +46,6 @@ resultsFile="$resultsDir"/kaksResults.csv
 echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 
 #Loop over all genes in the reference
-outPath=$(dirname $colRefFile)
 while IFS= read -r line; do
 	#Retrieve selected peptide sequences and convert back to multiline fasta format
 	gTag="$line"
