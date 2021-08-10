@@ -21,7 +21,7 @@ tmpCDS="$outDir"/tmpPA42_v4.1_longestCDS.fa
 cat "$outCDS" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpCDS"
 
 #Get list of CDS tags
-tmpList="$outDir"/tmpPA42_v4.1_longestCDSList.fa
+tmpList="$outDir"/tmpPA42_v4.1_longestCDSList.txt
 colRefIn=$(grep "genePEPMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genePEPMap://g")
 cat "$colRefIn" | cut -f1 > "$tmpList"
 
