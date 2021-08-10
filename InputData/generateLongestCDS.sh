@@ -23,7 +23,7 @@ cat "$outCDS" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpC
 #Get list of CDS tags
 tmpList="$outDir"/tmpPA42_v4.1_longestCDSList.fa
 colRefIn=$(grep "genePEPMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genePEPMap://g")
-cat "$colRefIn" | cut -f1 > "$colRefIn"
+cat "$colRefIn" | cut -f1 > "$tmpList"
 
 #Loop over each gene and retain longest CDS for each
 outLongCDS="$outDir"/PA42_v4.1_longestCDS.fa
