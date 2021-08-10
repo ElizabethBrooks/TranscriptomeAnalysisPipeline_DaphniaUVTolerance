@@ -5,10 +5,10 @@
 ref=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 path=$(dirname $ref)
 
-grep ">" "$path" | sed "s/-pep//g" | sed "s/>//g" > "$path"/col1.txt
+grep ">" "$ref" | sed "s/-pep//g" | sed "s/>//g" > "$path"/col1.txt
 tr -d "\n\r" < "$path"/col1.txt | sed "s/dp\_gene/\ndp\_gene/g" > "$path"/col1_cleaned.txt
 
-grep ">" "$path" | sed "s/>//g" > "$path"/col2.txt
+grep ">" "$ref" | sed "s/>//g" > "$path"/col2.txt
 tr -d "\n\r" < "$path"/col2.txt | sed "s/dp\_gene/\ndp\_gene/g" > "$path"/col2_cleaned.txt
 
 paste "$path"/col1_cleaned.txt "$path"/col2_cleaned.txt > "$path"/cols_merged.txt
