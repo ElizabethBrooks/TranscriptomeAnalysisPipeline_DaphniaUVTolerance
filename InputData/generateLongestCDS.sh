@@ -41,7 +41,7 @@ while IFS= read -r line; do
             cTag=$(grep -w "$gTag" "$tmpCDS" | head -$i | tail -1 | cut -d" " -f1)
             cStart=$(grep -w "$cTag" "$tmpCDS" | head -$i | tail -1 | cut -d" " -f3 | cut -d ")" -f2 | cut -d "-" -f2)
             cEnd=$(grep -w "$cTag" "$tmpCDS" | head -$i | tail -1 | cut -d" " -f3 | cut -d ")" -f2 | cut -d "-" -f2)
-            cLen=$(($gEnd-$gStart))
+            cLen=$(($cEnd-$cStart))
             #Keep the longest CDS
             if [ $cLen -gt $gLen ]; then
                 gLen=$cLen
