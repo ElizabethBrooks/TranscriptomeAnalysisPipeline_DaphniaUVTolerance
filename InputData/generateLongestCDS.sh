@@ -28,11 +28,14 @@ cat "$colRefIn" | cut -f1 > "$tmpList"
 #Loop over each gene and retain longest CDS for each
 outLongCDS="$outDir"/PA42_v4.1_longestCDS.fa
 [ -f $outLongCDS ] && rm $outLongCDS
+cLen=0
 while IFS= read -r line; do
     #Check if current gene has multiple CDS ORF
     gTag=">$line"
+    gLen=0
     numCDS=$(grep -w "$gTag" "$tmpCDS" | wc -l)
-    if [[ $numCDS > 1 ]]; then
+    echo "$gTag $numCDS"
+    if [ $numCDS -gt 1 ]; then
         #Get the length of each CDS
         for i in $(seq 1 $numCDS); do
             #Initialize variables
@@ -41,17 +44,15 @@ while IFS= read -r line; do
             cEnd=$(grep -w "$cTag" "$tmpCDS" | head -$i | tail -1 | cut -d" " -f3 | cut -d ")" -f2 | cut -d "-" -f2)
             cLen=$(($gEnd-$gStart))
             #Keep the longest CDS
-            if [[ $cLen > $gLen ]]; then
+            if [ $cLen -gt $gLen ]; then
                 gLen=$cLen
-                gLong="$cTag"
+                gTag="$cTag"
             fi
             cLen=0
         done
     fi
     #Output longest CDS
-    grep -w "$gLong" "$tmpCDS" | sed 's/NEWLINE/\n/g' >> "$outLongCDS"
-    gLen=0
-    gLong="PLACEHOLDER"
+    grep -w "$gTag" "$tmpCDS" | sed 's/NEWLINE/\n/g' >> "$outLongCDS"
 done < "$tmpList"
 
 #Clean up
