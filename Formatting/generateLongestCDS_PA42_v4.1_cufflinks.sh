@@ -1,6 +1,6 @@
 #!/bin/bash
 #Script to generate the longest CDS from the PA42 v4.1 gff and reference fasta
-#Usage: qsub generateLongestCDS.sh
+#Usage: qsub generateLongestCDS_PA42_v4.1_cufflinks.sh.sh
 
 #Load necessary module
 module load bio

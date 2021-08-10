@@ -35,7 +35,7 @@ fi
 #Retrieve a list of all genes in the reference
 colRefIn=$(grep "genePEPMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genePEPMap://g")
 colRefFile="$resultsDir"/tmpCol.txt
-cat "$colRefIn" | cut -f2 > "$colRefFile"
+cat "$colRefIn" | cut -f1 > "$colRefFile"
 
 #Prepare reference multiline pep fasta to retrieve seqs
 tmpRef="$resultsDir"/tmpPA42_v4.1.fasta
@@ -49,12 +49,12 @@ echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 outPath=$(dirname $colRefFile)
 while IFS= read -r line; do
 	#Retrieve selected peptide sequences and convert back to multiline fasta format
-	gTag=$(echo $line | sed "s/DASH/-/g" | sed "s/PERIOD/\./g")
+	gTag="$line"
 
 	#Prepare multiline pep fasta to retrieve seqs
 	gFile="$outPath"/tmp_pep_allDaphnia_"$line".fasta
-	grep "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$gFile"
-	grep "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> "$gFile"
+	grep -w "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$gFile"
+	grep -w "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> "$gFile"
 
 	#Output Status message
 	echo "Generating MSA for $gTag..."
