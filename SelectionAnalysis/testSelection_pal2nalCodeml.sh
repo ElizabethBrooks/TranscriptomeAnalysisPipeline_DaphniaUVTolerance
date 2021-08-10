@@ -26,12 +26,12 @@ inAln="$inPath"/"$gTag"_pep_allDaphnia_aligned.fasta
 #Retrieve input consensus cds
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsPath="$inputsPath"/"$2"/"$3"
-inConNuc="$inputsPath"/decoded_transdecoder/transcripts_cufflinks.fa.transdecoder.cds
+inConNuc="$inputsPath"/Olympics_longest_cds.fa
 
 #Retrieve input reference cds
 refPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 refPath=$(dirname $refPath)
-inRefNuc="$refPath"/decoded_transdecoder/transcripts_cufflinks.fa.transdecoder.cds
+inRefNuc="$refPath"/PA42_v4.1_longest_cds.fa
 
 #prepare consensus data files
 tmpConNuc="$outPath"/"$gTag"_tmpConNuc.fa.cds
