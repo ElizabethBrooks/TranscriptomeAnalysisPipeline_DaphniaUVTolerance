@@ -13,7 +13,7 @@ inputRef="$inputsPath"/"$type"_consensus.fa
 inputFeat="$inputsPath"/"$type"_consensusFeatures.gff
 
 #Set output file names
-outDir=$(dirname "$inputRef")
+outDir="$inputsPath"
 outCDS="$outDir"/Olympics_cds.fa
 
 #Retrieve CDS
