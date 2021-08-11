@@ -12,5 +12,5 @@ library(seqinr)
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 
-realcds <- read.fasta(file = system.file(args[1], package ="seqinr"))[[1]]
-translate(seq = realcds)
+realcds <- read.fasta(file=args[1])[[1]]
+translate(seq=realcds)
