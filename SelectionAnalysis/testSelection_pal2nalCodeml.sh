@@ -33,39 +33,55 @@ refPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed 
 refPath=$(dirname $refPath)
 inRefNuc="$refPath"/PA42_v4.1_longest_cds.fa
 
-#prepare consensus data files
-tmpConNuc="$outPath"/"$gTag"_tmpConNuc.fa.cds
+#Prepare single line consensus data file
 tmpConSeq="$outPath"/"$gTag"_tmpConSeq.fa.cds
-cat "$inConNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpConNuc"
-grep -w "^>$gTag" "$tmpConNuc" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > "$tmpConSeq"
-rm "$tmpConNuc"
-#echo "Test consensus sequence: "
-#cat "$tmpConSeq"
+tmpConNuc="$outPath"/"$gTag"_tmpConNuc.fa.cds
+tmpConPep="$outPath"/"$gTag"_tmpConPep.fa.pep
+cat "$inConNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpConSeq"
+#Retrieve consensus CDS
+grep -w "^>$gTag" "$tmpConSeq" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > "$tmpConNuc"
+rm "$tmpConSeq"
+#Translate consensus CDS to pep
+echo ">$gTag" > "$tmpConPep"
+Rscript translateCDS_seqinr.r "$tmpConNuc" >> "$tmpConPep"
 
-#prepare reference data files
-tmpRefNuc="$outPath"/"$gTag"_tmpRefNuc.fa.cds
+#Prepare single line reference data file
 tmpRefSeq="$outPath"/"$gTag"_tmpRefSeq.fa.cds
-cat "$inRefNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRefNuc"
-grep -w "^>$gTag" "$tmpRefNuc" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$tmpRefSeq"
-rm "$tmpRefNuc"
-#echo "Test reference sequence: "
-#cat "$tmpRefSeq"
+tmpRefNuc="$outPath"/"$gTag"_tmpRefNuc.fa.cds
+tmpRefPep="$outPath"/"$gTag"_tmpRefPep.fa.pep
+cat "$inRefNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRefSeq"
+#Retrieve reference CDS
+grep -w "^>$gTag" "$tmpRefSeq" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$tmpRefNuc"
+rm "$tmpRefSeq"
+#Translate reference CDS to pep
+echo ">$gTag" > "$tmpRefPep"
+Rscript translateCDS_seqinr.r "$tmpRefNuc" >> "$tmpRefPep"
+
+#Output Status message
+echo "Generating MSA for $gTag..."
+
+#Create MSA
+mFile="$outPath"/"$gTag"_pep_allDaphnia_aligned.fasta
+muscle -in "$gFile" -out "$mFile"
+	
+#Output status message
+echo "MSA created for $gTag: $mFile"
+
+#Clean up
+rm "$gFile"
 
 #Prepare tree file
 echo "(>PA42_v4.1_$gTag, >Olympics_$gTag);" > "$outPath"/"$gTag".tree
-#cat "$outPath"/"$gTag".tree
 
 #Prepare control file
 cp "$softwarePath"/for_paml/test.cnt "$outPath"/"$gTag".cnt
 sed -i "s/test\.codon/$gTag\.codon/g" "$outPath"/"$gTag".cnt
 sed -i "s/test\.tree/$gTag\.tree/g" "$outPath"/"$gTag".cnt
 sed -i "s/test\.codeml/$gTag\.codeml/g" "$outPath"/"$gTag".cnt
-#cat "$outPath"/"$gTag".cnt
 
 #Usage:  pal2nal.pl  pep.aln  nuc.fasta  [nuc.fasta...]  [options]
 echo "Generating codon alignment for $gTag..."
 "$softwarePath"/pal2nal.pl "$inAln" "$tmpConSeq" "$tmpRefSeq" -output paml  -nogap  >  "$outPath"/"$gTag".codon
-#cat "$outPath"/"$gTag".codon
 
 #Move to directory of inputs for codeml
 cd "$outPath"
@@ -75,7 +91,6 @@ cd "$outPath"
 #Ks, Ka values are very end of the output file
 echo "Generating ka ks values for $gTag..."
 codeml  "$gTag".cnt
-#cat "$gTag".codeml
 echo "Values of ka and ks have been generated!"
 
 #Save ka ks values to final results file
@@ -84,13 +99,13 @@ kaks=$(tail -1 "$gTag".codeml)
 echo "$gTag  $kaks" >> "$resultsFile"
 
 #Clean up
-rm rst
-rm rst1
-rm rub
+[ -f "rst" ] && rm "rst"
+[ -f "rst1" ] && rm "rst1"
+[ -f "rub" ] && rm "rub"
 rm "$inAln"
 rm "$tmpConSeq"
 rm "$tmpRefSeq"
-rm "$outPath"/"$gTag".codon
-rm "$outPath"/"$gTag".tree
-rm "$outPath"/"$gTag".cnt
+rm "$gTag".codon
+rm "$gTag".tree
+rm "$gTag".cnt
 
