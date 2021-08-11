@@ -106,8 +106,8 @@ echo "$gTag  $kaks" >> "$resultsFile"
 [ -f "rst1" ] && rm "rst1"
 [ -f "rub" ] && rm "rub"
 rm "$inAln"
-rm "$tmpConSeq"
-rm "$tmpRefSeq"
+rm "$tmpConNuc"
+rm "$tmpRefNuc"
 rm "$gTag".codon
 rm "$gTag".tree
 rm "$gTag".cnt
