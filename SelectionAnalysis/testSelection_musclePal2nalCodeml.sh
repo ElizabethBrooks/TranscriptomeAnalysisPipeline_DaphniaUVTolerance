@@ -34,6 +34,9 @@ refPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed 
 refPath=$(dirname $refPath)
 inRefNuc="$refPath"/PA42_v4.1_longest_cds.fa
 
+#Move to directory with translation script
+cd ../Formatting
+
 #Prepare single line consensus data file
 tmpConSeq="$outPath"/"$gTag"_tmpConSeq.fa.cds
 tmpConNuc="$outPath"/"$gTag"_tmpConNuc.fa.cds
