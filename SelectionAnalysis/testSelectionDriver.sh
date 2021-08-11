@@ -4,8 +4,8 @@
 #$ -r n
 #$ -N testSelection_jobOutput
 #Script to generate MSAs for each gene in the reference set of peptide sequences
-#Usage: qsub testSelectionDriver_muscle.sh sampleSet variantCallingDir
-#Usage ex: qsub testSelectionDriver_muscle.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
+#Usage: qsub testSelectionDriver.sh sampleSet variantCallingDir
+#Usage ex: qsub testSelectionDriver.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
 
 #Load necessary modules
 module load bio
