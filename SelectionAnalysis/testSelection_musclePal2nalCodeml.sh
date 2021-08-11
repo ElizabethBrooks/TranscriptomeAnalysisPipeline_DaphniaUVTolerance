@@ -21,7 +21,7 @@ outPath="$outPath"/daphniaKaks_PA42_v4.1
 gTag="$1"
 
 #Prepare pep files
-gFile="$outPath"/tmp_pep_allDaphnia_"$line".fasta
+gFile="$outPath"/tmp_pep_allDaphnia_"$gTag".fasta
 inAln="$inPath"/"$gTag"_pep_allDaphnia_aligned.fasta
 
 #Retrieve input consensus cds
@@ -37,17 +37,6 @@ inRefNuc="$refPath"/PA42_v4.1_longest_cds.fa
 #Move to directory with translation script
 cd ../Formatting
 
-#Prepare single line consensus data file
-tmpConSeq="$outPath"/"$gTag"_tmpConSeq.fa.cds
-tmpConNuc="$outPath"/"$gTag"_tmpConNuc.fa.cds
-cat "$inConNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpConSeq"
-#Retrieve consensus CDS
-grep -w "^>$gTag" "$tmpConSeq" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > "$tmpConNuc"
-rm "$tmpConSeq"
-#Translate consensus CDS to pep
-echo ">$gTag" > "$gFile"
-Rscript translateCDS_seqinr.r "$tmpConNuc" >> "$gFile"
-
 #Prepare single line reference data file
 tmpRefSeq="$outPath"/"$gTag"_tmpRefSeq.fa.cds
 tmpRefNuc="$outPath"/"$gTag"_tmpRefNuc.fa.cds
@@ -56,8 +45,19 @@ cat "$inRefNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tm
 grep -w "^>$gTag" "$tmpRefSeq" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$tmpRefNuc"
 rm "$tmpRefSeq"
 #Translate reference CDS to pep
-echo ">$gTag" >> "$gFile"
+echo ">PA42_v4.1_$gTag" > "$gFile"
 Rscript translateCDS_seqinr.r "$tmpRefNuc" >> "$gFile"
+
+#Prepare single line consensus data file
+tmpConSeq="$outPath"/"$gTag"_tmpConSeq.fa.cds
+tmpConNuc="$outPath"/"$gTag"_tmpConNuc.fa.cds
+cat "$inConNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpConSeq"
+#Retrieve consensus CDS
+grep -w "^>$gTag" "$tmpConSeq" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > "$tmpConNuc"
+rm "$tmpConSeq"
+#Translate consensus CDS to pep
+echo ">Olympics_$gTag" >> "$gFile"
+Rscript translateCDS_seqinr.r "$tmpConNuc" >> "$gFile"
 
 #Output Status message
 echo "Generating MSA for $gTag..."
@@ -82,7 +82,7 @@ sed -i "s/test\.codeml/$gTag\.codeml/g" "$outPath"/"$gTag".cnt
 
 #Usage:  pal2nal.pl  pep.aln  nuc.fasta  [nuc.fasta...]  [options]
 echo "Generating codon alignment for $gTag..."
-"$softwarePath"/pal2nal.pl "$inAln" "$tmpConSeq" "$tmpRefSeq" -output paml  -nogap  >  "$outPath"/"$gTag".codon
+"$softwarePath"/pal2nal.pl "$inAln" "$tmpConNuc" "$tmpRefNuc" -output paml  -nogap  >  "$outPath"/"$gTag".codon
 
 #Move to directory of inputs for codeml
 cd "$outPath"
