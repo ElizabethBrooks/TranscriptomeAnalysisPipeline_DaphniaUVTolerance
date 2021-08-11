@@ -47,6 +47,7 @@ rm "$tmpRefSeq"
 #Translate reference CDS to pep
 echo ">PA42_v4.1_$gTag" > "$gFile"
 Rscript translateCDS_seqinr.r "$tmpRefNuc" >> "$gFile"
+echo "" >> "$gFile"
 
 #Prepare single line consensus data file
 tmpConSeq="$outPath"/"$gTag"_tmpConSeq.fa.cds
@@ -58,6 +59,7 @@ rm "$tmpConSeq"
 #Translate consensus CDS to pep
 echo ">Olympics_$gTag" >> "$gFile"
 Rscript translateCDS_seqinr.r "$tmpConNuc" >> "$gFile"
+echo "" >> "$gFile"
 
 #Output Status message
 echo "Generating MSA for $gTag..."
