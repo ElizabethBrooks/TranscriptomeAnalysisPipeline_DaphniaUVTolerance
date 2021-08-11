@@ -11,7 +11,7 @@
 module load bio
 
 #Retrieve genome reference absolute path
-refPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
+#refPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 
 #Set outputs path
 outDir=$(grep "MSA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/MSA://g")
@@ -38,8 +38,8 @@ colRefFile="$outPath"/tmpCol.txt
 cat "$colRefIn" | cut -f1 > "$colRefFile"
 
 #Prepare reference multiline pep fasta to retrieve seqs
-tmpRef="$resultsDir"/tmpPA42_v4.1.fasta
-cat "$refPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRef"
+#tmpRef="$resultsDir"/tmpPA42_v4.1.fasta
+#cat "$refPath" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRef"
 
 #Save ka ks values to final results file
 resultsFile="$resultsDir"/kaksResults.csv
@@ -51,25 +51,25 @@ while IFS= read -r line; do
 	gTag="$line"
 
 	#Prepare multiline pep fasta to retrieve seqs
-	gFile="$outPath"/tmp_pep_allDaphnia_"$line".fasta
-	grep -w "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$gFile"
-	grep -w "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> "$gFile"
+	#gFile="$outPath"/tmp_pep_allDaphnia_"$line".fasta
+	#grep -w "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$gFile"
+	#grep -w "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> "$gFile"
 
 	#Output Status message
-	echo "Generating MSA for $gTag..."
+	#echo "Generating MSA for $gTag..."
 
 	#Create MSA
-	mFile="$outPath"/"$gTag"_pep_allDaphnia_aligned.fasta
-	muscle -in "$gFile" -out "$mFile"
+	#mFile="$outPath"/"$gTag"_pep_allDaphnia_aligned.fasta
+	#muscle -in "$gFile" -out "$mFile"
 	
 	#Output status message
-	echo "MSA created for $gTag: $mFile"
+	#echo "MSA created for $gTag: $mFile"
 
 	#Clean up
-	rm "$gFile"
+	#rm "$gFile"
 
 	#Generate and save ka ks values
-	bash testSelection_pal2nalCodeml.sh "$gTag" "$1" "$2"
+	bash testSelection_musclePal2nalCodeml.sh "$gTag" "$1" "$2"
 done < "$colRefFile"
 
 #Fix formatting of the results file

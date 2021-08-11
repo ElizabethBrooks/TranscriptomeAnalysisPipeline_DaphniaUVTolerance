@@ -13,4 +13,5 @@ library(seqinr)
 args = commandArgs(trailingOnly=TRUE)
 
 realcds <- read.fasta(file=args[1])[[1]]
-translate(seq=realcds)
+realpep <- translate(seq=realcds)
+cat(realpep, sep="")

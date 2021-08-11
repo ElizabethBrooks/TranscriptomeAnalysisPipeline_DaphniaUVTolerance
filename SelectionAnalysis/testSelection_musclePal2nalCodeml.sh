@@ -1,10 +1,10 @@
 #!/bin/bash
 #Script to run pal2nal and generate ka ks values
-#Usae: bash testSelection_pal2nal.sh genotypeTag sampleSet variantCallingDir
-#Usae ex: bash testSelection_pal2nal.sh dp_gene9 sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
+#Usae: bash testSelection_musclePal2nalCodeml.sh genotypeTag sampleSet variantCallingDir
+#Usae ex: bash testSelection_musclePal2nalCodeml.sh dp_gene9 sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
 
 #Load necessary module
-module load bio
+#module load bio
 
 #Set software path
 softwarePath=$(grep "pal2nal:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/pal2nal://g")
@@ -20,7 +20,8 @@ outPath="$outPath"/daphniaKaks_PA42_v4.1
 #Set genotype tag
 gTag="$1"
 
-#Retrieve input data
+#Prepare pep files
+gFile="$outPath"/tmp_pep_allDaphnia_"$line".fasta
 inAln="$inPath"/"$gTag"_pep_allDaphnia_aligned.fasta
 
 #Retrieve input consensus cds
@@ -36,36 +37,33 @@ inRefNuc="$refPath"/PA42_v4.1_longest_cds.fa
 #Prepare single line consensus data file
 tmpConSeq="$outPath"/"$gTag"_tmpConSeq.fa.cds
 tmpConNuc="$outPath"/"$gTag"_tmpConNuc.fa.cds
-tmpConPep="$outPath"/"$gTag"_tmpConPep.fa.pep
 cat "$inConNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpConSeq"
 #Retrieve consensus CDS
 grep -w "^>$gTag" "$tmpConSeq" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > "$tmpConNuc"
 rm "$tmpConSeq"
 #Translate consensus CDS to pep
-echo ">$gTag" > "$tmpConPep"
-Rscript translateCDS_seqinr.r "$tmpConNuc" >> "$tmpConPep"
+echo ">$gTag" > "$gFile"
+Rscript translateCDS_seqinr.r "$tmpConNuc" >> "$gFile"
 
 #Prepare single line reference data file
 tmpRefSeq="$outPath"/"$gTag"_tmpRefSeq.fa.cds
 tmpRefNuc="$outPath"/"$gTag"_tmpRefNuc.fa.cds
-tmpRefPep="$outPath"/"$gTag"_tmpRefPep.fa.pep
 cat "$inRefNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpRefSeq"
 #Retrieve reference CDS
 grep -w "^>$gTag" "$tmpRefSeq" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$tmpRefNuc"
 rm "$tmpRefSeq"
 #Translate reference CDS to pep
-echo ">$gTag" > "$tmpRefPep"
-Rscript translateCDS_seqinr.r "$tmpRefNuc" >> "$tmpRefPep"
+echo ">$gTag" >> "$gFile"
+Rscript translateCDS_seqinr.r "$tmpRefNuc" >> "$gFile"
 
 #Output Status message
 echo "Generating MSA for $gTag..."
 
 #Create MSA
-mFile="$outPath"/"$gTag"_pep_allDaphnia_aligned.fasta
-muscle -in "$gFile" -out "$mFile"
+muscle -in "$gFile" -out "$inAln"
 	
 #Output status message
-echo "MSA created for $gTag: $mFile"
+echo "MSA created for $gTag: $inAln"
 
 #Clean up
 rm "$gFile"
