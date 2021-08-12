@@ -46,7 +46,7 @@ grep -w "^>$gTag" "$tmpRefSeq" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v
 rm "$tmpRefSeq"
 #Translate reference CDS to pep
 echo ">PA42_v4.1_$gTag" > "$gFile"
-Rscript translateCDS_seqinr.r "$tmpRefNuc" >> "$gFile"
+Rscript translateCDS_longestForwardORF_seqinr.r "$tmpRefNuc" >> "$gFile"
 echo "" >> "$gFile"
 
 #Prepare single line consensus data file
@@ -58,7 +58,7 @@ grep -w "^>$gTag" "$tmpConSeq" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympi
 rm "$tmpConSeq"
 #Translate consensus CDS to pep
 echo ">Olympics_$gTag" >> "$gFile"
-Rscript translateCDS_seqinr.r "$tmpConNuc" >> "$gFile"
+Rscript translateCDS_longestForwardORF_seqinr.r "$tmpConNuc" >> "$gFile"
 echo "" >> "$gFile"
 
 #Output Status message
