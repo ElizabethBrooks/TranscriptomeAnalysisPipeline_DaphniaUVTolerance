@@ -42,7 +42,7 @@ cd ../Formatting
 #Prepare single line reference data file
 tmpRefNuc="$outPath"/"$gTag"_tmpRefNuc.fa.cds
 #Retrieve reference CDS
-cat "$inRefNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' | grep -w "^>$gTag" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$tmpRefNuc"
+cat "$inRefNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | tr 'a-z' 'A-Z' | grep -w "^>$gTag" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$tmpRefNuc"
 #Translate reference CDS to pep
 echo ">PA42_v4.1_$gTag" > "$gFile"
 Rscript translateCDS_longestForwardORF_seqinr.r "$tmpRefNuc" >> "$gFile"
@@ -51,7 +51,7 @@ echo "" >> "$gFile"
 #Prepare single line consensus data file
 tmpConNuc="$outPath"/"$gTag"_tmpConNuc.fa.cds
 #Retrieve consensus CDS
-cat "$inConNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' | grep -w "^>$gTag" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > "$tmpConNuc"
+cat "$inConNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | tr 'a-z' 'A-Z' | grep -w "^>$gTag" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > "$tmpConNuc"
 #Translate consensus CDS to pep
 echo ">Olympics_$gTag" >> "$gFile"
 Rscript translateCDS_longestForwardORF_seqinr.r "$tmpConNuc" >> "$gFile"
