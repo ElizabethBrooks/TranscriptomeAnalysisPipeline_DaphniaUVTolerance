@@ -23,7 +23,7 @@ gTag="$1"
 #Prepare pep files
 gFile="$outPath"/tmp_pep_allDaphnia_"$gTag".fasta
 gFileCleaned="$outPath"/tmpCleaned_pep_allDaphnia_"$gTag".fasta
-outAln="$inPath"/"$gTag"_pep_allDaphnia_alignedOut.fasta
+outAln="$inPath"/"$gTag"_pep_allDaphnia_alignedOut.clw
 inAln="$inPath"/"$gTag"_pep_allDaphnia_aligned.fasta
 
 #Retrieve input consensus cds
@@ -64,8 +64,8 @@ rm "$gFile"
 #Output Status message
 echo "Generating MSA for $gTag..."
 
-#Create MSA in clustal format and keep in same order as input
-muscle -in "$gFileCleaned" -out "$outAln" -clw -stable
+#Create MSA in clustal format
+muscle -in "$gFileCleaned" -out "$outAln" -clw
 rm "$gFileCleaned"
 
 #Replace X wildcard with stop codon *
