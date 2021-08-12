@@ -17,7 +17,8 @@ args = commandArgs(trailingOnly=TRUE)
 realcds <- read.fasta(file=args[1])[[1]]
 
 #Determine input sense
-sTag=ifelse(args[2] == 1, "F", "R")
+#sTag=ifelse(args[2] == 1, "F", "R")
+sTag="F"
 
 #Find longest ORF
 curORF=0
