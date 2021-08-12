@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 #R script to translate cds to protein sequences
-#Usage: Rscript translateCDS_seqinr.r cdsPath
+#Usage: Rscript translateCDS_longestORF_seqinr.r cdsPath
 
 #if (!requireNamespace("BiocManager", quietly=TRUE))
 #   install.packages("BiocManager")
