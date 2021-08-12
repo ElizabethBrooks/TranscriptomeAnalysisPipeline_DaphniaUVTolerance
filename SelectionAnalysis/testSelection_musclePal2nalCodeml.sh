@@ -64,8 +64,8 @@ rm "$gFile"
 #Output Status message
 echo "Generating MSA for $gTag..."
 
-#Create MSA
-muscle -in "$gFileCleaned" -out "$outAln"
+#Create MSA in clustal format and keep in same order as input
+muscle -in "$gFileCleaned" -out "$outAln" -clw -stable
 rm "$gFileCleaned"
 
 #Replace X wildcard with stop codon *
