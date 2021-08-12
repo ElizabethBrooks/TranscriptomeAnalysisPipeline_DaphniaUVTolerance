@@ -30,16 +30,16 @@ inAln="$inPath"/"$gTag"_pep_allDaphnia_aligned.fasta
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsPath="$inputsPath"/"$2"/"$3"
 inConNuc="$inputsPath"/Olympics_longest_cds.fa
-type=$(echo "$3" | cut -d"_" -f2)
-conFeat="$inputsPath"/"$type"_consensusFeatures.gff
-conSens=$(cat "$conFeat" | grep -w "$gTag" | grep "CDS" | cut -f7 | head -1 | sed "s/+/1/g" | sed "s/-/0/g")
+#type=$(echo "$3" | cut -d"_" -f2)
+#conFeat="$inputsPath"/"$type"_consensusFeatures.gff
+#conSens=$(cat "$conFeat" | grep -w "$gTag" | grep "CDS" | cut -f7 | head -1 | sed "s/+/1/g" | sed "s/-/0/g")
 
 #Retrieve input reference data
 refPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 refPath=$(dirname $refPath)
 inRefNuc="$refPath"/PA42_v4.1_longest_cds.fa
-refFeat=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-refSens=$(cat "$refFeat" | grep -w "$gTag" | grep "CDS" | cut -f7 | head -1 | sed "s/+/1/g" | sed "s/-/0/g")
+#refFeat=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+#refSens=$(cat "$refFeat" | grep -w "$gTag" | grep "CDS" | cut -f7 | head -1 | sed "s/+/1/g" | sed "s/-/0/g")
 
 #Move to directory with translation script
 cd ../Formatting
@@ -51,7 +51,8 @@ echo ">PA42_v4.1_$gTag" > "$tmpRefNuc"
 cat "$inRefNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' | grep -w "^>$gTag" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*//g" | tr 'a-z' 'A-Z' >> "$tmpRefNuc"
 #Translate reference CDS to pep
 echo ">PA42_v4.1_$gTag" > "$gFile"
-Rscript translateCDS_longestORF_seqinr.r "$tmpRefNuc" "$refSens" >> "$gFile"
+#Rscript translateCDS_longestORF_seqinr.r "$tmpRefNuc" "$refSens" >> "$gFile"
+Rscript translateCDS_longestORF_seqinr.r "$tmpRefNuc" >> "$gFile"
 echo "" >> "$gFile"
 
 #Prepare single line consensus data file
@@ -61,7 +62,8 @@ echo ">Olympics_$gTag" > "$tmpConNuc"
 cat "$inConNuc" | sed ':a;N;$!ba;s/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' | grep -w "^>$gTag" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*//g" | tr 'a-z' 'A-Z' >> "$tmpConNuc"
 #Translate consensus CDS to pep
 echo ">Olympics_$gTag" >> "$gFile"
-Rscript translateCDS_longestORF_seqinr.r "$tmpConNuc" "$conSens" >> "$gFile"
+#Rscript translateCDS_longestORF_seqinr.r "$tmpConNuc" "$conSens" >> "$gFile"
+Rscript translateCDS_longestORF_seqinr.r "$tmpConNuc" >> "$gFile"
 echo "" >> "$gFile"
 
 #Replace stop codon * with X wildcard
