@@ -61,6 +61,9 @@ echo ">Olympics_$gTag" >> "$gFile"
 Rscript translateCDS_longestForwardORF_seqinr.r "$tmpConNuc" >> "$gFile"
 echo "" >> "$gFile"
 
+#Replace stop codon * with X wildcard
+sed -i 's/\*/X/g'  "$gFile"
+
 #Output Status message
 echo "Generating MSA for $gTag..."
 
@@ -69,6 +72,9 @@ muscle -in "$gFile" -out "$inAln"
 	
 #Output status message
 echo "MSA created for $gTag: $inAln"
+
+#Replace X wildcard with stop codon *
+sed -i 's/X/\*/g'  "$inAln"
 
 #Clean up
 rm "$gFile"
@@ -105,7 +111,7 @@ echo "$gTag  $kaks" >> "$resultsFile"
 [ -f "rst" ] && rm "rst"
 [ -f "rst1" ] && rm "rst1"
 [ -f "rub" ] && rm "rub"
-rm "$inAln"
+#rm "$inAln"
 rm "$tmpConNuc"
 rm "$tmpRefNuc"
 rm "$gTag".codon
