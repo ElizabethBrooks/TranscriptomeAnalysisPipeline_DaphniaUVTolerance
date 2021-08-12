@@ -22,6 +22,8 @@ gTag="$1"
 
 #Prepare pep files
 gFile="$outPath"/tmp_pep_allDaphnia_"$gTag".fasta
+gFileCleaned="$outPath"/tmpCleaned_pep_allDaphnia_"$gTag".fasta
+outAln="$inPath"/"$gTag"_pep_allDaphnia_alignedOut.fasta
 inAln="$inPath"/"$gTag"_pep_allDaphnia_aligned.fasta
 
 #Retrieve input consensus cds
@@ -62,22 +64,22 @@ Rscript translateCDS_longestForwardORF_seqinr.r "$tmpConNuc" >> "$gFile"
 echo "" >> "$gFile"
 
 #Replace stop codon * with X wildcard
-sed -i 's/\*/X/g'  "$gFile"
+sed 's/\*/X/g'  "$gFile" > "$gFileCleaned"
+rm "$gFile"
 
 #Output Status message
 echo "Generating MSA for $gTag..."
 
 #Create MSA
-muscle -in "$gFile" -out "$inAln"
-	
-#Output status message
-echo "MSA created for $gTag: $inAln"
+muscle -in "$gFileCleaned" -out "$outAln"
+rm "$gFileCleaned"
 
 #Replace X wildcard with stop codon *
-sed -i 's/X/\*/g'  "$inAln"
+sed 's/X/\*/g'  "$outAln" > "$inAln"
+rm "$outAln"
 
-#Clean up
-rm "$gFile"
+#Output status message
+echo "MSA created for $gTag: $inAln"
 
 #Prepare tree file
 echo "(>PA42_v4.1_$gTag, >Olympics_$gTag);" > "$outPath"/"$gTag".tree
