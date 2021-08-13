@@ -74,7 +74,7 @@ done < "$colRefFile"
 
 #Fix formatting of the results file
 finalResults="$resultsDir"/PA42_v4.1_Olympics_kaksResults.csv
-cat "$resultsFile" | sed "s/  /,/g" | sed "s/=,/=/g" | sed "s/ //g" | sed "s/pairwisecomparison,codonfrequencies\:F3x4\./NA,NA,NA,NA,NA,NA/g" | sed "s/dN\/dS=//g" | sed "s/dN=//g" | sed "s/dS=//g" | sed "s/t=//g" | sed "s/S=//g" | sed "s/N=//g" > "$finalResults"
+cat "$resultsFile" | sed "s/  /,/g" | sed "s/=,/=/g" | sed "s/ //g" | sed "s/dN\/dS=//g" | sed "s/dN=//g" | sed "s/dS=//g" | sed "s/t=//g" | sed "s/,S=//g" | sed "s/N=//g" > "$finalResults"
 
 #Clean up
 rm "$tmpSample"
