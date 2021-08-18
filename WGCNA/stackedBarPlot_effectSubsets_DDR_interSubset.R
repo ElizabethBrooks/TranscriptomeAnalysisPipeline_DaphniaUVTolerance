@@ -1,6 +1,6 @@
 #Set working directory
 #workingDir = args[1];
-workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/effectSubsets"
+workingDir="~/PfrenderLab/WGCNA_PA42_v4.1"
 setwd(workingDir); 
 
 # Load libraries
@@ -12,7 +12,7 @@ lnames1 = load(file = "PA42_v4.1_dataInputInter.RData");
 # Load network data saved in the second part.
 lnames2 = load(file = "PA42_v4.1_networkConstructionInter_auto_threshold8_signed.RData");
 
-ddr <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/DDRGOTF_Dmel_PA42_v4.1_combined_geneIDs_uniq.csv")
+ddr <- read.csv(file="~/PfrenderLab/PA42_v4.1/DDRGOTF_Dmel_PA42_v4.1_combined_geneIDs_uniq.csv")
 SETDDR <- ddr[,1]
 
 #Get module color list
@@ -21,7 +21,7 @@ numRow = length(colorList)
 colorSets <- data.frame(matrix(ncol = 2, nrow = numRow))
 
 #Retrieve the percent of genes in each module
-for(var in 1:length(colorList))
+for(var in 1:numRow)
 {
   #Print the color of the module
   #print(colorList[var])

@@ -3,7 +3,7 @@
 #BiocManager::install('_______')
 
 #Set working directory
-workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/effectSubsets"
+workingDir="~/PfrenderLab/WGCNA_PA42_v4.1"
 setwd(workingDir); 
 
 #Load the libraries
@@ -17,9 +17,9 @@ lnames1 = load(file = "PA42_v4.1_dataInputTreat.RData");
 lnames2 = load(file = "PA42_v4.1_networkConstructionTreat_auto_threshold8_signed.RData");
 
 #Import gene count data for the Olympics
-countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/geneCounts_cleaned_PA42_v4.1.csv", row.names="gene")[ ,1:24]
+countsTable <- read.csv(file="~/PfrenderLab/PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv", row.names="gene")[ ,1:24]
 #Import grouping factor
-targets <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/expDesign_Olympics.csv", row.names="sample")
+targets <- read.csv(file="~/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_Olympics.csv", row.names="sample")
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$genotype,sep="."))
