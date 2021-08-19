@@ -35,11 +35,11 @@ for(var in 1:numRow)
 }
 
 #Set column names
-names(colorSets) = c("Color","Percent")
+names(colorSets) = c("Color","Genes")
 
 #Create stacked bar plot
 jpeg("barPlotInter_numberDDR.jpg", width = 844, height = 596)
-colorPlot <- ggplot(colorSets, aes(y=Percent, x=Color)) + 
+colorPlot <- ggplot(colorSets, aes(y=Genes, x=Color)) + 
   geom_bar(position="stack", stat="identity", fill="steelblue")
 colorPlot + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 dev.off()
