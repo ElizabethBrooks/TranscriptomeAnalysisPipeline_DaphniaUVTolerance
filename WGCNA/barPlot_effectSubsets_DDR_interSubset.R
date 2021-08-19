@@ -29,16 +29,17 @@ for(var in 1:numRow)
   numDDR <- which(names(datExprInter)[moduleColors==colorList[var]] %in% SETDDR)
   colorSets[var,1] <- colorList[var]
   colorSets[var,2] <- length(numDDR)
+  #colorSets[var,2] <- length(numDDR)/length(names(datExprInter)[moduleColors==colorList[var]])
   #Print the number of DDR genes in the current module
   #print(length(numDDR))
 }
 
 #Set column names
-names(colorSets) = c("Color","Genes")
+names(colorSets) = c("Color","Percent")
 
 #Create stacked bar plot
-jpeg("stackedBarPlotInter_DDR.jpg", width = 844, height = 596)
-colorPlot <- ggplot(colorSets, aes(y=Genes, x=Color)) + 
+jpeg("barPlotInter_numberDDR.jpg", width = 844, height = 596)
+colorPlot <- ggplot(colorSets, aes(y=Percent, x=Color)) + 
   geom_bar(position="stack", stat="identity", fill="steelblue")
 colorPlot + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 dev.off()

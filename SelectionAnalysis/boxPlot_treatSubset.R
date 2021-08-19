@@ -7,10 +7,10 @@ setwd(workingDir);
 library(ggplot2)
 
 # Load the expression and trait data saved in the first part
-lnames1 = load(file = "PA42_v4.1_dataInputInter.RData");
+lnames1 = load(file = "PA42_v4.1_dataInputTreat.RData");
 
 # Load network data saved in the second part.
-lnames2 = load(file = "PA42_v4.1_networkConstructionInter_auto_threshold8_signed.RData");
+lnames2 = load(file = "PA42_v4.1_networkConstructionTreat_auto_threshold8_signed.RData");
 numRow = length(moduleColors)
 
 #Import ka ks results
@@ -27,10 +27,10 @@ colnames(resultsTbl) <- c("geneID","Color","dNdS")
 for(var in 1:numRow)
 {
   #curGene <- filtKaks$geneID[var]
-  curGene <- names(datExprInter[moduleColors,])[var]
-  #filtKaks$Color[var] <- ifelse(curGene %in% names(datExprInter[moduleColors,]), moduleColors[which(names(datExprInter[moduleColors,])==curGene)], "None")
+  curGene <- names(datExprTreat[moduleColors,])[var]
+  #filtKaks$Color[var] <- ifelse(curGene %in% names(datExprTreat[moduleColors,]), moduleColors[which(names(datExprTreat[moduleColors,])==curGene)], "None")
   resultsTbl$geneID[var] <- curGene
-  resultsTbl$Color[var] <- ifelse(curGene %in% filtKaks$geneID, moduleColors[which(names(datExprInter[moduleColors,])==curGene)], "NA")
+  resultsTbl$Color[var] <- ifelse(curGene %in% filtKaks$geneID, moduleColors[which(names(datExprTreat[moduleColors,])==curGene)], "NA")
   resultsTbl$dNdS[var] <- ifelse(curGene %in% filtKaks$geneID, filtKaks[which(filtKaks$geneID==curGene),5], "NA")
 }
 
@@ -41,7 +41,7 @@ cleanResults <- na.omit(cleanResults)
 #Box plot of ka/ks
 #boxplot(dNdS~Color,data=cleanResults, main="Module dNdS Ratios",
 #        xlab="Module Color", ylab="dNdS")
-jpeg("SelectionAnalysis/boxPlotInter_filtered_dNdS.jpg", width = 844, height = 596)
+jpeg("SelectionAnalysis/boxPlotTreat_filtered_dNdS.jpg", width = 844, height = 596)
 p <- ggplot(cleanResults, aes(x=Color, y=dNdS)) + 
   geom_boxplot(notch=TRUE)
 p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))

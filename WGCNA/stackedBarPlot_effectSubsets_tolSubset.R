@@ -1,6 +1,6 @@
 #Set working directory
 #workingDir = args[1];
-workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/effectSubsets"
+workingDir="~/PfrenderLab/WGCNA_PA42_v4.1"
 setwd(workingDir); 
 
 # Load libraries
@@ -12,12 +12,12 @@ lnames1 = load(file = "PA42_v4.1_dataInputTol.RData");
 # Load network data saved in the second part.
 lnames2 = load(file = "PA42_v4.1_networkConstructionTol_auto_threshold8_signed.RData");
 
-ddr <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/DDRGOTF_Dmel_PA42_v4.1_combined_geneIDs_uniq.csv")
+ddr <- read.csv(file="~/PfrenderLab/PA42_v4.1/DDRGOTF_Dmel_PA42_v4.1_combined_geneIDs_uniq.csv")
 SETDDR <- ddr[,1]
 
-geneCountsInter <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_interaction_topTags.csv")
-geneCountsTreat <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_UVvsVIS_topTags.csv")
-geneCountsTol <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_TvsN_topTags.csv")
+geneCountsInter <- read.csv(file="/Users/bamflappy/PfrenderLab/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_interaction_topTags.csv")
+geneCountsTreat <- read.csv(file="/Users/bamflappy/PfrenderLab/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_UVvsVIS_topTags.csv")
+geneCountsTol <- read.csv(file="/Users/bamflappy/PfrenderLab/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_TvsN_topTags.csv")
 SETInterIn <- geneCountsInter[,1]
 SETTreatIn <- geneCountsTreat[,1]
 SETTolIn <- geneCountsTol[,1]
