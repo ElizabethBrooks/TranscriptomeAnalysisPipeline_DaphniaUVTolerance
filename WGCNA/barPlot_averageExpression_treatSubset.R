@@ -122,7 +122,7 @@ colorSetNTolUV <- colorSets[colorSets$Sample=="Sensitive&VIS",]
 p <- ggplot(rbind(colorSetTolVIS,colorSetTolUV), aes(x=Color, y=Mean, fill=Sample)) +
   geom_bar(stat = "identity", position = "dodge")
 p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-#Grouped barplot of median treatment values
+#Grouped barplot of median not tolerants values
 p <- ggplot(rbind(colorSetNTolVIS,colorSetNTolUV), aes(x=Color, y=Mean, fill=Sample)) +
   geom_bar(stat = "identity", position = "dodge")
 p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
