@@ -24,7 +24,7 @@ SETTolIn$dirExpr <- sign(SETTolIn[,2])
 
 #Get module color list
 colorList = unique(moduleColors)
-numRow = length(colorList)*3
+numRow = length(colorList)*2
 colorSets <- data.frame(matrix(ncol = 3, nrow = numRow))
 
 #Retrieve the percent of genes in each module
@@ -45,12 +45,12 @@ for(var in 1:length(colorList))
   colorSets[rowNum,1] <- ifelse(numUp==0, 0, numUp/nrow(subSet))
   colorSets[rowNum,2] <- colorList[var]
   colorSets[rowNum,3] <- "Up"
-  #Number of non DE genes
-  rowNum = length(colorList)*2+var
-  numZero <- ifelse(0 %in% names(dirTable), dirTable[names(dirTable)==0], 0)
-  colorSets[rowNum,1] <- ifelse(numZero==0, 0, numZero/nrow(subSet))
-  colorSets[rowNum,2] <- colorList[var]
-  colorSets[rowNum,3] <- "Zero"
+  #Number of non DE genes, should be zero
+  #rowNum = length(colorList)*2+var
+  #numZero <- ifelse(0 %in% names(dirTable), dirTable[names(dirTable)==0], 0)
+  #colorSets[rowNum,1] <- ifelse(numZero==0, 0, numZero/nrow(subSet))
+  #colorSets[rowNum,2] <- colorList[var]
+  #colorSets[rowNum,3] <- "Zero"
 }
 
 #Set column names
