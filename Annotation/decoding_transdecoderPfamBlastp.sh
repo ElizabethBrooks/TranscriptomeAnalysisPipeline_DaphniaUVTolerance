@@ -34,10 +34,10 @@ fi
 #Determine input database for blastp
 if [[ "$2" == "ncbi" ]]; then
 	#Set slected database to ncbi
-	blastpPath=$(grep "ncbiDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/ncbiDB://g")
+	blastpPath=$(grep "ncbiDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/ncbiDB://g")
 elif [[ "$2" == "uniprot" ]]; then
 	#Set slected database to uniprot
-	blastpPath=$(grep "uniprotDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/uniprotDB://g")
+	blastpPath=$(grep "uniprotDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/uniprotDB://g")
 else
 	#Error message
 	echo "Invalid database selection of $2 entered (ncbi or uniprot only)... exiting!"
@@ -45,7 +45,7 @@ else
 fi
 
 #Retrieve genome reference and features paths
-pfamPath=$(grep "pfamDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/pfamDB://g")
+pfamPath=$(grep "pfamDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/pfamDB://g")
 
 #Retrieve input assembly path
 inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
