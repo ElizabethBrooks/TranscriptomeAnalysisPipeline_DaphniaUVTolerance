@@ -3,17 +3,16 @@
 #$ -m abe
 #$ -r n
 #$ -N decoding_transdecoder_jobOutput
-#$ -pe smp 1
-#$ -q debug
+#$ -pe smp 12
 #Script to predict coding regions from a de novo assembled transcriptome fasta file
 # using Transdecoder
-#Usage: qsub decoding_transdecoder.sh assembledTranscriptomeFolder
-#Usage Ex: qsub decoding_transdecoder.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98
-#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98
-#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_cds
-#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_transcripts
-#Usage ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run3/variantCallingBcftools_filteredMapQ longest
-#Usage ex: qsub decoding_transdecoder.sh genome longest
+#Usage: qsub decoding_transdecoder.sh assembledTranscriptomeFolder blastDB optionalLongest
+#Usage Ex: qsub decoding_transdecoder.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98 ncbi
+#Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98 ncbi
+#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_cds ncbi
+#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_transcripts ncbi
+#Usage ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run3/variantCallingBcftools_filteredMapQ ncbi longest
+#Usage ex: qsub decoding_transdecoder.sh genome ncbi longest 
 
 #Load necessary modules for ND CRC servers
 module load bio
@@ -34,8 +33,6 @@ if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
 	#Retrieve genome reference and features paths
 	multiFASTA=$(echo "$outputsPath"/*.fasta)
 	geneMap=$(echo "$outputsPath"/*.gene_trans_map)
-	#Set output path
-	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Retrieve reads input absolute path
 	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
@@ -44,8 +41,6 @@ elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
 	#Retrieve genome reference and features paths
 	multiFASTA=$(echo "$outputsPath"/*.fasta)
 	geneMap=$(echo "$outputsPath"/*.gene_trans_map)
-	#Set output path
-	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == *cds ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
@@ -55,8 +50,6 @@ elif [[ "$1" == *cds ]]; then
 	multiFASTA="$inputsPath"
 	#Retrieve genome reference and features paths
 	geneMap=$(grep "geneCDSMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneCDSMap://g")
-	#Set output path
-	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == *transcripts ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
@@ -66,8 +59,6 @@ elif [[ "$1" == *transcripts ]]; then
 	multiFASTA="$inputsPath"
 	#Retrieve genome reference and features paths
 	geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
-	#Set output path
-	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == sorted* ]]; then
 	#Retrieve sorted reads input absolute path
 	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
@@ -78,8 +69,6 @@ elif [[ "$1" == sorted* ]]; then
 	multiFASTA="$inputsPath"
 	#Retrieve genome reference and features paths
 	geneMap="$outputsPath"/transcripts_cufflinks.fa.gene_trans_map
-	#Set output path
-	outputFolder="$outputsPath"/"decoded_transdecoder"
 elif [[ "$1" == genome ]]; then
 	#Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "genomeReference:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
@@ -89,13 +78,12 @@ elif [[ "$1" == genome ]]; then
 	multiFASTA="$outputsPath"/transcripts_cufflinks.fa
 	#Retrieve genome reference and features paths
 	geneMap="$outputsPath"/transcripts_cufflinks.fa.gene_trans_map
-	#Set output path
-	outputFolder="$outputsPath"/"decoded_transdecoder"
 else
 	#Error message
 	echo "Invalid fasta entered (assembled transcriptome expected)... exiting!"
 	exit 1
 fi
+
 #Determine if the input is clustered
 if [[ "$1" == *clusteredNucleotide* ]]; then
 	#Retrieve genome reference and features paths
@@ -108,6 +96,25 @@ elif [[ "$1" == *clusteredProtein* ]]; then
 	inputsDir=$(dirname "$outputsPath")
 	geneMap=$(echo "$inputsDir"/*.gene_trans_map)
 fi
+
+#Determine input database for blastp
+if [[ "$2" == "ncbi" ]]; then
+	#Set slected database to ncbi
+	blastpPath=$(grep "ncbiDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/ncbiDB://g")
+elif [[ "$2" == "uniprot" ]]; then
+	#Set slected database to uniprot
+	blastpPath=$(grep "uniprotDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/uniprotDB://g")
+else
+	#Error message
+	echo "Invalid database selection of $2 entered (ncbi or uniprot only)... exiting!"
+	exit 1
+fi
+
+#Retrieve genome reference and features paths
+pfamPath=$(grep "pfamDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/pfamDB://g")
+
+#Set output path
+outputFolder="$outputsPath"/decoded_transdecoder_"$2"
 #Make output folder
 mkdir "$outputFolder"
 #Check if the folder already exists
@@ -128,27 +135,39 @@ TransDecoder.LongOrfs -t "$multiFASTA" --gene_trans_map "$geneMap"
 echo "TransDecoder.LongOrfs -t" "$multiFASTA" "--gene_trans_map" "$geneMap" > "$inputOutFile"
 echo "Finished generating transdecoder open reading frame predictions!"
 
+#Use BlastP to search a protein database
+tag=$(basename "$multiFASTA")
+echo "Beginning blastp protein database search..."
+blastp -query "$tag".transdecoder_dir/longest_orfs.pep -db "$blastpPath"  -max_target_seqs 1 -outfmt 6 -evalue 1e-5 -num_threads 12 > blastp.outfmt6
+echo "Finished blastp protein database search!"
+
+#Search the peptides for protein domains using Pfam
+echo "Beginning hammscan search of peptides for protein domains..."
+hmmscan --cpu 12 --domtblout pfam.domtblout "$pfamPath" "$tag".transdecoder_dir/longest_orfs.pep
+echo "Finished hammscan search of peptides for protein domains!"
+
 #Generate your best candidate open rading frame (ORF) predictions
+#Combine the Blast and Pfam search results into coding region selection
 echo "Beginning transdecoder coding region selection..."
 if [[ "$1" == PA42* || "$1" == sorted*  || "$1" == genome ]]; then
-	if [[ "$2" == "longest" || "$2" == "Longest" ]]; then
-		TransDecoder.Predict -t "$multiFASTA" --no_refine_starts --single_best_only
+	if [[ "$3" == "longest" || "$3" == "Longest" ]]; then
+		TransDecoder.Predict -t "$multiFASTA" --retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6 --no_refine_starts --single_best_only
 		#Output run commands to summary file
-		echo "TransDecoder.Predict -t" "$multiFASTA" "--no_refine_starts --single_best_only" >> "$inputOutFile"
+		echo "TransDecoder.Predict -t" "$multiFASTA" "--retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6 --no_refine_starts --single_best_only" >> "$inputOutFile"
 	else
-		TransDecoder.Predict -t "$multiFASTA" --no_refine_starts
+		TransDecoder.Predict -t "$multiFASTA" --retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6 --no_refine_starts
 		#Output run commands to summary file
-		echo "TransDecoder.Predict -t" "$multiFASTA" "--no_refine_starts" >> "$inputOutFile"
+		echo "TransDecoder.Predict -t" "$multiFASTA" "--retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6 --no_refine_starts" >> "$inputOutFile"
 	fi
 else
-	if [[ "$2" == "longest" || "$2" == "Longest" ]]; then
-		TransDecoder.Predict -t "$multiFASTA" --single_best_only
+	if [[ "$3" == "longest" || "$3" == "Longest" ]]; then
+		TransDecoder.Predict -t "$multiFASTA" --retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6 --single_best_only
 		#Output run commands to summary file
-		echo "TransDecoder.Predict -t $multiFASTA --single_best_only" >> "$inputOutFile"
+		echo "TransDecoder.Predict -t $multiFASTA --retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6 --single_best_only" >> "$inputOutFile"
 	else
-		TransDecoder.Predict -t "$multiFASTA"
+		TransDecoder.Predict -t "$multiFASTA" --retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6
 		#Output run commands to summary file
-		echo "TransDecoder.Predict -t" "$multiFASTA" >> "$inputOutFile"
+		echo "TransDecoder.Predict -t" "$multiFASTA" "--retain_pfam_hits pfam.domtblout --retain_blastp_hits blastp.outfmt6" >> "$inputOutFile"
 	fi
 fi
 echo "Finished transdecoder coding region selection!"

@@ -43,10 +43,12 @@ else
 	echo "Invalid database selection of $2 entered (ncbi or uniprot only)... exiting!"
 	exit 1
 fi
-#Retrieve input assembly path
-inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
+
 #Retrieve genome reference and features paths
 pfamPath=$(grep "pfamDB:" ../InputData/inputPaths.txt | tr -d " " | sed "s/pfamDB://g")
+
+#Retrieve input assembly path
+inputsPath=$(grep "assembling:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assembling://g")
 multiFASTA=$(echo "$inputsPath"/"$1"/Trinity.fasta)
 geneMap="$inputsPath"/"$1"/Trinity.fasta.gene_trans_map
 #Set outputs absolute path
