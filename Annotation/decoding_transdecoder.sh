@@ -114,7 +114,13 @@ fi
 pfamPath=$(grep "pfam:" ../InputData/databasePaths.txt | tr -d " " | sed "s/pfam://g")
 
 #Set output path
-outputFolder="$outputsPath"/decoded_transdecoder_"$2"
+if [[ "$3" == "longest" || "$3" == "Longest" ]]; then
+	outputFolder="$outputsPath"/decoded_transdecoder_longest_"$2"
+else
+	outputFolder="$outputsPath"/decoded_transdecoder_"$2"
+fi
+
+
 #Make output folder
 mkdir "$outputFolder"
 #Check if the folder already exists
