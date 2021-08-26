@@ -100,10 +100,10 @@ fi
 #Determine input database for blastp
 if [[ "$2" == "ncbi" ]]; then
 	#Set slected database to ncbi
-	blastpPath=$(grep "ncbiDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/ncbiDB://g")
+	blastpPath=$(grep "ncbi:" ../InputData/databasePaths.txt | tr -d " " | sed "s/ncbi://g")
 elif [[ "$2" == "uniprot" ]]; then
 	#Set slected database to uniprot
-	blastpPath=$(grep "uniprotDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/uniprotDB://g")
+	blastpPath=$(grep "uniprot:" ../InputData/databasePaths.txt | tr -d " " | sed "s/uniprot://g")
 else
 	#Error message
 	echo "Invalid database selection of $2 entered (ncbi or uniprot only)... exiting!"
@@ -111,7 +111,7 @@ else
 fi
 
 #Retrieve genome reference and features paths
-pfamPath=$(grep "pfamDB:" ../InputData/databasePaths.txt | tr -d " " | sed "s/pfamDB://g")
+pfamPath=$(grep "pfam:" ../InputData/databasePaths.txt | tr -d " " | sed "s/pfam://g")
 
 #Set output path
 outputFolder="$outputsPath"/decoded_transdecoder_"$2"
