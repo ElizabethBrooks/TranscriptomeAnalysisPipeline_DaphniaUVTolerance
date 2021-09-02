@@ -50,16 +50,16 @@ dev.off()
 
 #Construct the network in blocks of the specified size
 netTreat = blockwiseModules(datExprTreat, power = 8,
-                       TOMType = "signed", minModuleSize = 30,
+                       TOMType = "signed Nowick", minModuleSize = 30,
                        reassignThreshold = 0, mergeCutHeight = 0.25,
                        numericLabels = TRUE, pamRespectsDendro = FALSE,
                        saveTOMs = TRUE,
-                       saveTOMFileBase = "PA42TOMTreat_threshold8_signed", 
+                       saveTOMFileBase = "PA42TOMTreat_threshold8_signedNowick", 
                        verbose = 3, maxBlockSize = 15000)
 
 
 # open a graphics window for treatment
-jpeg("clusterDendrogramTreat_threshold8_signed.jpg", width = 960, height = 960)
+jpeg("clusterDendrogramTreat_threshold8_signedNowick.jpg", width = 960, height = 960)
 # Convert labels to colors for plotting
 mergedColors = labels2colors(netTreat$colors)
 # Plot the dendrogram and the module colors underneath
@@ -76,4 +76,4 @@ moduleColors = labels2colors(netTreat$colors)
 MEs = netTreat$MEs;
 geneTree = netTreat$dendrograms[[1]];
 save(MEs, moduleLabels, moduleColors, geneTree, 
-     file = "PA42_v4.1_networkConstructionTreat_auto_threshold8_signed.RData")
+     file = "PA42_v4.1_networkConstructionTreat_auto_threshold8_signedNowick.RData")

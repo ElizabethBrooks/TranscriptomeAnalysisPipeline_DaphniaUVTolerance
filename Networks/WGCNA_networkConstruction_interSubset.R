@@ -4,7 +4,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
 workingDir = args[1];
-#workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/effectSubsets"
+#workingDir="~/PfrenderLab/WGCNA_PA42_v4.1"
 setwd(workingDir); 
 
 # Load the WGCNA package
@@ -51,16 +51,16 @@ dev.off()
 
 #Construct the network in blocks of the specified size
 netInter = blockwiseModules(datExprInter, power = 8,
-                       TOMType = "signed", minModuleSize = 30,
+                       TOMType = "signed Nowick", minModuleSize = 30,
                        reassignThreshold = 0, mergeCutHeight = 0.25,
                        numericLabels = TRUE, pamRespectsDendro = FALSE,
                        saveTOMs = TRUE,
-                       saveTOMFileBase = "PA42TOMInter_threshold8_signed", 
+                       saveTOMFileBase = "PA42TOMInter_threshold8_signedNowick", 
                        verbose = 3, maxBlockSize = 15000)
 
 
 # open a graphics window for interaction
-jpeg("clusterDendrogramInter_threshold8_signed.jpg", width = 960, height = 960)
+jpeg("clusterDendrogramInter_threshold8_signedNowick.jpg", width = 960, height = 960)
 # Convert labels to colors for plotting
 mergedColors = labels2colors(netInter$colors)
 # Plot the dendrogram and the module colors underneath
@@ -77,4 +77,4 @@ moduleColors = labels2colors(netInter$colors)
 MEs = netInter$MEs;
 geneTree = netInter$dendrograms[[1]];
 save(MEs, moduleLabels, moduleColors, geneTree, 
-     file = "PA42_v4.1_networkConstructionInter_auto_threshold8_signed.RData")
+     file = "PA42_v4.1_networkConstructionInter_auto_threshold8_signedNowick.RData")

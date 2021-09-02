@@ -51,16 +51,16 @@ dev.off()
 
 #Construct the network in blocks of the specified size
 netTol = blockwiseModules(datExprTol, power = 8,
-                       TOMType = "signed", minModuleSize = 30,
+                       TOMType = "signed Nowick", minModuleSize = 30,
                        reassignThreshold = 0, mergeCutHeight = 0.25,
                        numericLabels = TRUE, pamRespectsDendro = FALSE,
                        saveTOMs = TRUE,
-                       saveTOMFileBase = "PA42TOMTol_threshold8_signed", 
+                       saveTOMFileBase = "PA42TOMTol_threshold8_signedNowick", 
                        verbose = 3, maxBlockSize = 15000)
 
 
 # open a graphics window for tolerance
-jpeg("clusterDendrogramTol_threshold8_signed.jpg", width = 960, height = 960)
+jpeg("clusterDendrogramTol_threshold8_signedNowick.jpg", width = 960, height = 960)
 # Convert labels to colors for plotting
 mergedColors = labels2colors(netTol$colors)
 # Plot the dendrogram and the module colors underneath
@@ -77,4 +77,4 @@ moduleColors = labels2colors(netTol$colors)
 MEs = netTol$MEs;
 geneTree = netTol$dendrograms[[1]];
 save(MEs, moduleLabels, moduleColors, geneTree, 
-     file = "PA42_v4.1_networkConstructionTol_auto_threshold8_signed.RData")
+     file = "PA42_v4.1_networkConstructionTol_auto_threshold8_signedNowick.RData")

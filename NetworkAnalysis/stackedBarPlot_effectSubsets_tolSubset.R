@@ -10,7 +10,7 @@ library(ggplot2)
 lnames1 = load(file = "PA42_v4.1_dataInputTol.RData");
 
 # Load network data saved in the second part.
-lnames2 = load(file = "PA42_v4.1_networkConstructionTol_auto_threshold8_signed.RData");
+lnames2 = load(file = "PA42_v4.1_networkConstructionTol_auto_threshold8_signedNowick.RData");
 
 ddr <- read.csv(file="~/PfrenderLab/PA42_v4.1/DDRGOTF_Dmel_PA42_v4.1_combined_geneIDs_uniq.csv")
 SETDDR <- ddr[,1]
@@ -91,7 +91,7 @@ for(var in 1:length(colorList))
 names(colorSets) = c("Color","Percent","Effect")
 
 #Create stacked bar plot
-jpeg("stackedBarPlotTol_moduleEffectSubsets.jpg", width = 844, height = 596)
+jpeg("stackedBarPlotTol_moduleEffectSubsets_signedNowick.jpg", width = 844, height = 596)
 colorPlot <- ggplot(colorSets, aes(fill=Effect, y=Percent, x=Color)) + 
   geom_bar(position="stack", stat="identity")
 colorPlot + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))

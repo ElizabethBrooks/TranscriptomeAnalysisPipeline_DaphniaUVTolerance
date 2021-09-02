@@ -19,7 +19,7 @@ setwd(workingDir);
 # Load the expression and trait data saved in the first part
 #lnames1 = load(file = "PA42_v4.1_dataInputTol.RData");
 # Load network data saved in the second part.
-lnames2 = load(file = "PA42_v4.1_networkConstructionTol_auto_threshold8_signed.RData");
+lnames2 = load(file = "PA42_v4.1_networkConstructionTol_auto_threshold8_signedNowick.RData");
 
 
 #Import gene count data for the Olympics
@@ -184,6 +184,6 @@ for(j in lowest:highest){
 
 
 #Write the resulting tables to files
-write.table(moduleBPResults, file="GOAnalysis/moduleTopGO_BPResults_tolSubset.csv", sep=",", row.names=FALSE)
-write.table(moduleMFResults, file="GOAnalysis/moduleTopGO_MFResults_tolSubset.csv", sep=",", row.names=FALSE)
-write.table(moduleCCResults, file="GOAnalysis/moduleTopGO_CCResults_tolSubset.csv", sep=",", row.names=FALSE)
+write.table(moduleBPResults, file="GOAnalysis/moduleTopGO_BPResults_tolSubset_signedNowick.csv", sep=",", row.names=FALSE)
+write.table(moduleMFResults, file="GOAnalysis/moduleTopGO_MFResults_tolSubset_signedNowick.csv", sep=",", row.names=FALSE)
+write.table(moduleCCResults, file="GOAnalysis/moduleTopGO_CCResults_tolSubset_signedNowick.csv", sep=",", row.names=FALSE)

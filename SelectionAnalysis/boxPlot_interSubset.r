@@ -10,7 +10,7 @@ library(ggplot2)
 lnames1 = load(file = "PA42_v4.1_dataInputInter.RData");
 
 # Load network data saved in the second part.
-lnames2 = load(file = "PA42_v4.1_networkConstructionInter_auto_threshold8_signed.RData");
+lnames2 = load(file = "PA42_v4.1_networkConstructionInter_auto_threshold8_signedNowick.RData");
 numRow = length(moduleColors)
 
 #Import ka ks results
@@ -41,7 +41,7 @@ cleanResults <- na.omit(cleanResults)
 #Box plot of ka/ks
 #boxplot(dNdS~Color,data=cleanResults, main="Module dNdS Ratios",
 #        xlab="Module Color", ylab="dNdS")
-jpeg("SelectionAnalysis/boxPlotInter_filtered_dNdS.jpg", width = 844, height = 596)
+jpeg("SelectionAnalysis/boxPlotInter_filtered_dNdS_signedNowick.jpg", width = 844, height = 596)
 p <- ggplot(cleanResults, aes(x=Color, y=dNdS)) + 
   geom_boxplot(notch=TRUE)
 p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))

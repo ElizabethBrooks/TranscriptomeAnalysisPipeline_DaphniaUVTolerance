@@ -13,7 +13,7 @@ library(ggplot2)
 lnames1 = load(file = "PA42_v4.1_dataInputTreat.RData");
 
 # Load network data saved in the second part.
-lnames2 = load(file = "PA42_v4.1_networkConstructionTreat_auto_threshold8_signed.RData");
+lnames2 = load(file = "PA42_v4.1_networkConstructionTreat_auto_threshold8_signedNowick.RData");
 
 #Import DEGs
 #geneCountsTreat <- read.csv(file=args[1])
@@ -57,7 +57,7 @@ for(var in 1:length(colorList))
 names(colorSets) = c("Percent","Color","Direction")
 
 #Create stacked bar plot
-jpeg("stackedBarPlotTreat_moduleDirExpression.jpg", width = 844, height = 596)
+jpeg("stackedBarPlotTreat_moduleDirExpression_signedNowick.jpg", width = 844, height = 596)
 colorPlot <- ggplot(colorSets, aes(fill=Direction, y=Percent, x=Color)) + 
   geom_bar(position="stack", stat="identity")
 colorPlot + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
