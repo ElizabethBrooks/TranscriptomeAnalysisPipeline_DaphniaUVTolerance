@@ -29,9 +29,15 @@ cat "$colRefIn" | cut -f1 > "$tmpList"
 
 #Loop over each gene and retain longest CDS for each
 outLongCDS="$outDir"/PA42_v4.1_longest_cds.fa
+outLongCDSList="$outDir"/PA42_v4.1_longest_cds_list.txt
+#Clear any previous data
 [ -f $outLongCDS ] && rm $outLongCDS
-cLen=0
+echo "longestCDS" >> "$outLongCDSList"
+#Output status messsage
 echo "Writing longest CDS to file: $outLongCDS"
+echo "Writing list of longest CDS to file: $outLongCDSList"
+#Initialize cds length var
+cLen=0
 while IFS= read -r line; do
     #Check if current gene has multiple CDS ORF
     gTag=">$line"
@@ -56,6 +62,7 @@ while IFS= read -r line; do
     fi
     #Output longest CDS
     grep -w "$gLong" "$tmpCDS" | sed 's/NEWLINE/\n/g' | sed "s/loc:scaffold_.*//g" | sed "s/ gene=.*//g" >> "$outLongCDS"
+    echo "$gLong" >> "$outLongCDSList"
 done < "$tmpList"
 echo "File with longest CDS has been generated!"
 

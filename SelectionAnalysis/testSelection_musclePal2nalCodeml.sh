@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to run pal2nal and generate ka ks values
 #Usae: bash testSelection_musclePal2nalCodeml.sh genotypeTag sampleSet variantCallingDir
-#Usae ex: bash testSelection_musclePal2nalCodeml.sh dp_gene9 sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
+#Usae ex: bash testSelection_musclePal2nalCodeml.sh dp_gene1-mRNA1 sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
 
 #Load necessary module
 #module load bio

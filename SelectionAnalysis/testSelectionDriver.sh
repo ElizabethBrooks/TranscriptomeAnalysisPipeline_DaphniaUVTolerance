@@ -32,10 +32,11 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-#Retrieve a list of all genes in the reference
-colRefIn=$(grep "genePEPMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genePEPMap://g")
-colRefFile="$outPath"/tmpCol.txt
-cat "$colRefIn" | cut -f1 > "$colRefFile"
+#Retrieve a list of all genes in the variant consensus
+colRefIn=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
+colRefIn="$colRefIn"/"$2"/"$3"
+colRefIn="$colRefIn"/Olympics_longest_cds_list.txt
+cat "$colRefIn" | tail -n+2 > "$colRefFile"
 
 #Prepare reference multiline pep fasta to retrieve seqs
 #tmpRef="$resultsDir"/tmpPA42_v4.1.fasta
