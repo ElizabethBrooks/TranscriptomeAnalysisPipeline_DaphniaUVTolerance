@@ -16,13 +16,15 @@ args = commandArgs(trailingOnly=TRUE)
 #Import fasta sequence
 realcds <- read.fasta(file=args[1])[[1]]
 
-#Find longest ORF
+#Initialize variables
 curORF=0
 longORF=0
 lenfORF=0
-lenrORF=0
+#lenrORF=0
 longf=0
 longs="F"
+
+#Find longest ORF
 for (i in 0:2) {
 	#Translate to proteins for the current forward ORF
 	realpep <- translate(seq=realcds, frame=i, sens="F")
@@ -42,28 +44,29 @@ for (i in 0:2) {
 		}
 	}
 	#Translate to proteins for the current reverse ORF
-	realpep <- translate(seq=realcds, frame=i, sens="R")
+	#realpep <- translate(seq=realcds, frame=i, sens="R")
 	#Check length of pep sequence
-	len=length(realpep)
+	#len=length(realpep)
 	#Check occurence of stop codons
-	numStops=str_count(realpep, "\\*")
+	#numStops=str_count(realpep, "\\*")
 	#Loop over each pep in current ORF
-	for (j in len:1) {
-		if(numStops[j] == 1){ #Stop codon
-			if(curORF > lenrORF){ #Longest current ORF
-				lenrORF=curORF
-			}
-			curORF=0
-		}else{
-			curORF=curORF+1
-		}
-	}
+	#for (j in len:1) {
+	#	if(numStops[j] == 1){ #Stop codon
+	#		if(curORF > lenrORF){ #Longest current ORF
+	#			lenrORF=curORF
+	#		}
+	#		curORF=0
+	#	}else{
+	#		curORF=curORF+1
+	#	}
+	#}
 	#Keep longest ORF translation
-	if(lenrORF > longORF){
-		longORF=lenrORF
-		longf=i
-		longs="R"
-	}else if(lenfORF > longORF){
+	#if(lenrORF > longORF){
+	#	longORF=lenrORF
+	#	longf=i
+	#	longs="R"
+	#}else 
+	if(lenfORF > longORF){
 		longORF=lenfORF
 		longf=i
 		longs="F"

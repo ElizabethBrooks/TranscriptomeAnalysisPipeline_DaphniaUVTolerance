@@ -42,7 +42,7 @@ inRefNuc="$refPath"/PA42_v4.1_longest_cds.fa
 #refSens=$(cat "$refFeat" | grep -w "$gTag" | grep "CDS" | cut -f7 | head -1 | sed "s/+/1/g" | sed "s/-/0/g")
 
 #Move to directory with translation script
-cd ../Formatting
+cd ../Data
 
 #Prepare single line reference data file
 tmpRefNuc="$outPath"/"$gTag"_tmpRefNuc.fa.cds
