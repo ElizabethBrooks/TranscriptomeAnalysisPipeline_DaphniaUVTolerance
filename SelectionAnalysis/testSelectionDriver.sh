@@ -43,31 +43,14 @@ colRefFile="$colRefPath"/Olympics_longest_cds_list.txt
 
 #Save ka ks values to final results file
 resultsFile="$resultsDir"/kaksResults.csv
+failFile="$resultsDir"/failedGeneTags.txt
 echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
+echo "geneID" > "$failFile"
 
 #Loop over all genes in the reference
 while IFS= read -r line; do
 	#Retrieve selected peptide sequences and convert back to multiline fasta format
 	gTag="$line"
-
-	#Prepare multiline pep fasta to retrieve seqs
-	#gFile="$outPath"/tmp_pep_allDaphnia_"$line".fasta
-	#grep -w "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>PA42_v4.1_$gTag/g" > "$gFile"
-	#grep -w "^>$gTag" "$tmpRef" | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> "$gFile"
-
-	#Output Status message
-	#echo "Generating MSA for $gTag..."
-
-	#Create MSA
-	#mFile="$outPath"/"$gTag"_pep_allDaphnia_aligned.fasta
-	#muscle -in "$gFile" -out "$mFile"
-	
-	#Output status message
-	#echo "MSA created for $gTag: $mFile"
-
-	#Clean up
-	#rm "$gFile"
-
 	#Generate and save ka ks values
 	bash testSelection_musclePal2nalCodeml.sh "$gTag" "$1" "$2"
 done < "$colRefFile"

@@ -16,6 +16,7 @@ inPath="$inPath"/daphniaMSA_PA42_v4.1_pep
 #Set outputs path
 outPath=$(grep "kaks:" ../InputData/outputPaths.txt | tr -d " " | sed "s/kaks://g")
 outPath="$outPath"/daphniaKaks_PA42_v4.1
+failFile="$outPath"/failedGeneTags.txt
 
 #Set genotype tag
 gTag="$1"
@@ -65,6 +66,12 @@ echo ">Olympics_$gTag" >> "$gFile"
 #Rscript translateCDS_longestORF_seqinr.r "$tmpConNuc" "$conSens" >> "$gFile"
 Rscript translateCDS_longestORF_seqinr.r "$tmpConNuc" >> "$gFile"
 echo "" >> "$gFile"
+
+if cat "$gFile" | grep -q "NoValidORFFound" ; then
+	#No valid ORF found for a sequence
+	echo "$gTag" >> "$failFile"
+	exit 0
+fi
 
 #Replace stop codon * with X wildcard
 sed 's/\*/X/g'  "$gFile" > "$gFileCleaned"
