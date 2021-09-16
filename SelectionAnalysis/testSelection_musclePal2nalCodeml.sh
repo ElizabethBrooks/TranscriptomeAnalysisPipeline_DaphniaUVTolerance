@@ -70,63 +70,64 @@ echo "" >> "$gFile"
 if cat "$gFile" | grep -q "NoValidORFFound" ; then
 	#No valid ORF found for a sequence
 	echo "$gTag" >> "$failFile"
-	exit 0
+else
+	#Replace stop codon * with X wildcard
+	sed 's/\*/X/g'  "$gFile" > "$gFileCleaned"
+	rm "$gFile"
+
+	#Output Status message
+	echo "Generating MSA for $gTag..."
+
+	#Create pep MSA
+	muscle -in "$gFileCleaned" -out "$outAln"
+	rm "$gFileCleaned"
+
+	#Replace X wildcard with stop codon *
+	sed 's/X/\*/g'  "$outAln" > "$inAln"
+	rm "$outAln"
+
+	#Output status message
+	echo "MSA created for $gTag: $inAln"
+
+	#Prepare tree file
+	echo "(>PA42_v4.1_$gTag, >Olympics_$gTag);" > "$outPath"/"$gTag".tree
+
+	#Prepare control file
+	cp "$softwarePath"/for_paml/test.cnt "$outPath"/"$gTag".cnt
+	sed -i "s/test\.codon/$gTag\.codon/g" "$outPath"/"$gTag".cnt
+	sed -i "s/test\.tree/$gTag\.tree/g" "$outPath"/"$gTag".cnt
+	sed -i "s/test\.codeml/$gTag\.codeml/g" "$outPath"/"$gTag".cnt
+
+	#Usage:  pal2nal.pl  pep.aln  nuc.fasta  [nuc.fasta...]  [options]
+	echo "Generating codon alignment for $gTag..."
+	"$softwarePath"/pal2nal.pl "$inAln" "$tmpRefNuc" "$tmpConNuc" -output paml -nogap  >  "$outPath"/"$gTag".codon
+
+	#Move to directory of inputs for codeml
+	cd "$outPath"
+
+	#Run codeml to retrieve ka ks values
+	#You can find the output of codeml in the .codeml file
+	#Ks, Ka values are very end of the output file
+	echo "Generating ka ks values for $gTag..."
+	codeml  "$gTag".cnt
+	echo "Values of ka and ks have been generated!"
+
+	#Save ka ks values to final results file
+	resultsFile=kaksResults.csv
+	kaks=$(tail -1 "$gTag".codeml)
+	echo "$gTag  $kaks" >> "$resultsFile"
+
+	#Clean up
+	[ -f "rst" ] && rm "rst"
+	[ -f "rst1" ] && rm "rst1"
+	[ -f "rub" ] && rm "rub"
+	rm "$gTag".codon
+	rm "$gTag".tree
+	rm "$gTag".cnt
 fi
 
-#Replace stop codon * with X wildcard
-sed 's/\*/X/g'  "$gFile" > "$gFileCleaned"
-rm "$gFile"
-
-#Output Status message
-echo "Generating MSA for $gTag..."
-
-#Create pep MSA
-muscle -in "$gFileCleaned" -out "$outAln"
-rm "$gFileCleaned"
-
-#Replace X wildcard with stop codon *
-sed 's/X/\*/g'  "$outAln" > "$inAln"
-rm "$outAln"
-
-#Output status message
-echo "MSA created for $gTag: $inAln"
-
-#Prepare tree file
-echo "(>PA42_v4.1_$gTag, >Olympics_$gTag);" > "$outPath"/"$gTag".tree
-
-#Prepare control file
-cp "$softwarePath"/for_paml/test.cnt "$outPath"/"$gTag".cnt
-sed -i "s/test\.codon/$gTag\.codon/g" "$outPath"/"$gTag".cnt
-sed -i "s/test\.tree/$gTag\.tree/g" "$outPath"/"$gTag".cnt
-sed -i "s/test\.codeml/$gTag\.codeml/g" "$outPath"/"$gTag".cnt
-
-#Usage:  pal2nal.pl  pep.aln  nuc.fasta  [nuc.fasta...]  [options]
-echo "Generating codon alignment for $gTag..."
-"$softwarePath"/pal2nal.pl "$inAln" "$tmpRefNuc" "$tmpConNuc" -output paml -nogap  >  "$outPath"/"$gTag".codon
-
-#Move to directory of inputs for codeml
-cd "$outPath"
-
-#Run codeml to retrieve ka ks values
-#You can find the output of codeml in the .codeml file
-#Ks, Ka values are very end of the output file
-echo "Generating ka ks values for $gTag..."
-codeml  "$gTag".cnt
-echo "Values of ka and ks have been generated!"
-
-#Save ka ks values to final results file
-resultsFile=kaksResults.csv
-kaks=$(tail -1 "$gTag".codeml)
-echo "$gTag  $kaks" >> "$resultsFile"
-
 #Clean up
-[ -f "rst" ] && rm "rst"
-[ -f "rst1" ] && rm "rst1"
-[ -f "rub" ] && rm "rub"
 rm "$inAln"
 rm "$tmpConNuc"
 rm "$tmpRefNuc"
-rm "$gTag".codon
-rm "$gTag".tree
-rm "$gTag".cnt
 
