@@ -70,6 +70,7 @@ echo "" >> "$gFile"
 if cat "$gFile" | grep -q "NoValidORFFound" ; then
 	#No valid ORF found for a sequence
 	echo "$gTag" >> "$failFile"
+	#rm "$gFile"
 else
 	#Replace stop codon * with X wildcard
 	sed 's/\*/X/g'  "$gFile" > "$gFileCleaned"
@@ -127,7 +128,7 @@ else
 fi
 
 #Clean up
-rm "$inAln"
-rm "$tmpConNuc"
-rm "$tmpRefNuc"
+#rm "$inAln"
+#rm "$tmpConNuc"
+#rm "$tmpRefNuc"
 
