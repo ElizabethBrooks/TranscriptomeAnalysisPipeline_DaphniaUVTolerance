@@ -22,7 +22,7 @@ countsFile=$(basename "$inCountsFile" | sed 's/\.csv//g')
 sed 's/,/\t/g' "$inCountsFile" > tmpinCountsFile.txt
 #Retrieve number of rows
 wc -l tmpinCountsFile.txt > tmpNumRows.txt
-numRows=$(($(cut -d ' ' -f1 tmpNumRows.txt)-1))
+numRows=$(($(cut -d ' ' -f4 tmpNumRows.txt)-1))
 #Retrieve number of samples
 numCols=$(($(head -n1 tmpinCountsFile.txt | awk '{print NF}')-1))
 #Set output file name
@@ -32,10 +32,10 @@ echo "#1.2" > tmpHeader.gct
 echo -e "$numRows \t $numCols" >> tmpHeader.gct
 #Create temporary file with added empty second column for the 'description' field
 cut -f1 tmpinCountsFile.txt > tmpData1.gct
-sed -e "s/$/\tNA/" -i tmpData1.gct
+sed -i '.bak' -e "s/$/\tNA/" tmpData1.gct 
 cut -f2- tmpinCountsFile.txt > tmpData2.gct
 paste tmpData1.gct tmpData2.gct > tmpData3.gct
-sed -i "s/gene\tNA/Name\tDescription/g" tmpData3.gct
+sed -i '.bak' 's/gene\tNA/Name\tDescription/g' tmpData3.gct
 #Append header to reformatted counts table
 cat tmpHeader.gct tmpData3.gct > "$outFile"
 #Print a script completion confirmation message
@@ -43,3 +43,4 @@ echo "Gene counts files have been reformatted!"
 #Clean up
 rm tmp*.txt
 rm tmp*.gct
+rm *.bak
