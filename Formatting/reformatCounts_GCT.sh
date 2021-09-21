@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to re-format merged count tables to Gene Cluster Text file format (*.gct)
 #Usage: bash reformatCounts_GCT.sh countsFile
-#Usage Ex: bash reformatCounts_GCT.sh normalizedCounts.csv
+#Usage Ex: bash reformatCounts_GCT.sh geneCounts_cleaned_PA42_v4.1.csv
 #Usage Ex: bash reformatCounts_GCT.sh cleaned.csv
 #Usage Ex: bash reformatCounts_GCT.sh glmQLFAnalysis/glmQLF_normalizedCounts.csv
 

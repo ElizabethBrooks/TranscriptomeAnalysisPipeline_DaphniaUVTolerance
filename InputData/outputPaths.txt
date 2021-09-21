@@ -5,7 +5,7 @@ assemblingFree: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 assemblingGenome: /afs/crc.nd.edu/group/pfrenderlab/lodge3/ebrooks/rnaseq
 aligningGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42_v4.1
 buildingGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42_v4.1
-DEAnalysis: /home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1
+DEAnalysis: /Users/bamflappy/PfrenderLab/PA42_v4.1
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 transcriptSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 reciprocalSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
