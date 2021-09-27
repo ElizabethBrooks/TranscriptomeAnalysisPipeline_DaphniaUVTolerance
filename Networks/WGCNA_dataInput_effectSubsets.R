@@ -14,17 +14,17 @@ args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
 workingDir = args[1];
-#workingDir="/home/mae/Documents/RNASeq_Workshop_ND/WGCNA_PA42_v4.1/effectSubsets"
+#workingDir="~/PfrenderLab/WGCNA_PA42_v4.1"
 setwd(workingDir); 
 
 
 #Import gene count data
 countsTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
-#countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/cleaned.csv", row.names="gene", header=TRUE)[ ,1:24]
+#countsTable <- read.csv(file="~/PfrenderLab/PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv", row.names="gene", header=TRUE)[ ,1:24]
 
 #Import grouping factor
 targets <- read.csv(file=args[5], row.names="sample")
-#targets <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_WGCNA_Olympics.csv", row.names="sample")
+#targets <- read.csv(file="~/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_WGCNA_Olympics.csv", row.names="sample")
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$tolerance,sep="."))
@@ -37,22 +37,26 @@ list <- list[keep, , keep.lib.sizes=FALSE]
 #Use TMM normalization to eliminate composition biases between libraries
 list <- calcNormFactors(list)
 countsTableNorm <- cpm(list, normalized.lib.sizes=TRUE)
+colnames(countsTableNorm) <- colnames(countsTable)
 
 #Import DEGs
 geneCountsInter <- read.csv(file=args[6])
 geneCountsTreat <- read.csv(file=args[7])
 geneCountsTol <- read.csv(file=args[8])
-#geneCountsInter <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_interaction_topTags.csv")
-#geneCountsTreat <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_UVvsVIS_topTags.csv")
-#geneCountsTol <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1/geneCounts_mergedHisat2_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_TvsN_topTags.csv")
+#geneCountsInter <- read.csv(file="/Users/bamflappy/PfrenderLab/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_interaction_topTags.csv")
+#geneCountsTreat <- read.csv(file="/Users/bamflappy/PfrenderLab/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_UVvsVIS_topTags.csv")
+#geneCountsTol <- read.csv(file="/Users/bamflappy/PfrenderLab/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_TvsN_topTags.csv")
 SETInterIn <- geneCountsInter[,1]
 SETTreatIn <- geneCountsTreat[,1]
 SETTolIn <- geneCountsTol[,1]
 
 #Generate a subset of the gene counts
 normListInter <- countsTableNorm[rownames(countsTableNorm) %in% SETInterIn,]
+write.csv(normListInter,"normalizedCountsInter_PA42_v4.1.csv")
 normListTreat <- countsTableNorm[rownames(countsTableNorm) %in% SETTreatIn,]
+write.csv(normListTreat,"normalizedCountsTreat_PA42_v4.1.csv")
 normListTol <- countsTableNorm[rownames(countsTableNorm) %in% SETTolIn,]
+write.csv(normListTol,"normalizedCountsTol_PA42_v4.1.csv")
 
 #Import annotation data
 annotIn = read.csv(file = args[9], sep="\t");
