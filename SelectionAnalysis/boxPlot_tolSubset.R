@@ -1,6 +1,6 @@
 #Set working directory
 #workingDir = args[1];
-workingDir="~/PfrenderLab/WGCNA_PA42_v4.1"
+workingDir="~/PfrenderLab/dMelUV/WGCNA_PA42_v4.1"
 setwd(workingDir); 
 
 # Load libraries
