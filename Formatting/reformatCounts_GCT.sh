@@ -1,8 +1,7 @@
 #!/bin/bash
 #Script to re-format merged count tables to Gene Cluster Text file format (*.gct)
 #Usage: bash reformatCounts_GCT.sh countsFile
-#Usage Ex: bash reformatCounts_GCT.sh ~/PfrenderLab/PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv
-#Usage Ex: bash reformatCounts_GCT.sh ~/PfrenderLab/WGCNA_PA42_v4.1/normalizedCountsInter_PA42_v4.1.csv
+#Usage Ex: bash reformatCounts_GCT.sh ~/PfrenderLab/dMelUV/WGCNA_PA42_v4.1/normalizedCountsInter_PA42_v4.1_uniprot.csv
 
 #Check for input argument of file name
 if [ $# -eq 0 ]; then
