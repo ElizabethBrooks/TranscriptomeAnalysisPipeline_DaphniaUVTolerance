@@ -21,13 +21,13 @@ inFile=$(grep "geneCounts:" ../InputData/inputPaths.txt | tr -d " " | sed "s/gen
 fdrCut=0.10
 
 #Create directory for output files
-outDir="/Users/bamflappy/PfrenderLab/DEA_PA42_v4.1/glm"$1"Analysis_FDR"$fdrCut
+outDir="/Users/bamflappy/PfrenderLab/dMelUV/DEA_PA42_v4.1/glm"$1"Analysis_FDR"$fdrCut
 mkdir $outDir
 #Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outputsPath directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#if [ $? -ne 0 ]; then
+#	echo "The $outDir directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 #Determine analysis method
 if [[ "$1" == "LRT" ]]; then

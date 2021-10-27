@@ -1,7 +1,7 @@
 #Script to swap gene IDs with Uniprot IDs
-#Usage: bash swapGeneToUniprot.sh countsFile
-#Usage Ex: bash swapGeneToUniprot.sh ~/PfrenderLab/PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv
-#Usage Ex: bash swapGeneToUniprot.sh ~/PfrenderLab/dMelUV/WGCNA_PA42_v4.1/filteredCountFiles/normalizedCountsInter_PA42_v4.1.csv
+#Usage: bash addUniprotToCounts.sh countsFile
+#Usage Ex: bash addUniprotToCounts.sh ~/PfrenderLab/PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv
+#Usage Ex: bash addUniprotToCounts.sh ~/PfrenderLab/dMelUV/WGCNA_PA42_v4.1/filteredCountFiles/normalizedCountsInter_PA42_v4.1.csv
 
 #Check for input argument of file name
 if [ $# -eq 0 ]; then

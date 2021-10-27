@@ -25,20 +25,14 @@ numCols=$(($(head -n1 tmpinCountsFile.txt | awk '{print NF}')-1))
 #Set output file name
 outFile="$inputsPath"/"$countsFile"_reformatted.gct
 #Output headers for GCT formatting
-echo "#1.2" > tmpHeader.gct
-echo -e "$numRows \t $numCols" >> tmpHeader.gct
-#Create temporary file with added empty second column for the 'description' field
-cut -f1 tmpinCountsFile.txt > tmpData1.gct
-sed -i '.bak' -e "s/$/\tNA/" tmpData1.gct 
-cut -f2- tmpinCountsFile.txt > tmpData2.gct
-paste tmpData1.gct tmpData2.gct > tmpData3.gct
-#sed -i '.bak' 's/gene\tNA/Name\tDescription/g' tmpData3.gct
-sed -i '.bak' 's/uniprot\tgene/Name\tDescription/g' tmpData3.gct
+echo "#1.2" > tmpHeader.txt
+echo -e "$numRows \t $numCols" >> tmpHeader.txt
+#Update header
+sed -i '.bak' 's/sprot\tgene/Name\tDescription/g' tmpinCountsFile.txt
 #Append header to reformatted counts table
-cat tmpHeader.gct tmpData3.gct > "$outFile"
+cat tmpHeader.txt tmpinCountsFile.txt > "$outFile"
 #Print a script completion confirmation message
 echo "$countsFile has been reformatted!"
 #Clean up
 rm tmp*.txt
-rm tmp*.gct
 rm *.bak
