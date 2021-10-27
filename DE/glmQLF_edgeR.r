@@ -9,6 +9,9 @@
 #BiocManager::install("edgeR")
 #install.packages("statmod")
 
+#Turn off scientific notation
+options(scipen = 999)
+
 #Load the edgeR library
 library("edgeR")
 library("statmod")
