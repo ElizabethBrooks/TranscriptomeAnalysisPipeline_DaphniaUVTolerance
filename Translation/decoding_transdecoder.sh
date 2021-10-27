@@ -9,8 +9,8 @@
 #Usage: qsub decoding_transdecoder.sh assembledTranscriptomeFolder blastDB optionalLongest
 #Usage Ex: qsub decoding_transdecoder.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98 ncbi
 #Usage Ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98 ncbi
-#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_cds ncbi
-#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_transcripts ncbi
+#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_cds ncbi longest
+#Alternate usage Ex: qsub decoding_transdecoder.sh PA42_v4.1_transcripts ncbi longest
 #Usage ex: qsub decoding_transdecoder.sh sortedCoordinate_samtoolsHisat2_run3/variantCallingBcftools_filteredMapQ ncbi longest
 #Usage ex: qsub decoding_transdecoder.sh genome ncbi longest 
 

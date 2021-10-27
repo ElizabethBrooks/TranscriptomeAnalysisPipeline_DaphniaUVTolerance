@@ -16,7 +16,8 @@ inCountsFile="$1"
 inputsPath=$(dirname $1)
 countsFile=$(basename "$inCountsFile" | sed 's/\.csv//g')
 #Change delimiter and clean up input csv file
-cat "$inCountsFile" | sed 's/"",/gene,/g' | sed 's/"//g' | sed 's/,/\t/g' > tmpinCountsFile.txt
+#| sed 's/"",/gene,/g'
+cat "$inCountsFile" | sed 's/"//g' | sed 's/,/\t/g' > tmpinCountsFile.txt
 #Retrieve number of rows
 numRows=$(($(wc -l < tmpinCountsFile.txt | sed 's/ //g')-1))
 #Retrieve number of samples
@@ -31,7 +32,8 @@ cut -f1 tmpinCountsFile.txt > tmpData1.gct
 sed -i '.bak' -e "s/$/\tNA/" tmpData1.gct 
 cut -f2- tmpinCountsFile.txt > tmpData2.gct
 paste tmpData1.gct tmpData2.gct > tmpData3.gct
-sed -i '.bak' 's/gene\tNA/Name\tDescription/g' tmpData3.gct
+#sed -i '.bak' 's/gene\tNA/Name\tDescription/g' tmpData3.gct
+sed -i '.bak' 's/uniprot\tgene/Name\tDescription/g' tmpData3.gct
 #Append header to reformatted counts table
 cat tmpHeader.gct tmpData3.gct > "$outFile"
 #Print a script completion confirmation message
