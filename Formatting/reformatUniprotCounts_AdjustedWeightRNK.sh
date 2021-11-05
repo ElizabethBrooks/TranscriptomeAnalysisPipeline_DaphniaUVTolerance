@@ -14,7 +14,7 @@ inCountsFile="$1"
 inputsPath=$(dirname $1)
 countsFile=$(basename "$inCountsFile" | sed 's/\.rnk//g')
 #Set output file name
-outFile="$inputsPath"/"$countsFile"_reWeighted.rnk
+outFile="$inputsPath"/"$countsFile"_reRanked.rnk
 #Keep only the gene ID and weight columns
 tail -n+2 $inCountsFile | cut -d"," -f1,2 > tmp.csv
 #Add header to output file
@@ -34,4 +34,4 @@ sed -i '.bak' "s/,\./,0\./g" $outFile
 echo "$countsFile has been reformatted!"
 #Clean up
 rm tmp.csv
-rm *.bak
+rm "$inputsPath"/*.bak
