@@ -2,6 +2,7 @@
 #Script to run Rscripts that perform DE analysis of gene count tables using glm in edgeR
 #Usage: bash glmDriver_edgeR.sh analysisType
 #Usage Ex: bash glmDriver_edgeR.sh QLF
+#Usage Ex: bash glmDriver_edgeR.sh LRT
 
 #Load module for R
 #module load bio
@@ -17,10 +18,10 @@ designPath="../InputData/expDesign_Olympics.csv"
 #Retrieve analysis inputs path
 inFile=$(grep "geneCounts:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneCounts://g")
 #Set FDR cut off
-#fdrCut=0.10
+fdrCut=0.10
 
 #Create directory for output files
-outDir="/Users/bamflappy/PfrenderLab/dMelUV/DEA_PA42_v4.1/glm"$1"Analysis"
+outDir="/Users/bamflappy/PfrenderLab/dMelUV/DEA_PA42_v4.1/glm"$1"Analysis_FDR"$fdrCut
 mkdir $outDir
 #Check if the folder already exists
 #if [ $? -ne 0 ]; then
@@ -28,8 +29,17 @@ mkdir $outDir
 #	exit 1
 #fi
 
-#Perform DE analysis using glmLRT in edgeR and output analysis results to a txt file
-Rscript glmQLF_edgeR.r "$inFile" 1 24 "$designPath" > "$outDir"/glmQLF_analysisResults.txt
+#Determine analysis method
+if [[ "$1" == "LRT" ]]; then
+	#Perform DE analysis using glmLRT in edgeR and output analysis results to a txt file
+	Rscript glmLRT_edgeR.r "$inFile" 1 24 "$designPath" "$fdrCut" > "$outDir"/glmLRT_analysisResults.txt
+elif [[ "$1" == "QLF" ]]; then
+	#Perform DE analysis using glmLRT in edgeR and output analysis results to a txt file
+	Rscript glmQLF_edgeR.r "$inFile" 1 24 "$designPath" "$fdrCut" > "$outDir"/glmQLF_analysisResults.txt
+else
+	echo "Invalid analysis type entered... exiting!"
+	exit 1
+fi
 
 #Move produced tables
 for f in *.csv; do

@@ -10,7 +10,7 @@
 #install.packages("statmod")
 
 #Turn off scientific notation
-options(scipen = 999)
+#options(scipen = 999)
 
 #Load the edgeR library
 library("edgeR")
@@ -19,7 +19,7 @@ library("statmod")
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 #Test if there is one input argument
-if (length(args)!=5) {
+if (length(args)!=4) {
   stop("Two file names and a range of columns must be supplied.n", call.=FALSE)
 }
 
@@ -29,7 +29,7 @@ countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
 #Import grouping factor
 targets <- read.csv(file=args[4], row.names="sample")
 #Retrieve input FDR cutoff
-fdrCut=as.numeric(args[5])
+#fdrCut=as.numeric(args[5])
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$genotype,sep="."))
@@ -117,7 +117,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVA <- topTags(test.anov.UVVIS, n=nrow(test.anov.UVVIS$table), adjust.method="fdr")$table
-tagsTblANOVA.keep <- tagsTblANOVA$FDR <= fdrCut
+tagsTblANOVA.keep <- tagsTblANOVA$FDR #<= fdrCut
 tagsTblANOVA.out <- tagsTblANOVA[tagsTblANOVA.keep,]
 write.table(tagsTblANOVA.out, file="glmQLF_2WayANOVA_UVvsVIS_topTags.csv", sep=",", row.names=TRUE)
 
@@ -125,13 +125,13 @@ write.table(tagsTblANOVA.out, file="glmQLF_2WayANOVA_UVvsVIS_topTags.csv", sep="
 treat.anov.UVVIS <- glmTreat(fit, contrast=con.UVvsVIS, lfc=log2(1.2))
 summary(decideTests(treat.anov.UVVIS))
 #Write plot to file
-jpeg("glmQLF_2WayANOVA_UVvsVIS_plotMD_filtered.jpg")
+jpeg("glmQLF_2WayANOVA_UVvsVIS_plotMD_LFC1.2.jpg")
 plotMD(treat.anov.UVVIS)
 abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVA.filtered <- topTags(treat.anov.UVVIS, n=nrow(treat.anov.UVVIS$table), adjust.method="fdr")$table
-tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR <= fdrCut
+tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR #<= fdrCut
 tagsTblANOVA.filtered.out <- tagsTblANOVA.filtered[tagsTblANOVA.filtered.keep,]
 write.table(tagsTblANOVA.filtered.out, file="glmQLF_2WayANOVA_UVvsVIS_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
 
@@ -152,7 +152,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVATN <- topTags(test.anov.TN, n=nrow(test.anov.TN$table), adjust.method="fdr")$table
-tagsTblANOVATN.keep <- tagsTblANOVATN$FDR <= fdrCut
+tagsTblANOVATN.keep <- tagsTblANOVATN$FDR #<= fdrCut
 tagsTblANOVATN.out <- tagsTblANOVATN[tagsTblANOVATN.keep,]
 write.table(tagsTblANOVATN.out, file="glmQLF_2WayANOVA_TvsN_topTags.csv", sep=",", row.names=TRUE)
 
@@ -160,13 +160,13 @@ write.table(tagsTblANOVATN.out, file="glmQLF_2WayANOVA_TvsN_topTags.csv", sep=",
 treat.anov.TN <- glmTreat(fit, contrast=con.TvsN, lfc=log2(1.2))
 summary(decideTests(treat.anov.TN))
 #Write plot to file
-jpeg("glmQLF_2WayANOVA_TvsN_plotMD_filtered.jpg")
+jpeg("glmQLF_2WayANOVA_TvsN_plotMD_LFC1.2.jpg")
 plotMD(treat.anov.TN)
 abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVATN.filtered <- topTags(treat.anov.TN, n=nrow(treat.anov.TN$table), adjust.method="fdr")$table
-tagsTblANOVATN.filtered.keep <- tagsTblANOVATN.filtered$FDR <= fdrCut
+tagsTblANOVATN.filtered.keep <- tagsTblANOVATN.filtered$FDR #<= fdrCut
 tagsTblANOVATN.filtered.out <- tagsTblANOVATN.filtered[tagsTblANOVATN.filtered.keep,]
 write.table(tagsTblANOVATN.filtered.out, file="glmQLF_2WayANOVA_TvsN_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
 
@@ -188,7 +188,7 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVAInter <- topTags(test.anov.Inter, n=nrow(test.anov.Inter$table), adjust.method="fdr")$table
-tagsTblANOVAInter.keep <- tagsTblANOVAInter$FDR <= fdrCut
+tagsTblANOVAInter.keep <- tagsTblANOVAInter$FDR #<= fdrCut
 tagsTblANOVAInter.out <- tagsTblANOVAInter[tagsTblANOVAInter.keep,]
 write.table(tagsTblANOVAInter.out, file="glmQLF_2WayANOVA_interaction_topTags.csv", sep=",", row.names=TRUE)
 
@@ -196,12 +196,12 @@ write.table(tagsTblANOVAInter.out, file="glmQLF_2WayANOVA_interaction_topTags.cs
 treat.anov.Inter <- glmTreat(fit, contrast=con.Inter, lfc=log2(1.2))
 summary(decideTests(treat.anov.Inter))
 #Write plot to file
-jpeg("glmQLF_2WayANOVA_interaction_plotMD_filtered.jpg")
+jpeg("glmQLF_2WayANOVA_interaction_plotMD_LFC1.2.jpg")
 plotMD(treat.anov.Inter)
 abline(h=c(-1, 1), col="blue")
 dev.off()
 #Generate table of DE genes
 tagsTblANOVAInter.filtered <- topTags(treat.anov.Inter, n=nrow(treat.anov.Inter$table), adjust.method="fdr")$table
-tagsTblANOVAInter.filtered.keep <- tagsTblANOVAInter.filtered$FDR <= fdrCut
+tagsTblANOVAInter.filtered.keep <- tagsTblANOVAInter.filtered$FDR #<= fdrCut
 tagsTblANOVAInter.filtered.out <- tagsTblANOVAInter.filtered[tagsTblANOVAInter.filtered.keep,]
 write.table(tagsTblANOVAInter.filtered.out, file="glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
