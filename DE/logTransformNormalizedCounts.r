@@ -13,9 +13,15 @@ options(scipen = 999)
 #Import gene counts
 inputCounts <- read.csv(file="glmQLF_normalizedCounts.csv")
 
+#Set output file name
+outFile <- "glmQLF_normalizedCounts_logTransformed.csv"
+
 #Perform log transformations of log2(x+1)
-for(i in 2:24) {
-  var <- "logCol"
-  colName <- paste(var,i, sep = "", collapse = "")
-  inputCounts[[colName]] <- log2(inputCounts[,i])
+outputCounts <- inputCounts
+for(i in 2:ncol(inputCounts)) {
+  colName <- colnames(inputCounts)[i]
+  outputCounts[,i] <- log2(inputCounts[,i])
 }
+
+#Write log transformed counts to a file
+write.csv(outputCounts, file=outFile)
