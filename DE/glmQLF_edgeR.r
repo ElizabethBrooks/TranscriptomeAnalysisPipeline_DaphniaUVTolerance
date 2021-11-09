@@ -20,7 +20,7 @@ library("statmod")
 args = commandArgs(trailingOnly=TRUE)
 #Test if there is one input argument
 if (length(args)!=4) {
-  stop("Two file names and a range of columns must be supplied.n", call.=FALSE)
+  stop("Four arguments are expected... see run notes.n", call.=FALSE)
 }
 
 #Import gene count data
@@ -117,9 +117,9 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVA <- topTags(test.anov.UVVIS, n=nrow(test.anov.UVVIS$table), adjust.method="fdr")$table
-tagsTblANOVA.keep <- tagsTblANOVA$FDR #<= fdrCut
-tagsTblANOVA.out <- tagsTblANOVA[tagsTblANOVA.keep,]
-write.table(tagsTblANOVA.out, file="glmQLF_2WayANOVA_UVvsVIS_topTags.csv", sep=",", row.names=TRUE)
+#tagsTblANOVA.keep <- tagsTblANOVA$FDR <= fdrCut
+#tagsTblANOVA.out <- tagsTblANOVA[tagsTblANOVA.keep,]
+write.table(tagsTblANOVA, file="glmQLF_2WayANOVA_UVvsVIS_topTags.csv", sep=",", row.names=TRUE)
 
 #Look at genes with significant expression across all UV groups
 treat.anov.UVVIS <- glmTreat(fit, contrast=con.UVvsVIS, lfc=log2(1.2))
@@ -131,9 +131,9 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVA.filtered <- topTags(treat.anov.UVVIS, n=nrow(treat.anov.UVVIS$table), adjust.method="fdr")$table
-tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR #<= fdrCut
-tagsTblANOVA.filtered.out <- tagsTblANOVA.filtered[tagsTblANOVA.filtered.keep,]
-write.table(tagsTblANOVA.filtered.out, file="glmQLF_2WayANOVA_UVvsVIS_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+#tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR <= fdrCut
+#tagsTblANOVA.filtered.out <- tagsTblANOVA.filtered[tagsTblANOVA.filtered.keep,]
+write.table(tagsTblANOVA.filtered, file="glmQLF_2WayANOVA_UVvsVIS_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
 
 
 #Test whether the average across all tolerant groups is equal to the average across
@@ -152,9 +152,9 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVATN <- topTags(test.anov.TN, n=nrow(test.anov.TN$table), adjust.method="fdr")$table
-tagsTblANOVATN.keep <- tagsTblANOVATN$FDR #<= fdrCut
-tagsTblANOVATN.out <- tagsTblANOVATN[tagsTblANOVATN.keep,]
-write.table(tagsTblANOVATN.out, file="glmQLF_2WayANOVA_TvsN_topTags.csv", sep=",", row.names=TRUE)
+#tagsTblANOVATN.keep <- tagsTblANOVATN$FDR <= fdrCut
+#tagsTblANOVATN.out <- tagsTblANOVATN[tagsTblANOVATN.keep,]
+write.table(tagsTblANOVATN, file="glmQLF_2WayANOVA_TvsN_topTags.csv", sep=",", row.names=TRUE)
 
 #Look at genes with significant expression across all UV groups
 treat.anov.TN <- glmTreat(fit, contrast=con.TvsN, lfc=log2(1.2))
@@ -166,9 +166,9 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVATN.filtered <- topTags(treat.anov.TN, n=nrow(treat.anov.TN$table), adjust.method="fdr")$table
-tagsTblANOVATN.filtered.keep <- tagsTblANOVATN.filtered$FDR #<= fdrCut
-tagsTblANOVATN.filtered.out <- tagsTblANOVATN.filtered[tagsTblANOVATN.filtered.keep,]
-write.table(tagsTblANOVATN.filtered.out, file="glmQLF_2WayANOVA_TvsN_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+#tagsTblANOVATN.filtered.keep <- tagsTblANOVATN.filtered$FDR <= fdrCut
+#tagsTblANOVATN.filtered.out <- tagsTblANOVATN.filtered[tagsTblANOVATN.filtered.keep,]
+write.table(tagsTblANOVATN.filtered, file="glmQLF_2WayANOVA_TvsN_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
 
 
 #Test whether there is an interaction effect
@@ -188,9 +188,9 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVAInter <- topTags(test.anov.Inter, n=nrow(test.anov.Inter$table), adjust.method="fdr")$table
-tagsTblANOVAInter.keep <- tagsTblANOVAInter$FDR #<= fdrCut
-tagsTblANOVAInter.out <- tagsTblANOVAInter[tagsTblANOVAInter.keep,]
-write.table(tagsTblANOVAInter.out, file="glmQLF_2WayANOVA_interaction_topTags.csv", sep=",", row.names=TRUE)
+#tagsTblANOVAInter.keep <- tagsTblANOVAInter$FDR <= fdrCut
+#tagsTblANOVAInter.out <- tagsTblANOVAInter[tagsTblANOVAInter.keep,]
+write.table(tagsTblANOVAInter, file="glmQLF_2WayANOVA_interaction_topTags.csv", sep=",", row.names=TRUE)
 
 #Look at genes with significant expression
 treat.anov.Inter <- glmTreat(fit, contrast=con.Inter, lfc=log2(1.2))
@@ -202,6 +202,6 @@ abline(h=c(-1, 1), col="blue")
 dev.off()
 #Generate table of DE genes
 tagsTblANOVAInter.filtered <- topTags(treat.anov.Inter, n=nrow(treat.anov.Inter$table), adjust.method="fdr")$table
-tagsTblANOVAInter.filtered.keep <- tagsTblANOVAInter.filtered$FDR #<= fdrCut
-tagsTblANOVAInter.filtered.out <- tagsTblANOVAInter.filtered[tagsTblANOVAInter.filtered.keep,]
-write.table(tagsTblANOVAInter.filtered.out, file="glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+#tagsTblANOVAInter.filtered.keep <- tagsTblANOVAInter.filtered$FDR <= fdrCut
+#tagsTblANOVAInter.filtered.out <- tagsTblANOVAInter.filtered[tagsTblANOVAInter.filtered.keep,]
+write.table(tagsTblANOVAInter.filtered, file="glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
