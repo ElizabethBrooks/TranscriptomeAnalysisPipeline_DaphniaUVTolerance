@@ -1,6 +1,6 @@
 # Load libraries
 library(ggplot2)
-library("dplyr")
+library(dplyr)
 
 #Set working directory
 #workingDir = args[1];
@@ -19,9 +19,15 @@ outFile <- "glmQLF_normalizedCounts_logTransformed.csv"
 #Perform log transformations of log2(x+1)
 outputCounts <- inputCounts
 for(i in 2:ncol(inputCounts)) {
-  colName <- colnames(inputCounts)[i]
-  outputCounts[,i] <- log2(inputCounts[,i])
+  outputCounts[,i] <- log2(inputCounts[,i]+1)
 }
 
 #Write log transformed counts to a file
 write.csv(outputCounts, file=outFile)
+
+#Test plots
+ggplot(inputCounts, aes(x=seq_along(Y05_VIS_Pool1), y=Y05_VIS_Pool1)) + 
+  geom_point()
+
+ggplot(outputCounts, aes(x=seq_along(Y05_VIS_Pool1), y=Y05_VIS_Pool1)) + 
+  geom_point()
