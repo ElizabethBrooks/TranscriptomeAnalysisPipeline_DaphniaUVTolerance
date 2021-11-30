@@ -1,0 +1,1 @@
+#Script to change sequence names to transdecoder formatting
