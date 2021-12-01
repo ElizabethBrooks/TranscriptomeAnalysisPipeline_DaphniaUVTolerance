@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
-#Usage: Rscript geneSetTest_camera.r countsFile startColumn endColumn factorGroupingFile
-#Usage Ex: Rscript geneSetTest_camera.r cleaned.csv 1 24 expDesign_binned_Olympics.csv
-#R script to perform gene set enrichment testing using camera
+#Usage: Rscript normalizeFilteredCounts.r
+#Usage Ex: Rscript normalizeFilteredCounts.r
+#R script to normalized and log transform filtered gene counts
 
 # Load libraries
 library("edgeR")
@@ -32,3 +32,11 @@ normList <- cpm(list, normalized.lib.sizes=TRUE)
 #Write normalized counts to file
 write.table(normList, file="/Users/bamflappy/PfrenderLab/PA42_v4.1/PA42_v4.1_normalizedCountsOlympics.csv", sep=",", row.names=TRUE)
 
+#Log transform normalized counts
+#Use TMM normalization to eliminate composition biases
+# between libraries
+list <- calcNormFactors(list)
+normList <- cpm(list, log=TRUE, normalized.lib.sizes=TRUE)
+
+#Write log transformed normalized counts to file
+write.table(normList, file="/Users/bamflappy/PfrenderLab/PA42_v4.1/PA42_v4.1_normalizedLogCountsOlympics.csv", sep=",", row.names=TRUE)

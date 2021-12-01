@@ -1,8 +1,3 @@
-#!/usr/bin/env Rscript
-#Usage: Rscript glmQLF_edgeR.r countsFile startColumn endColumn factorGroupingFile FDR
-#Usage Ex: Rscript glmQLF_edgeR.r cleaned.csv 1 24 expDesign_Olympics_GRP1.csv 0.10
-#R script to perform statistical analysis of gene count tables using edgeR GLM
-
 #Install edgeR and statmod, this should only need to be done once
 #if (!requireNamespace("BiocManager", quietly = TRUE))
 #    install.packages("BiocManager")
@@ -15,13 +10,7 @@
 #Load the edgeR library
 library("edgeR")
 library("statmod")
-
-#Retrieve input file name of gene counts
-args = commandArgs(trailingOnly=TRUE)
-#Test if there is one input argument
-if (length(args)!=4) {
-  stop("Four arguments are expected... see run notes.n", call.=FALSE)
-}
+library("limma")
 
 #Import gene count data
 countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
@@ -104,22 +93,8 @@ dev.off()
 #Test whether the average across all UV groups is equal to the average across
 #all VIS groups, to examine the overall effect of treatment
 con.UVvsVIS <- makeContrasts(UVvsVIS = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
-  - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4,
-  levels=design)
-
-#Look at genes expressed across all UV groups using QL F-test
-#test.anov.UVVIS <- glmQLFTest(fit, contrast=con.UVvsVIS)
-#summary(decideTests(test.anov.UVVIS))
-#Write plot to file
-#jpeg("glmQLF_2WayANOVA_UVvsVIS_plotMD.jpg")
-#plotMD(test.anov.UVVIS)
-#abline(h=c(-1, 1), col="blue")
-#dev.off()
-#Write tags table of DE genes to file
-#tagsTblANOVA <- topTags(test.anov.UVVIS, n=nrow(test.anov.UVVIS$table), adjust.method="fdr")$table
-#tagsTblANOVA.keep <- tagsTblANOVA$FDR <= fdrCut
-#tagsTblANOVA.out <- tagsTblANOVA[tagsTblANOVA.keep,]
-#write.table(tagsTblANOVA, file="glmQLF_2WayANOVA_UVvsVIS_topTags.csv", sep=",", row.names=TRUE)
+                             - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4,
+                             levels=design)
 
 #Look at genes with significant expression across all UV groups
 treat.anov.UVVIS <- glmTreat(fit, contrast=con.UVvsVIS, lfc=log2(1.2))
@@ -133,28 +108,14 @@ dev.off()
 tagsTblANOVA.filtered <- topTags(treat.anov.UVVIS, n=nrow(treat.anov.UVVIS$table), adjust.method="fdr")$table
 #tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR <= fdrCut
 #tagsTblANOVA.filtered.out <- tagsTblANOVA.filtered[tagsTblANOVA.filtered.keep,]
-write.table(tagsTblANOVA.filtered, file="glmQLF_2WayANOVA_UVvsVIS_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+#write.table(tagsTblANOVA.filtered, file="glmQLF_2WayANOVA_UVvsVIS_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
 
 
 #Test whether the average across all tolerant groups is equal to the average across
 #all not tolerant groups, to examine the overall effect of tolerance
 con.TvsN <- makeContrasts(TvsN = (UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
-  - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4,
-  levels=design)
-
-#Look at genes expressed across all UV groups using QL F-test
-#test.anov.TN <- glmQLFTest(fit, contrast=con.TvsN)
-#summary(decideTests(test.anov.TN))
-#Write plot to file
-#jpeg("glmQLF_2WayANOVA_TvsN_plotMD.jpg")
-#plotMD(test.anov.TN)
-#abline(h=c(-1, 1), col="blue")
-#dev.off()
-#Write tags table of DE genes to file
-#tagsTblANOVATN <- topTags(test.anov.TN, n=nrow(test.anov.TN$table), adjust.method="fdr")$table
-#tagsTblANOVATN.keep <- tagsTblANOVATN$FDR <= fdrCut
-#tagsTblANOVATN.out <- tagsTblANOVATN[tagsTblANOVATN.keep,]
-#write.table(tagsTblANOVATN, file="glmQLF_2WayANOVA_TvsN_topTags.csv", sep=",", row.names=TRUE)
+                          - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4,
+                          levels=design)
 
 #Look at genes with significant expression across all UV groups
 treat.anov.TN <- glmTreat(fit, contrast=con.TvsN, lfc=log2(1.2))
@@ -168,29 +129,15 @@ dev.off()
 tagsTblANOVATN.filtered <- topTags(treat.anov.TN, n=nrow(treat.anov.TN$table), adjust.method="fdr")$table
 #tagsTblANOVATN.filtered.keep <- tagsTblANOVATN.filtered$FDR <= fdrCut
 #tagsTblANOVATN.filtered.out <- tagsTblANOVATN.filtered[tagsTblANOVATN.filtered.keep,]
-write.table(tagsTblANOVATN.filtered, file="glmQLF_2WayANOVA_TvsN_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+#write.table(tagsTblANOVATN.filtered, file="glmQLF_2WayANOVA_TvsN_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
 
 
 #Test whether there is an interaction effect
 con.Inter <- makeContrasts(Inter = ((UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
-  - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4)
-  - ((UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
-  - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4),
-  levels=design)
-
-#Look at genes expressed across all UV groups using QL F-test
-#test.anov.Inter <- glmQLFTest(fit, contrast=con.Inter)
-#summary(decideTests(test.anov.Inter))
-#Write plot to file
-#jpeg("glmQLF_2WayANOVA_interaction_plotMD.jpg")
-#plotMD(test.anov.Inter)
-#abline(h=c(-1, 1), col="blue")
-#dev.off()
-#Write tags table of DE genes to file
-#tagsTblANOVAInter <- topTags(test.anov.Inter, n=nrow(test.anov.Inter$table), adjust.method="fdr")$table
-#tagsTblANOVAInter.keep <- tagsTblANOVAInter$FDR <= fdrCut
-#tagsTblANOVAInter.out <- tagsTblANOVAInter[tagsTblANOVAInter.keep,]
-#write.table(tagsTblANOVAInter, file="glmQLF_2WayANOVA_interaction_topTags.csv", sep=",", row.names=TRUE)
+                                    - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4)
+                           - ((UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
+                              - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4),
+                           levels=design)
 
 #Look at genes with significant expression
 treat.anov.Inter <- glmTreat(fit, contrast=con.Inter, lfc=log2(1.2))
@@ -204,4 +151,39 @@ dev.off()
 tagsTblANOVAInter.filtered <- topTags(treat.anov.Inter, n=nrow(treat.anov.Inter$table), adjust.method="fdr")$table
 #tagsTblANOVAInter.filtered.keep <- tagsTblANOVAInter.filtered$FDR <= fdrCut
 #tagsTblANOVAInter.filtered.out <- tagsTblANOVAInter.filtered[tagsTblANOVAInter.filtered.keep,]
-write.table(tagsTblANOVAInter.filtered, file="glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+#write.table(tagsTblANOVAInter.filtered, file="glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+
+#Import gene count data
+#Row names are set to the uniprot IDs
+# to match the gene IDs of the MSigDB KEGG DNA repair gene sets
+#countsTable <- read.csv(file=args[1])
+countsTable <- read.csv(file="/Users/bamflappy/PfrenderLab/PA42_v4.1/PA42_v4.1_normalizedLogCountsOlympics_uniprot.csv")
+
+#Create a subset of the input counts table containing only the gene counts
+counts <- countsTable[3:26]
+
+#Import grouping factor
+#targets <- read.csv(file=args[2], row.names="sample")
+targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_camera_Olympics.csv", row.names="sample")
+
+#Setup a design matrix
+tolerance <- targets$treatment
+treatment <- targets$tolerance
+
+#The experimental design is parametrized with a one-way layout, 
+# where one coefficient is assigned to each group
+design <- model.matrix(~ 0 + tolerance + treatment + tolerance:treatment)
+colnames(design) <- c("(Intercept)","NTol.Tol","UV.VIS","Interaction")
+
+#Fit the linear model using the design matrix
+fit <- eBayes(lmFit(counts, design))
+#Output DEA results
+#Tolerance contrast results
+outFit2 <- topTable(fit, coef=2, adjust.method="BH", sort.by="P")
+#write.table(outFit2, file="eBayes_tolerance_topTable.csv", sep=",", row.names=TRUE)
+#Treatment contrast results
+outFit3 <- topTable(fit, coef=3, adjust.method="BH", sort.by="P")
+#write.table(outFit3, file="eBayes_treatment_topTable.csv", sep=",", row.names=TRUE)
+#Interaction contrast results
+outFit4 <- topTable(fit, coef=4, adjust.method="BH", sort.by="P")
+#write.table(outFit4, file="eBayes_interaction_topTable.csv", sep=",", row.names=TRUE)

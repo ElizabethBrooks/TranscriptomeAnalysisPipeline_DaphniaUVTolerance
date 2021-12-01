@@ -3,6 +3,7 @@
 #Usage Ex: bash addUniprotToCounts.sh ~/PfrenderLab/PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv
 #Usage Ex: bash addUniprotToCounts.sh ~/PfrenderLab/dMelUV/WGCNA_PA42_v4.1/filteredCountFiles/normalizedCountsInter_PA42_v4.1.csv
 #Usage Ex: bash addUniprotToCounts.sh ~/PfrenderLab/PA42_v4.1/PA42_v4.1_normalizedCountsOlympics.csv
+#Usage Ex: bash addUniprotToCounts.sh ~/PfrenderLab/PA42_v4.1/PA42_v4.1_normalizedLogCountsOlympics.csv
 
 #Check for input argument of file name
 if [ $# -eq 0 ]; then
