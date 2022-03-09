@@ -1,9 +1,9 @@
 #!/bin/bash
 #Script to generate a multi FASTA file for all transcripts in a GFF file
-#Usage: bash generateTranscripts_cufflinks.sh sortedNameFolder analysisTarget
-#Usage Ex: bash generateTranscripts_cufflinks.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
-#Usage Ex: bash generateTranscripts_cufflinks.sh sortedCoordinate_samtoolsHisat2_run3 variantCalling_filteredMapQ
-#Usage Ex: bash generateTranscripts_cufflinks.sh genomeReference
+#Usage: bash generateTranscripts_Olympics_cufflinks.sh sortedNameFolder analysisTarget
+#Usage Ex: bash generateTranscripts_Olympics_cufflinks.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
+#Usage Ex: bash generateTranscripts_Olympics_cufflinks.sh sortedCoordinate_samtoolsHisat2_run3 variantCalling_filteredMapQ
+#Usage Ex: bash generateTranscripts_Olympics_cufflinks.sh genomeReference
 
 #Required modules for ND CRC servers
 module load bio

@@ -1,6 +1,6 @@
 #!/bin/bash
-#Script to generate the longest CDS from the PA42 v4.1 gff and reference fasta
-#Usage: qsub generateLongestCDS_Olympics_cufflinks.sh.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
+#Script to generate the longest CDS from the Olympics gff and reference fasta
+#Usage: qsub generateLongestCDS_Olympics_cufflinks.sh sortedCoordinate_samtoolsHisat2_run3 variantCallingBcftools_filteredMapQ
 
 #Load necessary module
 module load bio
