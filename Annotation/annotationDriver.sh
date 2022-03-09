@@ -10,7 +10,7 @@ if [ $# -eq 0 ]; then
 fi
 #Initialize variables
 counter=0
-#Loop through all input sets of treatments and perform t-test analsysis
+#Loop through all input sets of treatments
 for i in "$@"; do
 	#Determine what type of data folder was input
 	if [[ "$1" == trimmed* ]]; then

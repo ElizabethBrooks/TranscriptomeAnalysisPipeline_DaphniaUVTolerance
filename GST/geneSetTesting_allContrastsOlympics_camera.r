@@ -23,8 +23,8 @@ counts <- countsTable[3:26]
 targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_camera_Olympics.csv", row.names="sample")
 
 #Setup a design matrix
-tolerance <- targets$treatment
-treatment <- targets$tolerance
+tolerance <- targets$tolerance
+treatment <- targets$treatment
 
 #The experimental design is parametrized with a one-way layout, 
 # where one coefficient is assigned to each group

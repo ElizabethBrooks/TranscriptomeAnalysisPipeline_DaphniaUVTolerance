@@ -59,6 +59,12 @@ outFileRBH="$outputFolder"/"blastp_RBH.txt"
 echo "Query: $inputDBPath"
 echo "DB: $inputRDBPath"
 
+#Pre-clean up to find best hits
+bestHitsDB="$outputFolder"/"blastp_bestHits.outfmt6"
+bestHitsRDB="$outputFolder"/"blastp_bestHits_reciprocal.outfmt6"
+awk '!seen[$1]++' $inputDBPath > $bestHitsDB
+awk '!seen[$1]++' $inputRDBPath > $bestHitsRDB
+
 #Pre-clean up
 echo "queryHit,dbHit,db" > $outFileRBH
 
@@ -66,15 +72,15 @@ echo "queryHit,dbHit,db" > $outFileRBH
 while IFS=$'\t' read -r f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
 do
 	#Determine annotation sets
-	if grep -q "$f2"$'\t'"$f1"$'\t' $inputRDBPath; then #RBH
+	if grep -q "$f2"$'\t'"$f1"$'\t' $bestHitsRDB; then #RBH
 		echo "$f1,$f2" >> $outFileRBH
 	fi
-done < $inputDBPath
+done < $bestHitsDB
 
 #Check number of lines
 #echo "Recodring number of entries..."
 #echo "query,db,queryHits,dbHits,bestHits,similarity" > "$outFileResults"
-queryHits=$(wc -l "$inputDBPath" | cut -d ' ' -f 1)
-dbHits=$(wc -l "$inputRDBPath" | cut -d ' ' -f 1)
+queryHits=$(wc -l "$bestHitsDB" | cut -d ' ' -f 1)
+dbHits=$(wc -l "$bestHitsRDB" | cut -d ' ' -f 1)
 bestHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
 echo "$2","$3","$queryHits","$dbHits","$bestHits" >> "$outFile"
