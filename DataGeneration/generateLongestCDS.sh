@@ -14,7 +14,7 @@ tmpCDS="$outDir"/tmp_cds.fa
 cat "$inputCDS" | sed -e ':a' -e 'N;$!ba' -e 's/\n/NEWLINE/g' | sed 's/NEWLINE>/\n>/g' > "$tmpCDS"
 
 #Get list of CDS tags
-tmpList="$outDir"/tmp_longest_cdsList.txt
+tmpList="$outDir"/tmp_cdsList.txt
 cat "$inputCDS" | grep ">" | sed "s/ loc:.*//g" | sed "s/>//g" > "$tmpList"
 
 #Loop over each CDS tag and retain longest CDS for each
