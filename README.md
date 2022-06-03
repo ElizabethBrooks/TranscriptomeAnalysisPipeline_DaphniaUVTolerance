@@ -14,11 +14,17 @@ This is a repository for scripts used to analyze short paired-end RNA sequence r
 * To delete a job from the queue: **qdel *TASKIDNUMBER***
 
 ### Running Scripts Locally
-* To run the script: **bash *SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
+**bash *SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
 
 ### Alternative Method of Running Scripts Locally
 * To compile the script before running: **chmod +x *SCRIPTNAME*.sh**
 * To run a compiled trimming script: **./*SCRIPTNAME*.sh** **INPUT_1 ... INPUT_N** 
+
+### Tutorial - Exact Tests with edgeR
+https://morphoscape.wordpress.com/2020/09/01/exact-tests-and-plots-with-edger-basic-differential-expression-analysis/
+
+### Tutorial - Generalized Liner Models with edgeR
+https://morphoscape.wordpress.com/2020/09/26/generalized-linear-models-and-plots-with-edger-advanced-differential-expression-analysis/
 
 ## Required Software ##
 * [FastQC][10]: A quality control tool for high throughput raw sequence data. It generates quality reports for NGS data and gives pass/fail results for the following checks: Per base sequence quality, Per sequence quality scores, Per base sequence content, Per base GC content, Per sequence GC content, Per base N content, Sequence length distribution, Sequence duplication levels, Overrepresented sequences, Kmer content. It also has a Graphic User Interface.
