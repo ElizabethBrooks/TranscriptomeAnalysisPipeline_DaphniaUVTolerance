@@ -61,7 +61,7 @@ mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
 	#Build files already exsist
-	echo "Build files for hisat2 already found in $outputFolder... exiting"
+	echo "Build files for hisat2 already found in $outputFolder. A directory for the input strain may need to be made... exiting"
 	exit 1
 else
 	#Build files do not exsist
