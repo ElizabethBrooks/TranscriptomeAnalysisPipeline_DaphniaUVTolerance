@@ -11,7 +11,7 @@
 
 #Required modules for ND CRC servers
 module load bio
-module load bio/trimmomatic/0.32
+#module load bio/trimmomatic/0.32
 #Prepare for adapter trimming and quality control
 qcCountStart=0
 qcCountEnd=0
