@@ -110,8 +110,7 @@ hisat2 --version > $inputOutFile
 buildOut="$buildInputsPath"/"reference_hisat2_build"
 #Trim .fa file extension from build file
 buildFileNoPath=$(basename $buildFile)
-buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta/\.fa/')
-buildFileNoEx=$(echo $buildFileNoEx | sed 's/\.fa//')
+buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta//' | sed 's/\.fna//')
 #Loop through all forward and reverse paired reads and run Hisat2 on each pair
 # using 8 threads and samtools to convert output sam files to bam
 for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
