@@ -55,6 +55,8 @@ fi
 cd "$outputsPath"
 #Create output directory
 outputFolder="reference_hisat2_build"
+#Add software version to output summary file
+hisat2-build --version > $inputOutFile
 mkdir "$outputFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then

@@ -89,6 +89,8 @@ while [ $dirFlag -eq 0 ]; do
 done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
+#Add software version to output summary file
+samtools --version > $inputOutFile
 #Loop through all reads and sort sam/bam files for input to samtools
 for f1 in "$inputsPath"/"$3"/*/; do
 	#Determine what extension the files have

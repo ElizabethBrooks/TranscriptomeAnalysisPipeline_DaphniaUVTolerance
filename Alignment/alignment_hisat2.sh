@@ -104,6 +104,8 @@ while [ $dirFlag -eq 0 ]; do
 done
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
+#Add software version to output summary file
+hisat2 --version > $inputOutFile
 #Build output directory for Hisat reference
 buildOut="$buildInputsPath"/"reference_hisat2_build"
 #Trim .fa file extension from build file
