@@ -5,6 +5,7 @@
 #$ -N filterMapQ_jobOutput
 #Script to perform bam read quaity filtering
 #Usage: qsub filterByMapQ.sh sortedNameFolder analysisTarget
+#Usage Ex: qsub filterByMapQ.sh sortedCoordinate_samtoolsHisat2_run1 genome
 #Usage Ex: qsub filterByMapQ.sh sortedCoordinate_samtoolsHisat2_run3 genome
 
 #Required modules for ND CRC servers
@@ -36,7 +37,16 @@ else
 	exit 1
 fi
 
-#Keep only unique read alignments usingthe mapq score of 60 
+#Name output file of inputs
+inputOutFile="$inputsDir"/mapqFiltering_summary.txt
+
+#Add version to output file of inputs
+samtools --version > "$inputOutFile"
+
+#Keep only unique read alignments using a mapq score of 60 
 for f in "$inputsDir"/*/accepted_hits.bam; do 
-	echo "Processing file $f";  path=$(dirname $f); samtools view -bq 60 $f > "$path"/filteredMapQ.bam
+	echo "Processing file $f"
+	path=$(dirname $f)
+	samtools view -bq 60 $f > "$path"/filteredMapQ.bam
+	echo samtools view -bq 60 $f ">" "$path"/filteredMapQ.bam >> "$inputOutFile"
 done
