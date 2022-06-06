@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N consensus_jobOutput
-#Script to generate a consensus sequence using called variants
+#Script to generate a consensus sequence using filtered called variants
 #Usage: qsub generateConsensus_bcftools.sh sortedNameFolder analysisTarget
 #Usage Ex: qsub generateConsensus_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
 #Usage Ex: qsub generateConsensus_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS

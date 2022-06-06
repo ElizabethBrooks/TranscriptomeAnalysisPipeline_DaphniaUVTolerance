@@ -4,8 +4,9 @@
 #$ -r n
 #$ -pe smp 4
 #$ -N variantFiltering_jobOutput
-#Script to perform variant filtering
+#Script to perform variant filtering after calling
 #Usage: qsub variantFiltering_bcftools.sh sortedNameFolder analysisTarget variantsFolder
+#Usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 genome filteredMapQ
 #Usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
 #Usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
 

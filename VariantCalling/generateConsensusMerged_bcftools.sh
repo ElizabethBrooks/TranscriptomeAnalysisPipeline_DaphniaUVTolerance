@@ -1,6 +1,7 @@
 #!/bin/bash
-#Script to generate a consensus sequence using called variants
+#Script to generate a consensus sequence using filtered called variants
 #Usage: bash generateConsensusMerged_bcftools.sh sortedNameFolder analysisTarget
+#Usage Ex: bash generateConsensusMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 genome filteredMapQ
 #Usage Ex: bash generateConsensusMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
 #Usage Ex: bash generateConsensusMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
 
