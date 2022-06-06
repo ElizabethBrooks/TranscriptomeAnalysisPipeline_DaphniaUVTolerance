@@ -6,6 +6,7 @@
 #$ -N variantCalling_jobOutput
 #Script to perform variant calling
 #Usage: qsub variantCalling_bcftools.sh sortedNameFolder analysisTarget
+#Usage Ex: qsub variantCalling_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 genome filteredMapQ
 #Usage Ex: qsub variantCalling_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ
 #Usage Ex: qsub variantCalling_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredZS
 
