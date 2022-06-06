@@ -57,6 +57,9 @@ inputOutFile="$outFolder"/variantFiltering_summary.txt
 #Name output file of filtering info
 outputsFile="$outFolder"/variantFiltering_stats.txt
 
+#Add version to output file of inputs
+bcftools --version > "$inputOutFile"
+
 #Retrieve input bam file type
 type="$3"
 

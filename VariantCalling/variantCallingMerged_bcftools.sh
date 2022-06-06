@@ -59,6 +59,9 @@ fi
 #Name output file of inputs
 inputOutFile="$outFolder"/variantCalling_summary.txt
 
+#Add version to output file of inputs
+bcftools --version > "$inputOutFile"
+
 #Select lines associated with input genotype
 #genotype=_"$4"_
 #grep "$genotype" "$inputBamList" > tmpList_genotype.txt
@@ -77,7 +80,7 @@ sed -i "s/SLASH/\//g" tmpList.txt
 type="$3"
 
 #Output status mesasge
-echo "Generating variants for the following input set of bam files: " > "$inputOutFile"
+echo "Generating variants for the following input set of bam files: " >> "$inputOutFile"
 cat tmpList.txt >> "$inputOutFile"
 
 #Calculate the read coverage of positions in the genome

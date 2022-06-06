@@ -43,6 +43,9 @@ fi
 #Name output file of inputs
 inputOutFile="$inputsDir"/variantCalling_summary.txt
 
+#Add version to output file of inputs
+bcftools --version > "$inputOutFile"
+
 #Retrieve input bam file type
 type="$3"
 #Loop over MapQ filtered bam files
