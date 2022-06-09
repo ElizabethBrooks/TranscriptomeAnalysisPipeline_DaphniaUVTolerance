@@ -4,7 +4,7 @@
 #$ -r n
 #$ -pe smp 4
 #$ -N variantCallingMerged_jobOutput
-#Script to perform variant calling before filtering
+#Script to perform variant calling of mapq filtered bam files before variant filtering
 #Usage: qsub variantCallingMerged_bcftools.sh sortedNameFolder analysisTarget filterType
 #Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 genome filteredMapQ
 #Usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 genome filteredMapQ

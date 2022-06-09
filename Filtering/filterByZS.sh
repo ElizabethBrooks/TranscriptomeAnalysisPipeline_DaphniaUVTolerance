@@ -5,6 +5,7 @@
 #$ -N filterSZ_jobOutput
 #Script to perform bam read quaity filtering
 #Usage: qsub filterByZS.sh sortedNameFolder analysisTarget
+#Usage Ex: qsub filterByZS.sh sortedCoordinate_samtoolsHisat2_run1 genome
 #Usage Ex: qsub filterByZS.sh sortedCoordinate_samtoolsHisat2_run3 genome
 
 #Required modules for ND CRC servers
@@ -36,7 +37,16 @@ else
 	exit 1
 fi
 
+#Name output file of inputs
+inputOutFile="$inputsDir"/mapqFiltering_summary.txt
+
+#Add version to output file of inputs
+samtools --version > "$inputOutFile"
+
 #Keep only unique read alignments using ZS tag
 for f in "$inputsDir"/*/accepted_hits.bam; do 
-	echo "Processing file $f"; path=$(dirname $f); samtools view -h -f 0x2 $f | awk 'substr($1, 0, 1)=="@" || $0 !~ /ZS:/' | samtools view -h -b > "$path"/filteredZS.bam
+	echo "Processing file $f"
+	path=$(dirname $f)
+	samtools view -h -f 0x2 $f | awk 'substr($1, 0, 1)=="@" || $0 !~ /ZS:/' | samtools view -h -b > "$path"/filteredZS.bam
+	echo samtools view -h -f 0x2 $f "|" awk 'substr($1, 0, 1)=="@" || $0 !~ /ZS:/' "|" samtools view -h -b ">" "$path"/filteredZS.bam >> "$inputOutFile"
 done
