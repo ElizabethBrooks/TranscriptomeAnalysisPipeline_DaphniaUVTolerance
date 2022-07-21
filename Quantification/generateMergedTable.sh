@@ -1,5 +1,5 @@
 #!/bin/bash
-#Usage: bash generateMergedTable.sh countedGenesFolder genome
+#Usage: bash generateMergedTable.sh countedGenesFolder genome/assembly
 #Usage ex: bash generateMergedTable.sh counted_htseq_run1 genome
 #Alternate usage: bash generateMergedTable.sh countedGenesFolder trimmedFolder assembly
 #Alternate usage ex: bash generateMergedTable.sh counted_htseq_run1 trimmed_run1 assemblyTrinity
