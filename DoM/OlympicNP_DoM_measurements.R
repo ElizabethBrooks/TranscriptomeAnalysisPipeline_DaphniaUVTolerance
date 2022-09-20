@@ -1,19 +1,25 @@
 # script to plot Olympic NP pond DoM measurements
 
+# install nationalparkcolors package
 #devtools::install_github("katiejolly/nationalparkcolors")
 
+# import libraries
 library(ggplot2)
 library(nationalparkcolors)
 
+# set working directory
 setwd("/Users/bamflappy/PfrenderLab/OLYM22/")
 
+# import pond data
 domData <- read.csv("OLYM_06to22_DoM_report_OLYM_plotting.csv", header=TRUE)
 
+# view pond data
 View(domData)
 
 # retrieve the vector of colors associated with Zion
 (park_colors <- park_palette("Zion"))
 
+# plot Olympic NP Pond Absorbance and Attenuation
 ggplot(data=domData, 
        aes(x=A440, y=Kd, group=factor(Year))) +
   geom_point(aes(color=factor(Year), shape=factor(Lake))) +
@@ -28,8 +34,11 @@ ggplot(data=domData,
     axis.title.x = element_text(color = park_colors[4], size = 14, face = "bold"),
     axis.title.y = element_text(color = park_colors[5], size = 14, face = "bold")
 )
+
+# save the last plot
 ggsave("OLYM_06to22_Kd_A440.png", bg = "white")
 
+# plot Olympic NP Pond Transparency
 ggplot(data=domData, 
        aes(x=reorder(Primenet, pUV10cm), y=pUV10cm, group=factor(Year))) +
   geom_point(aes(color=factor(Year), shape=factor(Lake))) +
@@ -45,4 +54,6 @@ ggplot(data=domData,
     axis.title.y = element_text(color = park_colors[5], size = 14, face = "bold"),
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)
   )
+
+# save the last plot
 ggsave("OLYM_06to22_transparency.png", bg = "white")
