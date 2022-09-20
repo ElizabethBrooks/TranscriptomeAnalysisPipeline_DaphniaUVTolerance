@@ -27,8 +27,11 @@ library("statmod")
 
 #Import gene count data
 #countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
-countsTable <- read.csv(file="/Users/bamflappy/PfrenderLab/PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv", row.names="gene")[ ,1:24]
-#head(countsTable)
+inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv", row.names="gene")[ ,1:24]
+
+#Trim the data table
+countsTable <- head(inputTable, - 5)
+
 #Import grouping factor
 #targets <- read.csv(file=args[4], row.names="sample")
 #targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_binned_Olympics.csv", row.names="sample")

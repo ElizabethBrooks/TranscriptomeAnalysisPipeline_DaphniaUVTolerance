@@ -24,8 +24,11 @@ if (length(args)!=4) {
 }
 
 #Import gene count data
-countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
-#head(countsTable)
+inputTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
+
+#Trim the data table
+countsTable <- head(inputTable, - 5)
+
 #Import grouping factor
 targets <- read.csv(file=args[4], row.names="sample")
 #Retrieve input FDR cutoff

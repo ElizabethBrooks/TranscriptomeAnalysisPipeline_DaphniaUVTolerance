@@ -20,8 +20,11 @@ if (length(args)!=2) {
 }
 
 #Import gene count data
-countsTable <- read.csv(file=args[1], row.names="gene")
-head(countsTable)
+inputTable <- read.csv(file=args[1], row.names="gene")
+
+#Trim the data table
+countsTable <- head(inputTable, - 5)
+
 #Import grouping factor
 targets <- read.csv(file=args[2], row.names="sample")
 

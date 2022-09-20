@@ -15,7 +15,11 @@ library("edgeR")
 args = commandArgs(trailingOnly=TRUE)
 
 #Import gene count data
-countsTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
+inputTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
+
+#Trim the data table
+countsTable <- head(inputTable, - 5)
+
 #Add grouping factor
 group <- factor(c(rep("ctrl",3),rep("treat",3)))
 #Create DGE list object

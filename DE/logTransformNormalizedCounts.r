@@ -11,7 +11,10 @@ setwd(workingDir);
 options(scipen = 999)
 
 #Import gene counts
-inputCounts <- read.csv(file="glmQLF_normalizedCounts.csv")
+inputTable <- read.csv(file="glmQLF_normalizedCounts.csv")
+
+#Trim the data table
+inputCounts <- head(inputTable, - 5)
 
 #Set output file name
 outFile <- "glmQLF_normalizedCounts_logTransformed.csv"
