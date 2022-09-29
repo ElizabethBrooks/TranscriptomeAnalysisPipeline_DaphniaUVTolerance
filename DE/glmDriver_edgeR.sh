@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to run Rscripts that perform DE analysis of gene count tables using glm in edgeR
 #Usage: bash glmDriver_edgeR.sh analysisType
-#Usage Ex: bash glmDriver_edgeR.sh QLF
+#Usage Ex: bash glmDriver_edgeR.sh
 
 #Load module for R
 #module load bio
@@ -20,7 +20,7 @@ inFile=$(grep "geneCounts:" ../InputData/inputPaths.txt | tr -d " " | sed "s/gen
 #fdrCut=0.10
 
 #Create directory for output files
-outDir="/Users/bamflappy/PfrenderLab/dMelUV/DEA_PA42_v4.1/glm"$1"Analysis"
+outDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/DE/glmQLF"
 mkdir $outDir
 #Check if the folder already exists
 #if [ $? -ne 0 ]; then
