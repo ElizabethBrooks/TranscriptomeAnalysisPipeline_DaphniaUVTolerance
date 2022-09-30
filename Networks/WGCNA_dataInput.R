@@ -1,16 +1,11 @@
-#if (!requireNamespace("BiocManager", quietly=TRUE))
-#  install.packages("BiocManager")
-#BiocManager::install("edgeR")
-
 #Load the WGCNA and edgeR packages
 library(WGCNA)
-library(edgeR)
 
 #The following setting is important, do not omit.
 options(stringsAsFactors = FALSE)
 
 #Retrieve input file name of gene counts
-args = commandArgs(trailingOnly=TRUE)
+#args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
 #workingDir = args[1];
