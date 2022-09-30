@@ -12,4 +12,4 @@ geneAnnotations: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/GeneAn
 annotations: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/AnnotationAnalysis
 geneSets: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_Results
 databases: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases
-geneCounts: /Users/bamflappy/PfrenderLab/KAP4/geneCounts_cleaned_KAP4.csv
+geneCounts: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/GeneCountsAnalyzed_KAP4/Formatted/cleaned.csv

@@ -19,8 +19,11 @@ setwd(workingDir);
 
 
 #Import gene count data
-countsTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
+inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
 #countsTable <- read.csv(file="~/PfrenderLab/PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv", row.names="gene", header=TRUE)[ ,1:24]
+
+#Trim the data table
+countsTable <- head(inputTable, - 5)
 
 #Import grouping factor
 targets <- read.csv(file=args[5], row.names="sample")
