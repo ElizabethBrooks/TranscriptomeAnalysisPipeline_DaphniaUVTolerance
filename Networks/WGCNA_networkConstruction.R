@@ -23,78 +23,8 @@ lnames
 # Get the number of sets in the multiExpr structure.
 nSets = checkSets(multiExpr)$nSets
 
-# Choose a set of soft-thresholding powers
-powers = c(seq(4,10,by=1), seq(12,20, by=2))
-# Initialize a list to hold the results of scale-free analysis
-powerTables = vector(mode = "list", length = nSets)
-# Call the network topology analysis function for each set in turn
-for (set in 1:nSets){
-  powerTables[[set]] = list(data = pickSoftThreshold(multiExpr[[set]]$data, 
-                                                     powerVector=powers,
-                                                     verbose = 2)[[2]])
-}
-collectGarbage()
-
-# Plot the results:
-colors = c("black", "red", "blue", "green")
-# Will plot these columns of the returned scale free analysis tables
-plotCols = c(2,5,6,7)
-colNames = c("Scale Free Topology Model Fit", 
-             "Mean connectivity", 
-             "Median connectivity",
-             "Max connectivity")
-# Get the minima and maxima of the plotted points
-ylim = matrix(NA, nrow = 2, ncol = 4)
-for (set in 1:nSets){
-  for (col in 1:length(plotCols)){
-    ylim[1, col] = min(ylim[1, col], powerTables[[set]]$data[, plotCols[col]], na.rm = TRUE)
-    ylim[2, col] = max(ylim[2, col], powerTables[[set]]$data[, plotCols[col]], na.rm = TRUE)
-  }
-}
-
-# Plot the quantities in the chosen columns vs. the soft thresholding power
-#sizeGrWindow(8, 6)
-#par(mfcol = c(4,1))
-#par(mar = c(4.2, 4.2 , 2.2, 0.5))
-cex1 = 0.7
-for (col in 1:length(plotCols)) for (set in 1:nSets){
-  if (set==1){
-    plot(powerTables[[set]]$data[,1], 
-         -sign(powerTables[[set]]$data[,3])*powerTables[[set]]$data[,2],
-         xlab="Soft Threshold (power)",
-         ylab=colNames[col],
-         type="n", 
-         ylim = ylim[, col],
-         main = colNames[col])
-    addGrid()
-  }
-  if (col==1){
-    text(powerTables[[set]]$data[,1], 
-         -sign(powerTables[[set]]$data[,3])*powerTables[[set]]$data[,2],
-         labels=powers,
-         cex=cex1,
-         col=colors[set])
-  } else
-    text(powerTables[[set]]$data[,1], 
-         powerTables[[set]]$data[,plotCols[col]],
-         labels=powers,
-         cex=cex1,
-         col=colors[set])
-  if (col==1){
-    legend("bottomright", 
-           legend = setLabels, 
-           col = colors, 
-           pch = 20)
-  } else
-    legend("topright", 
-           legend = setLabels, 
-           col = colors, 
-           pch = 20)
-}
-dev.off()
-
 # set soft thresholding power
-softPower = 8
+softPower = 30
 # Initialize an appropriate array to hold the adjacencies
 adjacencies = array(0, dim = c(nSets, nGenes, nGenes))
 # Calculate adjacencies in each individual data set
@@ -141,9 +71,10 @@ scaledTOMSamples = list()
 for (set in 1:nSets){
   scaledTOMSamples[[set]] = TOMScalingSamples[[set]]^scalePowers[set]
 }
+# Y05 vs Y023
 # Open a suitably sized graphics window
 sizeGrWindow(6,6)
-#pdf(file = "Plots/TOMScaling-QQPlot.pdf", wi = 6, he = 6)
+pdf(file = "TOMScaling-QQPlot_Y05_Y023.pdf", wi = 6, he = 6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[2]], plot.it = TRUE, cex = 0.6,
                     xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[2]),
@@ -155,3 +86,112 @@ points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
 abline(a=0, b=1, col = "blue")
 legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
 dev.off()
+# E05 vs R2
+# Open a suitably sized graphics window
+sizeGrWindow(6,6)
+pdf(file = "TOMScaling-QQPlot_E05_R2.pdf", wi = 6, he = 6)
+# qq plot of the unscaled samples
+qqUnscaled = qqplot(TOMScalingSamples[[3]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
+                    xlab = paste("TOM in", setLabels[3]), ylab = paste("TOM in", setLabels[4]),
+                    
+                    main = "Q-Q plot of TOM", pch = 20)
+# qq plot of the scaled samples
+qqScaled = qqplot(scaledTOMSamples[[3]], scaledTOMSamples[[4]], plot.it = FALSE)
+points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
+abline(a=0, b=1, col = "blue")
+legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
+dev.off()
+# Y05 vs E05
+# Open a suitably sized graphics window
+sizeGrWindow(6,6)
+pdf(file = "TOMScaling-QQPlot_Y05_E05.pdf", wi = 6, he = 6)
+# qq plot of the unscaled samples
+qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[3]], plot.it = TRUE, cex = 0.6,
+                    xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[3]),
+                    
+                    main = "Q-Q plot of TOM", pch = 20)
+# qq plot of the scaled samples
+qqScaled = qqplot(scaledTOMSamples[[1]], scaledTOMSamples[[3]], plot.it = FALSE)
+points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
+abline(a=0, b=1, col = "blue")
+legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
+dev.off()
+# Y023 vs R2
+# Open a suitably sized graphics window
+sizeGrWindow(6,6)
+pdf(file = "TOMScaling-QQPlot_Y023_R2.pdf", wi = 6, he = 6)
+# qq plot of the unscaled samples
+qqUnscaled = qqplot(TOMScalingSamples[[2]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
+                    xlab = paste("TOM in", setLabels[2]), ylab = paste("TOM in", setLabels[4]),
+                    
+                    main = "Q-Q plot of TOM", pch = 20)
+# qq plot of the scaled samples
+qqScaled = qqplot(scaledTOMSamples[[2]], scaledTOMSamples[[4]], plot.it = FALSE)
+points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
+abline(a=0, b=1, col = "blue")
+legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
+dev.off()
+
+# calculate the consensus Topological Overlap by taking the component-wise (“parallel”) 
+# minimum of the TOMs in individual sets
+consensusTOM = pmin(TOM[1, , ], TOM[2, , ])
+
+# Clustering
+consTree = hclust(as.dist(1-consensusTOM), method = "average")
+# We like large modules, so we set the minimum module size relatively high:
+minModuleSize = 100
+# Module identification using dynamic tree cut:
+unmergedLabels = cutreeDynamic(dendro = consTree, distM = 1-consensusTOM,
+                               deepSplit = 2, cutHeight = 0.995,
+                               minClusterSize = minModuleSize,
+                               pamRespectsDendro = FALSE )
+unmergedColors = labels2colors(unmergedLabels)
+
+# quick summary of the module detection
+table(unmergedLabels)
+
+# plot the consensus gene dendrogram together with the preliminary module colors
+sizeGrWindow(8,6)
+pdf(file = "ConsensusDendrogram_minModuleSize100.pdf")
+plotDendroAndColors(consTree, unmergedColors, "Dynamic Tree Cut",
+                    dendroLabels = FALSE, hang = 0.03,
+                    addGuide = TRUE, guideHang = 0.05)
+dev.off()
+
+# Calculate module eigengenes
+unmergedMEs = multiSetMEs(multiExpr, colors = NULL, universalColors = unmergedColors)
+# Calculate consensus dissimilarity of consensus module eigengenes
+consMEDiss = consensusMEDissimilarity(unmergedMEs);
+# Cluster consensus modules
+consMETree = hclust(as.dist(consMEDiss), method = "average");
+# Plot the result
+sizeGrWindow(7,6)
+par(mfrow = c(1,1))
+pdf(file = "ConsensusModuleClustering.pdf")
+plot(consMETree, main = "Consensus clustering of consensus module eigengenes",
+     xlab = "", sub = "")
+abline(h=0.25, col = "red")
+dev.off()
+
+# automatically merge module bellow the merging threshold
+merge = mergeCloseModules(multiExpr, unmergedLabels, cutHeight = 0.25, verbose = 3)
+
+# Numeric module labels
+moduleLabels = merge$colors
+# Convert labels to colors
+moduleColors = labels2colors(moduleLabels)
+# Eigengenes of the new merged modules:
+consMEs = merge$newMEs
+
+#  plot the gene dendrogram again, this time with both the 
+# unmerged and the merged module colors
+sizeGrWindow(9,6)
+pdf(file = "ConsensusDendrogram_mergedModules.pdf")
+plotDendroAndColors(consTree, cbind(unmergedColors, moduleColors),
+                    c("Unmerged", "Merged"),
+                    dendroLabels = FALSE, hang = 0.03,
+                    addGuide = TRUE, guideHang = 0.05)
+dev.off()
+
+# save the information necessary in the subsequent steps
+save(consMEs, moduleColors, moduleLabels, consTree, file="Consensus-NetworkConstruction-man.RData") 

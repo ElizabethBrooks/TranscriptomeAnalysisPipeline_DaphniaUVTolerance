@@ -25,7 +25,8 @@ inputTable_R2 <- inputTable[,19:24]
 # We work with four sets
 nSets <- 4
 # For easier labeling of plots, create a vector holding descriptive names of the two sets.
-setLabels = c("Y05 Tolerant", "Y023 Tolerant", "E05 Not Tolerant", "R2 Not Tolerant")
+#setLabels = c("Y05 Tolerant", "Y023 Tolerant", "E05 Not Tolerant", "R2 Not Tolerant")
+setLabels = c("Y05", "Y023", "E05", "R2")
 shortLabels = c("Y05", "Y023", "E05", "R2")
 
 

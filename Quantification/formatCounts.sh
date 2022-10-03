@@ -55,6 +55,7 @@ sed -i.bu '/PA/ s/$/,PA/' "$outputCounts"/annotatedGeneotype_transposed.csv
 sed -i.bu '/Sierra/ s/$/,Sierra/' "$outputCounts"/annotatedGeneotype_transposed.csv
 #Clean up
 rm "$outputCounts"/tagged_transposed.csv
+rm "$outputCounts"/*.csv.bu
 
 #Create merged count tables
 #Transpose the annotated tables
