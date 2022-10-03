@@ -3,7 +3,7 @@
 
 #Set working directory
 #workingDir = args[1];
-workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4"
+workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_WGCNA"
 setwd(workingDir)
 
 # load the WGCNA package
