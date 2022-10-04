@@ -79,8 +79,8 @@ for (set in 1:nSets){
 }
 # Y05 vs Y023
 # Open a suitably sized graphics window
-sizeGrWindow(6,6)
 pdf(file = "ConsensusTOMScaling-QQPlot_Y05_Y023.pdf", wi = 6, he = 6)
+sizeGrWindow(6,6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[2]], plot.it = TRUE, cex = 0.6,
                     xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[2]),
@@ -94,8 +94,8 @@ legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("b
 dev.off()
 # E05 vs R2
 # Open a suitably sized graphics window
-sizeGrWindow(6,6)
 pdf(file = "ConsensusTOMScaling-QQPlot_E05_R2.pdf", wi = 6, he = 6)
+sizeGrWindow(6,6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[3]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
                     xlab = paste("TOM in", setLabels[3]), ylab = paste("TOM in", setLabels[4]),
@@ -109,8 +109,8 @@ legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("b
 dev.off()
 # Y05 vs E05
 # Open a suitably sized graphics window
-sizeGrWindow(6,6)
 pdf(file = "ConsensusTOMScaling-QQPlot_Y05_E05.pdf", wi = 6, he = 6)
+sizeGrWindow(6,6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[3]], plot.it = TRUE, cex = 0.6,
                     xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[3]),
@@ -124,8 +124,8 @@ legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("b
 dev.off()
 # Y023 vs R2
 # Open a suitably sized graphics window
-sizeGrWindow(6,6)
 pdf(file = "ConsensusTOMScaling-QQPlot_Y023_R2.pdf", wi = 6, he = 6)
+sizeGrWindow(6,6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[2]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
                     xlab = paste("TOM in", setLabels[2]), ylab = paste("TOM in", setLabels[4]),
@@ -157,8 +157,8 @@ unmergedColors = labels2colors(unmergedLabels)
 table(unmergedLabels)
 
 # plot the consensus gene dendrogram together with the preliminary module colors
-sizeGrWindow(8,6)
 pdf(file = "ConsensusDendrogram_minModuleSize100.pdf")
+sizeGrWindow(8,6)
 plotDendroAndColors(consTree, unmergedColors, "Dynamic Tree Cut",
                     dendroLabels = FALSE, hang = 0.03,
                     addGuide = TRUE, guideHang = 0.05)
@@ -171,9 +171,9 @@ consMEDiss = consensusMEDissimilarity(unmergedMEs);
 # Cluster consensus modules
 consMETree = hclust(as.dist(consMEDiss), method = "average");
 # Plot the result
+pdf(file = "ConsensusModuleClustering.pdf")
 sizeGrWindow(7,6)
 par(mfrow = c(1,1))
-pdf(file = "ConsensusModuleClustering.pdf")
 plot(consMETree, main = "Consensus clustering of consensus module eigengenes",
      xlab = "", sub = "")
 abline(h=0.25, col = "red")
@@ -191,8 +191,8 @@ consMEs = merge$newMEs
 
 #  plot the gene dendrogram again, this time with both the 
 # unmerged and the merged module colors
-sizeGrWindow(9,6)
 pdf(file = "ConsensusDendrogram_mergedModules.pdf")
+sizeGrWindow(9,6)
 plotDendroAndColors(consTree, cbind(unmergedColors, moduleColors),
                     c("Unmerged", "Merged"),
                     dendroLabels = FALSE, hang = 0.03,

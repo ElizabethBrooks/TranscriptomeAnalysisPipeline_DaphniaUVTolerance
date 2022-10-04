@@ -40,12 +40,12 @@ lnames = load(file = importFile)
 powers = c(c(1:10), seq(from = 12, to=36, by=2))
 # Call the network topology analysis function
 sft = pickSoftThreshold(datExpr, powerVector = powers, verbose = 5)
-# Plot the results:
-sizeGrWindow(9, 5)
-par(mfrow = c(1,2))
+# Plot the results
 cex1 = 0.9
 exportFile <- paste(genotype, "SoftPowers.pdf", sep="_")
 pdf(file = exportFile)
+sizeGrWindow(9, 5)
+par(mfrow = c(1,2))
 # Scale-free topology fit index as a function of the soft-thresholding power
 plot(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
      xlab="Soft Threshold (power)",ylab="Scale Free Topology Model Fit,signed R^2",type="n",

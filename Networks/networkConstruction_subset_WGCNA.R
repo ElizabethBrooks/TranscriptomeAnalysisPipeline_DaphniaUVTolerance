@@ -57,9 +57,9 @@ dissTOM = 1-TOM
 # Call the hierarchical clustering function
 geneTree = hclust(as.dist(dissTOM), method = "average")
 # Plot the resulting clustering tree (dendrogram)
-sizeGrWindow(12,9)
 exportFile <- paste(genotype, "geneClustering.pdf", sep="_")
 pdf(file = exportFile)
+sizeGrWindow(12,9)
 plot(geneTree, xlab="", sub="", main = "Gene clustering on TOM-based dissimilarity",
      labels = FALSE, hang = 0.04)
 dev.off()
@@ -76,9 +76,9 @@ table(dynamicMods)
 dynamicColors = labels2colors(dynamicMods)
 table(dynamicColors)
 # Plot the dendrogram and colors underneath
-sizeGrWindow(8,6)
 exportFile <- paste(genotype, "dynamicTreeCut.pdf", sep="_")
 pdf(file = exportFile)
+sizeGrWindow(8,6)
 plotDendroAndColors(geneTree, dynamicColors, "Dynamic Tree Cut",
                     dendroLabels = FALSE, hang = 0.03,
                     addGuide = TRUE, guideHang = 0.05,
@@ -93,9 +93,9 @@ MEDiss = 1-cor(MEs);
 # Cluster module eigengenes
 METree = hclust(as.dist(MEDiss), method = "average");
 # Plot the result
-sizeGrWindow(7, 6)
 exportFile <- paste(genotype, "dynamicTreeCut.pdf", sep="_")
 pdf(file = exportFile)
+sizeGrWindow(7, 6)
 plot(METree, main = "Clustering of module eigengenes",
      xlab = "", sub = "")
 # choose a height cut of 0.25, corresponding to correlation of 0.75, to merge
@@ -113,9 +113,9 @@ mergedMEs = merge$newMEs
 
 # plot the gene dendrogram again, with the 
 # original and merged module colors underneath
-sizeGrWindow(12, 9)
 exportFile <- paste(genotype, "geneDendro-3.pdf", sep="_")
 pdf(file = exportFile, wi = 9, he = 6)
+sizeGrWindow(12, 9)
 plotDendroAndColors(geneTree, cbind(dynamicColors, mergedColors),
                     c("Dynamic Tree Cut", "Merged dynamic"),
                     dendroLabels = FALSE, hang = 0.03,

@@ -63,9 +63,9 @@ if (!gsg$allOK){
 sampleTree = hclust(dist(datExpr0), method = "average")
 # Plot the sample tree: Open a graphic output window of size 12 by 9 inches
 # The user should change the dimensions if the window is too large or too small.
-sizeGrWindow(12,9)
 exportFile <- paste(tag, "sampleClustering.pdf", sep="_")
 pdf(file = exportFile, width = 12, height = 9)
+sizeGrWindow(12,9)
 par(cex = 0.6)
 par(mar = c(0,4,2,0))
 plot(sampleTree, main = "Sample clustering to detect outliers", sub="", xlab="", cex.lab = 1.5,
