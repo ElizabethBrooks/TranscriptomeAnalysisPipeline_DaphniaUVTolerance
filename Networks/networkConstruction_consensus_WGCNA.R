@@ -12,6 +12,12 @@ library(WGCNA)
 # the following setting is important, do not omit.
 options(stringsAsFactors = FALSE)
 
+# Allow multi-threading within WGCNA. At present this call is necessary.
+# Any error here may be ignored but you may want to update WGCNA if you see one.
+# Caution: skip this line if you run RStudio or other third-party R environments.
+# See note above.
+#enableWGCNAThreads()
+
 # allow multi-threading within WGCNA
 # caution: skip this line if you run RStudio or other third-party R environments
 # see note above
@@ -74,7 +80,7 @@ for (set in 1:nSets){
 # Y05 vs Y023
 # Open a suitably sized graphics window
 sizeGrWindow(6,6)
-pdf(file = "TOMScaling-QQPlot_Y05_Y023.pdf", wi = 6, he = 6)
+pdf(file = "ConsensusTOMScaling-QQPlot_Y05_Y023.pdf", wi = 6, he = 6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[2]], plot.it = TRUE, cex = 0.6,
                     xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[2]),
@@ -89,7 +95,7 @@ dev.off()
 # E05 vs R2
 # Open a suitably sized graphics window
 sizeGrWindow(6,6)
-pdf(file = "TOMScaling-QQPlot_E05_R2.pdf", wi = 6, he = 6)
+pdf(file = "ConsensusTOMScaling-QQPlot_E05_R2.pdf", wi = 6, he = 6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[3]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
                     xlab = paste("TOM in", setLabels[3]), ylab = paste("TOM in", setLabels[4]),
@@ -104,7 +110,7 @@ dev.off()
 # Y05 vs E05
 # Open a suitably sized graphics window
 sizeGrWindow(6,6)
-pdf(file = "TOMScaling-QQPlot_Y05_E05.pdf", wi = 6, he = 6)
+pdf(file = "ConsensusTOMScaling-QQPlot_Y05_E05.pdf", wi = 6, he = 6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[3]], plot.it = TRUE, cex = 0.6,
                     xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[3]),
@@ -119,7 +125,7 @@ dev.off()
 # Y023 vs R2
 # Open a suitably sized graphics window
 sizeGrWindow(6,6)
-pdf(file = "TOMScaling-QQPlot_Y023_R2.pdf", wi = 6, he = 6)
+pdf(file = "ConsensusTOMScaling-QQPlot_Y023_R2.pdf", wi = 6, he = 6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[2]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
                     xlab = paste("TOM in", setLabels[2]), ylab = paste("TOM in", setLabels[4]),

@@ -12,6 +12,12 @@ library(WGCNA)
 # the following setting is important, do not omit.
 options(stringsAsFactors = FALSE)
 
+# Allow multi-threading within WGCNA. At present this call is necessary.
+# Any error here may be ignored but you may want to update WGCNA if you see one.
+# Caution: skip this line if you run RStudio or other third-party R environments.
+# See note above.
+#enableWGCNAThreads()
+
 # allow multi-threading within WGCNA
 # caution: skip this line if you run RStudio or other third-party R environments
 # see note above
@@ -56,7 +62,7 @@ for (set in 1:nSets){
 #sizeGrWindow(8, 6)
 #par(mfcol = c(4,1))
 #par(mar = c(4.2, 4.2 , 2.2, 0.5))
-pdf(file = "SoftPowers.pdf", width = 12, height = 12)
+pdf(file = "ConsensusSoftPowers.pdf", width = 12, height = 12)
 par(mfrow=c(4,1))
 par(mar = c(0, 4, 2, 0))
 cex1 = 0.7

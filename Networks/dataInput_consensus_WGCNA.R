@@ -85,7 +85,7 @@ for (set in 1:nSets){
 }
 
 # plot dendrogrems
-pdf(file = "SampleClustering.pdf", width = 12, height = 12)
+pdf(file = "ConsensusSampleClustering.pdf", width = 12, height = 12)
 par(mfrow=c(4,1))
 par(mar = c(0, 4, 2, 0))
 for (set in 1:nSets){
