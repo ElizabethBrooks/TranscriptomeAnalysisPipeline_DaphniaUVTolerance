@@ -1,3 +1,9 @@
+#!/usr/bin/env Rscript
+
+# script to create a network for a set of samples using WGNCA
+# usage: Rscript dataInput_consensus_WGCNA.R workingDir countsFile startCounts endCounts traitsFile
+# usage ex: Rscript dataInput_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/DEGenotypes/glmQLF_normalizedCounts.csv 1 24 /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_genotype_WGCNA_Olympics.csv
+
 #Load the WGCNA and edgeR packages
 library(WGCNA)
 
@@ -5,16 +11,16 @@ library(WGCNA)
 options(stringsAsFactors = FALSE)
 
 #Retrieve input file name of gene counts
-#args = commandArgs(trailingOnly=TRUE)
+args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
-#workingDir = args[1];
-workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_WGCNA"
+workingDir = args[1];
+#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA"
 setwd(workingDir)
 
 #Import normalized gene count data
-#inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
-inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/DEGenotypes/glmQLF_normalizedCounts.csv", row.names="gene", header=TRUE)[ ,1:24]
+inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
+#inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/DEGenotypes/glmQLF_normalizedCounts.csv", row.names="gene", header=TRUE)[ ,1:24]
 
 #Subset input counts by genotype
 inputTable_Y05 <- inputTable[,1:6]
@@ -28,6 +34,12 @@ nSets <- 4
 #setLabels = c("Y05 Tolerant", "Y023 Tolerant", "E05 Not Tolerant", "R2 Not Tolerant")
 setLabels = c("Y05", "Y023", "E05", "R2")
 shortLabels = c("Y05", "Y023", "E05", "R2")
+
+# load in the trait data
+allTraits = read.csv(args[5])
+#allTraits = read.csv("/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_consensus_WGCNA_Olympics.csv");
+dim(allTraits)
+names(allTraits)
 
 
 # form multi-set expression data
@@ -93,11 +105,6 @@ for (set in 1:nSets){
        xlab="", sub="", cex = 0.7)
 }
 dev.off()
-
-# load in the trait data
-allTraits = read.csv("/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_WGCNA_Olympics.csv");
-dim(allTraits)
-names(allTraits)
 
 # Form a multi-set structure that will hold the clinical traits.
 Traits = vector(mode="list", length = nSets)

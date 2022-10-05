@@ -1,9 +1,15 @@
+#!/usr/bin/env Rscript
+
+# script to help pick a soft threshold values for a set of samples using WGNCA
+# usage: Rscript pickSoftPower_consensus_WGCNA.R workingDir
+# usage ex: Rscript pickSoftPower_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA
+
 #Retrieve input file name of gene counts
-#args = commandArgs(trailingOnly=TRUE)
+args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
-#workingDir = args[1];
-workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_WGCNA"
+workingDir = args[1];
+#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA"
 setwd(workingDir)
 
 # load the WGCNA package
@@ -16,7 +22,7 @@ options(stringsAsFactors = FALSE)
 # Any error here may be ignored but you may want to update WGCNA if you see one.
 # Caution: skip this line if you run RStudio or other third-party R environments.
 # See note above.
-#enableWGCNAThreads()
+enableWGCNAThreads()
 
 # allow multi-threading within WGCNA
 # caution: skip this line if you run RStudio or other third-party R environments
