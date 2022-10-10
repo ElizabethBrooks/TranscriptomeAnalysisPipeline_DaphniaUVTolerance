@@ -1,16 +1,13 @@
 # script to identify set-specific and consensos modules
-# usage: Rscript relateModsToTraits_consensus_WGCNA.R workingDir countsFile startCounts endCounts startSubset endSubset
-# usage ex: Rscript relateModsToTraits_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_WGCNA Y05
-# usage ex: Rscript relateModsToTraits_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_WGCNA Y023
-# usage ex: Rscript relateModsToTraits_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_WGCNA E05
-# usage ex: Rscript relateModsToTraits_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_WGCNA R2
+# usage: Rscript relateModsToTraits_consensus_WGCNA.R workingDir minModuleSize setTag
+# usage ex: Rscript relateModsToTraits_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA 60 tolerance
 
 #Retrieve input file name of gene counts
 #args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
 #workingDir = args[1];
-workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_WGCNA"
+workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA"
 setwd(workingDir)
 
 # load the WGCNA package
@@ -19,16 +16,24 @@ library(WGCNA)
 # the following setting is important, do not omit.
 options(stringsAsFactors = FALSE)
 
-# retrieve genotype tag
-#genotype <- args[2]
-genotype <- "Y05"
+# We like large modules, so we set the minimum module size relatively high:
+#minModuleSize = as.numeric(args[2])
+minModuleSize = 60
+
+# retrieve set tag
+#setTag <- args[3]
+setTag <- "tolerance"
 
 # load the input consensus data
-lnames = load(file = "Consensus-dataInput.RData")
+importFile <- paste("Consensus-dataInput", setTag, sep="-")
+importFile <- paste(importFile, "RData", sep=".")
+lnames = load(file = importFile)
 lnames
 
 # Also load results of network analysis
-lnames = load(file = "Consensus-NetworkConstruction-man.RData");
+importFile <- paste("Consensus-NetworkConstruction-man", minModuleSize, sep="-")
+importFile <- paste(importFile, "RData", sep=".")
+lnames = load(file = importFile);
 lnames
 exprSize = checkSets(multiExpr)
 nSets = exprSize$nSets
@@ -99,6 +104,7 @@ positive = moduleTraitCor[[1]] > 0 & moduleTraitCor[[2]] > 0;
 consensusCor[positive] = pmin(moduleTraitCor[[1]][positive], moduleTraitCor[[2]][positive]);
 consensusPvalue[positive] = pmax(moduleTraitPvalue[[1]][positive], moduleTraitPvalue[[2]][positive]);
 
+# display the consensus module–trait relationships again using a color-coded table
 textMatrix = paste(signif(consensusCor, 2), "\n(",
                    signif(consensusPvalue, 1), ")", sep = "");
 dim(textMatrix) = dim(moduleTraitCor[[set]])
@@ -110,12 +116,11 @@ labeledHeatmap(Matrix = consensusCor,
                yLabels = MEColorNames,
                ySymbols = MEColorNames,
                colorLabels = FALSE,
-               colors = greenWhiteRed(50),
+               colors = blueWhiteRed(50),
                textMatrix = textMatrix,
                setStdMargins = FALSE,
                cex.text = 0.5,
                zlim = c(-1,1),
                main = paste("Consensus module--trait relationships across\n",
                             paste(setLabels, collapse = " and ")))
-
-
+dev.off();

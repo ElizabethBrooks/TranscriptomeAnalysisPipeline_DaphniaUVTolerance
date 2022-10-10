@@ -1,10 +1,10 @@
 #!/usr/bin/env Rscript
 
 # script to construct a network for a set of samples using WGNCA
-# usage: Rscript networkConstruction_consensus_WGCNA.R workingDir setTag softPower minModuleSize
-# usage ex: Rscript networkConstruction_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA 30 100
-# usage ex: Rscript networkConstruction_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA 14 30
-# usage ex: Rscript networkConstruction_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA 14 60
+# usage: Rscript networkConstruction_consensus_tolerance_WGCNA.R workingDir setTag softPower minModuleSize
+# usage ex: Rscript networkConstruction_consensus_tolerance_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA 30 100
+# usage ex: Rscript networkConstruction_consensus_tolerance_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA 14 30
+# usage ex: Rscript networkConstruction_consensus_tolerance_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA 14 60
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
