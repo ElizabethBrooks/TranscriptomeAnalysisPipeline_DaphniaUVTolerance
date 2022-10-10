@@ -1,11 +1,13 @@
 #!/usr/bin/env Rscript
 
 # script to identify set-specific and consensos modules
-# usage: Rscript networkAnalysis_consensus_WGCNA.R workingDir countsFile startCounts endCounts startSubset endSubset
-# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA Y05
-# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA Y023
-# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA E05
-# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA R2
+# usage: Rscript networkAnalysis_consensus_WGCNA.R workingDir countsFile subsetTag minModuleSize
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA tol 60 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA nTol 60 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA Y05 100 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA Y023 100 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA E05 100 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA R2 100 tolerance
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
@@ -21,13 +23,21 @@ library(WGCNA)
 # the following setting is important, do not omit.
 options(stringsAsFactors = FALSE)
 
-# retrieve genotype tag
-genotype <- args[2]
-#genotype <- "Y05"
+# retrieve subset tag
+subsetTag <- args[2]
+#subsetTag <- "Y05"
+
+# We like large modules, so we set the minimum module size relatively high:
+minModuleSize = as.numeric(args[3])
+#minModuleSize = 60
+
+# retrieve the set tag
+setTag <- args[4]
 
 # load the subset data and rename them so that 
 # they do not conflict with the consensus data
-importFile <- paste(genotype, "networkConstruction-stepByStep.RData", sep="-")
+importFile <- paste(subsetTag, minModuleSize, sep="_")
+importFile <- paste(importFile, "networkConstruction-stepByStep.RData", sep="-")
 lnames = load(file = importFile)
 lnames
 
@@ -38,12 +48,16 @@ subsetTree = geneTree
 subsetMEs = orderMEs(MEs, greyName = "ME0")
 
 # load the results of the consensus module identification:
-lnames = load("Consensus-NetworkConstruction-man.RData")
+importFile <- paste("Consensus-NetworkConstruction-man", minModuleSize, sep="-")
+importFile <- paste(importFile, "RData", sep=".")
+lnames = load(importFile)
 lnames
 
 # restrict modules to genes that occur in both sets
-load(file = "Consensus-dataInput.RData")
-importFile <- paste(genotype, "dataInput.RData", sep="-")
+importFile <- paste("Consensus-dataInput", setTag, sep="-")
+importFile <- paste(importFile, "RData", sep=".")
+load(file = importFile)
+importFile <- paste(subsetTag, "dataInput.RData", sep="-")
 load(file = importFile)
 subsetGenes = colnames(datExpr)
 consGenes = mtd.colnames(multiExpr)
@@ -83,9 +97,11 @@ pTable[pTable>50 ] = 50 ;
 subsetModTotals = apply(CountTbl, 1, sum)
 consModTotals = apply(CountTbl, 2, sum)
 # setup plot title
-plotTitle <- paste("Correspondence of", genotype, "Set-Specific and Consensus Modules", sep=" ")
+plotTitle <- paste("Correspondence of", subsetTag, "Set-Specific and Consensus Modules", sep=" ")
 # Actual plotting
-exportFile <- paste(genotype, "ConsensusVsSubsetModules.pdf", sep="_")
+exportFile <- paste(subsetTag, "ConsensusVsSubsetModules", sep="_")
+exportFile <- paste(exportFile, minModuleSize, sep="_")
+exportFile <- paste(exportFile, "pdf", sep=".")
 pdf(file = exportFile, wi = 10, he = 7);
 sizeGrWindow(10,7 );
 par(mfrow=c(1,1));

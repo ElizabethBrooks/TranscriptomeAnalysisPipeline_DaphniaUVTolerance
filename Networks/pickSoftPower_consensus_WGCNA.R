@@ -1,8 +1,9 @@
 #!/usr/bin/env Rscript
 
 # script to help pick a soft threshold values for a set of samples using WGNCA
-# usage: Rscript pickSoftPower_consensus_WGCNA.R workingDir
-# usage ex: Rscript pickSoftPower_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA
+# usage: Rscript pickSoftPower_consensus_WGCNA.R workingDir fileTag
+# usage ex: Rscript pickSoftPower_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA genotype
+# usage ex: Rscript pickSoftPower_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA tolerance
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
@@ -11,6 +12,9 @@ args = commandArgs(trailingOnly=TRUE)
 workingDir = args[1];
 #workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA"
 setwd(workingDir)
+
+# retrieve file tage
+fileTag <- args[2]
 
 # load the WGCNA package
 library(WGCNA)
@@ -24,12 +28,10 @@ options(stringsAsFactors = FALSE)
 # See note above.
 enableWGCNAThreads()
 
-# allow multi-threading within WGCNA
-# caution: skip this line if you run RStudio or other third-party R environments
-# see note above
-#enableWGCNAThreads()
 # Load the data saved in the first part
-lnames = load(file = "Consensus-dataInput.RData")
+importFile <- paste("Consensus-dataInput", fileTag, sep="-")
+importFile <- paste(importFile, "RData", sep=".")
+lnames = load(file = importFile)
 #The variable lnames contains the names of loaded variables.
 lnames
 # Get the number of sets in the multiExpr structure.
@@ -68,7 +70,9 @@ for (set in 1:nSets){
 #sizeGrWindow(8, 6)
 #par(mfcol = c(4,1))
 #par(mar = c(4.2, 4.2 , 2.2, 0.5))
-pdf(file = "ConsensusSoftPowers.pdf", width = 12, height = 12)
+exportFile <- paste("ConsensusSoftPowers", fileTag, sep="_")
+exportFile <- paste(exportFile, "pdf", sep=".")
+pdf(file = exportFile, width = 12, height = 12)
 par(mfrow=c(4,1))
 par(mar = c(0, 4, 2, 0))
 cex1 = 0.7

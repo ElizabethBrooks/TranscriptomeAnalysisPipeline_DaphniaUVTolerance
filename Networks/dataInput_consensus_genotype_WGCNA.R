@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 
 # script to create a network for a set of samples using WGNCA
-# usage: Rscript dataInput_consensus_WGCNA.R workingDir countsFile startCounts endCounts traitsFile
-# usage ex: Rscript dataInput_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/DEGenotypes/glmQLF_normalizedCounts.csv 1 24 /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_genotype_WGCNA_Olympics.csv
+# usage: Rscript dataInput_consensus_genotype_WGCNA.R workingDir countsFile startCounts endCounts traitsFile
+# usage ex: Rscript dataInput_consensus_genotype_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/DEGenotypes/glmQLF_normalizedCounts.csv 1 24 /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_treatment_WGCNA_Olympics.csv
 
 #Load the WGCNA and edgeR packages
 library(WGCNA)
@@ -15,36 +15,38 @@ args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
 workingDir = args[1];
-#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA"
+#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA"
 setwd(workingDir)
 
 #Import normalized gene count data
 inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
 #inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/DEGenotypes/glmQLF_normalizedCounts.csv", row.names="gene", header=TRUE)[ ,1:24]
 
+# load in the trait data
+allTraits = read.csv(args[5])
+#allTraits = read.csv("/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_genotype_WGCNA_Olympics.csv");
+#allTraits = read.csv("/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_tolerance_WGCNA_Olympics.csv");
+dim(allTraits)
+names(allTraits)
+
+## genotype set
 #Subset input counts by genotype
 inputTable_Y05 <- inputTable[,1:6]
 inputTable_Y023 <- inputTable[,7:12]
 inputTable_E05 <- inputTable[,13:18]
 inputTable_R2 <- inputTable[,19:24]
-
-# We work with four sets
+# number of sets
 nSets <- 4
-# For easier labeling of plots, create a vector holding descriptive names of the two sets.
+# For easier labeling of plots, create a vector holding descriptive names of the sets
 #setLabels = c("Y05 Tolerant", "Y023 Tolerant", "E05 Not Tolerant", "R2 Not Tolerant")
 setLabels = c("Y05", "Y023", "E05", "R2")
 shortLabels = c("Y05", "Y023", "E05", "R2")
-
-# load in the trait data
-allTraits = read.csv(args[5])
-#allTraits = read.csv("/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_consensus_WGCNA_Olympics.csv");
-dim(allTraits)
-names(allTraits)
 
 
 # form multi-set expression data
 multiExpr = vector(mode = "list", length = nSets)
 
+## genotype set
 # transpose and add each subset
 multiExpr[[1]] = list(data = as.data.frame(t(inputTable_Y05[])))
 names(multiExpr[[1]]$data) = rownames(inputTable_Y05)
@@ -97,7 +99,7 @@ for (set in 1:nSets){
 }
 
 # plot dendrogrems
-pdf(file = "ConsensusSampleClustering.pdf", width = 12, height = 12)
+pdf(file = "ConsensusSampleClustering_genotype.pdf", width = 12, height = 12)
 par(mfrow=c(4,1))
 par(mar = c(0, 4, 2, 0))
 for (set in 1:nSets){
@@ -128,4 +130,4 @@ save(multiExpr,
      setLabels, 
      shortLabels, 
      exprSize,
-     file = "Consensus-dataInput.RData")
+     file = "Consensus-dataInput-genotype.RData")

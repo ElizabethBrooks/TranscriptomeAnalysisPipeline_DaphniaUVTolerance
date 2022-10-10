@@ -1,11 +1,13 @@
 #!/usr/bin/env Rscript
 
 # script to create a network for a subset of samples using WGNCA
-# usage: Rscript pickSoftPower_subset_WGCNA.R workingDir countsFile startCounts endCounts startSubset endSubset
-# usage ex: Rscript pickSoftPower_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_WGCNA Y05
-# usage ex: Rscript pickSoftPower_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_WGCNA Y023
-# usage ex: Rscript pickSoftPower_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_WGCNA E05
-# usage ex: Rscript pickSoftPower_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_WGCNA R2
+# usage: Rscript pickSoftPower_subset_WGCNA.R workingDir subsetTag
+# usage ex: Rscript pickSoftPower_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA tol
+# usage ex: Rscript pickSoftPower_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA nTol
+# usage ex: Rscript pickSoftPower_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y05
+# usage ex: Rscript pickSoftPower_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y023
+# usage ex: Rscript pickSoftPower_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA E05
+# usage ex: Rscript pickSoftPower_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA R2
 
 #Load the WGCNA and edgeR packages
 library(WGCNA)
@@ -43,7 +45,7 @@ sft = pickSoftThreshold(datExpr, powerVector = powers, verbose = 5)
 # Plot the results
 cex1 = 0.9
 exportFile <- paste(genotype, "SoftPowers.pdf", sep="_")
-pdf(file = exportFile)
+pdf(file = exportFile, wi = 9, he = 5)
 sizeGrWindow(9, 5)
 par(mfrow = c(1,2))
 # Scale-free topology fit index as a function of the soft-thresholding power
@@ -55,6 +57,7 @@ text(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
 
 # this line corresponds to using an R^2 cut-off of h
 abline(h=0.80,col="red")
+abline(h=0.90,col="blue")
 # Mean connectivity as a function of the soft-thresholding power
 plot(sft$fitIndices[,1], sft$fitIndices[,5],
      xlab="Soft Threshold (power)",ylab="Mean Connectivity", type="n",
