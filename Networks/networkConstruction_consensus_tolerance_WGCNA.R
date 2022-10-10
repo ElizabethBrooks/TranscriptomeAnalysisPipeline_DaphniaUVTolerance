@@ -94,7 +94,7 @@ for (set in 1:nSets){
 
 # tolerance set
 # Open a suitably sized graphics window
-pdf(file = "ConsensusTOMScaling-QQPlot_tol_nTol.pdf", wi = 6, he = 6)
+png(file = "ConsensusTOMScaling-QQPlot_tol_nTol.png", wi = 6, he = 6, units="in", res=150)
 sizeGrWindow(6,6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[2]], plot.it = TRUE, cex = 0.6,
@@ -184,8 +184,8 @@ table(unmergedLabels)
 
 # plot the consensus gene dendrogram together with the preliminary module colors
 exportFile <- paste("ConsensusDendrogram", minModuleSize, sep="_")
-exportFile <- paste(exportFile, "pdf", sep=".")
-pdf(file = exportFile, wi = 8, he = 6)
+exportFile <- paste(exportFile, "png", sep=".")
+png(file = exportFile, wi = 8, he = 6, units="in", res=150)
 sizeGrWindow(8,6)
 plotDendroAndColors(consTree, unmergedColors, "Dynamic Tree Cut",
                     dendroLabels = FALSE, hang = 0.03,
@@ -200,8 +200,8 @@ consMEDiss = consensusMEDissimilarity(unmergedMEs);
 consMETree = hclust(as.dist(consMEDiss), method = "average");
 # Plot the result
 exportFile <- paste("ConsensusModuleClustering", minModuleSize, sep="_")
-exportFile <- paste(exportFile, "pdf", sep=".")
-pdf(file = exportFile, wi = 7, he = 6)
+exportFile <- paste(exportFile, "png", sep=".")
+png(file = exportFile, wi = 7, he = 6, units="in", res=150)
 sizeGrWindow(7,6)
 par(mfrow = c(1,1))
 plot(consMETree, main = "Consensus clustering of consensus module eigengenes",
@@ -222,8 +222,8 @@ consMEs = merge$newMEs
 #  plot the gene dendrogram again, this time with both the 
 # unmerged and the merged module colors
 exportFile <- paste("ConsensusDendrogram_mergedModules", minModuleSize, sep="_")
-exportFile <- paste(exportFile, "pdf", sep=".")
-pdf(file = exportFile, wi = 9, he = 6)
+exportFile <- paste(exportFile, "png", sep=".")
+png(file = exportFile, wi = 9, he = 6)
 sizeGrWindow(9,6)
 plotDendroAndColors(consTree, cbind(unmergedColors, moduleColors),
                     c("Unmerged", "Merged"),

@@ -95,7 +95,7 @@ for (set in 1:nSets){
 # genotype set
 # Y05 vs Y023
 # Open a suitably sized graphics window
-pdf(file = "ConsensusTOMScaling-QQPlot_Y05_Y023.pdf", wi = 6, he = 6)
+png(file = "ConsensusTOMScaling-QQPlot_Y05_Y023.png", wi = 6, he = 6, units="in", res=150)
 sizeGrWindow(6,6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[2]], plot.it = TRUE, cex = 0.6,
@@ -109,7 +109,7 @@ legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("b
 dev.off()
 # E05 vs R2
 # Open a suitably sized graphics window
-pdf(file = "ConsensusTOMScaling-QQPlot_E05_R2.pdf", wi = 6, he = 6)
+png(file = "ConsensusTOMScaling-QQPlot_E05_R2.png", wi = 6, he = 6, units="in", res=150)
 sizeGrWindow(6,6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[3]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
@@ -123,7 +123,7 @@ legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("b
 dev.off()
 # Y05 vs E05
 # Open a suitably sized graphics window
-pdf(file = "ConsensusTOMScaling-QQPlot_Y05_E05.pdf", wi = 6, he = 6)
+png(file = "ConsensusTOMScaling-QQPlot_Y05_E05.png", wi = 6, he = 6, units="in", res=150)
 sizeGrWindow(6,6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[3]], plot.it = TRUE, cex = 0.6,
@@ -137,7 +137,7 @@ legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("b
 dev.off()
 # Y023 vs R2
 # Open a suitably sized graphics window
-pdf(file = "ConsensusTOMScaling-QQPlot_Y023_R2.pdf", wi = 6, he = 6)
+png(file = "ConsensusTOMScaling-QQPlot_Y023_R2.png", wi = 6, he = 6, units="in", res=150)
 sizeGrWindow(6,6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[2]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
@@ -169,8 +169,8 @@ table(unmergedLabels)
 
 # plot the consensus gene dendrogram together with the preliminary module colors
 exportFile <- paste("ConsensusDendrogram", minModuleSize, sep="_")
-exportFile <- paste(exportFile, "pdf", sep=".")
-pdf(file = exportFile, wi = 8, he = 6)
+exportFile <- paste(exportFile, "png", sep=".")
+png(file = exportFile, wi = 8, he = 6, units="in", res=150)
 sizeGrWindow(8,6)
 plotDendroAndColors(consTree, unmergedColors, "Dynamic Tree Cut",
                     dendroLabels = FALSE, hang = 0.03,
@@ -185,8 +185,8 @@ consMEDiss = consensusMEDissimilarity(unmergedMEs);
 consMETree = hclust(as.dist(consMEDiss), method = "average");
 # Plot the result
 exportFile <- paste("ConsensusModuleClustering", minModuleSize, sep="_")
-exportFile <- paste(exportFile, "pdf", sep=".")
-pdf(file = exportFile, wi = 7, he = 6)
+exportFile <- paste(exportFile, "png", sep=".")
+png(file = exportFile, wi = 7, he = 6, units="in", res=150)
 sizeGrWindow(7,6)
 par(mfrow = c(1,1))
 plot(consMETree, main = "Consensus clustering of consensus module eigengenes",
@@ -207,8 +207,8 @@ consMEs = merge$newMEs
 #  plot the gene dendrogram again, this time with both the 
 # unmerged and the merged module colors
 exportFile <- paste("ConsensusDendrogram_mergedModules", minModuleSize, sep="_")
-exportFile <- paste(exportFile, "pdf", sep=".")
-pdf(file = exportFile, wi = 9, he = 6)
+exportFile <- paste(exportFile, "png", sep=".")
+png(file = exportFile, wi = 9, he = 6, units="in", res=150)
 sizeGrWindow(9,6)
 plotDendroAndColors(consTree, cbind(unmergedColors, moduleColors),
                     c("Unmerged", "Merged"),

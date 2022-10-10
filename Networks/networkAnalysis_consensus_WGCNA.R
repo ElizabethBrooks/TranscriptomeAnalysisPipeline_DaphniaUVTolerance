@@ -4,10 +4,10 @@
 # usage: Rscript networkAnalysis_consensus_WGCNA.R workingDir countsFile subsetTag minModuleSize
 # usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA tol 60 tolerance
 # usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA nTol 60 tolerance
-# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA Y05 100 tolerance
-# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA Y023 100 tolerance
-# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA E05 100 tolerance
-# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA R2 100 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y05 100 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y023 100 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA E05 100 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA R2 100 tolerance
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
@@ -77,22 +77,22 @@ consModules = labels2colors(as.numeric(consModuleLabels))
 nSubsetMods = length(subsetModules)
 nConsMods = length(consModules)
 # Initialize tables of p-values and of the corresponding counts
-pTable = matrix(0, nrow = nSubsetMods, ncol = nConsMods);
-CountTbl = matrix(0, nrow = nSubsetMods, ncol = nConsMods);
+pTable = matrix(0, nrow = nSubsetMods, ncol = nConsMods)
+CountTbl = matrix(0, nrow = nSubsetMods, ncol = nConsMods)
 # Execute all pairwaise comparisons
 for (smod in 1:nSubsetMods){
   for (cmod in 1:nConsMods){
-    subsetMembers = (subsetColors.common == subsetModules[smod]);
-    consMembers = (moduleColors.common == consModules[cmod]);
-    pTable[smod, cmod] = -log10(fisher.test(subsetMembers, consMembers, alternative = "greater")$p.value);
+    subsetMembers = (subsetColors.common == subsetModules[smod])
+    consMembers = (moduleColors.common == consModules[cmod])
+    pTable[smod, cmod] = -log10(fisher.test(subsetMembers, consMembers, alternative = "greater")$p.value)
     CountTbl[smod, cmod] = sum(subsetColors.common == subsetModules[smod] & moduleColors.common ==
                                  consModules[cmod])
   }
 }
 
 # Truncate p values smaller than 10^{-50} to 10^{-50}
-pTable[is.infinite(pTable)] = 1.3*max(pTable[is.finite(pTable)]);
-pTable[pTable>50 ] = 50 ;
+pTable[is.infinite(pTable)] = 1.3*max(pTable[is.finite(pTable)])
+pTable[pTable>50 ] = 50
 # Marginal counts (really module sizes)
 subsetModTotals = apply(CountTbl, 1, sum)
 consModTotals = apply(CountTbl, 2, sum)
@@ -101,12 +101,12 @@ plotTitle <- paste("Correspondence of", subsetTag, "Set-Specific and Consensus M
 # Actual plotting
 exportFile <- paste(subsetTag, "ConsensusVsSubsetModules", sep="_")
 exportFile <- paste(exportFile, minModuleSize, sep="_")
-exportFile <- paste(exportFile, "pdf", sep=".")
-pdf(file = exportFile, wi = 10, he = 7);
-sizeGrWindow(10,7 );
-par(mfrow=c(1,1));
-par(cex = 1.0);
-par(mar=c(8, 10.4, 2.7, 1)+0.3);
+exportFile <- paste(exportFile, "png", sep=".")
+png(file = exportFile, wi = 10, he = 7, units="in", res=150)
+sizeGrWindow(10,7 )
+par(mfrow=c(1,1))
+par(cex = 1.0)
+par(mar=c(8, 10.4, 2.7, 1)+0.3)
 # Use function labeledHeatmap to produce the color-coded table with all the trimmings
 labeledHeatmap(Matrix = pTable,
                xLabels = paste(" ", consModules),
@@ -117,5 +117,5 @@ labeledHeatmap(Matrix = pTable,
                textMatrix = CountTbl,
                colors = blueWhiteRed(100)[50:100],
                main = plotTitle,
-               cex.text = 1.0, cex.lab = 1.0, setStdMargins = FALSE);
+               cex.text = 1.0, cex.lab = 1.0, setStdMargins = FALSE)
 dev.off()

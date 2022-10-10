@@ -4,10 +4,10 @@
 # usage: Rscript networkConstruction_subset_WGCNA.R workingDir subsetTag softPower
 # usage ex: Rscript networkConstruction_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA tol 14 60
 # usage ex: Rscript networkConstruction_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA nTol 14 60
-# usage ex: Rscript networkConstruction_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA Y05 20 60
-# usage ex: Rscript networkConstruction_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA Y023 12 60
-# usage ex: Rscript networkConstruction_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA E05 14 60
-# usage ex: Rscript networkConstruction_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA R2 9 60
+# usage ex: Rscript networkConstruction_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y05 20 60
+# usage ex: Rscript networkConstruction_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y023 12 60
+# usage ex: Rscript networkConstruction_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA E05 14 60
+# usage ex: Rscript networkConstruction_subset_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA R2 9 60
 
 #Load the WGCNA and edgeR packages
 library(WGCNA)
@@ -64,8 +64,8 @@ dissTOM = 1-TOM
 geneTree = hclust(as.dist(dissTOM), method = "average")
 # Plot the resulting clustering tree (dendrogram)
 exportFile <- paste(genotype, minModuleSize, sep="_")
-exportFile <- paste(exportFile, "geneClustering.pdf", sep="_")
-pdf(file = exportFile, wi = 12, he = 9)
+exportFile <- paste(exportFile, "geneClustering.png", sep="_")
+png(file = exportFile, wi = 12, he = 9, units="in", res=150)
 sizeGrWindow(12,9)
 plot(geneTree, xlab="", sub="", main = "Gene clustering on TOM-based dissimilarity",
      labels = FALSE, hang = 0.04)
@@ -82,8 +82,8 @@ dynamicColors = labels2colors(dynamicMods)
 table(dynamicColors)
 # Plot the dendrogram and colors underneath
 exportFile <- paste(genotype, minModuleSize, sep="_")
-exportFile <- paste(exportFile, "dynamicTreeCut.pdf", sep="_")
-pdf(file = exportFile, wi = 8, he = 6)
+exportFile <- paste(exportFile, "dynamicTreeCut.png", sep="_")
+png(file = exportFile, wi = 8, he = 6, units="in", res=150)
 sizeGrWindow(8,6)
 plotDendroAndColors(geneTree, dynamicColors, "Dynamic Tree Cut",
                     dendroLabels = FALSE, hang = 0.03,
@@ -100,8 +100,8 @@ MEDiss = 1-cor(MEs);
 METree = hclust(as.dist(MEDiss), method = "average");
 # Plot the result
 exportFile <- paste(genotype, minModuleSize, sep="_")
-exportFile <- paste(exportFile, "clusteringME.pdf", sep="_")
-pdf(file = exportFile, wi = 7, he = 6)
+exportFile <- paste(exportFile, "clusteringME.png", sep="_")
+png(file = exportFile, wi = 7, he = 6, units="in", res=150)
 sizeGrWindow(7, 6)
 plot(METree, main = "Clustering of module eigengenes",
      xlab = "", sub = "")
@@ -121,8 +121,8 @@ mergedMEs = merge$newMEs
 # plot the gene dendrogram again, with the 
 # original and merged module colors underneath
 exportFile <- paste(genotype, minModuleSize, sep="_")
-exportFile <- paste(exportFile, "geneDendro-3.pdf", sep="_")
-pdf(file = exportFile, wi = 12, he = 9)
+exportFile <- paste(exportFile, "geneDendro-3.png", sep="_")
+png(file = exportFile, wi = 12, he = 9, units="in", res=150)
 sizeGrWindow(12, 9)
 plotDendroAndColors(geneTree, cbind(dynamicColors, mergedColors),
                     c("Dynamic Tree Cut", "Merged dynamic"),

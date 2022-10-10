@@ -44,8 +44,8 @@ powers = c(c(1:10), seq(from = 12, to=36, by=2))
 sft = pickSoftThreshold(datExpr, powerVector = powers, verbose = 5)
 # Plot the results
 cex1 = 0.9
-exportFile <- paste(genotype, "SoftPowers.pdf", sep="_")
-pdf(file = exportFile, wi = 9, he = 5)
+exportFile <- paste(genotype, "SoftPowers.png", sep="_")
+png(file = exportFile, wi = 9, he = 5, units="in", res=150)
 sizeGrWindow(9, 5)
 par(mfrow = c(1,2))
 # Scale-free topology fit index as a function of the soft-thresholding power

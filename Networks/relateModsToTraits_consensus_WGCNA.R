@@ -47,7 +47,7 @@ MEColors = labels2colors(as.numeric(substring(names(consMEs[[1]]$data), 3)));
 MEColorNames = paste("ME", MEColors, sep="");
 # Open a suitably sized window (the user should change the window size if necessary)
 sizeGrWindow(10,7)
-#pdf(file = "Plots/ModuleTraitRelationships-female.pdf", wi = 10, he = 7);
+#png(file = "Plots/ModuleTraitRelationships-female.png", wi = 10, he = 7, units="in", res=150);
 # Plot the module-trait relationship table for set number 1
 set = 1
 textMatrix = paste(signif(moduleTraitCor[[set]], 2), "\n(",
@@ -72,7 +72,7 @@ textMatrix = paste(signif(moduleTraitCor[[set]], 2), "\n(",
                    signif(moduleTraitPvalue[[set]], 1), ")", sep = "");
 dim(textMatrix) = dim(moduleTraitCor[[set]])
 sizeGrWindow(10,7)
-#pdf(file = "Plots/ModuleTraitRelationships-male.pdf", wi = 10, he = 7);
+#png(file = "Plots/ModuleTraitRelationships-male.png", wi = 10, he = 7, units="in", res=150);
 par(mar = c(6, 8.8, 3, 2.2));
 labeledHeatmap(Matrix = moduleTraitCor[[set]],
                xLabels = names(Traits[[set]]$data),
@@ -103,7 +103,7 @@ textMatrix = paste(signif(consensusCor, 2), "\n(",
                    signif(consensusPvalue, 1), ")", sep = "");
 dim(textMatrix) = dim(moduleTraitCor[[set]])
 sizeGrWindow(10,7)
-#pdf(file = "Plots/ModuleTraitRelationships-consensus.pdf", wi = 10, he = 7);
+#png(file = "Plots/ModuleTraitRelationships-consensus.png", wi = 10, he = 7, units="in", res=150);
 par(mar = c(6, 8.8, 3, 2.2));
 labeledHeatmap(Matrix = consensusCor,
                xLabels = names(Traits[[set]]$data),

@@ -118,7 +118,7 @@ for (set in 1:nSets){
 }
 
 # plot dendrogrems
-pdf(file = "ConsensusSampleClustering_tolerance.pdf", width = 12, height = 12)
+png(file = "ConsensusSampleClustering_tolerance.png", width = 12, height = 12, units="in", res=150)
 par(mfrow=c(4,1))
 par(mar = c(0, 4, 2, 0))
 for (set in 1:nSets){

@@ -71,8 +71,8 @@ for (set in 1:nSets){
 #par(mfcol = c(4,1))
 #par(mar = c(4.2, 4.2 , 2.2, 0.5))
 exportFile <- paste("ConsensusSoftPowers", fileTag, sep="_")
-exportFile <- paste(exportFile, "pdf", sep=".")
-pdf(file = exportFile, width = 12, height = 12)
+exportFile <- paste(exportFile, "png", sep=".")
+png(file = exportFile, width = 12, height = 12, units="in", res=150)
 par(mfrow=c(4,1))
 par(mar = c(0, 4, 2, 0))
 cex1 = 0.7

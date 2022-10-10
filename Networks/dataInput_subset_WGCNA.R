@@ -71,8 +71,8 @@ if (!gsg$allOK){
 sampleTree = hclust(dist(datExpr0), method = "average")
 # Plot the sample tree: Open a graphic output window of size 12 by 9 inches
 # The user should change the dimensions if the window is too large or too small.
-exportFile <- paste(tag, "sampleClustering.pdf", sep="_")
-pdf(file = exportFile, width = 12, height = 9)
+exportFile <- paste(tag, "sampleClustering.png", sep="_")
+png(file = exportFile, width = 12, height = 9, units="in", res=150)
 sizeGrWindow(12,9)
 par(cex = 0.6)
 par(mar = c(0,4,2,0))
@@ -102,8 +102,8 @@ rownames(datTraits) = allTraits[traitRows, 1]
 collectGarbage()
 
 # Re-cluster samples
-exportFile <- paste(tag, "sampleDendrogram_traitHeatmap.pdf", sep="_")
-pdf(file = exportFile)
+exportFile <- paste(tag, "sampleDendrogram_traitHeatmap.png", sep="_")
+png(file = exportFile, units="in", res=150)
 sampleTree2 = hclust(dist(datExpr), method = "average")
 # Convert traits to a color representation: white means low, red means high, grey means missing entry
 traitColors = numbers2colors(datTraits, signed = FALSE)
