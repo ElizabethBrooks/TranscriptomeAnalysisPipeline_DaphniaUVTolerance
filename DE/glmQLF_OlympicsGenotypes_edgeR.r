@@ -104,13 +104,13 @@ plotQLDisp(fit)
 dev.off()
 
 
-#Test whether the average across all UV groups is equal to the average across
+#Test whether the average across all treatment groups is equal to the average across
 #all VIS groups, to examine the overall effect of treatment
 con.UVvsVIS <- makeContrasts(UVvsVIS = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
   - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4,
   levels=design)
 
-#Look at genes expressed across all UV groups using QL F-test
+#Look at genes expressed across all treatment groups using QL F-test
 #test.anov.UVVIS <- glmQLFTest(fit, contrast=con.UVvsVIS)
 #summary(decideTests(test.anov.UVVIS))
 #Write plot to file
@@ -124,7 +124,7 @@ con.UVvsVIS <- makeContrasts(UVvsVIS = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
 #tagsTblANOVA.out <- tagsTblANOVA[tagsTblANOVA.keep,]
 #write.table(tagsTblANOVA, file="glmQLF_2WayANOVA_UVvsVIS_topTags.csv", sep=",", row.names=TRUE)
 
-#Look at genes with significant expression across all UV groups
+#Look at genes with significant expression across all treatment groups
 treat.anov.UVVIS <- glmTreat(fit, contrast=con.UVvsVIS, lfc=log2(1.2))
 summary(decideTests(treat.anov.UVVIS))
 #Write plot to file
@@ -145,7 +145,7 @@ con.TvsN <- makeContrasts(TvsN = (UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
   - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4,
   levels=design)
 
-#Look at genes expressed across all UV groups using QL F-test
+#Look at genes expressed across all tolerance groups using QL F-test
 #test.anov.TN <- glmQLFTest(fit, contrast=con.TvsN)
 #summary(decideTests(test.anov.TN))
 #Write plot to file
@@ -159,7 +159,7 @@ con.TvsN <- makeContrasts(TvsN = (UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
 #tagsTblANOVATN.out <- tagsTblANOVATN[tagsTblANOVATN.keep,]
 #write.table(tagsTblANOVATN, file="glmQLF_2WayANOVA_TvsN_topTags.csv", sep=",", row.names=TRUE)
 
-#Look at genes with significant expression across all UV groups
+#Look at genes with significant expression across all tolerance groups
 treat.anov.TN <- glmTreat(fit, contrast=con.TvsN, lfc=log2(1.2))
 summary(decideTests(treat.anov.TN))
 #Write plot to file
@@ -181,7 +181,7 @@ con.Inter <- makeContrasts(Inter = ((UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
   - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4),
   levels=design)
 
-#Look at genes expressed across all UV groups using QL F-test
+#Look at genes expressed across all interaction groups using QL F-test
 #test.anov.Inter <- glmQLFTest(fit, contrast=con.Inter)
 #summary(decideTests(test.anov.Inter))
 #Write plot to file

@@ -1,13 +1,14 @@
 #!/usr/bin/env Rscript
 
 # script to identify set-specific and consensos modules
-# usage: Rscript networkAnalysis_consensus_WGCNA.R workingDir countsFile subsetTag minModuleSize
+# usage: Rscript networkAnalysis_consensus_WGCNA.R workingDir subsetTag minModuleSize
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA OLYM 60 tolerance
 # usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA tol 60 tolerance
 # usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA nTol 60 tolerance
-# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y05 100 tolerance
-# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y023 100 tolerance
-# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA E05 100 tolerance
-# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA R2 100 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y05 60 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y023 60 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA E05 60 tolerance
+# usage ex: Rscript networkAnalysis_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA R2 60 tolerance
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
