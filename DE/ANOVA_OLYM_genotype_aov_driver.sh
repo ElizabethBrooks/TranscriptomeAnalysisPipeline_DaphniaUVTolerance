@@ -18,6 +18,7 @@ counter=1
 while read line; do
 	if [ $counter -eq 1 ]; then
 		echo "$line" > $workingDir/"tmpHeader.csv"
+	#elif [ $counter -eq 2 ]; then
 	else
 		# setup expression data
 		cat $workingDir/"tmpHeader.csv" > $workingDir/"tmpMod.csv"

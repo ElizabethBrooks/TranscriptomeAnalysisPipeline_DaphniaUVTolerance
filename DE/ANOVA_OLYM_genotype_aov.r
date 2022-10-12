@@ -2,12 +2,15 @@
 # usage: Rscript ANOVA_OlympicsGenotypes_aov.r workingDir countsFile factorGroupingFile
 # usage Ex: Rscript ANOVA_OlympicsGenotypes_aov.r /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCNA_DEGenotypes /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_OLYM_WGCNA/OLYM_60_eigengeneExpression_line.csv /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsGenotypes.csv
 # R script to perform statistical analysis of gene count tables using aov
+# note: https://www.r-bloggers.com/2022/05/two-way-anova-example-in-r-quick-guide/
 
 # install packages
 #install.packages("ggpubr")
+#install.packages("multcomp")
 
 # load libraries
 library(ggpubr)
+library(multcomp)
 
 # retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
@@ -85,5 +88,47 @@ affy.aov <- aov(expression ~ genotype * treatment, data = affyData)
 sumAffy <- summary(affy.aov)
 
 # write summary statistics to a file
-exportFile <- paste(modName, "ANOVA_summary.csv", sep="_")
+exportFile <- paste(modName, "ANOVA_summary.txt", sep="_")
 capture.output(sumAffy, file=exportFile)
+
+# perform pairwise T tests
+sumPair <- pairwise.t.test(affyData$expression, affyData$genotype,
+                p.adjust.method = "fdr")
+
+# write summary statistics to a file
+exportFile <- paste(modName, "pairwise_summary.txt", sep="_")
+capture.output(sumPair, file=exportFile)
+
+## check the validity of ANOVA assumptions
+# The data must be regularly distributed, and the variation between groups must be homogeneous
+
+## examine the assumption of homogeneity of variance
+# the residuals versus fits graphic are used to assess for variance homogeneity
+
+# plot homogeneity of variances
+exportFile <- paste(modName, "homogeneityPlot.png", sep="_")
+png(file=exportFile)
+plot(affy.aov, 1)
+dev.off()
+
+# examine the assumption of normality
+# in a residuals’ normality plot the residuals quantiles are displayed against the normal distribution quantiles
+# the residuals’ normal probability plot is used to confirm that the residuals are normally distributed
+# the residuals’ normal probability plot should roughly follow a straight line
+
+# normality plot
+exportFile <- paste(modName, "normalityPlot.png", sep="_")
+png(file=exportFile)
+plot(affy.aov, 2)
+dev.off()
+
+# extract the residuals
+aovRes <- residuals(object = affy.aov)
+
+# run Shapiro-Wilk test
+swTest <- shapiro.test(x = aovRes)
+
+# write test statistics to a file
+exportFile <- paste(modName, "shapiroTest_summary.txt", sep="_")
+capture.output(swTest, file=exportFile)
+
