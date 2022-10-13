@@ -1,6 +1,5 @@
 #!/usr/bin/env Rscript
-# usage: Rscript ANOVA_OlympicsGenotypes_aov.r workingDir countsFile factorGroupingFile
-# usage Ex: Rscript ANOVA_OlympicsGenotypes_aov.r /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCNA_DEGenotypes /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_OLYM_WGCNA/OLYM_60_eigengeneExpression_line.csv /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsGenotypes.csv
+# usage: Rscript ANOVA_OlympicsGenotypes_aov.r workingDir modExpression designFile
 # R script to perform statistical analysis of gene count tables using aov
 # note: https://www.r-bloggers.com/2022/05/two-way-anova-example-in-r-quick-guide/
 

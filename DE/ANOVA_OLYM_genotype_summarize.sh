@@ -29,16 +29,16 @@ while read line; do
 		anovaSum=$(echo "${tag}_ANOVA_summary.txt" | sed "s/\"//g")
 		pairSum=$(echo "${tag}_pairwise_summary.txt" | sed "s/\"//g")
 		# retrieve ANOVA summary statistics
-		treatment=$(cat "$anovaSum" | grep "^treatment " | tr -s '[:blank:]' ',' | cut -d ',' -f 6)				
-		genotype=$(cat "$anovaSum" | grep "^genotype " | tr -s '[:blank:]' ',' | cut -d ',' -f 6)
-		interaction=$(cat "$anovaSum" | grep "^genotype:treatment" | tr -s '[:blank:]' ',' | cut -d ',' -f 6)
+		treatment=$(cat "$anovaSum" | grep "^treatment " | tr -s '[:blank:]' ',' | cut -d ',' -f 6 | sed "s/<//g")				
+		genotype=$(cat "$anovaSum" | grep "^genotype " | tr -s '[:blank:]' ',' | cut -d ',' -f 6 | sed "s/<//g")
+		interaction=$(cat "$anovaSum" | grep "^genotype:treatment" | tr -s '[:blank:]' ',' | cut -d ',' -f 6 | sed "s/<//g")
 		# retrieve pairwise summary statistics
-		Y05_Y023=$(cat $pairSum | tail -5 | head -3 | tr -s '[:blank:]' ',' | cut -d "," -f 1,2 | grep "Y023" | cut -d "," -f 2)
-		Y05_E05=$(cat $pairSum | tail -5 | head -3 | tr -s '[:blank:]' ',' | cut -d "," -f 1,2 | grep "E05" | cut -d "," -f 2)
-		Y05_R2=$(cat $pairSum | tail -5 | head -3 | tr -s '[:blank:]' ',' | cut -d "," -f 1,2 | grep "R2" | cut -d "," -f 2)
-		Y023_E05=$(cat $pairSum | tail -5 | head -3 | tr -s '[:blank:]' ',' | cut -d "," -f 1,3 | grep "E05" | cut -d "," -f 2)
-		Y023_R2=$(cat $pairSum | tail -5 | head -3 | tr -s '[:blank:]' ',' | cut -d "," -f 1,3 | grep "R2" | cut -d "," -f 2)
-		E05_R2=$(cat $pairSum | tail -5 | head -3 | tr -s '[:blank:]' ',' | cut -d "," -f 1,4 | grep "R2" | cut -d "," -f 2)
+		Y05_Y023=$(cat $pairSum | tail -5 | head -3 | tr -s '[:blank:]' ',' | cut -d "," -f 1,2 | grep "Y023" | cut -d "," -f 2 | sed "s/<//g")
+		Y05_E05=$(cat $pairSum | tail -5 | head -3 | tr -s '[:blank:]' ',' | cut -d "," -f 1,2 | grep "E05" | cut -d "," -f 2 | sed "s/<//g")
+		Y05_R2=$(cat $pairSum | tail -5 | head -3 | tr -s '[:blank:]' ',' | cut -d "," -f 1,2 | grep "R2" | cut -d "," -f 2 | sed "s/<//g")
+		Y023_E05=$(cat $pairSum | tail -5 | head -3 | tr -s '[:blank:]' ',' | cut -d "," -f 1,3 | grep "E05" | cut -d "," -f 2 | sed "s/<//g")
+		Y023_R2=$(cat $pairSum | tail -5 | head -3 | tr -s '[:blank:]' ',' | cut -d "," -f 1,3 | grep "R2" | cut -d "," -f 2 | sed "s/<//g")
+		E05_R2=$(cat $pairSum | tail -5 | head -3 | tr -s '[:blank:]' ',' | cut -d "," -f 1,4 | grep "R2" | cut -d "," -f 2 | sed "s/<//g")
 		# add module results to summary file
 		echo "$tag,$treatment,$genotype,$interaction,$Y05_Y023,$Y05_E05,$Y05_R2,$Y023_E05,$Y023_R2,$E05_R2" >> $sumFile
 	fi
