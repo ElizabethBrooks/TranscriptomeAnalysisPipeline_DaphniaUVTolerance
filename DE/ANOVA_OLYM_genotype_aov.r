@@ -31,70 +31,77 @@ inputTable <- as.data.frame(t(inputTable))
 targets <- read.csv(file=args[3], row.names="sample")
 
 # setup data frame
-affyData <- merge(targets, inputTable, by = 'row.names') 
+expData <- merge(targets, inputTable, by = 'row.names') 
 
 # convert treatment to a factor
-affyData$treatment <- factor(affyData$treatment,
+expData$treatment <- factor(expData$treatment,
                     levels = c("VIS", "UV"),
                     labels = c("VIS", "UV"))
 # convert genotype to a factor
-affyData$genotype <- factor(affyData$genotype,
+expData$genotype <- factor(expData$genotype,
                              levels = c("Y05", "Y023", "E05", "R2"),
                              labels = c("Y05", "Y023", "E05", "R2"))
 # set row names
-rownames(affyData) <- affyData$Row.names
+rownames(expData) <- expData$Row.names
 
 # remove the Row.names column
-affyData <- affyData[,2:4]
+expData <- expData[,2:4]
 
 # check the structure of the expression data
-#str(affyData)
+#str(expData)
 
 # make frequency tables
-#table(affyData$treatment, affyData$genotype)
+#table(expData$treatment, expData$genotype)
 
 # retrieve module column name
-modName <- colnames(affyData)[3]
+modName <- colnames(expData)[3]
 
 # update module column name
-colnames(affyData)[3] <- "expression"
+colnames(expData)[3] <- "expression"
 
 # create a colored box plot
 exportFile <- paste(modName, "coloredBoxPlot.png", sep="_")
 png(file=exportFile)
-ggboxplot(data=affyData, x="treatment", y="expression", color="genotype",
+ggboxplot(data=expData, x="treatment", y="expression", color="genotype",
           palette = c("#E69F00", "#009E73", "#0072B2", "#CC79A7"))
 dev.off()
 
 # box plot with two variable factors
 exportFile <- paste(modName, "twoVariableFactorBoxPlot.png", sep="_")
 png(file=exportFile)
-boxplot(expression ~ genotype * treatment, data=affyData, frame=FALSE,
+boxplot(expression ~ genotype * treatment, data=expData, frame=FALSE,
         col = c("#E69F00", "#009E73", "#0072B2", "#CC79A7"))
 dev.off()
 
 # two way interaction plot
 exportFile <- paste(modName, "twoWayInteractionPlot.png", sep="_")
 png(file=exportFile)
-interaction.plot(x.factor = affyData$treatment, trace.factor = affyData$genotype,
-                 response = affyData$expression, fun = mean,
+interaction.plot(x.factor = expData$treatment, trace.factor = expData$genotype,
+                 response = expData$expression, fun = mean,
                  type = "b", legend = TRUE,
                  xlab = "Treatment", ylab="Expression",
                  pch=c(1,19), col = c("#E69F00", "#009E73", "#0072B2", "#CC79A7"))
 dev.off()
 
 # compute two-way anova
-affy.aov <- aov(expression ~ genotype * treatment, data = affyData)
+exp.aov <- aov(expression ~ genotype * treatment, data = expData)
 
 # output summary statistics
-sumAffy <- summary(affy.aov)
+sumExp <- summary(exp.aov)
 
 # write summary statistics to a file
 exportFile <- paste(modName, "ANOVA_summary.txt", sep="_")
-capture.output(sumAffy, file=exportFile)
+capture.output(sumExp, file=exportFile)
+
+# perform post hoc tests
+tukeyExp <- TukeyHSD(exp.aov, which = "genotype")
+
+# write summary statistics to a file
+exportFile <- paste(modName, "tukey_summary.txt", sep="_")
+capture.output(tukeyExp, file=exportFile)
 
 # perform pairwise T tests
-sumPair <- pairwise.t.test(affyData$expression, affyData$genotype,
+sumPair <- pairwise.t.test(expData$expression, expData$genotype,
                 p.adjust.method = "fdr")
 
 # write summary statistics to a file
@@ -110,7 +117,7 @@ capture.output(sumPair, file=exportFile)
 # plot homogeneity of variances
 exportFile <- paste(modName, "homogeneityPlot.png", sep="_")
 png(file=exportFile)
-plot(affy.aov, 1)
+plot(exp.aov, 1)
 dev.off()
 
 # examine the assumption of normality
@@ -121,11 +128,11 @@ dev.off()
 # normality plot
 exportFile <- paste(modName, "normalityPlot.png", sep="_")
 png(file=exportFile)
-plot(affy.aov, 2)
+plot(exp.aov, 2)
 dev.off()
 
 # extract the residuals
-aovRes <- residuals(object = affy.aov)
+aovRes <- residuals(object = exp.aov)
 
 # run Shapiro-Wilk test
 swTest <- shapiro.test(x = aovRes)
