@@ -4,6 +4,9 @@
 # R script to perform statistical analysis of gene count tables using aov
 # note: https://www.r-bloggers.com/2022/05/two-way-anova-example-in-r-quick-guide/
 
+# turn off scientific notation
+options(scipen=999)
+
 # install packages
 #install.packages("ggpubr")
 #install.packages("multcomp")
