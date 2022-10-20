@@ -106,5 +106,5 @@ echo "$softsPath"/Trinotate "$trinotateDB" LOAD_pfam "$pfamDB" >> "$inputOutFile
 #Optional load signal peptide predictions
 #"$softsPath"/Trinotate "$trinotateDB" LOAD_signalp signalp.out
 #Run Trinotate to generate an annotation report
-"$softsPath"/Trinotate "$trinotateDB" report [opts] > trinotate_annotation_report.xls
-echo "$softsPath"/Trinotate "$trinotateDB" report "[opts] >" trinotate_annotation_report.xls >> "$inputOutFile"
+"$softsPath"/Trinotate "$trinotateDB" report > trinotate_annotation_report.xls
+echo "$softsPath"/Trinotate "$trinotateDB" report ">" trinotate_annotation_report.xls >> "$inputOutFile"
