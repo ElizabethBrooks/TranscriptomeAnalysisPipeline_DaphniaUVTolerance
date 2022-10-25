@@ -14,7 +14,7 @@ mapPath=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/
 path=$(dirname $mapPath)
 
 # retrieve transcript IDs
-cat $transcriptPath | grep ">" | cut -d " " -f 1 | sed "s/\>//g" > $path"/col1_cleaned.txt"
+cat $transcriptPath | grep ">" | cut -d " " -f 1 | cut -d ">" -f 2 > $path"/col1_cleaned.txt"
 
 # retrieve gene IDs
 cat $transcriptPath | grep ">" | cut -d "(" -f 2 | cut -d ")" -f 1 > $path"/col2_cleaned.txt"
