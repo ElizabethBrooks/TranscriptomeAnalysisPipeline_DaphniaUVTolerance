@@ -14,10 +14,10 @@ mapPath=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/
 path=$(dirname $mapPath)
 
 # retrieve transcript IDs
-cat $transcriptPath | grep ">" | cut -d " " -f 1 | cut -d ">" -f 2 > $path"/col1_cleaned.txt"
+cat $transcriptPath | grep ">" | cut -d " " -f 1 | cut -d ">" -f 2 | tr -d '^M' > $path"/col1_cleaned.txt"
 
 # retrieve gene IDs
-cat $transcriptPath | grep ">" | cut -d "(" -f 2 | cut -d ")" -f 1 > $path"/col2_cleaned.txt"
+cat $transcriptPath | grep ">" | cut -d "(" -f 2 | cut -d ")" -f 1 | tr -d '^M' > $path"/col2_cleaned.txt"
 
 # create txt file with both sets of IDs as columns
 paste $path"/col1_cleaned.txt" $path"/col2_cleaned.txt" > $mapPath
