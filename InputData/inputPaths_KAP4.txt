@@ -6,9 +6,7 @@ genomeFeatures: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/KAP4_GC
 transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/KAP4_GCF_021134715.1/rna.fna
 codingSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/KAP4_GCF_021134715.1/cds_from_genomic.fna
 proteinSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/KAP4_GCF_021134715.1/protein.faa
-geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/KAP4_GCF_021134715.1/GCF_021134715.1_ASM2113471v1_genomic.fna.gene_trans_map
-geneCDSMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/KAP4_GCF_021134715.1/GCF_021134715.1_ASM2113471v1_genomic.fna.gene_cds_map
-genePEPMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/KAP4_GCF_021134715.1/GCF_021134715.1_ASM2113471v1_genomic.fna.gene_pep_map
+geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/KAP4_GCF_021134715.1/KAP4.gene_trans_map
 geneAnnotations: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/GeneAnnotations
 annotations: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/AnnotationAnalysis
 geneSets: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_Results

@@ -1,16 +1,26 @@
 #!/bin/bash
 
-path=$(echo /home/mae/Documents/RNASeq_Workshop_ND/genomicResources_PA42_v4.1)
+# script to create a gene to transcript map for the KAP4 genome using the transcript sequences file
+# that have gene ID annotations
+# usage ex: bash generateGeneTransMap_KAP4.sh
 
-grep ">" "$path"/PA42.4.1.cdna.longest.fasta | sed "s/-mRNA//g" | sed "s/>//g" > "$path"/col1.txt
-tr -d "\n\r" < "$path"/col1.txt | sed "s/dp\_gene/\ndp\_gene/g" > "$path"/col1_cleaned.txt
+# retrieve input path
+transcriptPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 
-grep ">" "$path"/PA42.4.1.cdna.longest.fasta | sed "s/>//g" > "$path"/col2.txt
-tr -d "\n\r" < "$path"/col2.txt | sed "s/dp\_gene/\ndp\_gene/g" > "$path"/col2_cleaned.txt
+# retrieve output map path
+mapPath=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 
-paste "$path"/col1_cleaned.txt "$path"/col2_cleaned.txt > "$path"/cols_merged.txt
+# set outputs path
+path=$(dirname $mapPath)
 
-tail -n +2 "$path"/cols_merged.txt > "$path"/PA42.4.1.fasta.gene_trans_map
+# retrieve transcript IDs
+cat $transcriptPath | grep ">" | cut -d " " -f 1 | sed "s/\>//g" > $path"/col1_cleaned.txt"
 
-#Clean up 
-rm "$path"/col*.txt
+# retrieve gene IDs
+cat $transcriptPath | grep ">" | cut -d "(" -f 2 | cut -d ")" -f 1 > $path"/col2_cleaned.txt"
+
+# create txt file with both sets of IDs as columns
+paste $path"/col1_cleaned.txt" $path"/col2_cleaned.txt" > $mapPath
+
+# clean up 
+rm $path"/col"*"_cleaned.txt"
