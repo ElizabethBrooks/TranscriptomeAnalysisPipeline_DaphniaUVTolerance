@@ -8,11 +8,11 @@
 # paired end reads
 #Note that a hisat2 genome refernce build folder needs to be generated first
 #Usage: qsub alignment_hisat2.sh alignmentTarget trimmedFolder optionalAssemblyFolder maxIntronLength optionalDTA
+#Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
 #Usage Ex: qsub alignment_hisat2.sh genomeStats trimmed_run1 14239 dta
 #Usage Ex: qsub alignment_hisat2.sh genome trimmed_run1 23554 dta
 #Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity
 #Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 trimmed_run1E05_assemblyTrinity
-#Default usage Ex: qsub alignment_hisat2.sh genome trimmed_run1
 #Alternate usage Ex: qsub alignment_hisat2.sh assembly trimmed_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity/clusteredNucleotides_cdhit_0.98
 
 #Required modules for ND CRC servers
@@ -110,7 +110,7 @@ hisat2 --version > $inputOutFile
 buildOut="$buildInputsPath"/"reference_hisat2_build"
 #Trim .fa file extension from build file
 buildFileNoPath=$(basename $buildFile)
-buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta//' | sed 's/\.fna//')
+buildFileNoEx=$(echo $buildFileNoPath | sed 's/\.fasta//' | sed 's/\.fna//' | sed 's/\.fa//')
 #Loop through all forward and reverse paired reads and run Hisat2 on each pair
 # using 8 threads and samtools to convert output sam files to bam
 for f1 in "$inputsPath"/"$trimmedFolder"/*pForward.fq.gz; do
