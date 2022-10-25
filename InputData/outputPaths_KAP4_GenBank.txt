@@ -3,10 +3,9 @@ qc: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 trimming: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 assemblingFree: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
 assemblingGenome: /afs/crc.nd.edu/group/pfrenderlab/lodge3/ebrooks/rnaseq
-aligningGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/KAP4/ensembl
-buildingGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/KAP4/ensembl
-geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/KAP4/ensembl/GCA_021134715.1/genome
-DEAnalysis: /Users/bamflappy/PfrenderLab/KAP4/ensembl
+aligningGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/KAP4
+buildingGenome: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/KAP4
+DEAnalysis: /Users/bamflappy/PfrenderLab/KAP4
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 transcriptSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 reciprocalSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
