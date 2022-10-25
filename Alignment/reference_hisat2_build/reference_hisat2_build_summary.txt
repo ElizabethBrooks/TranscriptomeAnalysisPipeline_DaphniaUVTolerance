@@ -1,2 +1,0 @@
-/afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/PA42_v4.1
-hisat2-build -p 8 -f reference_hisat2_build/GCF_021134715.1_ASM2113471v1_genomic.fa reference_hisat2_build/GCF_021134715.1_ASM2113471v1_genomic
