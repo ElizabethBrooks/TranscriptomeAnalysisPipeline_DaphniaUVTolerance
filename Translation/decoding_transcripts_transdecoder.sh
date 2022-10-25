@@ -19,7 +19,7 @@ inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " "
 # retrieve genome reference and features paths
 multiFASTA="$inputsPath"
 # retrieve genome reference and features paths
-geneMap=$(grep "geneTransMap:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+geneMap=$(grep "geneTransMap:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 
 # set outputs absolute path
 outputsPath=$(dirname $inputsPath)
