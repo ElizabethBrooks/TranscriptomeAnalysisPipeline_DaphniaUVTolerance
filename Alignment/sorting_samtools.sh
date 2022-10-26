@@ -7,7 +7,7 @@
 #Script to perform samtools sorting of trimmed, then aligned
 # paired end reads
 #Usage: qsub sorting_samtools.sh sortingTarget sortingMethod alignedFolder optionalAssembledFolder
-#Usage Ex: qsub sorting_samtools.sh genome name aligned_hisat2_run1
+# default usage Ex: qsub sorting_samtools.sh genome name aligned_hisat2_run1
 #Usage Ex: qsub sorting_samtools.sh genome coordinate aligned_hisat2_run4
 #Usage Ex: qsub sorting_samtools.sh assembly name aligned_hisat2_run1 trimmed_run1E05_assemblyTrinity
 #Usage Ex: qsub sorting_samtools.sh assembly name aligned_hisat2_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity
