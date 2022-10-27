@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-#Usage: Rscript glmQLF_edgeR.r countsFile startColumn endColumn factorGroupingFile FDR
-#Usage Ex: Rscript glmQLF_edgeR.r cleaned.csv 1 24 expDesign_Olympics_GRP1.csv 0.10
+#Usage: Rscript glmQLF_edgeR.r workingDir countsFile startColumn endColumn factorGroupingFile
+#Usage Ex: Rscript glmQLF_edgeR.r /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/DEGenotypes cleaned.csv 1 24 expDesign_Olympics_GRP1.csv
 #R script to perform statistical analysis of gene count tables using edgeR GLM
 
 #Install edgeR and statmod, this should only need to be done once
@@ -18,19 +18,23 @@ library("statmod")
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
-#Test if there is one input argument
-if (length(args)!=4) {
-  stop("Four arguments are expected... see run notes.n", call.=FALSE)
-}
+
+#Set working directory
+workingDir = args[1];
+#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCNA_DEGenotypes"
+setwd(workingDir)
 
 #Import gene count data
-inputTable <- read.csv(file=args[1], row.names="gene")[ ,args[2]:args[3]]
+#inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_OLYM_WGCNA/OLYM_60_eigengeneExpression.csv", row.names="gene")[ ,1:24]
+inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
 
 #Trim the data table
 countsTable <- head(inputTable, - 5)
 
 #Import grouping factor
-targets <- read.csv(file=args[4], row.names="sample")
+#targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsGenotypes.csv", row.names="sample")
+targets <- read.csv(file=args[5], row.names="sample")
+
 #Retrieve input FDR cutoff
 #fdrCut=as.numeric(args[5])
 

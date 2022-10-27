@@ -6,7 +6,7 @@ assemblingGenome: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_ensembl
 aligningGenome: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_ensembl
 buildingGenome: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_ensembl
 geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/KAP4/ensembl/GCA_021134715.1/genome
-DEAnalysis: /Users/bamflappy/PfrenderLab/KAP4/ensembl
+DEAnalysis: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/DEAnalysis
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 transcriptSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 reciprocalSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
@@ -17,3 +17,4 @@ MSA: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_ensembl
 kaks: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_ensembl
 geneModels: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_ensembl/geneModelImages
 scratch: /scratch365/ebrooks5
+cleanedGeneCounts: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/GeneCounts/Formatted/cleaned.csv
