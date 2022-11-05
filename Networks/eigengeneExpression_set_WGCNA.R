@@ -2,20 +2,20 @@
 
 # script to identify set-specific and consensos modules
 # usage: Rscript eigengeneExpression_set_WGCNA.R workingDir subsetTag minModuleSize
-# usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA OLYM 60
-# usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA tol 60
-# usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA nTol 60
-# usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y05 60
-# usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y023 60
-# usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA E05 60
-# usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA R2 60
+# usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA OLYM 60
+# usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA tol 60
+# usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA nTol 60
+# alternate usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA Y05 60
+# alternate usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA Y023 60
+# alternate usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA E05 60
+# alternate usage ex: Rscript eigengeneExpression_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA R2 60
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
 workingDir = args[1];
-#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA"
+#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA"
 setwd(workingDir)
 
 # load the WGCNA package

@@ -2,14 +2,14 @@
 
 # script to identify set-specific and consensos modules
 # usage: Rscript eigengeneNetworks_consensus_tolerance_WGCNA.R workingDir minModuleSize
-# usage ex: Rscript eigengeneNetworks_consensus_tolerance_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA 60
+# usage ex: Rscript eigengeneNetworks_consensus_tolerance_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA 60
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
 workingDir = args[1];
-#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA"
+#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA"
 setwd(workingDir)
 
 # load the WGCNA package

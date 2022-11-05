@@ -61,7 +61,7 @@ list <- calcNormFactors(list)
 #list$samples
 #Write normalized counts to file
 normList <- cpm(list, normalized.lib.sizes=TRUE)
-write.table(normList, file="glmQLF_normalizedCounts.csv", sep=",", row.names=TRUE)
+write.table(normList, file="glmQLF_normalizedCounts.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 #Verify TMM normalization using a MD plot
 #Write plot to file
@@ -140,7 +140,7 @@ dev.off()
 tagsTblANOVA.filtered <- topTags(treat.anov.UVVIS, n=nrow(treat.anov.UVVIS$table), adjust.method="fdr")$table
 #tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR <= fdrCut
 #tagsTblANOVA.filtered.out <- tagsTblANOVA.filtered[tagsTblANOVA.filtered.keep,]
-write.table(tagsTblANOVA.filtered, file="glmQLF_2WayANOVA_UVvsVIS_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+write.table(tagsTblANOVA.filtered, file="glmQLF_2WayANOVA_UVvsVIS_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 
 #Test whether the average across all tolerant groups is equal to the average across
@@ -175,7 +175,7 @@ dev.off()
 tagsTblANOVATN.filtered <- topTags(treat.anov.TN, n=nrow(treat.anov.TN$table), adjust.method="fdr")$table
 #tagsTblANOVATN.filtered.keep <- tagsTblANOVATN.filtered$FDR <= fdrCut
 #tagsTblANOVATN.filtered.out <- tagsTblANOVATN.filtered[tagsTblANOVATN.filtered.keep,]
-write.table(tagsTblANOVATN.filtered, file="glmQLF_2WayANOVA_TvsN_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+write.table(tagsTblANOVATN.filtered, file="glmQLF_2WayANOVA_TvsN_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 
 #Test whether there is an interaction effect
@@ -211,4 +211,4 @@ dev.off()
 tagsTblANOVAInter.filtered <- topTags(treat.anov.Inter, n=nrow(treat.anov.Inter$table), adjust.method="fdr")$table
 #tagsTblANOVAInter.filtered.keep <- tagsTblANOVAInter.filtered$FDR <= fdrCut
 #tagsTblANOVAInter.filtered.out <- tagsTblANOVAInter.filtered[tagsTblANOVAInter.filtered.keep,]
-write.table(tagsTblANOVAInter.filtered, file="glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+write.table(tagsTblANOVAInter.filtered, file="glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)

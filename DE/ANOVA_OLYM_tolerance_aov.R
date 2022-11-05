@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
-# usage: Rscript ANOVA_OlympicsGenotypes_aov.r workingDir countsFile factorGroupingFile
-# usage Ex: Rscript ANOVA_OlympicsGenotypes_aov.r /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCNA_DETolerance /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_OLYM_WGCNA/OLYM_60_eigengeneExpression_line.csv /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsTolerance.csv
+
+# usage: Rscript ANOVA_OLYM_tolerance_aov.r workingDir countsFile factorGroupingFile
+# usage Ex: Rscript ANOVA_OLYM_tolerance_aov.r /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_OLYM_WGCNA/OLYM_60_eigengeneExpression_line.csv /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsTolerance.csv
 # R script to perform statistical analysis of gene count tables using aov
 # note: https://www.r-bloggers.com/2022/05/two-way-anova-example-in-r-quick-guide/
 
@@ -90,7 +91,15 @@ sumAffy <- summary(affy.aov)
 
 # write summary statistics to a file
 exportFile <- paste(modName, "ANOVA_summary.csv", sep="_")
-capture.output(sumAffy, file=exportFile)
+write.csv(sumAffy, file=exportFile, row.names=TRUE, quote=FALSE)
+
+# perform pairwise T tests
+sumPair <- pairwise.t.test(expData$expression, expData$tolerance,
+                p.adjust.method = "fdr")
+
+# write summary statistics to a file
+exportFile <- paste(modName, "pairwise_summary.txt", sep="_")
+capture.output(sumPair, file=exportFile)
 
 ## check the validity of ANOVA assumptions
 # The data must be regularly distributed, and the variation between groups must be homogeneous
@@ -123,4 +132,4 @@ swTest <- shapiro.test(x = aovRes)
 
 # write test statistics to a file
 exportFile <- paste(modName, "shapiroTest_summary.csv", sep="_")
-capture.output(swTest, file=exportFile)
+write.csv(swTest, file=exportFile, row.names=TRUE, quote=FALSE)

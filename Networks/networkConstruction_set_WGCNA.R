@@ -2,13 +2,13 @@
 
 # script to create a network for a subset of samples using WGNCA
 # usage: Rscript networkConstruction_set_WGCNA.R workingDir subsetTag softPower
-# usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA OLYM 14 60
-# usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA tol 14 60
-# usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA nTol 14 60
-# usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y05 20 60
-# usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA Y023 12 60
-# usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA E05 14 60
-# usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA R2 9 60
+# usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA OLYM 14 60
+# usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA tol 14 60
+# usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA nTol 14 60
+# alternate usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA Y05 20 60
+# alternate usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA Y023 12 60
+# alternate usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA E05 14 60
+# alternate usage ex: Rscript networkConstruction_set_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA R2 9 60
 
 #Load the WGCNA and edgeR packages
 library(WGCNA)

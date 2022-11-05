@@ -63,7 +63,7 @@ list <- calcNormFactors(list)
 #list$samples
 #Write normalized counts to file
 normList <- cpm(list, normalized.lib.sizes=TRUE)
-write.table(normList, file="glmQLF_normalizedCounts.csv", sep=",", row.names=TRUE)
+write.table(normList, file="glmQLF_normalizedCounts.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 #Verify TMM normalization using a MD plot
 #Write plot to file
@@ -128,7 +128,7 @@ con.UVvsVIS <- makeContrasts(UVvsVIS = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
 #tagsTblANOVA <- topTags(test.anov.UVVIS, n=nrow(test.anov.UVVIS$table), adjust.method="fdr")$table
 #tagsTblANOVA.keep <- tagsTblANOVA$FDR <= fdrCut
 #tagsTblANOVA.out <- tagsTblANOVA[tagsTblANOVA.keep,]
-#write.table(tagsTblANOVA, file="glmQLF_2WayANOVA_UVvsVIS_topTags.csv", sep=",", row.names=TRUE)
+#write.table(tagsTblANOVA, file="glmQLF_2WayANOVA_UVvsVIS_topTags.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 #Look at genes with significant expression across all treatment groups
 treat.anov.UVVIS <- glmTreat(fit, contrast=con.UVvsVIS, lfc=log2(1.2))
@@ -142,7 +142,7 @@ dev.off()
 tagsTblANOVA.filtered <- topTags(treat.anov.UVVIS, n=nrow(treat.anov.UVVIS$table), adjust.method="fdr")$table
 #tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR <= fdrCut
 #tagsTblANOVA.filtered.out <- tagsTblANOVA.filtered[tagsTblANOVA.filtered.keep,]
-write.table(tagsTblANOVA.filtered, file="glmQLF_2WayANOVA_UVvsVIS_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+write.table(tagsTblANOVA.filtered, file="glmQLF_2WayANOVA_UVvsVIS_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 
 #Test whether the average across all tolerant groups is equal to the average across
@@ -163,7 +163,7 @@ con.TvsN <- makeContrasts(TvsN = (UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
 #tagsTblANOVATN <- topTags(test.anov.TN, n=nrow(test.anov.TN$table), adjust.method="fdr")$table
 #tagsTblANOVATN.keep <- tagsTblANOVATN$FDR <= fdrCut
 #tagsTblANOVATN.out <- tagsTblANOVATN[tagsTblANOVATN.keep,]
-#write.table(tagsTblANOVATN, file="glmQLF_2WayANOVA_TvsN_topTags.csv", sep=",", row.names=TRUE)
+#write.table(tagsTblANOVATN, file="glmQLF_2WayANOVA_TvsN_topTags.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 #Look at genes with significant expression across all tolerance groups
 treat.anov.TN <- glmTreat(fit, contrast=con.TvsN, lfc=log2(1.2))
@@ -177,7 +177,7 @@ dev.off()
 tagsTblANOVATN.filtered <- topTags(treat.anov.TN, n=nrow(treat.anov.TN$table), adjust.method="fdr")$table
 #tagsTblANOVATN.filtered.keep <- tagsTblANOVATN.filtered$FDR <= fdrCut
 #tagsTblANOVATN.filtered.out <- tagsTblANOVATN.filtered[tagsTblANOVATN.filtered.keep,]
-write.table(tagsTblANOVATN.filtered, file="glmQLF_2WayANOVA_TvsN_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+write.table(tagsTblANOVATN.filtered, file="glmQLF_2WayANOVA_TvsN_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 
 #Test whether there is an interaction effect
@@ -199,7 +199,7 @@ con.Inter <- makeContrasts(Inter = ((UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
 #tagsTblANOVAInter <- topTags(test.anov.Inter, n=nrow(test.anov.Inter$table), adjust.method="fdr")$table
 #tagsTblANOVAInter.keep <- tagsTblANOVAInter$FDR <= fdrCut
 #tagsTblANOVAInter.out <- tagsTblANOVAInter[tagsTblANOVAInter.keep,]
-#write.table(tagsTblANOVAInter, file="glmQLF_2WayANOVA_interaction_topTags.csv", sep=",", row.names=TRUE)
+#write.table(tagsTblANOVAInter, file="glmQLF_2WayANOVA_interaction_topTags.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 #Look at genes with significant expression
 treat.anov.Inter <- glmTreat(fit, contrast=con.Inter, lfc=log2(1.2))
@@ -213,4 +213,4 @@ dev.off()
 tagsTblANOVAInter.filtered <- topTags(treat.anov.Inter, n=nrow(treat.anov.Inter$table), adjust.method="fdr")$table
 #tagsTblANOVAInter.filtered.keep <- tagsTblANOVAInter.filtered$FDR <= fdrCut
 #tagsTblANOVAInter.filtered.out <- tagsTblANOVAInter.filtered[tagsTblANOVAInter.filtered.keep,]
-write.table(tagsTblANOVAInter.filtered, file="glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep=",", row.names=TRUE)
+write.table(tagsTblANOVAInter.filtered, file="glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)

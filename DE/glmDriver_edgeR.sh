@@ -25,10 +25,10 @@ outDir=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DE
 outDir=$outDir"/"$analysisType
 mkdir $outDir
 #Check if the folder already exists
-#if [ $? -ne 0 ]; then
-#	echo "The $outDir directory already exsists... please remove before proceeding."
-#	exit 1
-#fi
+if [ $? -ne 0 ]; then
+	echo "The $outDir directory already exsists... please remove before proceeding."
+	exit 1
+fi
 
 # retrieve current directory
 curDir=$(pwd)
@@ -54,5 +54,15 @@ echo "Performing $analysisType DE analysis of $inFile"
 #Perform DE analysis using glmLRT in edgeR and output analysis results to a txt file
 Rscript glmQLF_Olympics"$analysisType"_edgeR.r "$outDir" "$inFile" 1 24 "$designPath" > "$outDir"/glmQLF_analysisResults.txt
 
-## add row name column header "gene"
-
+# clean produced tables
+for f in "$outDir"/*.csv; do
+	file="$f"
+	#sed -i 's/"//g' "$file"
+	#Fix header
+	tail -n+2 "$file" > tmpTail.csv
+	head -1 "$file" | sed -e 's/^/gene,/' > tmpHeader.csv
+	#Update table
+	cat tmpHeader.csv > "$file"
+	cat tmpTail.csv >> "$file"
+	rm tmp*.csv
+done

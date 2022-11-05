@@ -2,8 +2,8 @@
 
 # script to help pick a soft threshold values for a set of samples using WGNCA
 # usage: Rscript pickSoftPower_consensus_WGCNA.R workingDir fileTag
-# usage ex: Rscript pickSoftPower_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA genotype
-# usage ex: Rscript pickSoftPower_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA tolerance
+# usage ex: Rscript pickSoftPower_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_genotypes_WGCNA genotype
+# usage ex: Rscript pickSoftPower_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA tolerance
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
