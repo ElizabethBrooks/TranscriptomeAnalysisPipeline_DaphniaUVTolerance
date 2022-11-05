@@ -33,73 +33,69 @@ inputTable <- as.data.frame(t(inputTable))
 targets <- read.csv(file=args[3], row.names="sample")
 
 # setup data frame
-affyData <- merge(targets, inputTable, by = 'row.names') 
+expData <- merge(targets, inputTable, by = 'row.names') 
 
 # convert treatment to a factor
-affyData$treatment <- factor(affyData$treatment,
+expData$treatment <- factor(expData$treatment,
                              levels = c("VIS", "UV"),
                              labels = c("VIS", "UV"))
 # convert tolerance to a factor
-affyData$tolerance <- factor(affyData$tolerance,
+expData$tolerance <- factor(expData$tolerance,
                              levels = c("tol", "nTol"),
                              labels = c("tol", "nTol"))
 
 # set row names
-rownames(affyData) <- affyData$Row.names
+rownames(expData) <- expData$Row.names
 
 # remove the Row.names column
-affyData <- affyData[,2:4]
+expData <- expData[,2:4]
 
 # check the structure of the expression data
-#str(affyData)
+#str(expData)
 
 # make frequency tables
-#table(affyData$treatment, affyData$tolerance)
+#table(expData$treatment, expData$tolerance)
 
 # retrieve module column name
-modName <- colnames(affyData)[3]
+modName <- colnames(expData)[3]
 
 # update module column name
-colnames(affyData)[3] <- "expression"
+colnames(expData)[3] <- "expression"
 
 # create a colored box plot
 exportFile <- paste(modName, "coloredBoxPlot.png", sep="_")
 png(file=exportFile)
-ggboxplot(data=affyData, x="treatment", y="expression", color="tolerance",
+ggboxplot(data=expData, x="treatment", y="expression", color="tolerance",
           palette = c("#E69F00", "#009E73"))
 dev.off()
 
 # box plot with two variable factors
 exportFile <- paste(modName, "twoVariableFactorBoxPlot.png", sep="_")
 png(file=exportFile)
-boxplot(expression ~ tolerance * treatment, data=affyData, frame=FALSE,
+boxplot(expression ~ tolerance * treatment, data=expData, frame=FALSE,
         col = c("#E69F00", "#009E73"))
 dev.off()
 
 # two way interaction plot
-interaction.plot(x.factor = affyData$treatment, trace.factor = affyData$tolerance,
-                 response = affyData$expression, fun = mean,
+# two way interaction plot
+exportFile <- paste(modName, "twoWayInteractionPlot.png", sep="_")
+png(file=exportFile)
+interaction.plot(x.factor = expData$treatment, trace.factor = expData$tolerance,
+                 response = expData$expression, fun = mean,
                  type = "b", legend = TRUE,
                  xlab = "Treatment", ylab="Expression",
                  pch=c(1,19), col = c("#E69F00", "#009E73"))
+dev.off()
 
 # compute two-way anova
-affy.aov <- aov(expression ~ tolerance * treatment, data = affyData)
+affy.aov <- aov(expression ~ tolerance * treatment, data = expData)
 
 # output summary statistics
 sumAffy <- summary(affy.aov)
 
 # write summary statistics to a file
 exportFile <- paste(modName, "ANOVA_summary.csv", sep="_")
-write.csv(sumAffy, file=exportFile, row.names=TRUE, quote=FALSE)
-
-# perform pairwise T tests
-sumPair <- pairwise.t.test(expData$expression, expData$tolerance,
-                p.adjust.method = "fdr")
-
-# write summary statistics to a file
-exportFile <- paste(modName, "pairwise_summary.txt", sep="_")
-capture.output(sumPair, file=exportFile)
+capture.output(sumAffy, file=exportFile)
 
 ## check the validity of ANOVA assumptions
 # The data must be regularly distributed, and the variation between groups must be homogeneous
@@ -132,4 +128,4 @@ swTest <- shapiro.test(x = aovRes)
 
 # write test statistics to a file
 exportFile <- paste(modName, "shapiroTest_summary.csv", sep="_")
-write.csv(swTest, file=exportFile, row.names=TRUE, quote=FALSE)
+capture.output(swTest, file=exportFile)

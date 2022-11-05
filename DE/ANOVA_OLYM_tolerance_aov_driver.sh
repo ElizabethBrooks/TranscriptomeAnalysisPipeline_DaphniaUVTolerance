@@ -2,15 +2,22 @@
 
 # usage: bash ANOVA_OLYM_tolerance_aov_driver.sh
 
+# set tag
+setTag="OLYM_60"
+
 # working directory
 workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA"
+workingDir=$workingDir"/"$setTag
+
+# create the working directory
+mkdir $workingDir
 
 # design file
 designFile="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsTolerance.csv"
 #designFile="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsGenotypes.csv"
 
 # expression data
-expData="/OLYM_60_eigengeneExpression.csv"
+expData="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA/OLYM_60_eigengeneExpression.csv"
 
 # loop over each module
 counter=1

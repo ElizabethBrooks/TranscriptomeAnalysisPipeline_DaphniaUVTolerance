@@ -91,14 +91,14 @@ sumExp <- summary(exp.aov)
 
 # write summary statistics to a file
 exportFile <- paste(modName, "ANOVA_summary.txt", sep="_")
-write.csv(sumExp, file=exportFilerow.names=TRUE, quote=FALSE)
+capture.output(sumExp, file=exportFilerow.names=TRUE, quote=FALSE)
 
 # perform post hoc tests
 tukeyExp <- TukeyHSD(exp.aov, which = "genotype")
 
 # write summary statistics to a file
 exportFile <- paste(modName, "tukey_summary.txt", sep="_")
-write.csv(tukeyExp, file=exportFilerow.names=TRUE, quote=FALSE)
+capture.output(tukeyExp, file=exportFilerow.names=TRUE, quote=FALSE)
 
 # perform pairwise T tests
 sumPair <- pairwise.t.test(expData$expression, expData$genotype,
@@ -106,7 +106,7 @@ sumPair <- pairwise.t.test(expData$expression, expData$genotype,
 
 # write summary statistics to a file
 exportFile <- paste(modName, "pairwise_summary.txt", sep="_")
-write.csv(sumPair, file=exportFilerow.names=TRUE, quote=FALSE)
+capture.output(sumPair, file=exportFilerow.names=TRUE, quote=FALSE)
 
 ## check the validity of ANOVA assumptions
 # The data must be regularly distributed, and the variation between groups must be homogeneous
@@ -139,5 +139,5 @@ swTest <- shapiro.test(x = aovRes)
 
 # write test statistics to a file
 exportFile <- paste(modName, "shapiroTest_summary.txt", sep="_")
-write.csv(swTest, file=exportFile, row.names=TRUE, quote=FALSE)
+capture.output(swTest, file=exportFile)
 
