@@ -45,9 +45,9 @@ pfamPath=$(grep "pfam:" ../InputData/databasePaths.txt | tr -d " " | sed "s/pfam
 
 #Set output path
 if [[ "$2" == "longest" || "$2" == "Longest" ]]; then
-	outputFolder="$outputsPath"/transcriptsDecoded_transdecoder_longest_"$genomeTag"
+	outputFolder="$outputsPath"/transcriptsDecoded_transdecoder_longest
 else
-	outputFolder="$outputsPath"/transcriptsDecoded_transdecoder_"$genomeTag"
+	outputFolder="$outputsPath"/transcriptsDecoded_transdecoder
 fi
 
 #Make output folder
