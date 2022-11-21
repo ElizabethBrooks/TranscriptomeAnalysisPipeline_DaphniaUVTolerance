@@ -18,8 +18,11 @@ genomeTag=$(grep "genomeTag:" ../InputData/inputPaths.txt | tr -d " " | sed "s/g
 inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 # retrieve genome reference and features paths
 multiFASTA="$inputsPath"
-# retrieve genome reference and features paths
-geneMap=$(grep "geneTransMap:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+# retrieve output map path
+mapPath=$(grep "geneTransMap:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
+
+# set mapping file name
+geneMap=$mapPath"/"$genomeTag".gene_trans_map"
 
 # set outputs absolute path
 outputsPath=$(grep "translation:" ../InputData/outputPaths.txt | tr -d " " | sed "s/translation://g")
