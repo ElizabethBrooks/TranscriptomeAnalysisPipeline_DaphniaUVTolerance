@@ -22,7 +22,7 @@ multiFASTA="$inputsPath"
 geneMap=$(grep "geneTransMap:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 
 # set outputs absolute path
-outputsPath=$(dirname $inputsPath)
+outputsPath=$(grep "translation:" ../InputData/outputPaths.txt | tr -d " " | sed "s/translation://g")
 
 #Determine input database for blastp
 if [[ "$1" == "ncbi" ]]; then
@@ -42,9 +42,9 @@ pfamPath=$(grep "pfam:" ../InputData/databasePaths.txt | tr -d " " | sed "s/pfam
 
 #Set output path
 if [[ "$2" == "longest" || "$2" == "Longest" ]]; then
-	outputFolder="$outputsPath"/decoded_transdecoder_longest_"$genomeTag"
+	outputFolder="$outputsPath"/transcriptsDecoded_transdecoder_longest_"$genomeTag"
 else
-	outputFolder="$outputsPath"/decoded_transdecoder_"$genomeTag"
+	outputFolder="$outputsPath"/transcriptsDecoded_transdecoder_"$genomeTag"
 fi
 
 #Make output folder
