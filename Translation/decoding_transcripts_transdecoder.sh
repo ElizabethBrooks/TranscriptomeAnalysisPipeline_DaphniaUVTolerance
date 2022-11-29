@@ -15,9 +15,7 @@ module load bio
 # retrieve genome tag
 genomeTag=$(grep "genomeTag:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeTag://g")
 # retrieve genome reference absolute path for querying
-inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
-# retrieve genome reference and features paths
-multiFASTA="$inputsPath"
+multiFASTA=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
 # retrieve output map path
 mapPath=$(grep "geneTransMap:" ../InputData/outputPaths.txt | tr -d " " | sed "s/geneTransMap://g")
 
