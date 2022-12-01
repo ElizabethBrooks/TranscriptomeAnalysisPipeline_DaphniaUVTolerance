@@ -13,9 +13,18 @@ module load bio
 
 # retrieve protein sequences absolute path
 inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
+
 # retrieve annotation outputs absolute path
 outputsPath=$(grep "annotation:" ../InputData/outputPaths.txt | tr -d " " | sed "s/annotation://g")
-outputsPath=$outputsPath"/annotation_interproscan"
+
+# set outputs directory name
+outputsPath=$outputsPath"/annotated_interproscan"
+
+# make outputs directory
+mkdir $outputsPath
+
+# set annotation outputs path
+outputsPath=$outputsPath"/annotations"
 
 # retrieve software path
 softwarePath=$(grep "interproscan:" ../InputData/outputPaths.txt | tr -d " " | sed "s/interproscan://g")
