@@ -19,3 +19,4 @@ kaks: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_ensembl
 geneModels: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_ensembl/geneModelImages
 scratch: /scratch365/ebrooks5
 cleanedGeneCounts: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/GeneCounts/Formatted/cleaned.csv
+annotation: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_ensembl
