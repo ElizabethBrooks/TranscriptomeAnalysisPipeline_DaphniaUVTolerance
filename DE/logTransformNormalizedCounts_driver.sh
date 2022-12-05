@@ -19,3 +19,18 @@ inDir=$inDir"/"$analysisType
 
 # run R script to log transform nomalized counts
 Rscript logTransformNormalizedCounts.r $inDir
+
+# clean produced tables
+file=$inDir"/glmQLF_normalizedCounts_logTransformed.csv"
+
+# fix header
+tail -n+2 "$file" > $inDir"/tmpTail.csv"
+head -1 "$file" | sed -e 's/^/gene,/' > $inDir"/tmpHeader.csv"
+
+# update table
+cat $inDir"/tmpHeader.csv" > "$file"
+cat $inDir"/tmpTail.csv" >> "$file"
+
+# clean up
+rm $inDir"/tmpHeader.csv"
+rm $inDir"/tmpTail.csv"
