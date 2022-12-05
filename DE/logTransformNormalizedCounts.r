@@ -10,28 +10,21 @@ library(dplyr)
 args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
-workingDir = args[1];
-#workingDir = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance"
+#workingDir = args[1];
+workingDir = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance"
 setwd(workingDir); 
 
 #Turn off scientific notation
 options(scipen = 999)
 
 #Import gene counts
-inputTable <- read.csv(file="glmQLF_normalizedCounts.csv")
-
-#Trim the data table
-inputCounts <- head(inputTable, - 5)
-
-#Set output file name
-outFile <- "glmQLF_normalizedCounts_logTransformed.csv"
+inputCounts <- read.csv(file="glmQLF_normalizedCounts.csv", row.names="gene")
 
 #Perform log transformations of log2(x+1)
-matrixCounts <- as.matrix(inputCounts)
-outputCounts <- log2(matrixCounts+1)
+outputCounts <- log2(inputCounts+1)
 
 #Write log transformed counts to a file
-write.csv(outputCounts, file=outFile)
+write.table(outputCounts, file="glmQLF_normalizedCounts_logTransformed.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 #Test plots
 jpeg("glmQLF_normalizedCounts_scatterPlot.jpg")
