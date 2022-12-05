@@ -4,12 +4,10 @@
 
 #Trim file extension from input
 inputCounts=$(grep "geneCounts:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneCounts://g")
-inputCounts=$inputCounts"/cleaned.csv"
 
 #Directory for outputs
 #outputsPath=$(dirname "$inputCounts")
 outputsPath=$(grep "cleanedGeneCounts:" ../InputData/outputPaths.txt | tr -d " " | sed "s/cleanedGeneCounts://g")
-outputsPath=$(dirname $outputsPath)
 
 # set outputs path
 #outputCounts=$outputsPath"/Formatted"

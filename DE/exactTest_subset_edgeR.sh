@@ -12,14 +12,19 @@ fi
 #Retrieve gene ontology data path
 #ontologyPath=$(grep "geneOntology:" ../InputData/inputPaths.txt | tr -d " " | sed "s/geneOntology://g")
 
+#Retrieve analysis outputs path
+outputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
+
 #Retrieve analysis inputs path
-inputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
-inFile="$inputsPath"/cleaned.csv
+#inFile=$(grep "cleanedGeneCounts:" ../InputData/outputPaths_"$2".txt | tr -d " " | sed "s/cleanedGeneCounts://g")
+inFile=$(grep "cleanedGeneCounts:" ../InputData/outputPaths.txt | tr -d " " | sed "s/cleanedGeneCounts://g")
+inFile=$inFile"/cleaned.csv"
+
 #Set FDR cut off
 fdrCut=$2
 
 #Create directory for output files
-outDir="$inputsPath"/exactTest"$1"Analysis_FDR"$fdrCut"
+outDir="$outputsPath"/exactTest"$1"Analysis_FDR"$fdrCut"
 mkdir $outDir
 
 #Convert TXT formatted counts to CSV

@@ -44,6 +44,7 @@ cd $curDir
 #Retrieve analysis inputs path
 #inFile=$(grep "cleanedGeneCounts:" ../InputData/outputPaths_"$2".txt | tr -d " " | sed "s/cleanedGeneCounts://g")
 inFile=$(grep "cleanedGeneCounts:" ../InputData/outputPaths.txt | tr -d " " | sed "s/cleanedGeneCounts://g")
+inFile=$inFile"/cleaned.csv"
 
 #Set FDR cut off
 #fdrCut=0.10
