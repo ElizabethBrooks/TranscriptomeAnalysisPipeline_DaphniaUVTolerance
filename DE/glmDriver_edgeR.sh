@@ -5,8 +5,8 @@
 # usage Ex: bash glmDriver_edgeR.sh Tolerance
 
 ## potential Usage: bash glmDriver_edgeR.sh analysisType referenceGenome
-## usage Ex: bash glmDriver_edgeR.sh Genotypes KAP4_ensembl
-## usage Ex: bash glmDriver_edgeR.sh Tolerance KAP4_ensembl
+## usage Ex: bash glmDriver_edgeR.sh Genotypes
+## usage Ex: bash glmDriver_edgeR.sh Tolerance
 
 #Load module for R
 #module load bio
@@ -22,6 +22,9 @@ analysisType=$1
 
 #Create directory for output files
 outDir=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
+mkdir $outDir
+
+# name output directory for the analysis type
 outDir=$outDir"/"$analysisType
 mkdir $outDir
 #Check if the folder already exists
@@ -42,7 +45,6 @@ designPath=$designPath"/expDesign_Olympics"$analysisType".csv"
 cd $curDir
 
 #Retrieve analysis inputs path
-#inFile=$(grep "cleanedGeneCounts:" ../InputData/outputPaths_"$2".txt | tr -d " " | sed "s/cleanedGeneCounts://g")
 inFile=$(grep "cleanedGeneCounts:" ../InputData/outputPaths.txt | tr -d " " | sed "s/cleanedGeneCounts://g")
 inFile=$inFile"/cleaned.csv"
 
@@ -53,7 +55,7 @@ inFile=$inFile"/cleaned.csv"
 echo "Performing $analysisType DE analysis of $inFile"
 
 #Perform DE analysis using glmLRT in edgeR and output analysis results to a txt file
-Rscript glmQLF_Olympics"$analysisType"_edgeR.r "$outDir" "$inFile" 1 24 "$designPath" > "$outDir"/glmQLF_analysisResults.txt
+Rscript glmQLF_Olympics"$analysisType"_edgeR.R "$outDir" "$inFile" 1 24 "$designPath" > "$outDir"/glmQLF_analysisResults.txt
 
 # clean produced tables
 for f in "$outDir"/*.csv; do

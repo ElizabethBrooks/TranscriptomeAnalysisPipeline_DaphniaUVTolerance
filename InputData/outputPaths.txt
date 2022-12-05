@@ -5,8 +5,8 @@ assemblingFree: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI
 assemblingGenome: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI
 aligningGenome: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI
 buildingGenome: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI
-geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/mendel/pfrenderlab_genomic_data/daphnia_pulex/KAP4/NCBI/GCA_021134715.1/genome
-DEAnalysis: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCA_021134715.1/Biostatistics/DEAnalysis
+geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/mendel/pfrenderlab_genomic_data/daphnia_pulex/KAP4/NCBI/GCF_021134715.1/genome
+DEAnalysis: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis
 translation: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 transcriptSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq

@@ -14,6 +14,7 @@ fi
 
 #Retrieve analysis outputs path
 outputsPath=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
+mkdir $outDir
 
 #Retrieve analysis inputs path
 #inFile=$(grep "cleanedGeneCounts:" ../InputData/outputPaths_"$2".txt | tr -d " " | sed "s/cleanedGeneCounts://g")
