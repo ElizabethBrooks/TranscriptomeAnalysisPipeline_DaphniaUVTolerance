@@ -4,7 +4,9 @@
 #$ -r n
 #$ -N annotation_interproscan_jobOutput
 #$ -pe smp 24
+
 # script to perform annotation of protein sequences using interproscan
+
 # usage: qsub annotation_interproscan.sh
 # usage Ex: qsub annotation_interproscan.sh
 

@@ -9,6 +9,6 @@ proteinSequences: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/KAP4_
 geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/KAP4_GCF_021134715.1/KAP4.gene_trans_map
 geneAnnotations: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/GeneAnnotations
 annotations: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/AnnotationAnalysis
-geneSets: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_Results
+geneSets: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GSEA
 databases: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases
-geneCounts: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/GeneCountsAnalyzed_KAP4/Formatted/cleaned.csv
+geneCounts: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GeneCountsAnalyzed
