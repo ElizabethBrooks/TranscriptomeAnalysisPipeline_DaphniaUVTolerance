@@ -2,11 +2,13 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
+#$ -pe smp 8
 #$ -N filterMapQ_jobOutput
-#Script to perform bam read quaity filtering
-#Usage: qsub filterByMapQ.sh sortedNameFolder analysisTarget
-#Usage Ex: qsub filterByMapQ.sh sortedCoordinate_samtoolsHisat2_run1 genome
-#Usage Ex: qsub filterByMapQ.sh sortedCoordinate_samtoolsHisat2_run3 genome
+
+# script to perform bam read quaity filtering
+# usage: qsub filterByMapQ.sh sortedNameFolder analysisTarget
+# usage Ex: qsub filterByMapQ.sh sortedCoordinate_samtoolsHisat2_run1 genome
+# usage Ex: qsub filterByMapQ.sh sortedCoordinate_samtoolsHisat2_run3 genome
 
 #Required modules for ND CRC servers
 module load bio
@@ -47,6 +49,6 @@ samtools --version > "$inputOutFile"
 for f in "$inputsDir"/*/accepted_hits.bam; do 
 	echo "Processing file $f"
 	path=$(dirname $f)
-	samtools view -bq 60 $f > "$path"/filteredMapQ.bam
-	echo samtools view -bq 60 $f ">" "$path"/filteredMapQ.bam >> "$inputOutFile"
+	samtools view -@ 8 -bq 60 $f > "$path"/filteredMapQ.bam
+	echo samtools view -@ 8 -bq 60 $f ">" "$path"/filteredMapQ.bam >> "$inputOutFile"
 done
