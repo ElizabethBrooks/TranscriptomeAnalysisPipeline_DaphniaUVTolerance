@@ -66,7 +66,7 @@ write.table(normList, file="glmQLF_normalizedCounts.csv", sep=",", row.names=TRU
 
 #Write log transformed normalized counts to file
 normListLog <- cpm(list, normalized.lib.sizes=TRUE, log=TRUE)
-write.table(normListLog, file="normalizedLogCounts.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(normListLog, file="glmQLF_normalizedCounts_logTransformed.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 #Verify TMM normalization using a MD plot
 #Write plot to file

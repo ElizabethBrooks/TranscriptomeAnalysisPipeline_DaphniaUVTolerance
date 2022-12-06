@@ -46,4 +46,4 @@ list <- calcNormFactors(list)
 #list$samples
 #Write log transformed normalized counts to file
 normList <- cpm(list, normalized.lib.sizes=TRUE, log=TRUE)
-write.table(normList, file="normalizedLogCounts.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(normList, file="normalizedCounts_logTransformed.csv", sep=",", row.names=TRUE, quote=FALSE)

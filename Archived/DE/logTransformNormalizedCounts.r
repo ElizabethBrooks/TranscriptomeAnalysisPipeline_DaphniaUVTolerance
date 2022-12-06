@@ -24,7 +24,7 @@ inputCounts <- read.csv(file="glmQLF_normalizedCounts.csv", row.names="gene")
 outputCounts <- log2(inputCounts+1)
 
 #Write log transformed counts to a file
-write.table(outputCounts, file="glmQLF_normalizedCounts_logTransformed.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(outputCounts, file="normalizedCounts_logTransformed.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 #Test plots
 jpeg("glmQLF_normalizedCounts_scatterPlot.jpg")
