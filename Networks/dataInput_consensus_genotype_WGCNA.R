@@ -20,7 +20,7 @@ setwd(workingDir)
 
 #Import normalized gene count data
 inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
-#inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/DEGenotypes/glmQLF_normalizedCounts.csv", row.names="gene", header=TRUE)[ ,1:24]
+#inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/DEGenotypes/glmQLF_normalizedCounts_logTransformed.csv", row.names="gene", header=TRUE)[ ,1:24]
 
 # load in the trait data
 allTraits = read.csv(args[5])
