@@ -106,64 +106,6 @@ abline(a=0, b=1, col = "blue")
 legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
 dev.off()
 
-# genotype set
-# Y05 vs Y023
-# Open a suitably sized graphics window
-#pdf(file = "ConsensusTOMScaling-QQPlot_Y05_Y023.pdf", wi = 6, he = 6)
-#sizeGrWindow(6,6)
-# qq plot of the unscaled samples
-#qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[2]], plot.it = TRUE, cex = 0.6,
-#                    xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[2]),                    
-#                    main = "Q-Q plot of TOM", pch = 20)
-# qq plot of the scaled samples
-#qqScaled = qqplot(scaledTOMSamples[[1]], scaledTOMSamples[[2]], plot.it = FALSE)
-#points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
-#abline(a=0, b=1, col = "blue")
-#legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
-#dev.off()
-# E05 vs R2
-# Open a suitably sized graphics window
-#pdf(file = "ConsensusTOMScaling-QQPlot_E05_R2.pdf", wi = 6, he = 6)
-#sizeGrWindow(6,6)
-# qq plot of the unscaled samples
-#qqUnscaled = qqplot(TOMScalingSamples[[3]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
-#                    xlab = paste("TOM in", setLabels[3]), ylab = paste("TOM in", setLabels[4]),                    
-#                    main = "Q-Q plot of TOM", pch = 20)
-# qq plot of the scaled samples
-#qqScaled = qqplot(scaledTOMSamples[[3]], scaledTOMSamples[[4]], plot.it = FALSE)
-#points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
-#abline(a=0, b=1, col = "blue")
-#legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
-#dev.off()
-# Y05 vs E05
-# Open a suitably sized graphics window
-#pdf(file = "ConsensusTOMScaling-QQPlot_Y05_E05.pdf", wi = 6, he = 6)
-#sizeGrWindow(6,6)
-# qq plot of the unscaled samples
-#qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[3]], plot.it = TRUE, cex = 0.6,
-#                    xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[3]),                   
-#                    main = "Q-Q plot of TOM", pch = 20)
-# qq plot of the scaled samples
-#qqScaled = qqplot(scaledTOMSamples[[1]], scaledTOMSamples[[3]], plot.it = FALSE)
-#points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
-#abline(a=0, b=1, col = "blue")
-#legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
-#dev.off()
-# Y023 vs R2
-# Open a suitably sized graphics window
-#pdf(file = "ConsensusTOMScaling-QQPlot_Y023_R2.pdf", wi = 6, he = 6)
-#sizeGrWindow(6,6)
-# qq plot of the unscaled samples
-#qqUnscaled = qqplot(TOMScalingSamples[[2]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
-#                    xlab = paste("TOM in", setLabels[2]), ylab = paste("TOM in", setLabels[4]),                    
-#                    main = "Q-Q plot of TOM", pch = 20)
-# qq plot of the scaled samples
-#qqScaled = qqplot(scaledTOMSamples[[2]], scaledTOMSamples[[4]], plot.it = FALSE)
-#points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
-#abline(a=0, b=1, col = "blue")
-#legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
-#dev.off()
-
 # calculate the consensus Topological Overlap by taking the component-wise (“parallel”) 
 # minimum of the TOMs in individual sets
 consensusTOM = pmin(TOM[1, , ], TOM[2, , ])

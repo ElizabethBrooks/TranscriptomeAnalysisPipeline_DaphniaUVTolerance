@@ -28,9 +28,11 @@ inputCounts=$inDir"/glmQLF_normalizedCounts_logTransformed.csv"
 currDir=$(pwd)
 
 # retrieve experimental design data path
-cd $(dirname "../InputData/expDesign_treatment_WGCNA_Olympics.csv")
+cd $(dirname "../InputData/expDesign_WGCNA_Olympics.csv")
+#cd $(dirname "../InputData/expDesign_treatment_WGCNA_Olympics.csv")
 designPath=$(pwd)
-expDesign=$designPath"/expDesign_treatment_WGCNA_Olympics.csv"
+expDesign=$designPath"/expDesign_WGCNA_Olympics.csv"
+#expDesign=$designPath"/expDesign_treatment_WGCNA_Olympics.csv"
 
 # move back to scripts directory
 cd $currDir
