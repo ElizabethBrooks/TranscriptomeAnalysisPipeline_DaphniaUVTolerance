@@ -1,8 +1,13 @@
 #!/usr/bin/env Rscript
 
 # script to create a network for a set of samples using WGNCA
-# usage: Rscript dataInput_consensus_tolerance_WGCNA.R workingDir countsFile startCounts endCounts traitsFile
-# usage ex: Rscript dataInput_consensus_tolerance_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/DEAnalysis/Genotypes/glmQLF_normalizedCounts.csv 1 24 /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_treatment_WGCNA_Olympics.csv
+# usage: Rscript dataInput_consensus_Tolerance_WGCNA.R workingDir countsFile startCounts endCounts traitsFile
+# usage ex: Rscript dataInput_consensus_Tolerance_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_Tolerance_WGCNA /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/DEAnalysis/Genotypes/glmQLF_normalizedCounts.csv 1 24 /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_treatment_WGCNA_Olympics.csv
+
+# install pacakges, if necessary
+#if (!require("BiocManager", quietly = TRUE))
+#  install.packages("BiocManager")
+#BiocManager::install("WGCNA")
 
 #Load the WGCNA and edgeR packages
 library(WGCNA)
@@ -15,7 +20,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
 workingDir = args[1];
-#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_tolerance_WGCNA"
+#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_Tolerance_WGCNA"
 setwd(workingDir)
 
 #Import normalized gene count data
@@ -25,19 +30,22 @@ inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
 # load in the trait data
 allTraits = read.csv(args[5])
 #allTraits = read.csv("/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_genotype_WGCNA_Olympics.csv");
-#allTraits = read.csv("/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_tolerance_WGCNA_Olympics.csv");
+#allTraits = read.csv("/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_Tolerance_WGCNA_Olympics.csv");
 dim(allTraits)
 names(allTraits)
 
-## tolerance set
-#Subset input counts by tolerance
-inputTable_tol <- inputTable[,1:12]
-inputTable_nTol <- inputTable[,13:24]
+# retrieve file tage
+fileTag <- args[6]
+
+## Tolerance set
+#Subset input counts by Tolerance
+inputTable_Tol <- inputTable[,1:12]
+inputTable_NTol <- inputTable[,13:24]
 # number of sets
 nSets <- 2
 # For easier labeling of plots, create a vector holding descriptive names of the sets
 setLabels = c("Tolerant", "Not Tolerant")
-shortLabels = c("tol", "nTol")
+shortLabels = c("Tol", "NTol")
 
 ## genotype set
 #Subset input counts by genotype
@@ -71,14 +79,14 @@ multiExpr = vector(mode = "list", length = nSets)
 #names(multiExpr[[4]]$data) = rownames(inputTable_E05)
 #rownames(multiExpr[[4]]$data) = names(inputTable_E05)
 
-## tolerance set
+## Tolerance set
 # transpose and add each subset
-multiExpr[[1]] = list(data = as.data.frame(t(inputTable_tol[])))
-names(multiExpr[[1]]$data) = rownames(inputTable_tol)
-rownames(multiExpr[[1]]$data) = names(inputTable_tol)
-multiExpr[[2]] = list(data = as.data.frame(t(inputTable_nTol[])))
-names(multiExpr[[2]]$data) = rownames(inputTable_nTol)
-rownames(multiExpr[[2]]$data) = names(inputTable_nTol)
+multiExpr[[1]] = list(data = as.data.frame(t(inputTable_Tol[])))
+names(multiExpr[[1]]$data) = rownames(inputTable_Tol)
+rownames(multiExpr[[1]]$data) = names(inputTable_Tol)
+multiExpr[[2]] = list(data = as.data.frame(t(inputTable_NTol[])))
+names(multiExpr[[2]]$data) = rownames(inputTable_NTol)
+rownames(multiExpr[[2]]$data) = names(inputTable_NTol)
 
 # Check that the data has the correct format for many functions operating on multiple sets:
 exprSize = checkSets(multiExpr)
@@ -118,7 +126,7 @@ for (set in 1:nSets){
 }
 
 # plot dendrogrems
-png(file = "ConsensusSampleClustering_tolerance.png", width = 12, height = 12, units="in", res=150)
+png(file = "ConsensusSampleClustering_Tolerance.png", width = 12, height = 12, units="in", res=150)
 par(mfrow=c(4,1))
 par(mar = c(0, 4, 2, 0))
 for (set in 1:nSets){
@@ -142,6 +150,8 @@ nGenes = exprSize$nGenes
 nSamples = exprSize$nSamples
 
 #  save the relevant data for use in the subsequent analysis
+exportFile <- paste("Consensus-dataInput", fileTag, sep="-")
+exportFile <- paste(exportFile, "RData", sep=".")
 save(multiExpr, 
      Traits, 
      nGenes, 
@@ -149,4 +159,4 @@ save(multiExpr,
      setLabels, 
      shortLabels, 
      exprSize,
-     file = "Consensus-dataInput-tolerance.RData")
+     file = exportFile)

@@ -4,6 +4,11 @@
 # usage: Rscript dataInput_consensus_genotype_WGCNA.R workingDir countsFile startCounts endCounts traitsFile
 # usage ex: Rscript dataInput_consensus_genotype_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/DEGenotypes/glmQLF_normalizedCounts.csv 1 24 /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_treatment_WGCNA_Olympics.csv
 
+# install pacakges, if necessary
+#if (!require("BiocManager", quietly = TRUE))
+#  install.packages("BiocManager")
+#BiocManager::install("WGCNA")
+
 #Load the WGCNA and edgeR packages
 library(WGCNA)
 
@@ -28,6 +33,9 @@ allTraits = read.csv(args[5])
 #allTraits = read.csv("/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_tolerance_WGCNA_Olympics.csv");
 dim(allTraits)
 names(allTraits)
+
+# retrieve file tage
+fileTag <- args[6]
 
 ## genotype set
 #Subset input counts by genotype
@@ -123,6 +131,8 @@ nGenes = exprSize$nGenes
 nSamples = exprSize$nSamples
 
 #  save the relevant data for use in the subsequent analysis
+exportFile <- paste("Consensus-dataInput", fileTag, sep="-")
+exportFile <- paste(exportFile, "RData", sep=".")
 save(multiExpr, 
      Traits, 
      nGenes, 
@@ -130,4 +140,5 @@ save(multiExpr,
      setLabels, 
      shortLabels, 
      exprSize,
-     file = "Consensus-dataInput-genotype.RData")
+     file = exportFile)
+

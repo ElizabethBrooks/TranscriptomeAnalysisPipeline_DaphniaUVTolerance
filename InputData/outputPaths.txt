@@ -20,3 +20,4 @@ geneModels: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/geneModelImages
 scratch: /scratch365/ebrooks5
 cleanedGeneCounts: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GeneCountsAnalyzed/Formatted
 annotation: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI
+WGCNA: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA

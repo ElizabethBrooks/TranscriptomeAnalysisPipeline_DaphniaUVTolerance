@@ -1,10 +1,10 @@
 #!/usr/bin/env Rscript
 
 # script to construct a network for a set of samples using WGNCA
-# usage: Rscript networkConstruction_consensus_tolerance_WGCNA.R workingDir setTag softPower minModuleSize
-# usage ex: Rscript networkConstruction_consensus_tolerance_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA 14 60
-# alternate usage ex: Rscript networkConstruction_consensus_tolerance_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA 30 100
-# alternate usage ex: Rscript networkConstruction_consensus_tolerance_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA 14 30
+# usage: Rscript networkConstruction_consensus_WGCNA.R workingDir softPower minModuleSize
+# usage ex: Rscript networkConstruction_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA 18 100
+# usage ex: Rscript networkConstruction_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA 18 30
+# usage ex: Rscript networkConstruction_consensus_WGCNA.R /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_genotype_WGCNA 18 60
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
@@ -27,7 +27,7 @@ options(stringsAsFactors = FALSE)
 enableWGCNAThreads()
 
 # Load the data saved in the first part
-setTag <- "tolerance"
+setTag <- "genotype"
 importFile <- paste("Consensus-dataInput", setTag, sep="-")
 importFile <- paste(importFile, "RData", sep=".")
 lnames = load(file = importFile)
@@ -38,12 +38,11 @@ nSets = checkSets(multiExpr)$nSets
 
 # set soft thresholding power
 softPower = as.numeric(args[2])
-#softPower = 30
-#softPower = 14
+#softPower = 18
 
-# We like large modules, so we set the minimum module size relatively high:
+# We like large modules, so we set the minimum module size relatively high
 minModuleSize = as.numeric(args[3])
-#minModuleSize = 60
+#minModuleSize = 30
 
 # Initialize an appropriate array to hold the adjacencies
 adjacencies = array(0, dim = c(nSets, nGenes, nGenes))
@@ -92,13 +91,14 @@ for (set in 1:nSets){
   scaledTOMSamples[[set]] = TOMScalingSamples[[set]]^scalePowers[set]
 }
 
-# tolerance set
+# genotype set
+# Y05 vs Y023
 # Open a suitably sized graphics window
-png(file = "ConsensusTOMScaling-QQPlot_tol_nTol.png", wi = 6, he = 6, units="in", res=150)
+png(file = "ConsensusTOMScaling-QQPlot_Y05_Y023.png", wi = 6, he = 6, units="in", res=150)
 sizeGrWindow(6,6)
 # qq plot of the unscaled samples
 qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[2]], plot.it = TRUE, cex = 0.6,
-                    xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[2]),                   
+                    xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[2]),                    
                     main = "Q-Q plot of TOM", pch = 20)
 # qq plot of the scaled samples
 qqScaled = qqplot(scaledTOMSamples[[1]], scaledTOMSamples[[2]], plot.it = FALSE)
@@ -106,64 +106,48 @@ points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
 abline(a=0, b=1, col = "blue")
 legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
 dev.off()
-
-# genotype set
-# Y05 vs Y023
-# Open a suitably sized graphics window
-#pdf(file = "ConsensusTOMScaling-QQPlot_Y05_Y023.pdf", wi = 6, he = 6)
-#sizeGrWindow(6,6)
-# qq plot of the unscaled samples
-#qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[2]], plot.it = TRUE, cex = 0.6,
-#                    xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[2]),                    
-#                    main = "Q-Q plot of TOM", pch = 20)
-# qq plot of the scaled samples
-#qqScaled = qqplot(scaledTOMSamples[[1]], scaledTOMSamples[[2]], plot.it = FALSE)
-#points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
-#abline(a=0, b=1, col = "blue")
-#legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
-#dev.off()
 # E05 vs R2
 # Open a suitably sized graphics window
-#pdf(file = "ConsensusTOMScaling-QQPlot_E05_R2.pdf", wi = 6, he = 6)
-#sizeGrWindow(6,6)
+png(file = "ConsensusTOMScaling-QQPlot_E05_R2.png", wi = 6, he = 6, units="in", res=150)
+sizeGrWindow(6,6)
 # qq plot of the unscaled samples
-#qqUnscaled = qqplot(TOMScalingSamples[[3]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
-#                    xlab = paste("TOM in", setLabels[3]), ylab = paste("TOM in", setLabels[4]),                    
-#                    main = "Q-Q plot of TOM", pch = 20)
+qqUnscaled = qqplot(TOMScalingSamples[[3]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
+                    xlab = paste("TOM in", setLabels[3]), ylab = paste("TOM in", setLabels[4]),                    
+                    main = "Q-Q plot of TOM", pch = 20)
 # qq plot of the scaled samples
-#qqScaled = qqplot(scaledTOMSamples[[3]], scaledTOMSamples[[4]], plot.it = FALSE)
-#points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
-#abline(a=0, b=1, col = "blue")
-#legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
-#dev.off()
+qqScaled = qqplot(scaledTOMSamples[[3]], scaledTOMSamples[[4]], plot.it = FALSE)
+points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
+abline(a=0, b=1, col = "blue")
+legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
+dev.off()
 # Y05 vs E05
 # Open a suitably sized graphics window
-#pdf(file = "ConsensusTOMScaling-QQPlot_Y05_E05.pdf", wi = 6, he = 6)
-#sizeGrWindow(6,6)
+png(file = "ConsensusTOMScaling-QQPlot_Y05_E05.png", wi = 6, he = 6, units="in", res=150)
+sizeGrWindow(6,6)
 # qq plot of the unscaled samples
-#qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[3]], plot.it = TRUE, cex = 0.6,
-#                    xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[3]),                   
-#                    main = "Q-Q plot of TOM", pch = 20)
+qqUnscaled = qqplot(TOMScalingSamples[[1]], TOMScalingSamples[[3]], plot.it = TRUE, cex = 0.6,
+                    xlab = paste("TOM in", setLabels[1]), ylab = paste("TOM in", setLabels[3]),                   
+                    main = "Q-Q plot of TOM", pch = 20)
 # qq plot of the scaled samples
-#qqScaled = qqplot(scaledTOMSamples[[1]], scaledTOMSamples[[3]], plot.it = FALSE)
-#points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
-#abline(a=0, b=1, col = "blue")
-#legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
-#dev.off()
+qqScaled = qqplot(scaledTOMSamples[[1]], scaledTOMSamples[[3]], plot.it = FALSE)
+points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
+abline(a=0, b=1, col = "blue")
+legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
+dev.off()
 # Y023 vs R2
 # Open a suitably sized graphics window
-#pdf(file = "ConsensusTOMScaling-QQPlot_Y023_R2.pdf", wi = 6, he = 6)
-#sizeGrWindow(6,6)
+png(file = "ConsensusTOMScaling-QQPlot_Y023_R2.png", wi = 6, he = 6, units="in", res=150)
+sizeGrWindow(6,6)
 # qq plot of the unscaled samples
-#qqUnscaled = qqplot(TOMScalingSamples[[2]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
-#                    xlab = paste("TOM in", setLabels[2]), ylab = paste("TOM in", setLabels[4]),                    
-#                    main = "Q-Q plot of TOM", pch = 20)
+qqUnscaled = qqplot(TOMScalingSamples[[2]], TOMScalingSamples[[4]], plot.it = TRUE, cex = 0.6,
+                    xlab = paste("TOM in", setLabels[2]), ylab = paste("TOM in", setLabels[4]),                    
+                    main = "Q-Q plot of TOM", pch = 20)
 # qq plot of the scaled samples
-#qqScaled = qqplot(scaledTOMSamples[[2]], scaledTOMSamples[[4]], plot.it = FALSE)
-#points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
-#abline(a=0, b=1, col = "blue")
-#legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
-#dev.off()
+qqScaled = qqplot(scaledTOMSamples[[2]], scaledTOMSamples[[4]], plot.it = FALSE)
+points(qqScaled$x, qqScaled$y, col = "red", cex = 0.6, pch = 20)
+abline(a=0, b=1, col = "blue")
+legend("topleft", legend = c("Unscaled TOM", "Scaled TOM"), pch = 20, col = c("black", "red"))
+dev.off()
 
 # calculate the consensus Topological Overlap by taking the component-wise (“parallel”) 
 # minimum of the TOMs in individual sets
@@ -223,7 +207,7 @@ consMEs = merge$newMEs
 # unmerged and the merged module colors
 exportFile <- paste("ConsensusDendrogram_mergedModules", minModuleSize, sep="_")
 exportFile <- paste(exportFile, "png", sep=".")
-png(file = exportFile, wi = 9, he = 6)
+png(file = exportFile, wi = 9, he = 6, units="in", res=150)
 sizeGrWindow(9,6)
 plotDendroAndColors(consTree, cbind(unmergedColors, moduleColors),
                     c("Unmerged", "Merged"),
