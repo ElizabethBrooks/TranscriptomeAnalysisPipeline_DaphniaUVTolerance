@@ -11,7 +11,7 @@
 #Load module for R
 #module load bio
 
-#Check for input arguments of folder names
+# check for input arguments
 if [ $# -eq 0 ]; then
    	echo "ERROR: No argument(s) supplied... exiting"
    	exit 1
@@ -36,7 +36,7 @@ fi
 # retrieve current directory
 curDir=$(pwd)
 
-#Retrieve experimental design data path
+# retrieve experimental design data path
 cd $(dirname "../InputData/expDesign_Olympics"$analysisType".csv")
 designPath=$(pwd)
 designPath=$designPath"/expDesign_Olympics"$analysisType".csv"

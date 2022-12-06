@@ -14,26 +14,26 @@ library("edgeR")
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
-#Test if there is one input argument
-if (length(args)!=2) {
-  stop("Two file names must be supplied.n", call.=FALSE)
-}
+
+#Set working directory
+workingDir = args[1];
+setwd(workingDir)
 
 #Import gene count data
-inputTable <- read.csv(file=args[1], row.names="gene")
+inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
 
 #Trim the data table
 countsTable <- head(inputTable, - 5)
 
 #Import grouping factor
-targets <- read.csv(file=args[2], row.names="sample")
+targets <- read.csv(file=args[5], row.names="sample")
 
 #Setup a design matrix
-group <- factor(paste(targets$treatment,targets$genotype,sep="."))
+group <- factor(paste(targets$treatment,targets$tolerance,sep="."))
 #cbind(targets,Group=group)
 #Create DGE list object
 list <- DGEList(counts=countsTable,group=group)
-colnames(list) <- targets$sample
+colnames(list) <- rownames(targets)
 
 #Retain genes only if it is expressed at a minimum level
 keep <- filterByExpr(list)
@@ -44,6 +44,6 @@ list <- list[keep, , keep.lib.sizes=FALSE]
 # between libraries
 list <- calcNormFactors(list)
 #list$samples
-#Write normalized counts to file
-normList <- cpm(list, normalized.lib.sizes=TRUE)
-write.table(normList, file="normalizedCounts.csv", sep=",", row.names=TRUE)
+#Write log transformed normalized counts to file
+normList <- cpm(list, normalized.lib.sizes=TRUE, log=TRUE)
+write.table(normList, file="normalizedLogCounts.csv", sep=",", row.names=TRUE, quote=FALSE)

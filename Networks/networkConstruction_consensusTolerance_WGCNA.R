@@ -222,7 +222,7 @@ consMEs = merge$newMEs
 # unmerged and the merged module colors
 exportFile <- paste("ConsensusDendrogram_mergedModules", minModuleSize, sep="_")
 exportFile <- paste(exportFile, "png", sep=".")
-png(file = exportFile, wi = 9, he = 6)
+png(file = exportFile, wi = 9, he = 6, units="in", res=150)
 sizeGrWindow(9,6)
 plotDendroAndColors(consTree, cbind(unmergedColors, moduleColors),
                     c("Unmerged", "Merged"),
