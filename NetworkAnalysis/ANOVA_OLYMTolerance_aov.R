@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
-# usage: Rscript ANOVA_OLYM_tolerance_aov.r workingDir countsFile factorGroupingFile
-# usage Ex: Rscript ANOVA_OLYM_tolerance_aov.r /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_OLYM_WGCNA/OLYM_60_eigengeneExpression_line.csv /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsTolerance.csv
+# usage: Rscript ANOVA_OLYMTolerance_aov.r workingDir countsFile factorGroupingFile
+# usage Ex: Rscript ANOVA_OLYMTolerance_aov.r /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_OLYM_WGCNA/OLYM_60_eigengeneExpression_line.csv /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsTolerance.csv
 # R script to perform statistical analysis of gene count tables using aov
 # note: https://www.r-bloggers.com/2022/05/two-way-anova-example-in-r-quick-guide/
 
@@ -41,8 +41,8 @@ expData$treatment <- factor(expData$treatment,
                              labels = c("VIS", "UV"))
 # convert tolerance to a factor
 expData$tolerance <- factor(expData$tolerance,
-                             levels = c("tol", "nTol"),
-                             labels = c("tol", "nTol"))
+                             levels = c("Tol", "NTol"),
+                             labels = c("Tol", "NTol"))
 
 # set row names
 rownames(expData) <- expData$Row.names

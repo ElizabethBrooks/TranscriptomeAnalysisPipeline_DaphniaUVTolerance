@@ -9,11 +9,24 @@ setwd(workingDir);
 #Load the libraries
 library(ggplot2)
 
-# Load the expression and trait data saved in the first part
-lnames1 = load(file = "PA42_v4.1_dataInputInter.RData");
+#Set working directory
+workingDir = args[1];
+setwd(workingDir)
 
-# Load network data saved in the second part.
-lnames2 = load(file = "PA42_v4.1_networkConstructionInter_auto_threshold8_signedNowick.RData");
+# retrieve subsetTag tag
+tag <- args[2]
+
+# set the minimum module size
+minModSize <- 30
+
+# Load the expression and trait data saved in the first part
+importFile <- paste(tag, "dataInputInter.RData", sep="-")
+lnames1 = load(file = importFile)
+
+# Load network data saved in the second part
+importFile <- paste(tag, minModSize, sep="_")
+importFile <- paste(importFile, "networkConstruction-stepByStep.RData", sep="-")
+lnames2 = load(file = importFile)
 
 #Import DEGs
 #geneCountsInter <- read.csv(file=args[1])

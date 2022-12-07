@@ -2,7 +2,7 @@
 #Script to run Rscripts that perform WGCNA analysis of OLYM data
 #Usage: bash WGCNA_driver_$analysisType.sh
 #Usage ex: bash WGCNA_driver.sh Tolerance
-#Usage ex: bash WGCNA_driver.sh $analysisTypes
+#Usage ex: bash WGCNA_driver.sh Genotypes
 
 # retrieve analysis type
 analysisType=$1
@@ -37,10 +37,12 @@ expDesign=$designPath"/expDesign_WGCNA_Olympics.csv"
 # move back to scripts directory
 cd $currDir
 
-# name output directory
-outDir=$(grep "WGCNA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/WGCNA://g")
+# name output directories
+outPath=$(grep "WGCNA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/WGCNA://g")
+outDir=$outPath"/"$analysisType
 
-# create output directory
+# create output directories
+mkdir $outPath
 mkdir $outDir
 
 # WGCNA data input

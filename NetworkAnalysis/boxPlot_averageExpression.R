@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 #if (!requireNamespace("BiocManager", quietly=TRUE))
 #   install.packages("BiocManager")
 #BiocManager::install('_______')
@@ -6,30 +8,36 @@
 library(edgeR)
 library(ggplot2)
 
+#Set working directory
+workingDir = args[1];
+setwd(workingDir)
+
+# set inputs directory
+inDir = args[2]
+
+# set counts directory
+countsDir = args[3]
+
+# retrieve subsetTag tag
+tag <- args[4]
+
+# set the minimum module size
+minModSize <- 30
+
 # Load the expression and trait data saved in the first part
-lnames1 = load(file = "PA42_v4.1_dataInputTol.RData");
+importFile <- paste(inDir, tag, sep="/")
+importFile <- paste(importFile, "dataInputInter.RData", sep="-")
+lnames1 = load(file = importFile)
 
-# Load network data saved in the second part.
-lnames2 = load(file = "PA42_v4.1_networkConstructionTol_auto_threshold8_signed.RData");
+# Load network data saved in the second part
+importFile <- paste(inDir, tag, sep="/")
+importFile <- paste(importFile, minModSize, sep="_")
+importFile <- paste(importFile, "networkConstruction-stepByStep.RData", sep="-")
+lnames2 = load(file = importFile)
 
-#Import gene count data for the Olympics
-countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/geneCounts_cleaned_PA42_v4.1.csv", row.names="gene")[ ,1:24]
-#Import grouping factor
-targets <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/expDesign_Olympics.csv", row.names="sample")
-
-#Setup a design matrix
-group <- factor(paste(targets$treatment,targets$genotype,sep="."))
-#Create DGE list object
-list <- DGEList(counts=countsTable,group=group)
-colnames(list) <- rownames(targets)
-
-#Retain genes only if it is expressed at a minimum level
-keep <- filterByExpr(list)
-list <- list[keep, , keep.lib.sizes=FALSE]
-
-#Use TMM normalization to eliminate composition biases between libraries
-list <- calcNormFactors(list)
-normList <- cpm(list, normalized.lib.sizes=TRUE)
+# import normalized gene count data for the Olympics
+inFile <- paste(countsDir, "glmQLF_normalizedCounts_logTransformed.csv", sep="/")
+normList <- read.csv(file=inFile, row.names="gene")[ ,1:24]
 
 #Subset the treatment and control samples
 SETVIS <- normList[,grepl("VIS",colnames(normList))]

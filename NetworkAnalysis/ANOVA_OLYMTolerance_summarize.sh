@@ -1,22 +1,32 @@
 #!/bin/bash
 
-# usage: bash ANOVA_OLYM_tolerance_summarize.sh
+# usage: bash ANOVA_OLYMTolerance_summarize.sh analysisType set
+# usage ex: bash ANOVA_OLYMTolerance_summarize.sh Tolerance OLYM
 
-# set tag
-setTag="OLYM_60"
+# retrieve analysis type
+analysisType=$1
+
+#Create directory for output files
+inDir=$(grep "WGCNA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/WGCNA://g")
+inDir=$inDir"/"$analysisType
 
 # working directory
-workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA"
-workingDir=$workingDir"/"$setTag
+workingDir=$inDir"/ANOVA"
 
 # move to the working directory
 cd $workingDir
 
+# retrieve set
+set=$2
+
+# minimum module size
+minModSize=30
+
 # expression data
-expData="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/NetworkAnalysis/WGCN_tolerance_WGCNA/OLYM_60_eigengeneExpression.csv"
+expData=$inDir"/"$set"_"$minModSize"_eigengeneExpression.csv"
 
 # final summary files
-sumFileAov="OLYM_WGCNA_aov_summary_pValues.csv"
+sumFileAov="aov_summary_pValues.csv"
 
 # add headers
 echo "module,treatment,tolerance,interaction" > $sumFileAov
