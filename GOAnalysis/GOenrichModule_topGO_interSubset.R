@@ -12,14 +12,31 @@ library(ggplot2)
 library(Rgraphviz)
 #library(statmod)
 
-#Set working directory
-workingDir="/Users/bamflappy/PfrenderLab/WGCNA_PA42_v4.1"
-setwd(workingDir); 
+#The following setting is important, do not omit.
+options(stringsAsFactors = FALSE)
 
-# Load the expression and trait data saved in the first part
-#lnames1 = load(file = "PA42_v4.1_dataInputInter.RData");
-# Load network data saved in the second part.
-lnames2 = load(file = "PA42_v4.1_networkConstructionInter_auto_threshold8_signedNowick.RData");
+#Retrieve input file name of gene counts
+args = commandArgs(trailingOnly=TRUE)
+
+#Set working directory
+workingDir = args[1]
+setwd(workingDir);
+
+# set counts directory
+deDir = args[2]
+
+# retrieve subset tag tag
+set <- args[3]
+
+# set the minimum module size
+minModSize <- args[4]
+
+# set the full subset tag name
+tag <- paste(set, minModSize, sep="_")
+
+# Load network data saved in the second part
+importFile <- paste(tag, "networkConstruction-stepByStep.RData", sep="-")
+lnames2 = load(file = importFile)
 
 
 #Import gene count data for the Olympics
@@ -186,6 +203,6 @@ for(j in lowest:highest){
 
 
 #Write the resulting tables to files
-write.table(moduleBPResults, file="GOAnalysis/moduleTopGO_BPResults_interSubset_signedNowick.csv", sep=",", row.names=FALSE)
-write.table(moduleMFResults, file="GOAnalysis/moduleTopGO_MFResults_interSubset_signedNowick.csv", sep=",", row.names=FALSE)
-write.table(moduleCCResults, file="GOAnalysis/moduleTopGO_CCResults_interSubset_signedNowick.csv", sep=",", row.names=FALSE)
+write.table(moduleBPResults, file="GOAnalysis/moduleTopGO_BPResults_interSubset.csv", sep=",", row.names=FALSE)
+write.table(moduleMFResults, file="GOAnalysis/moduleTopGO_MFResults_interSubset.csv", sep=",", row.names=FALSE)
+write.table(moduleCCResults, file="GOAnalysis/moduleTopGO_CCResults_interSubset.csv", sep=",", row.names=FALSE)

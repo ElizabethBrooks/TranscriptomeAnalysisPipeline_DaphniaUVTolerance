@@ -37,15 +37,15 @@ lnames2 = load(file = importFile)
 # interaction
 inFile <- paste(deDir, "glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep="/")
 geneCountsInter <- read.csv(file=inFile)
-SETInterIn <- geneCountsInter[,1]
+SETInterIn <- geneCountsInter[geneCountsInter$FDR<0.05,1]
 # treatment
 inFile <- paste(deDir, "glmQLF_2WayANOVA_UVvsVIS_topTags_LFC1.2.csv", sep="/")
 geneCountsTreat <- read.csv(file=inFile)
-SETTreatIn <- geneCountsTreat[,1]
+SETTreatIn <- geneCountsTreat[geneCountsTreat$FDR<0.05,1]
 # tolerance
 inFile <- paste(deDir, "glmQLF_2WayANOVA_TvsN_topTags_LFC1.2.csv", sep="/")
 geneCountsTol <- read.csv(file=inFile)
-SETTolIn <- geneCountsTol[,1]
+SETTolIn <- geneCountsTol[geneCountsTol$FDR<0.05,1]
 
 #Get module color list
 colorList = unique(moduleColors)
@@ -108,7 +108,7 @@ for(var in 1:length(colorList))
 names(colorSets) = c("Color","Percent","Effect")
 
 #Create stacked bar plot
-exportFile <- paste(tag, "stackedBarPlot_moduleEffectSubsets.jpg", sep="_")
+exportFile <- paste(tag, "stackedBarPlot_moduleEffectSubsets_sigDE.jpg", sep="_")
 jpeg(file = exportFile, width = 844, height = 596)
 colorPlot <- ggplot(colorSets, aes(fill=Effect, y=Percent, x=Color)) + 
   geom_bar(position="stack", stat="identity")
