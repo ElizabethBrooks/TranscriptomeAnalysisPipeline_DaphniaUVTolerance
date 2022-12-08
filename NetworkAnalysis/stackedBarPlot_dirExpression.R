@@ -14,18 +14,20 @@ workingDir = args[1];
 setwd(workingDir)
 
 # retrieve subsetTag tag
-tag <- args[2]
+set <- args[2]
 
 # set the minimum module size
-minModSize <- 30
+minModSize <- args[3]
+
+# set the full subset tag name
+tag <- paste(set, minModSize, sep="_")
 
 # Load the expression and trait data saved in the first part
-importFile <- paste(tag, "dataInputInter.RData", sep="-")
+importFile <- paste(set, "dataInput.RData", sep="-")
 lnames1 = load(file = importFile)
 
 # Load network data saved in the second part
-importFile <- paste(tag, minModSize, sep="_")
-importFile <- paste(importFile, "networkConstruction-stepByStep.RData", sep="-")
+importFile <- paste(tag, "networkConstruction-stepByStep.RData", sep="-")
 lnames2 = load(file = importFile)
 
 #Import DEGs
@@ -70,7 +72,8 @@ for(var in 1:length(colorList))
 names(colorSets) = c("Percent","Color","Direction")
 
 #Create stacked bar plot
-jpeg("stackedBarPlotInter_moduleDirExpression_signedNowick.jpg", width = 844, height = 596)
+exportFile <- paste(tag, "stackedBarPlot_interaction_moduleDirExpression_signedNowick.jpg", sep="_")
+jpeg(file = exportFile, width = 844, height = 596)
 colorPlot <- ggplot(colorSets, aes(fill=Direction, y=Percent, x=Color)) + 
   geom_bar(position="stack", stat="identity")
 colorPlot + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))

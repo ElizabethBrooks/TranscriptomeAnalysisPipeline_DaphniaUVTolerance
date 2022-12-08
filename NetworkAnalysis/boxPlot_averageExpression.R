@@ -12,31 +12,28 @@ library(ggplot2)
 workingDir = args[1];
 setwd(workingDir)
 
-# set inputs directory
-inDir = args[2]
-
 # set counts directory
-countsDir = args[3]
+deDir = args[2]
 
 # retrieve subsetTag tag
-tag <- args[4]
+set <- args[3]
 
 # set the minimum module size
-minModSize <- 30
+minModSize <- args[4]
+
+# set the full subset tag name
+tag <- paste(set, minModSize, sep="_")
 
 # Load the expression and trait data saved in the first part
-importFile <- paste(inDir, tag, sep="/")
-importFile <- paste(importFile, "dataInputInter.RData", sep="-")
+importFile <- paste(set, "dataInput.RData", sep="-")
 lnames1 = load(file = importFile)
 
 # Load network data saved in the second part
-importFile <- paste(inDir, tag, sep="/")
-importFile <- paste(importFile, minModSize, sep="_")
-importFile <- paste(importFile, "networkConstruction-stepByStep.RData", sep="-")
+importFile <- paste(tag, "networkConstruction-stepByStep.RData", sep="-")
 lnames2 = load(file = importFile)
 
 # import normalized gene count data for the Olympics
-inFile <- paste(countsDir, "glmQLF_normalizedCounts_logTransformed.csv", sep="/")
+inFile <- paste(deDir, "glmQLF_normalizedCounts_logTransformed.csv", sep="/")
 normList <- read.csv(file=inFile, row.names="gene")[ ,1:24]
 
 #Subset the treatment and control samples
