@@ -203,6 +203,6 @@ for(j in lowest:highest){
 
 
 #Write the resulting tables to files
-write.table(moduleBPResults, file="GOAnalysis/moduleTopGO_BPResults_interSubset.csv", sep=",", row.names=FALSE)
-write.table(moduleMFResults, file="GOAnalysis/moduleTopGO_MFResults_interSubset.csv", sep=",", row.names=FALSE)
-write.table(moduleCCResults, file="GOAnalysis/moduleTopGO_CCResults_interSubset.csv", sep=",", row.names=FALSE)
+write.table(moduleBPResults, file="GOAnalysis/moduleTopGO_BPResults.csv", sep=",", row.names=FALSE)
+write.table(moduleMFResults, file="GOAnalysis/moduleTopGO_MFResults.csv", sep=",", row.names=FALSE)
+write.table(moduleCCResults, file="GOAnalysis/moduleTopGO_CCResults.csv", sep=",", row.names=FALSE)
