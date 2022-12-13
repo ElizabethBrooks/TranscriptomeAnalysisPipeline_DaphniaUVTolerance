@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N annotation_interproscan_jobOutput
-#$ -pe smp 24
+#$ -pe smp 16
 
 # script to perform annotation of protein sequences using interproscan
 
@@ -25,9 +25,6 @@ outputsPath=$outputsPath"/annotated_interproscan"
 # make outputs directory
 mkdir $outputsPath
 
-# set annotation outputs path
-outputsPath=$outputsPath"/annotations"
-
 # retrieve software path
 softwarePath=$(grep "interproscan:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/interproscan://g")
 
@@ -36,4 +33,4 @@ cd $softwarePath
 
 # run interpro scan on protein sequences
 # including GO terms and pathways
-./interproscan.sh -cpu 24 -goterms -pa -verbose -vtsv -i $inputsPath -b $outputsPath
+./interproscan.sh -cpu 16 -goterms -pa -verbose -vtsv -i $inputsPath -b $outputsPath
