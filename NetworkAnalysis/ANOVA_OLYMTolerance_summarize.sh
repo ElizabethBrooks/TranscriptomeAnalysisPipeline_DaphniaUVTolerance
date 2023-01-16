@@ -6,21 +6,21 @@
 # retrieve analysis type
 analysisType=$1
 
-#Create directory for output files
-inDir=$(grep "WGCNA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/WGCNA://g")
-inDir=$inDir"/"$analysisType
-
-# working directory
-workingDir=$inDir"/ANOVA"
-
-# move to the working directory
-cd $workingDir
-
 # retrieve set
 set=$2
 
 # minimum module size
 minModSize=30
+
+#Create directory for output files
+inDir=$(grep "WGCNA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/WGCNA://g")
+inDir=$inDir"/"$analysisType
+
+# working directory
+workingDir=$inDir"/ANOVA_"$set"_"$minModSize
+
+# move to the working directory
+cd $workingDir
 
 # expression data
 expData=$inDir"/"$set"_"$minModSize"_eigengeneExpression.csv"

@@ -8,12 +8,18 @@
 # retrieve analysis type
 analysisType=$1
 
+# retrieve set
+set=$2
+
+# minimum module size
+minModSize=30
+
 #Create directory for output files
 inDir=$(grep "WGCNA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/WGCNA://g")
 inDir=$inDir"/"$analysisType
 
 # working directory
-workingDir=$inDir"/ANOVA"
+workingDir=$inDir"/ANOVA_"$set"_"$minModSize
 
 # create the working directory
 mkdir $workingDir
@@ -28,12 +34,6 @@ designFile=$designPath"/expDesign_Olympics"$analysisType".csv"
 
 # move back to scripts directory
 cd $currDir
-
-# retrieve set
-set=$2
-
-# minimum module size
-minModSize=30
 
 # expression data
 expData=$inDir"/"$set"_"$minModSize"_eigengeneExpression.csv"
