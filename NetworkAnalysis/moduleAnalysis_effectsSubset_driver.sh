@@ -27,3 +27,11 @@ minModSize=30
 
 # determine the percent of each module that is associated with each ANOVA effect
 Rscript stackedBarPlot_effectSubsets.R $inDir $deDir $set $minModSize
+
+# determine the direction of expression for each module and effect set
+# interaction
+Rscript stackedBarPlot_dirExpression.R $inDir $deDir $set $minModSize "interaction"
+# treatment
+Rscript stackedBarPlot_dirExpression.R $inDir $deDir $set $minModSize "treatment"
+# tolerance
+Rscript stackedBarPlot_dirExpression.R $inDir $deDir $set $minModSize "tolerance"

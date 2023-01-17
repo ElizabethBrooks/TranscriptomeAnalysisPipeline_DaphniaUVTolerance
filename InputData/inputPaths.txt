@@ -7,8 +7,9 @@ transcriptSequences: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/daphnia_pu
 codingSequences: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/daphnia_pulex/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/cds_from_genomic.fna
 proteinSequences: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/daphnia_pulex/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/protein.faa
 geneTransMap: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/daphnia_pulex/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/KAP4.gene_trans_map
+databases: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases
+geneCounts: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GeneCountsAnalyzed/geneCounts_merged_genome_counted_htseq_run1.txt
+functionalAnnotations: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/KAP4_NCBI_functional_annotation.txt
 geneAnnotations: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/GeneAnnotations
 annotations: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/AnnotationAnalysis
 geneSets: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GSEA
-databases: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases
-geneCounts: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GeneCountsAnalyzed/geneCounts_merged_genome_counted_htseq_run1.txt

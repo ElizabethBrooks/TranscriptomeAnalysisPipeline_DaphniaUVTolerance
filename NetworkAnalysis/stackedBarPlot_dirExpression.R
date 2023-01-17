@@ -1,23 +1,33 @@
+#!/usr/bin/env Rscript
+
 #if (!requireNamespace("BiocManager", quietly=TRUE))
 #   install.packages("BiocManager")
 #BiocManager::install('_______')
 
-#Set working directory
-workingDir="~/PfrenderLab/WGCNA_PA42_v4.1"
-setwd(workingDir); 
-
 #Load the libraries
 library(ggplot2)
+
+#The following setting is important, do not omit.
+options(stringsAsFactors = FALSE)
+
+#Retrieve input file name of gene counts
+args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
 workingDir = args[1];
 setwd(workingDir)
 
-# retrieve subsetTag tag
-set <- args[2]
+# set counts directory
+deDir = args[2]
+
+# retrieve subset tag tag
+set <- args[3]
 
 # set the minimum module size
-minModSize <- args[3]
+minModSize <- args[4]
+
+# retrieve DE set tag
+deSetTag <- args[5]
 
 # set the full subset tag name
 tag <- paste(set, minModSize, sep="_")
@@ -31,11 +41,21 @@ importFile <- paste(tag, "networkConstruction-stepByStep.RData", sep="-")
 lnames2 = load(file = importFile)
 
 #Import DEGs
-#geneCountsInter <- read.csv(file=args[1])
-geneCountsInter <- read.csv(file="~/PfrenderLab/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_interaction_topTags.csv")
-SETInterIn <- geneCountsInter[,1:2]
+#geneCountsInter <- read.csv(file="~/PfrenderLab/DEA_PA42_v4.1/glmQLFAnalysis_FDR0.10/glmQLF_2WayANOVA_interaction_topTags.csv")
+#SETInterIn <- geneCountsInter[,1:2]
 #Get sign of logFC
-SETInterIn$dirExpr <- sign(SETInterIn[,2])
+#SETInterIn$dirExpr <- sign(SETInterIn[,2])
+
+# import DE data for the Olympics
+# interaction
+inFile <- paste("glmQLF_2WayANOVA", deSetTag, sep="_")
+inFile <- paste(inFile, "topTags_LFC1.2.csv", sep="_")
+inFile <- paste(deDir, inFile, sep="/")
+geneCounts <- read.csv(file=inFile)
+#SETIn <- geneCounts[geneCounts$FDR<0.05,1:2]
+SETIn <- geneCounts[,1:2]
+# get sign of logFC
+SETIn$dirExpr <- sign(SETIn[,2])
 
 #Get module color list
 colorList = unique(moduleColors)
@@ -46,7 +66,7 @@ colorSets <- data.frame(matrix(ncol = 3, nrow = numRow))
 for(var in 1:length(colorList))
 {
   #Get table of logFC signs
-  subSet <- SETInterIn[which(SETInterIn[,1] %in% names(datExprInter)[moduleColors==colorList[var]]),]
+  subSet <- SETIn[which(SETIn[,1] %in% names(datExpr)[moduleColors==colorList[var]]),]
   dirTable <- table(subSet[,3])
   #Count number of down regulated genes
   rowNum = var
@@ -72,7 +92,9 @@ for(var in 1:length(colorList))
 names(colorSets) = c("Percent","Color","Direction")
 
 #Create stacked bar plot
-exportFile <- paste(tag, "stackedBarPlot_interaction_moduleDirExpression_signedNowick.jpg", sep="_")
+exportFile <- paste("stackedBarPlot", deSetTag, sep="_")
+exportFile <- paste(exportFile, "moduleDirExpr.jpg", sep="_")
+exportFile <- paste(tag, exportFile, sep="_")
 jpeg(file = exportFile, width = 844, height = 596)
 colorPlot <- ggplot(colorSets, aes(fill=Direction, y=Percent, x=Color)) + 
   geom_bar(position="stack", stat="identity")

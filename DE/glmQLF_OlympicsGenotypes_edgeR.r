@@ -116,15 +116,15 @@ dev.off()
 
 #Test whether the average across all treatment groups is equal to the average across
 #all VIS groups, to examine the overall effect of treatment
-con.UVvsVIS <- makeContrasts(UVvsVIS = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
+con.treatment <- makeContrasts(treatment = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
   - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4,
   levels=design)
 
 #Look at genes expressed across all treatment groups using QL F-test
-#test.anov.UVVIS <- glmQLFTest(fit, contrast=con.UVvsVIS)
+#test.anov.UVVIS <- glmQLFTest(fit, contrast=con.treatment)
 #summary(decideTests(test.anov.UVVIS))
 #Write plot to file
-#jpeg("glmQLF_2WayANOVA_UVvsVIS_plotMD.jpg")
+#jpeg("glmQLF_2WayANOVA_treatment_plotMD.jpg")
 #plotMD(test.anov.UVVIS)
 #abline(h=c(-1, 1), col="blue")
 #dev.off()
@@ -132,13 +132,13 @@ con.UVvsVIS <- makeContrasts(UVvsVIS = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
 #tagsTblANOVA <- topTags(test.anov.UVVIS, n=nrow(test.anov.UVVIS$table), adjust.method="fdr")$table
 #tagsTblANOVA.keep <- tagsTblANOVA$FDR <= fdrCut
 #tagsTblANOVA.out <- tagsTblANOVA[tagsTblANOVA.keep,]
-#write.table(tagsTblANOVA, file="glmQLF_2WayANOVA_UVvsVIS_topTags.csv", sep=",", row.names=TRUE, quote=FALSE)
+#write.table(tagsTblANOVA, file="glmQLF_2WayANOVA_treatment_topTags.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 #Look at genes with significant expression across all treatment groups
-treat.anov.UVVIS <- glmTreat(fit, contrast=con.UVvsVIS, lfc=log2(1.2))
+treat.anov.UVVIS <- glmTreat(fit, contrast=con.treatment, lfc=log2(1.2))
 summary(decideTests(treat.anov.UVVIS))
 #Write plot to file
-jpeg("glmQLF_2WayANOVA_UVvsVIS_plotMD_LFC1.2.jpg")
+jpeg("glmQLF_2WayANOVA_treatment_plotMD_LFC1.2.jpg")
 plotMD(treat.anov.UVVIS)
 abline(h=c(-1, 1), col="blue")
 dev.off()
@@ -146,7 +146,7 @@ dev.off()
 tagsTblANOVA.filtered <- topTags(treat.anov.UVVIS, n=nrow(treat.anov.UVVIS$table), adjust.method="fdr")$table
 #tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR <= fdrCut
 #tagsTblANOVA.filtered.out <- tagsTblANOVA.filtered[tagsTblANOVA.filtered.keep,]
-write.table(tagsTblANOVA.filtered, file="glmQLF_2WayANOVA_UVvsVIS_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(tagsTblANOVA.filtered, file="glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 
 #Test whether the average across all tolerant groups is equal to the average across
