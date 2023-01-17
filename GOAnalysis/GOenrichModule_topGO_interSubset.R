@@ -18,114 +18,97 @@ options(stringsAsFactors = FALSE)
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 
-#Set working directory
-workingDir = args[1]
+# retrieve working directory
+workingDir <- args[1]
+#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/GOAnalysis"
+
+# set working directory
 setwd(workingDir);
 
 # set counts directory
-deDir = args[2]
+deDir <- args[2]
+#deDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance"
 
-# retrieve subset tag tag
+# retrieve subset tag
 set <- args[3]
+#set <- "OLYM"
 
 # set the minimum module size
 minModSize <- args[4]
+#minModSize <- "30"
+
+# retrieve DE set tag
+deSetTag <- args[5]
+#deSetTag <- "interaction"
+
+# retrieve WGCNA directory
+inDir <- args[6]
+#inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance"
+
+# retrieve gene to GO map
+GOmaps <- readMappings(file = system.file(args[7], package = "topGO"))
+#GOmaps <- readMappings(file = system.file("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/KAP4_NCBI_functional_annotation.txt", package = "topGO"))
 
 # set the full subset tag name
 tag <- paste(set, minModSize, sep="_")
 
 # Load network data saved in the second part
 importFile <- paste(tag, "networkConstruction-stepByStep.RData", sep="-")
+importFile <- paste(inDir, importFile, sep="/")
 lnames2 = load(file = importFile)
 
 
-#Import gene count data for the Olympics
-countsTable <- read.csv(file="/Users/bamflappy/PfrenderLab/PA42_v4.1/geneCounts_cleaned_PA42_v4.1.csv", row.names="gene")[ ,1:24]
-#Import grouping factor
-targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_Olympics.csv", row.names="sample")
-
-
-#Setup a design matrix
-group <- factor(paste(targets$treatment,targets$genotype,sep="."))
-#Create DGE list object
-list <- DGEList(counts=countsTable,group=group)
-colnames(list) <- rownames(targets)
-
-#Retain genes only if it is expressed at a minimum level
-keep <- filterByExpr(list)
-list <- list[keep, , keep.lib.sizes=FALSE]
-
-#Use TMM normalization to eliminate composition biases between libraries
-list <- calcNormFactors(list)
-normList <- cpm(list, normalized.lib.sizes=TRUE)
-
-#The experimental design is specified with a one-way layout, 
-# where one coefficient is assigned to each group
-design <- model.matrix(~ 0 + group)
-colnames(design) <- levels(group)
-
-#Estimate the NB dispersion
-list <- estimateDisp(list, design, robust=TRUE)
-#Estimate and plot the QL dispersions
-fit <- glmQLFit(list, design, robust=TRUE)
-
-#Test whether there is an interaction effect
-con.Inter <- makeContrasts(Inter = ((UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
-                                    - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4)
-                           - ((UV.Y05 + VIS.Y05 + UV.E05 + VIS.E05)/4
-                              - (UV.Y023 + VIS.Y023 + UV.R2 + VIS.R2)/4),
-                           levels=design)
-#Look at genes expressed across all treatment groups using QL F-test
-test.anov.Inter <- glmQLFTest(fit, contrast=con.Inter)
-summary(decideTests(test.anov.Inter))
-
+# import DE data for the Olympics
+# interaction
+inFile <- paste("glmQLF_2WayANOVA", deSetTag, sep="_")
+inFile <- paste(inFile, "topTags_LFC1.2.csv", sep="_")
+inFile <- paste(deDir, inFile, sep="/")
+geneCounts <- read.csv(file=inFile)
+#SETIn <- geneCounts[geneCounts$FDR<0.05,1:2]
+DGE_results_table$geneID <- geneCounts[,1]
+DGE_results_table$FDR <- geneCounts[,6]
 
 #GO enrichment
-#Read in custom GO annotations
-GOmaps <- readMappings(file="/Users/bamflappy/PfrenderLab/PA42_v4.1/gene2GO_PA42_v4.1_transcripts.map",  sep="\t",  IDsep=",")
-
-#Match gene to its geneID, module color, and module number
-moduleList <- data.frame(geneID=names(moduleLabels), color=moduleColors, number=unname(moduleLabels), stringsAsFactors=FALSE)
-DGE_results_table <- test.anov.Inter$table
-DGE_results_table$geneID <- rownames(DGE_results_table)
+#Match gene to its geneID, module color, and module FDR
+moduleList <- data.frame(geneID=names(moduleLabels), color=moduleColors, FDR=unname(moduleLabels), stringsAsFactors=FALSE)
 DGE_results_table <- merge(DGE_results_table, moduleList, by = c("geneID"), all = TRUE)
 
-#Replace NAs with an unused module number
+#Replace NAs with an unused module FDR
 highest <- max(unique(unname(moduleLabels)))+1
 DGE_results_table[is.na(DGE_results_table)] <- highest
 
 #Create named list of all genes (gene universe) and p-values. The gene universe is set to be
 #the list of all genes contained in the gene2GO list of annotated genes.
-list_genes <- as.numeric(DGE_results_table$number)
+list_genes <- as.numeric(DGE_results_table$FDR)
 list_genes <- setNames(list_genes, DGE_results_table$geneID)
 list_genes_filtered <- list_genes[names(list_genes) %in% names(GOmaps)]
 
-#Create data frame to hold the module number, color, total genes, significant genes, 
+#Create data frame to hold the module FDR, color, total genes, significant genes, 
 # and top significant BP, MF, and CC GO terms
 numMods <- length(unique(unname(moduleLabels)))+1
 moduleBPResults = data.frame(matrix(ncol = 10, nrow = numMods))
-colnames(moduleBPResults) <- c("number","color","total","sig","topID","topTerm","annotated","topSig","topExpected","topWeight")
+colnames(moduleBPResults) <- c("FDR","color","total","sig","topID","topTerm","annotated","topSig","topExpected","topWeight")
 moduleMFResults = data.frame(matrix(ncol = 10, nrow = numMods))
-colnames(moduleMFResults) <- c("number","color","total","sig","topID","topTerm","annotated","topSig","topExpected","topWeight")
+colnames(moduleMFResults) <- c("FDR","color","total","sig","topID","topTerm","annotated","topSig","topExpected","topWeight")
 moduleCCResults = data.frame(matrix(ncol = 10, nrow = numMods))
-colnames(moduleCCResults) <- c("number","color","total","sig","topID","topTerm","annotated","topSig","topExpected","topWeight")
+colnames(moduleCCResults) <- c("FDR","color","total","sig","topID","topTerm","annotated","topSig","topExpected","topWeight")
+
+#Create function to return list of interesting DE genes (0 == not significant, 1 == significant)
+get_interesting_DE_genes <- function(geneUniverse){
+  interesting_DE_genes <- rep(0, length(geneUniverse))
+  for(i in 1:length(geneUniverse)){
+    if(geneUniverse[i] == j){
+      interesting_DE_genes[i] = 1
+    }
+  }
+  interesting_DE_genes <- setNames(interesting_DE_genes, names(geneUniverse))
+  return(interesting_DE_genes)
+}
 
 #Loop through each module
 lowest <- min(unique(unname(moduleLabels)))
 var <- 0
 for(j in lowest:highest){
-  #Create function to return list of interesting DE genes (0 == not significant, 1 == significant)
-  get_interesting_DE_genes <- function(geneUniverse){
-    interesting_DE_genes <- rep(0, length(geneUniverse))
-    for(i in 1:length(geneUniverse)){
-      if(geneUniverse[i] == j){
-        interesting_DE_genes[i] = 1
-      }
-    }
-    interesting_DE_genes <- setNames(interesting_DE_genes, names(geneUniverse))
-    return(interesting_DE_genes)
-  }
-  
   #Create topGOdata objects for enrichment analysis (1 for each ontology)
   BP_GO_data <- new('topGOdata', ontology = 'BP', allGenes = list_genes_filtered, 
                     geneSel = get_interesting_DE_genes, nodeSize = 10, annot = annFUN.gene2GO, 
@@ -155,13 +138,13 @@ for(j in lowest:highest){
   CC_GO_results_table <- GenTable(CC_GO_data, weightFisher = CC_GO_results, orderBy = 'weightFisher', 
                                   topNodes = length(list_CC_GO_terms))
   
-  #Set row number
+  #Set row FDR
   var <- var+1
   
   #Summary BP functions
-  moduleBPResults$number[var] <- j
+  moduleBPResults$FDR[var] <- j
   if(j < highest){
-    moduleBPResults$color[var] <- head(moduleList[moduleList$number %in% j,2],1)
+    moduleBPResults$color[var] <- head(moduleList[moduleList$FDR %in% j,2],1)
   }
   moduleBPResults$total[var] <- numGenes(BP_GO_data)
   moduleBPResults$sig[var] <- length(sigGenes(BP_GO_data))
@@ -173,9 +156,9 @@ for(j in lowest:highest){
   moduleBPResults$topWeight[var] <- BP_GO_results_table[1,6]
   
   #Summary MF functions
-  moduleMFResults$number[var] <- j
+  moduleMFResults$FDR[var] <- j
   if(j < highest){
-    moduleMFResults$color[var] <- head(moduleList[moduleList$number %in% j,2],1)
+    moduleMFResults$color[var] <- head(moduleList[moduleList$FDR %in% j,2],1)
   }
   moduleMFResults$total[var] <- numGenes(MF_GO_data)
   moduleMFResults$sig[var] <- length(sigGenes(MF_GO_data))
@@ -187,9 +170,9 @@ for(j in lowest:highest){
   moduleMFResults$topWeight[var] <- MF_GO_results_table[1,6]
   
   #Summary CC functions
-  moduleCCResults$number[var] <- j
+  moduleCCResults$FDR[var] <- j
   if(j < highest){
-    moduleCCResults$color[var] <- head(moduleList[moduleList$number %in% j,2],1)
+    moduleCCResults$color[var] <- head(moduleList[moduleList$FDR %in% j,2],1)
   }
   moduleCCResults$total[var] <- numGenes(CC_GO_data)
   moduleCCResults$sig[var] <- length(sigGenes(CC_GO_data))
@@ -203,6 +186,8 @@ for(j in lowest:highest){
 
 
 #Write the resulting tables to files
-write.table(moduleBPResults, file="GOAnalysis/moduleTopGO_BPResults.csv", sep=",", row.names=FALSE)
-write.table(moduleMFResults, file="GOAnalysis/moduleTopGO_MFResults.csv", sep=",", row.names=FALSE)
-write.table(moduleCCResults, file="GOAnalysis/moduleTopGO_CCResults.csv", sep=",", row.names=FALSE)
+exportFile <- paste(tag, deSetTag, sep="_")
+exportFile <- paste(exportFile, "moduleTopGO_BPResults.csv", sep="_")
+write.table(moduleBPResults, file=exportFile, sep=",", row.names=FALSE)
+write.table(moduleMFResults, file=exportFile, sep=",", row.names=FALSE)
+write.table(moduleCCResults, file=exportFile, sep=",", row.names=FALSE)

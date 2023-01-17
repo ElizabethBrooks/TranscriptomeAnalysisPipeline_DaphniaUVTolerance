@@ -13,4 +13,7 @@ outDir=$(dirname $annotations)
 cd $outDir
 
 # retrieve gene and GO annotations
-cat $annotations | cut -f 1,9 | grep "ontology_id" | sed 's/ontology_id\ //g' > "geneToGO_map.txt"
+cat $annotations | cut -f 1,9 | grep "ontology_id" | sed 's/ontology_id\ //g' | sed 's/\"//g' > "geneToGO_map.txt"
+
+# add gene- tag
+cat "geneToGO_map.txt" | sed 's/^/gene-/g' | sed 's/\"//g' > "geneToGO_tagged_map.txt"
