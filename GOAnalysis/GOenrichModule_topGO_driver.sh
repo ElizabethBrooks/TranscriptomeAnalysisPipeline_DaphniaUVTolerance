@@ -14,10 +14,6 @@ analysisType=$1
 inDir=$(grep "WGCNA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/WGCNA://g")
 inDir=$inDir"/"$analysisType
 
-# set DE analysis directory
-deDir=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
-deDir=$deDir"/"$analysisType
-
 # retrieve functional annotations
 GOmaps=$(grep "functionalAnnotations:" ../InputData/inputPaths.txt | tr -d " " | sed "s/functionalAnnotations://g")
 GOmaps=$(dirname $GOmaps)
@@ -30,15 +26,15 @@ set=$2
 minModSize=30
 
 # name outputs directory
-outDir=$inDir"/GOAnalysis"
+outDir=$inDir"/GOAnalysis_"$set"_"$minModSize
 
 # create outputs directory
 mkdir $outDir
 
 # determine the direction of expression for each module and effect set
 # interaction
-Rscript GOenrichModule_topGO_interSubset.R $outDir $deDir $set $minModSize "interaction" $inDir $GOmaps
+Rscript GOenrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps
 # treatment
-Rscript GOenrichModule_topGO_interSubset.R $outDir $deDir $set $minModSize "treatment" $inDir $GOmaps
+Rscript GOenrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps
 # tolerance
-Rscript GOenrichModule_topGO_interSubset.R $outDir $deDir $set $minModSize "tolerance" $inDir $GOmaps
+Rscript GOenrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps

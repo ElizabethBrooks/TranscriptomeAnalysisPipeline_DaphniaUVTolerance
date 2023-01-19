@@ -28,13 +28,13 @@ setTag <- "tolerance"
 importFile <- paste("Consensus-dataInput", setTag, sep="-")
 importFile <- paste(importFile, "RData", sep=".")
 lnames = load(file = importFile)
-lnames
+#lnames
 
 # Also load results of network analysis
 importFile <- paste("Consensus-NetworkConstruction-man", minModuleSize, sep="-")
 importFile <- paste(importFile, "RData", sep=".")
 lnames = load(file = importFile);
-lnames
+#lnames
 exprSize = checkSets(multiExpr)
 nSets = exprSize$nSets
 
