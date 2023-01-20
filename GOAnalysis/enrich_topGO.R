@@ -3,66 +3,55 @@
 #BiocManager::install('_______')
 
 #Load the libraries
-library(filesstrings)
+#library(filesstrings)
 library(topGO)
 library(edgeR)
-library(GO.db)
-library(reshape2)
+#library(GO.db)
+#library(reshape2)
 library(ggplot2)
 library(Rgraphviz)
-library(statmod)
+#library(statmod)
 
-#Import gene count data for the Olympics
-countsTable <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/geneCounts_cleaned_PA42_v4.1.csv", row.names="gene")[ ,1:24]
-#Import grouping factor
-targets <- read.csv(file="/home/mae/Documents/RNASeq_Workshop_ND/expDesign_Olympics.csv", row.names="sample")
+#Turn off scientific notation
+options(scipen = 999)
 
+#The following setting is important, do not omit.
+options(stringsAsFactors = FALSE)
 
-#Setup a design matrix
-group <- factor(paste(targets$treatment,targets$genotype,sep="."))
-#Create DGE list object
-list <- DGEList(counts=countsTable,group=group)
-colnames(list) <- rownames(targets)
+#Retrieve input file name of gene counts
+args = commandArgs(trailingOnly=TRUE)
 
-#Retain genes only if it is expressed at a minimum level
-keep <- filterByExpr(list)
-list <- list[keep, , keep.lib.sizes=FALSE]
+# retrieve working directory
+workingDir <- args[1]
+#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/GOAnalysis"
 
-#Use TMM normalization to eliminate composition biases between libraries
-list <- calcNormFactors(list)
-#Write normalized counts to file
-normList <- cpm(list, normalized.lib.sizes=TRUE)
+# set working directory
+setwd(workingDir);
 
-#The experimental design is specified with a one-way layout, 
-# where one coefficient is assigned to each group
-design <- model.matrix(~ 0 + group)
-colnames(design) <- levels(group)
+# retrieve set tag
+set <- args[2]
+#set <- "interaction"
 
-#Estimate the NB dispersion
-list <- estimateDisp(list, design, robust=TRUE)
-#Estimate and plot the QL dispersions
-fit <- glmQLFit(list, design, robust=TRUE)
+# retrieve inputs directory
+inDir <- args[3]
+#inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/"
 
-#Test whether there is an interaction effect
-con.Inter <- makeContrasts(Inter = ((UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
-                            - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4)
-                            - ((UV.Y05 + VIS.Y05 + UV.E05 + VIS.E05)/4
-                            - (UV.Y023 + VIS.Y023 + UV.R2 + VIS.R2)/4),
-                           levels=design)
-#Look at genes expressed across all UV groups using QL F-test
-test.anov.Inter <- glmQLFTest(fit, contrast=con.Inter)
-summary(decideTests(test.anov.Inter))
+# retrieve gene to GO map
+GOmaps <- readMappings(file = args[4])
+#GOmaps <- readMappings(file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/geneToGO_tagged_map.txt")
+
+# retrieve input DE results
+importFile <- paste("glmQLF_2WayANOVA", set, sep="_")
+importFile <- paste(importFile, "topTags_LFC1.2.csv", sep="_")
+importFile <- paste(inDir, importFile, sep="/")
+DGE_results_table <- read.csv(file = importFile)
 
 
 #GO enrichment
-#Read in custom GO annotations
-GOmaps <- readMappings(file="/home/mae/Documents/RNASeq_Workshop_ND/gene2GO_PA42_v4.1_transcripts.map",  sep="\t",  IDsep=",")
-
 #Create named list of all genes (gene universe) and p-values. The gene universe is set to be
 #the list of all genes contained in the gene2GO list of annotated genes.
-DGE_results_table <- test.anov.Inter$table
-list_genes <- as.numeric(DGE_results_table$PValue)
-list_genes <- setNames(list_genes, rownames(DGE_results_table))
+list_genes <- as.numeric(DGE_results_table$FDR)
+list_genes <- setNames(list_genes, DGE_results_table$gene)
 list_genes_filtered <- list_genes[names(list_genes) %in% names(GOmaps)]
 
 #Create function to return list of interesting DE genes (0 == not significant, 1 == significant)
@@ -113,7 +102,8 @@ pval_MF_GO <- score(MF_GO_results)
 pval_CC_GO <- score(CC_GO_results)
 
 #plot histogram to see range of p-values
-pdf(file="/home/mae/Documents/RNASeq_Workshop_ND/All_Genes_pValueRanges_OlympicsInteraction.pdf")
+exportFile <- paste(set, "pValueRanges.pdf", sep="_")
+pdf(file=exportFile)
 par(mfrow=c(3, 1),mar=c(1,1,1,1))
 hist(pval_BP_GO, 35, xlab = "p-values", main = "Range of BP GO term p-values")
 hist(pval_MF_GO, 35, xlab = "p-values", main = "Range of MF GO term p-values")
@@ -142,7 +132,8 @@ BP_topSigGO_ID <- BP_GO_results_table[1, 'GO.ID']
 MF_topSigGO_ID <- MF_GO_results_table[1, 'GO.ID']
 CC_topSigGO_ID <- CC_GO_results_table[1, 'GO.ID']
 
-pdf(file="/home/mae/Documents/RNASeq_Workshop_ND/All_Genes_TopSigGO_Density_OlympicsInteraction.pdf")
+# create density plots
+pdf(file = paste(set, "TopSigGO_Density.pdf", sep="_"))
 showGroupDensity(BP_GO_data, whichGO = BP_topSigGO_ID, ranks = TRUE)
 showGroupDensity(MF_GO_data, whichGO = MF_topSigGO_ID, ranks = TRUE)
 showGroupDensity(CC_GO_data, whichGO = CC_topSigGO_ID, ranks = TRUE)
@@ -150,27 +141,27 @@ dev.off()
 
 #printGraph to plot subgraphs induced by the most significant GO terms...saves to a file
 printGraph(BP_GO_data, BP_GO_results, firstSigNodes = 5, 
-           fn.prefix = "/home/mae/Documents/RNASeq_Workshop_ND/all_genes_BP_GO_OlympicsInteraction", useInfo = "all", pdfSW = TRUE)
+           fn.prefix = paste(set, "BP_sigGO_subgraphs", sep="_"), useInfo = "all", pdfSW = TRUE)
 printGraph(MF_GO_data, MF_GO_results, firstSigNodes = 5, 
-           fn.prefix = "/home/mae/Documents/RNASeq_Workshop_ND/all_genes_MF_GO_OlympicsInteraction", useInfo = "all", pdfSW = TRUE)
+           fn.prefix = paste(set, "MF_sigGO_subgraphs", sep="_"), useInfo = "all", pdfSW = TRUE)
 printGraph(CC_GO_data, CC_GO_results, firstSigNodes = 5, 
-           fn.prefix = "/home/mae/Documents/RNASeq_Workshop_ND/all_genes_CC_GO_OlympicsInteraction", useInfo = "all", pdfSW = TRUE)
+           fn.prefix = paste(set, "CC_sigGO_subgraphs", sep="_"), useInfo = "all", pdfSW = TRUE)
 
 #showGroupDensity for UV tolerance assocaited GO terms
-CC_DNA_repair_complex <- "GO:1990391"
-BP_DNA_integrity_checkpoint <- "GO:0031570"
-BP_Response_UV <- "GO:0009411"
-BP_Mitotic_cell_cycle_checkpoint <- "GO:0007093"
-BP_Cellular_response_DNA_damage_stimulus <- "GO:0006974"
-MF_Single_stranded_DNA_binding <- "GO:0003697"
-MF_Damaged_DNA_binding <- "GO:0003684"
+#CC_DNA_repair_complex <- "GO:1990391"
+#BP_DNA_integrity_checkpoint <- "GO:0031570"
+#BP_Response_UV <- "GO:0009411"
+#BP_Mitotic_cell_cycle_checkpoint <- "GO:0007093"
+#BP_Cellular_response_DNA_damage_stimulus <- "GO:0006974"
+#MF_Single_stranded_DNA_binding <- "GO:0003697"
+#MF_Damaged_DNA_binding <- "GO:0003684"
 
-pdf(file="/home/mae/Documents/RNASeq_Workshop_ND/GSEA_UVT_OlympicsTolerance.pdf")
-showGroupDensity(CC_GO_data, whichGO = CC_DNA_repair_complex, ranks = TRUE)
-showGroupDensity(BP_GO_data, whichGO = BP_DNA_integrity_checkpoint, ranks = TRUE)
-showGroupDensity(BP_GO_data, whichGO = BP_Response_UV, ranks = TRUE)
-showGroupDensity(BP_GO_data, whichGO = BP_Mitotic_cell_cycle_checkpoint, ranks = TRUE)
-showGroupDensity(BP_GO_data, whichGO = BP_Cellular_response_DNA_damage_stimulus, ranks = TRUE)
-showGroupDensity(MF_GO_data, whichGO = MF_Single_stranded_DNA_binding, ranks = TRUE)
-showGroupDensity(MF_GO_data, whichGO = MF_Damaged_DNA_binding, ranks = TRUE)
-dev.off()
+#pdf(file = paste(set, "UVT_terms.pdf", sep="_"))
+#showGroupDensity(CC_GO_data, whichGO = CC_DNA_repair_complex, ranks = TRUE)
+#showGroupDensity(BP_GO_data, whichGO = BP_DNA_integrity_checkpoint, ranks = TRUE)
+#showGroupDensity(BP_GO_data, whichGO = BP_Response_UV, ranks = TRUE)
+#showGroupDensity(BP_GO_data, whichGO = BP_Mitotic_cell_cycle_checkpoint, ranks = TRUE)
+#showGroupDensity(BP_GO_data, whichGO = BP_Cellular_response_DNA_damage_stimulus, ranks = TRUE)
+#showGroupDensity(MF_GO_data, whichGO = MF_Single_stranded_DNA_binding, ranks = TRUE)
+#showGroupDensity(MF_GO_data, whichGO = MF_Damaged_DNA_binding, ranks = TRUE)
+#dev.off()

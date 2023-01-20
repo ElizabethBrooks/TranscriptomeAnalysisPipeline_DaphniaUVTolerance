@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# BASH script to drive R summary plotting scripts for WGCNA network module analysis
+# BASH script to drive GO analysis for WGCNA network modules
 
-# usage: bash GOenrichModule_topGO_driver.sh analysisType set
-# default usage ex: bash GOenrichModule_topGO_driver.sh Tolerance OLYM
-# usage ex: bash GOenrichModule_topGO_driver.sh Tolerance Tol
-# usage ex: bash GOenrichModule_topGO_driver.sh Tolerance NTol
+# usage: bash enrichModule_topGO_driver.sh analysisType set
+# default usage ex: bash enrichModule_topGO_driver.sh Tolerance OLYM
+# usage ex: bash enrichModule_topGO_driver.sh Tolerance Tol
+# usage ex: bash enrichModule_topGO_driver.sh Tolerance NTol
 
 # retrieve analysis type
 analysisType=$1
@@ -33,8 +33,8 @@ mkdir $outDir
 
 # determine the direction of expression for each module and effect set
 # interaction
-Rscript GOenrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps
+Rscript enrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps
 # treatment
-Rscript GOenrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps
+Rscript enrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps
 # tolerance
-Rscript GOenrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps
+Rscript enrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps
