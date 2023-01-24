@@ -17,7 +17,6 @@
 #Retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsDir=$inputsPath"/"$1
-outputsPath="$inputsPath"
 
 #Set input bam list
 inputBamList=../InputData/fileList_Olympics.txt
@@ -35,6 +34,9 @@ if [ $? -ne 0 ]; then
 	echo "The $outFolder directory already exsists... please remove before proceeding."
 	exit 1
 fi
+
+# move to outputs directory
+cd $outFolder
 
 #Name output file of inputs
 inputOutFile=$outFolder"/variantCalling_summary.txt"
@@ -78,4 +80,4 @@ echo "bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz" >> $inputOut
 #echo bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf ">" "$outFolder"/"$type"_filtered.bcf >> "$inputOutFile"
 
 #Clean up
-#rm "tmpList.txt"
+rm "tmpList.txt"
