@@ -45,12 +45,10 @@ bcftools --version > "$inputOutFile"
 #genotype=_"$4"_
 #grep "$genotype" "$inputBamList" > tmpList_genotype.txt
 #Add file type to end of each sample path
-type="/"$3".bam"
-typeTag=$(echo $type | sed "s/\//SLASH/g")
+typeTag="SLASH"$type".bam"
 sed -e "s/$/$typeTag/" $inputBamList > $outFolder"/tmpList.txt"
 #Add directory to beginning of each sample path
-inDir="$inputsDir"/
-inDirTag=$(echo $inDir | sed "s/\//SLASH/g")
+inDirTag=$(echo "$inputsDir"/ | sed "s/\//SLASH/g")
 sed -i -e "s/^/$inDirTag/" $outFolder"/tmpList.txt"
 #Add in slashes
 sed -i "s/SLASH/\//g" $outFolder"/tmpList.txt"
