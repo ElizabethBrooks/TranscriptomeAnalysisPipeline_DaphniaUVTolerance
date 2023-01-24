@@ -17,7 +17,7 @@
 # set inputs absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsDir=$inputsPath"/"$1
-inputsDir=$inputsDir"/variantCallingBcftools_"$type
+inputsDir=$inputsDir"/variantCallingMerged_"$type
 
 #Retrieve input bam file type
 type="$2"

@@ -28,7 +28,7 @@ inputBamList=../InputData/fileList_Olympics.txt
 type="$2"
 
 #Make output folder
-outFolder=$inputsDir"/variantCallingBcftools_"$type
+outFolder=$inputsDir"/variantCallingMerged_"$type
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
