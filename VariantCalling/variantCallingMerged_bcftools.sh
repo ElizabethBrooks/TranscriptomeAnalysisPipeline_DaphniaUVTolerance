@@ -18,6 +18,9 @@ module load bio
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsDir=$inputsPath"/"$1
 
+#Retrieve genome features absolute path for alignment
+genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+
 #Set input bam list
 inputBamList=../InputData/fileList_Olympics.txt
 #Set input sample names

@@ -19,6 +19,9 @@ inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | s
 inputsDir=$inputsPath"/"$1
 inputsDir=$inputsDir"/variantCallingMerged_"$type
 
+#Retrieve genome features absolute path for alignment
+genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+
 #Retrieve input bam file type
 type="$2"
 
