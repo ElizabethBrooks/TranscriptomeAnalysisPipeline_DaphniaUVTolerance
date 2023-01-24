@@ -78,4 +78,4 @@ echo "bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz" >> $inputOut
 #echo bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf ">" "$outFolder"/"$type"_filtered.bcf >> "$inputOutFile"
 
 #Clean up
-rm "tmpList.txt"
+#rm "tmpList.txt"
