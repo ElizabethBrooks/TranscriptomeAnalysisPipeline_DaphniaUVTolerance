@@ -35,9 +35,6 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-# move to outputs directory
-cd $outFolder
-
 #Name output file of inputs
 inputOutFile=$outFolder"/variantCalling_summary.txt"
 
@@ -50,21 +47,21 @@ bcftools --version > "$inputOutFile"
 #Add file type to end of each sample path
 type="/"$3".bam"
 typeTag=$(echo $type | sed "s/\//SLASH/g")
-sed -e "s/$/$typeTag/" $inputBamList > "tmpList.txt"
+sed -e "s/$/$typeTag/" $inputBamList > $outFolder"/tmpList.txt"
 #Add directory to beginning of each sample path
 inDir="$inputsDir"/
 inDirTag=$(echo $inDir | sed "s/\//SLASH/g")
-sed -i -e "s/^/$inDirTag/" "tmpList.txt"
+sed -i -e "s/^/$inDirTag/" $outFolder"/tmpList.txt"
 #Add in slashes
-sed -i "s/SLASH/\//g" "tmpList.txt"
+sed -i "s/SLASH/\//g" $outFolder"/tmpList.txt"
 
 #Output status mesasge
 echo "Generating variants for the following input set of bam files: " >> $inputOutFile
-cat tmpList.txt >> "$inputOutFile"
+cat $outFolder"/tmpList.txt" >> "$inputOutFile"
 
 #Calculate the read coverage of positions in the genome
-#bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b tmpList.txt
-bcftools mpileup --threads 8 -d 8000 -Q 20 -Ob -o $outFolder"/"$type"_raw.bcf" -f $genomeFile -b "tmpList.txt"
+#bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b $outFolder"/tmpList.txt"
+bcftools mpileup --threads 8 -d 8000 -Q 20 -Ob -o $outFolder"/"$type"_raw.bcf" -f $genomeFile -b $outFolder"/tmpList.txt"
 echo "bcftools mpileup --threads 8 -d 8000 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" "$f >> $inputOutFile
 
 #Detect the single nucleotide polymorphisms 
@@ -80,4 +77,4 @@ echo "bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz" >> $inputOut
 #echo bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf ">" "$outFolder"/"$type"_filtered.bcf >> "$inputOutFile"
 
 #Clean up
-rm "tmpList.txt"
+rm $outFolder"/tmpList.txt"
