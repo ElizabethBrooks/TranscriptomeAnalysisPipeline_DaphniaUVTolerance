@@ -122,9 +122,9 @@ CC_GO_results_table <- GenTable(CC_GO_data, weightFisher = CC_GO_results, orderB
                                 topNodes = length(list_CC_GO_terms))
 
 # write table of GO terms to a CSV file
-write.table(BP_GO_results_table, file=paste(set, "BP_GO_terms.csv", sep="_"), sep=",", row.names=TRUE, quote=FALSE)
-write.table(MF_GO_results_table, file=paste(set, "MF_GO_terms.csv", sep="_"), sep=",", row.names=TRUE, quote=FALSE)
-write.table(CC_GO_results_table, file=paste(set, "CC_GO_terms.csv", sep="_"), sep=",", row.names=TRUE, quote=FALSE)
+write.table(BP_GO_results_table, file=paste(set, "BP_GO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
+write.table(MF_GO_results_table, file=paste(set, "MF_GO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
+write.table(CC_GO_results_table, file=paste(set, "CC_GO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
 
 # create table of significant GO terms
 BP_sigGO_results_table <- BP_GO_results_table[BP_GO_results_table$weightFisher <= 0.05, ]
@@ -132,9 +132,9 @@ MF_sigGO_results_table <- MF_GO_results_table[MF_GO_results_table$weightFisher <
 CC_sigGO_results_table <- CC_GO_results_table[CC_GO_results_table$weightFisher <= 0.05, ]
 
 # write table of significant GO terms to a CSV file
-write.table(BP_sigGO_results_table, file=paste(set, "BP_sigGO_terms.csv", sep="_"), sep=",", row.names=TRUE, quote=FALSE)
-write.table(MF_sigGO_results_table, file=paste(set, "MF_sigGO_terms.csv", sep="_"), sep=",", row.names=TRUE, quote=FALSE)
-write.table(CC_sigGO_results_table, file=paste(set, "CC_sigGO_terms.csv", sep="_"), sep=",", row.names=TRUE, quote=FALSE)
+write.table(BP_sigGO_results_table, file=paste(set, "BP_sigGO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
+write.table(MF_sigGO_results_table, file=paste(set, "MF_sigGO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
+write.table(CC_sigGO_results_table, file=paste(set, "CC_sigGO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
 
 # retrieve most significant GO term
 BP_topSigGO_ID <- BP_GO_results_table[1, 'GO.ID']

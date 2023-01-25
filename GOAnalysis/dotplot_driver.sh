@@ -2,8 +2,8 @@
 
 # BASH script to drive GO analysis for DE results
 
-# usage: bash enrich_topGO_driver.sh analysisType
-# default usage ex: bash enrich_topGO_driver.sh Tolerance
+# usage: bash dotplot_driver.sh analysisType
+# default usage ex: bash dotplot_driver.sh Tolerance
 
 # retrieve analysis type
 analysisType=$1
@@ -19,4 +19,4 @@ outDir=$inDir"/GOAnalysis"
 mkdir $outDir
 
 # create a dot plot of significant GO terms for each effect set
-Rscript enrich_topGO.R $outDir
+Rscript dotplot_onlySig.R $outDir
