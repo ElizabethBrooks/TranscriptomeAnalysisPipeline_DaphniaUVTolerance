@@ -134,6 +134,21 @@ for(j in 1:numMods){
                                   topNodes = length(list_MF_GO_terms))
   CC_GO_results_table <- GenTable(CC_GO_data, weightFisher = CC_GO_results, orderBy = 'weightFisher', 
                                   topNodes = length(list_CC_GO_terms))
+
+  # write table of GO terms to a CSV file
+  write.table(BP_GO_results_table, file=paste(colorTable[j,1], "BP_GO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
+  write.table(MF_GO_results_table, file=paste(colorTable[j,1], "MF_GO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
+  write.table(CC_GO_results_table, file=paste(colorTable[j,1], "CC_GO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
+  
+  # create table of significant GO terms
+  BP_sigGO_results_table <- BP_GO_results_table[BP_GO_results_table$weightFisher <= 0.05, ]
+  MF_sigGO_results_table <- MF_GO_results_table[MF_GO_results_table$weightFisher <= 0.05, ]
+  CC_sigGO_results_table <- CC_GO_results_table[CC_GO_results_table$weightFisher <= 0.05, ]
+
+  # write table of significant GO terms to a CSV file
+  write.table(BP_sigGO_results_table, file=paste(colorTable[j,1], "BP_sigGO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
+  write.table(MF_sigGO_results_table, file=paste(colorTable[j,1], "MF_sigGO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
+  write.table(CC_sigGO_results_table, file=paste(colorTable[j,1], "CC_sigGO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
   
   #Summary BP functions
   moduleBPResults$color[j] <- colorTable[j,1]
