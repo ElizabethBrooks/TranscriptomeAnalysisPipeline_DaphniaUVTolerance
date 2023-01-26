@@ -12,34 +12,34 @@ library(ggplot2)
 library(Rgraphviz)
 #library(statmod)
 
-#The following setting is important, do not omit.
-options(stringsAsFactors = FALSE)
+# turn off scientific notation
+options(scipen = 999)
 
 #Retrieve input file name of gene counts
-#args = commandArgs(trailingOnly=TRUE)
+args = commandArgs(trailingOnly=TRUE)
 
 # retrieve working directory
-#workingDir <- args[1]
-workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/GOAnalysis_OLYM_30"
+workingDir <- args[1]
+#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/GOAnalysis_OLYM_30"
 
 # set working directory
 setwd(workingDir);
 
 # retrieve subset tag
-#set <- args[2]
-set <- "OLYM"
+set <- args[2]
+#set <- "OLYM"
 
 # set the minimum module size
-#minModSize <- args[3]
-minModSize <- "30"
+minModSize <- args[3]
+#minModSize <- "30"
 
 # retrieve WGCNA directory
-#inDir <- args[4]
-inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance"
+inDir <- args[4]
+#inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance"
 
 # retrieve gene to GO map
-#GOmaps <- readMappings(file = args[5])
-GOmaps <- readMappings(file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/geneToGO_tagged_map.txt")
+GOmaps <- readMappings(file = args[5])
+#GOmaps <- readMappings(file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/geneToGO_tagged_map.txt")
 
 # set the full subset tag name
 tag <- paste(set, minModSize, sep="_")
@@ -106,6 +106,7 @@ for(j in 1:numMods){
     interesting_DE_genes <- setNames(interesting_DE_genes, names(geneUniverse))
     return(interesting_DE_genes)
   }
+
   #Create topGOdata objects for enrichment analysis (1 for each ontology)
   BP_GO_data <- new('topGOdata', ontology = 'BP', allGenes = list_genes_filtered, 
                     geneSel = get_interesting_DE_genes, nodeSize = 10, annot = annFUN.gene2GO, 
@@ -149,7 +150,7 @@ for(j in 1:numMods){
   write.table(BP_sigGO_results_table, file=paste(colorTable[j,1], "BP_sigGO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
   write.table(MF_sigGO_results_table, file=paste(colorTable[j,1], "MF_sigGO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
   write.table(CC_sigGO_results_table, file=paste(colorTable[j,1], "CC_sigGO_terms.csv", sep="_"), sep=",", row.names=FALSE, quote=FALSE)
-  
+
   #Summary BP functions
   moduleBPResults$color[j] <- colorTable[j,1]
   moduleBPResults$number[j] <- colorTable[j,2]

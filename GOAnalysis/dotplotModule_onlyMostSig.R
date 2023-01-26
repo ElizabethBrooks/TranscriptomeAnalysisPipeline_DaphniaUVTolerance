@@ -54,9 +54,9 @@ colnames(module_CC_results) <- c("Color","Term","Significant","weightFisher")
 #Loop through each module color
 for(j in 1:num_mods){
     # read in data on significant GO term (BP, MF, and CC) 
-    BP_GO_sig <- read.csv(paste(color_list[j], 'BP_sigGO_terms.csv', sep="_"), row.names = NULL)[1:5, c("Term","Significant","weightFisher")]
-    MF_GO_sig <- read.csv(paste(color_list[j], 'MF_sigGO_terms.csv', sep="_"), row.names = NULL)[1:5, c("Term","Significant","weightFisher")]
-    CC_GO_sig <- read.csv(paste(color_list[j], 'CC_sigGO_terms.csv', sep="_"), row.names = NULL)[1:5, c("Term","Significant","weightFisher")]
+    BP_GO_sig <- read.csv(paste(color_list[j], 'BP_sigGO_terms.csv', sep="_"), row.names = NULL)[1, c("Term","Significant","weightFisher")]
+    MF_GO_sig <- read.csv(paste(color_list[j], 'MF_sigGO_terms.csv', sep="_"), row.names = NULL)[1, c("Term","Significant","weightFisher")]
+    CC_GO_sig <- read.csv(paste(color_list[j], 'CC_sigGO_terms.csv', sep="_"), row.names = NULL)[1, c("Term","Significant","weightFisher")]
 
     # add a column labeling the color to each GO term set
     BP_GO_sig <- cbind("Color" = color_list[j], BP_GO_sig)
@@ -106,6 +106,6 @@ dotplot <- ggplot(data = plot_table, aes(x = x_axis_order, y = Term, size = Sign
 dotplot
 
 # save the plot to a PDF file
-ggsave('dotplotModule_sigGO.pdf', plot = dotplot, device = 'pdf')
+ggsave('dotplotModule_mostSigGO.pdf', plot = dotplot, device = 'pdf')
 
 
