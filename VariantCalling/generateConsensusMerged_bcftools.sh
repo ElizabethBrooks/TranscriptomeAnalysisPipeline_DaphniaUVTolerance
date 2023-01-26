@@ -11,13 +11,15 @@
 #Retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsDir="$inputsPath"/"$1"
-inputsDir=$inputsDir"/variantCallingBcftools_"$type
-
-#Retrieve genome features absolute path for alignment
-genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 
 #Retrieve input bam file type
 type="$2"
+
+# set inputs directory name
+inputsDir=$inputsDir"/variantCallingMerged_"$type
+
+#Retrieve genome features absolute path for alignment
+genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 
 #Make output folder
 outFolder=$inputsDir"/variantsConsensus"

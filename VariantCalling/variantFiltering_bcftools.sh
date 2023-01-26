@@ -17,13 +17,15 @@ module load bio
 # set inputs absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsDir=$inputsPath"/"$1
+
+#Retrieve input bam file type
+type="$2"
+
+# set inputs directory name
 inputsDir=$inputsDir"/variantCallingMerged_"$type
 
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-
-#Retrieve input bam file type
-type="$2"
 
 #Make output folder
 outFolder=$inputsDir"/variantsFiltered"
