@@ -85,7 +85,7 @@ echo "Excluding adjacent SNPs within 2bp: " >> $outputsFile
 bcftools filter --threads 8 -g 2 $outFolder"/"$type"_calls.flt-indels.bcf" | grep "^scaffold" | wc -l >> $outputsFile
 
 #Turn on left alignment, normalize indels, and collapse multi allelic sites
-bcftools norm --threads 8 -m +any -f $genomeFile" "$outFolder"/"$type"_calls.flt-SNPs.bcf" -Ob -o $outFolder"/"$type"_calls.normCollapse.bcf"
+bcftools norm --threads 8 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-SNPs.bcf" -Ob -o $outFolder"/"$type"_calls.normCollapse.bcf"
 echo "bcftools norm --threads 8 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-SNPs.bcf -Ob -o "$outFolder"/"$type"_calls.normCollapse.bcf" >> $inputOutFile
 
 #Check final number variants
