@@ -10,28 +10,26 @@
 
 #Retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-inputsDir="$inputsPath"/"$1"
+inputsPath="$inputsPath"/"$1"
 
 #Retrieve input bam file type
 type="$2"
 
 # set inputs directory name
-inputsDir=$inputsDir"/variantCallingMerged_"$type
+inputsPath=$inputsPath"/variantCallingMerged_"$type
+inputsDir=$inputsPath"/variantsFiltered"
 
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 
 #Make output folder
-outFolder=$inputsDir"/variantsConsensus"
+outFolder=$inputsPath"/variantsConsensus"
 mkdir $outFolder
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
 	echo "The $outFolder directory already exsists... please remove before proceeding."
 	exit 1
 fi
-
-# set inputs path
-inputsDir=$inputsDir"/variantCallingBcftools_"$type"/variantsFiltered"
 
 #Name output file of inputs
 inputOutFile=$outFolder"/consensus_summary.txt"
