@@ -12,7 +12,7 @@
 # usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 filteredZS
 
 #Required modules for ND CRC servers
-#module load bio
+module load bio
 
 # set inputs absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")

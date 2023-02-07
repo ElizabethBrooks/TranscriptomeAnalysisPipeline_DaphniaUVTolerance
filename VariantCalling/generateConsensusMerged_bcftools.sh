@@ -6,7 +6,7 @@
 #Usage Ex: bash generateConsensusMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 filteredZS
 
 #Required modules for ND CRC servers
-#module load bio
+module load bio
 
 #Retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")

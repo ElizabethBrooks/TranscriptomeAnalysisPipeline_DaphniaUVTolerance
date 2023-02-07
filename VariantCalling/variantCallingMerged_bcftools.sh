@@ -11,7 +11,7 @@
 # usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 filteredMapQ NTol
 
 #Required modules for ND CRC servers
-#module load bio
+module load bio
 
 #Retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
