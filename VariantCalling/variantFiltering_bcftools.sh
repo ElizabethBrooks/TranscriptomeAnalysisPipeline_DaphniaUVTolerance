@@ -22,7 +22,7 @@ inputsDir=$inputsPath"/"$1
 type="$2"
 
 # set inputs directory name
-inputsDir=$inputsDir"/variantCallingMerged_"$type
+inputsDir=$inputsDir"/variantCallingMerged_"$type"_"$3
 
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")

@@ -16,7 +16,7 @@ inputsPath="$inputsPath"/"$1"
 type="$2"
 
 # set inputs directory name
-inputsPath=$inputsPath"/variantCallingMerged_"$type
+inputsPath=$inputsPath"/variantCallingMerged_"$type"_"$3
 inputsDir=$inputsPath"/variantsFiltered"
 
 #Retrieve genome features absolute path for alignment
