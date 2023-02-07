@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -pe smp 8
+#$ -pe smp 4
 #$ -N variantCallingMerged_jobOutput
 
 # script to perform variant calling of mapq filtered bam files before variant filtering
@@ -60,25 +60,25 @@ echo "Generating variants for the following input set of bam files: " >> $inputO
 cat $outFolder"/tmpList.txt" >> "$inputOutFile"
 
 #Calculate the read coverage of positions in the genome
-#bcftools mpileup --threads 8 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b $outFolder"/tmpList.txt"
-bcftools mpileup --threads 8 -d 8000 -Q 20 -Ob -o $outFolder"/"$type"_raw.bcf" -f $genomeFile -b $outFolder"/tmpList.txt"
-echo "bcftools mpileup --threads 8 -d 8000 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" "$f >> $inputOutFile
+#bcftools mpileup --threads 4 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b $outFolder"/tmpList.txt"
+bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o $outFolder"/"$type"_raw.bcf" -f $genomeFile -b $outFolder"/tmpList.txt"
+echo "bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" "$f >> $inputOutFile
 
 #Detect the single nucleotide polymorphisms 
-bcftools call --threads 8 -mv -Oz -o $outFolder"/"$type"_calls.vcf.gz" $outFolder"/"$type"_raw.bcf" 
-echo "bcftools call --threads 8 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf" >> $inputOutFile
+bcftools call --threads 4 -mv -Oz -o $outFolder"/"$type"_calls.vcf.gz" $outFolder"/"$type"_raw.bcf" 
+echo "bcftools call --threads 4 -mv -Oz -o "$outFolder"/"$type"_calls.vcf.gz "$outFolder"/"$type"_raw.bcf" >> $inputOutFile
 
 #Index vcf file
-bcftools index --threads 8 $outFolder"/"$type"_calls.vcf.gz"
-echo "bcftools index --threads 8 "$outFolder"/"$type"_calls.vcf.gz" >> $inputOutFile
+bcftools index --threads 4 $outFolder"/"$type"_calls.vcf.gz"
+echo "bcftools index --threads 4 "$outFolder"/"$type"_calls.vcf.gz" >> $inputOutFile
 
 #Normalize indels
-#bcftools norm --threads 8 -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf
-#echo bcftools norm --threads 8 -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf >> "$inputOutFile"
+#bcftools norm --threads 4 -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf
+#echo bcftools norm --threads 4 -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf >> "$inputOutFile"
 
 #Filter adjacent indels within 5bp
-#bcftools filter --threads 8 --IndelGap 5 "$path"/"$type"_calls.norm.bcf -Ob -o "$path"/"$type"_calls.norm.flt-indels.bcf
-#echo bcftools filter --threads 8 --IndelGap 5 "$path"/"$type"_calls.norm.bcf -Ob -o "$path"/"$type"_calls.norm.flt-indels.bcf >> "$inputOutFile"
+#bcftools filter --threads 4 --IndelGap 5 "$path"/"$type"_calls.norm.bcf -Ob -o "$path"/"$type"_calls.norm.flt-indels.bcf
+#echo bcftools filter --threads 4 --IndelGap 5 "$path"/"$type"_calls.norm.bcf -Ob -o "$path"/"$type"_calls.norm.flt-indels.bcf >> "$inputOutFile"
 
 #Include sites where FILTER is true
 #bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf > "$outFolder"/"$type"_filtered.bcf

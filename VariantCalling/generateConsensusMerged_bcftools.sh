@@ -37,10 +37,6 @@ inputOutFile=$outFolder"/consensus_summary.txt"
 #Add version to output file of inputs
 bcftools --version > $inputOutFile
 
-#Index bcf file
-bcftools index $inputsDir"/"$type"_calls.normCollapse.bcf"
-echo "bcftools index "$inputsDir"/"$type"_calls.normCollapse.bcf" >> $inputOutFile
-
 #Generate consensus sequence
 cat $genomeFile | bcftools consensus $inputsDir"/"$type"_calls.normCollapse.bcf" > $outFolder"/"$type"_consensus.fa"
 echo "cat "$genomeFile" | bcftools consensus "$inputsDir"/"$type"_calls.normCollapse.bcf > "$outFolder"/"$type"_consensus.fa" >> "$inputOutFile"

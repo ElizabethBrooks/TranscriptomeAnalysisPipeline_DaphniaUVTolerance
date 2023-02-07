@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -pe smp 8
+#$ -pe smp 4
 #$ -N VC_pipeline_jobOutput
 
 # script to perform bam read quaity filtering
