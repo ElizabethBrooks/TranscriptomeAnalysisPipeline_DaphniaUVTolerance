@@ -6,10 +6,9 @@
 #$ -N variantFiltering_jobOutput
 
 # script to perform variant filtering after calling
-# usage: qsub variantFiltering_bcftools.sh sortedFolderName filterType
-# default usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 filteredMapQ
-# usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 filteredMapQ
-# usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 filteredZS
+# usage: qsub variantFiltering_bcftools.sh sortedFolderName filterType subset
+# usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 filteredMapQ Tol
+# usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 filteredMapQ NTol
 
 #Required modules for ND CRC servers
 module load bio

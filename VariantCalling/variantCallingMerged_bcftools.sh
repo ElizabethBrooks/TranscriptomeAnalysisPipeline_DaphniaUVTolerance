@@ -6,7 +6,7 @@
 #$ -N variantCallingMerged_jobOutput
 
 # script to perform variant calling of mapq filtered bam files before variant filtering
-# usage: qsub variantCallingMerged_bcftools.sh sortedFolderName filterType
+# usage: qsub variantCallingMerged_bcftools.sh sortedFolderName filterType subset
 # usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 filteredMapQ Tol
 # usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 filteredMapQ NTol
 
