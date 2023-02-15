@@ -44,14 +44,14 @@ outputsFile=$outFolder"/variantFiltering_stats.txt"
 bcftools --version > $inputOutFile
 
 #Check total variants
-echo "Total variants from reads: " > $outputsFile
-bcftools filter -i '%QUAL<1001' $inputsDir"/"$type"_calls.vcf.gz" | grep -v "#" | wc -l >> $outputsFile
+echo "Total variants from filtered reads with MQ > 60: " > $outputsFile
+bcftools filter -i '%QUAL<1001' $inputsDir"/"$type"_calls.norm.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 #Include sites with quality > 20 
-bcftools filter --threads 4 -i '%QUAL>20' $inputsDir"/"$type"_calls.vcf.gz" -Ob -o $outFolder"/"$type"_calls.flt-qual.bcf"
-echo "bcftools filter --threads 4 -i '%QUAL>20' "$inputsDir"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.flt-qual.bcf" >> $inputOutFile
+bcftools filter --threads 4 -i '%QUAL>20' $inputsDir"/"$type"_calls.norm.bcf" -Ob -o $outFolder"/"$type"_calls.flt-qual.bcf"
+echo "bcftools filter --threads 4 -i '%QUAL>20' "$inputsDir"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qual.bcf" >> $inputOutFile
 echo "& including sites with quality > 20: " >> $outputsFile
-bcftools filter --threads 4 -i '%QUAL>20' $inputsDir"/"$type"_calls.vcf.gz" | grep -v "#" | wc -l >> $outputsFile
+bcftools filter --threads 4 -i '%QUAL>20' $inputsDir"/"$type"_calls.norm.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 #Include sites with average read depth > 10
 bcftools filter --threads 4 -i 'INFO/DP>10' $outFolder"/"$type"_calls.flt-qual.bcf" -Ob -o $outFolder"/"$type"_calls.flt-qualDP.bcf"
@@ -59,10 +59,10 @@ echo "bcftools filter --threads 4 -i 'INFO/DP>10' "$outFolder"/"$type"_calls.flt
 echo "& including sites with average read depth > 10: " >> $outputsFile
 bcftools filter --threads 4 -i 'INFO/DP>10' $outFolder"/"$type"_calls.flt-qual.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-#Exclude hetoerozygous sites
+#Exclude heterozygous sites
 bcftools filter --threads 4 -e 'GT="het"' $outFolder"/"$type"_calls.flt-qualDP.bcf" -Ob -o $outFolder"/"$type"_calls.flt-qualDP-homo.bcf"
 echo "bcftools filter --threads 4 -e 'GT=\"het\"' "$outFolder"/"$type"_calls.flt-qualDP.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf" >> $inputOutFile
-echo "& excluding hetoerozygous sites: " >> $outputsFile
+echo "& excluding heterozygous sites: " >> $outputsFile
 bcftools filter --threads 4 -e 'GT="het"' $outFolder"/"$type"_calls.flt-qualDP.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 #Exclude sites homozygous for the reference
@@ -93,3 +93,10 @@ bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-S
 bcftools index --threads 4 $outFolder"/"$type"_calls.normCollapse.bcf"
 echo "bcftools index --threads 4 "$outFolder"/"$type"_calls.normCollapse.bcf" >> $inputOutFile
 
+# clean up
+rm $outFolder"/"$type"_calls.flt-qual.bcf"
+rm $outFolder"/"$type"_calls.flt-qualDP.bcf"
+rm $outFolder"/"$type"_calls.flt-qualDP-homo.bcf"
+rm $outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf"
+rm $outFolder"/"$type"_calls.flt-indels.bcf"
+rm $outFolder"/"$type"_calls.flt-SNPs.bcf"

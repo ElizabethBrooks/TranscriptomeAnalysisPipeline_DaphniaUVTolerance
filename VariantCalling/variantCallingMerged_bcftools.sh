@@ -73,8 +73,8 @@ bcftools index --threads 4 $outFolder"/"$type"_calls.vcf.gz"
 echo "bcftools index --threads 4 "$outFolder"/"$type"_calls.vcf.gz" >> $inputOutFile
 
 #Normalize indels
-#bcftools norm --threads 4 -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf
-#echo bcftools norm --threads 4 -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf >> "$inputOutFile"
+bcftools norm --threads 4 -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf
+echo bcftools norm --threads 4 -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf >> "$inputOutFile"
 
 #Filter adjacent indels within 5bp
 #bcftools filter --threads 4 --IndelGap 5 "$path"/"$type"_calls.norm.bcf -Ob -o "$path"/"$type"_calls.norm.flt-indels.bcf

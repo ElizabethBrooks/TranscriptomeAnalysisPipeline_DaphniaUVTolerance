@@ -30,4 +30,6 @@ for f in "$inputsDir"/*/accepted_hits.bam; do
 	path=$(dirname $f)
 	samtools view -@ 8 -bq 60 $f > $path"/filteredMapQ.bam"
 	echo "samtools view -@ 8 -bq 60 "$f" > "$path"/filteredMapQ.bam" >> $inputOutFile
+	# index bamfile
+	samtools index -@ 4 $path"/filteredMapQ.bam"
 done
