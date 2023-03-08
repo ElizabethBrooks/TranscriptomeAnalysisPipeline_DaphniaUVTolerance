@@ -65,10 +65,10 @@ echo "bcftools filter --threads 4 -e 'GT=\"het\"' "$outFolder"/"$type"_calls.flt
 echo "& excluding heterozygous sites: " >> $outputsFile
 bcftools filter --threads 4 -e 'GT="het"' $outFolder"/"$type"_calls.flt-qualDP.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-#Exclude sites homozygous for the reference
+#Exclude sites homozygous to the reference
 bcftools filter --threads 4 -e 'GT="RR"' $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf"
 echo "bcftools filter --threads 4 -e 'GT=\"RR\"' "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf" >> $inputOutFile
-echo "& excluding sites homozygous for the reference: " >> $outputsFile
+echo "& excluding sites homozygous to the reference: " >> $outputsFile
 bcftools filter --threads 4 -e 'GT="RR"' $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 #Filter adjacent indels within 2bp

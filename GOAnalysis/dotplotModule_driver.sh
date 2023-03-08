@@ -3,7 +3,9 @@
 # BASH script to drive GO analysis for DE results
 
 # usage: bash dotplotModule_driver.sh analysisType
-# default usage ex: bash dotplotModule_driver.sh Tolerance OLYM
+# usage ex: bash dotplotModule_driver.sh Tolerance OLYM
+# usage ex: bash dotplotModule_driver.sh Tolerance Tol
+# usage ex: bash dotplotModule_driver.sh Tolerance NTol
 
 # retrieve analysis type
 analysisType=$1

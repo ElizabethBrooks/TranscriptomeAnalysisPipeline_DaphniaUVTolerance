@@ -57,3 +57,6 @@ done < $expData
 
 # clean up
 rm $workingDir"/tmpHeader.csv"
+
+# summarize the ANOVA results
+bash ANOVA_OLYMTolerance_summarize.sh $analysisType $set

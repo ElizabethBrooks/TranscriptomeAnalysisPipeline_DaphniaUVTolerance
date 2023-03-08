@@ -10,7 +10,7 @@ analysisType=$1
 # set the soft-thresholding power
 # it is recommended for less than 20 samples to use
 # 9 for unsigned and 18 for signed
-softThresh=18
+softThresh=9
 
 # set the minimum module size
 minModSize=30
@@ -28,11 +28,9 @@ inputCounts=$inDir"/glmQLF_normalizedCounts_logTransformed.csv"
 currDir=$(pwd)
 
 # retrieve experimental design data path
-cd $(dirname "../InputData/expDesign_WGCNA_Olympics.csv")
-#cd $(dirname "../InputData/expDesign_treatment_WGCNA_Olympics.csv")
+cd $(dirname "../InputData/expDesign_WGCNA_Olympics"$analysisType".csv")
 designPath=$(pwd)
-expDesign=$designPath"/expDesign_WGCNA_Olympics.csv"
-#expDesign=$designPath"/expDesign_treatment_WGCNA_Olympics.csv"
+expDesign=$designPath"/expDesign_WGCNA_Olympics"$analysisType".csv"
 
 # move back to scripts directory
 cd $currDir
