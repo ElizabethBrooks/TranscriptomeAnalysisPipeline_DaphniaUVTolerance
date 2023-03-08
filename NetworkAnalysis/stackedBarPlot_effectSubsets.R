@@ -39,11 +39,11 @@ inFile <- paste(deDir, "glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep="/
 geneCountsInter <- read.csv(file=inFile)
 SETInterIn <- geneCountsInter[geneCountsInter$FDR<0.05,1]
 # treatment
-inFile <- paste(deDir, "glmQLF_2WayANOVA_UVvsVIS_topTags_LFC1.2.csv", sep="/")
+inFile <- paste(deDir, "glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv", sep="/")
 geneCountsTreat <- read.csv(file=inFile)
 SETTreatIn <- geneCountsTreat[geneCountsTreat$FDR<0.05,1]
 # tolerance
-inFile <- paste(deDir, "glmQLF_2WayANOVA_TvsN_topTags_LFC1.2.csv", sep="/")
+inFile <- paste(deDir, "glmQLF_2WayANOVA_tolerance_topTags_LFC1.2.csv", sep="/")
 geneCountsTol <- read.csv(file=inFile)
 SETTolIn <- geneCountsTol[geneCountsTol$FDR<0.05,1]
 
