@@ -6,8 +6,8 @@
 #$ -N addRG_jobOutput
 
 # script to add read groups to merged and coordinate sorted bam files
-# usage: bash addReadGroups_samtools.sh sortedFolderName
-# usage Ex: bash addReadGroups_samtools.sh sortedCoordinate_samtoolsHisat2_run1_merged
+# usage: qsub addReadGroups_samtools.sh sortedFolderName
+# usage Ex: qsub addReadGroups_samtools.sh sortedCoordinate_samtoolsHisat2_run1_merged
 
 # required modules for ND CRC servers
 #module load bio
