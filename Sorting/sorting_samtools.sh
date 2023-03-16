@@ -8,7 +8,7 @@
 # paired end reads
 # usage: qsub sorting_samtools.sh sortingTarget sortingMethod alignedFolder optionalAssembledFolder
 # usage Ex: qsub sorting_samtools.sh genome name aligned_hisat2_run1
-# usage Ex: qsub sorting_samtools.sh genome coordinate aligned_hisat2_run1
+# usage Ex: qsub sorting_samtools.sh genome coordinate aligned_hisat2_run1_merged
 
 #Required modules for ND CRC servers
 module load bio

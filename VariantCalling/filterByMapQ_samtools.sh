@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -pe smp 8
+#$ -pe smp 4
 #$ -N filterMapQ_jobOutput
 
 # script to perform read quaity filtering of coordinate sorted bam files
@@ -28,7 +28,7 @@ samtools --version > $inputOutFile
 for f in "$inputsDir"/*/accepted_hits.bam; do 
 	echo "Processing file $f"
 	path=$(dirname $f)
-	samtools view -@ 8 -bq 60 $f > $path"/filteredMapQ.bam"
+	samtools view -@ 4 -bq 60 $f > $path"/filteredMapQ.bam"
 	echo "samtools view -@ 8 -bq 60 "$f" > "$path"/filteredMapQ.bam" >> $inputOutFile
 	# index bamfile
 	samtools index -@ 4 $path"/filteredMapQ.bam"
