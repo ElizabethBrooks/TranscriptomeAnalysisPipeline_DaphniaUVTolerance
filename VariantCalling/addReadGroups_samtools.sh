@@ -6,15 +6,15 @@
 #$ -N addRG_jobOutput
 
 # script to add read groups to merged and coordinate sorted bam files
-# usage: qsub addReadGroups_samtools.sh sortedFolderName
-# usage Ex: qsub addReadGroups_samtools.sh sortedCoordinate_samtoolsHisat2_run1_merged
+# usage: qsub addReadGroups_samtools.sh
+# usage Ex: qsub addReadGroups_samtools.sh
 
 # required modules for ND CRC servers
 #module load bio
 
 # retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-inputsDir=$inputsPath"/"$1
+inputsDir=$inputsPath"/variantsCalled_samtoolsBcftools"
 outputsPath=$inputsPath
 
 # name output file of inputs
@@ -34,4 +34,6 @@ for f in $inputsDir"/"*"/accepted_hits.bam"; do
 	samtools addreplacerg -@ 4 -r ID:olympics_$genotype -r SM:$genotype -o $fileOut $f
 	# add run inputs to output summary
 	echo "samtools addreplacerg -@ 4 -r SM:"$genotype" -o "$fileOut" "$f >> $inputOutFile
+	# clean up
+	rm $f
 done

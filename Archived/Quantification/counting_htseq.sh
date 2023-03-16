@@ -5,8 +5,10 @@
 #$ -N counting_htseq_jobOutput
 #Script to perform htseq-count counting of trimmed, aligned, then name sorted
 # paired end reads
-#Usage: qsub counting_htseq.sh sortedNameFolder
-#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1
+#Usage: qsub counting_htseq.sh sortedNameFolder analysisTarget
+#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 genome
+#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 trimmed_run1E05_assemblyTrinity
+#Usage Ex: qsub counting_htseq.sh sortedName_samtoolsHisat2_run1 sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity
 
 #Required modules for ND CRC servers
 module load bio
@@ -19,12 +21,26 @@ if [ $# -eq 0 ]; then
 fi
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeFeatures:" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
-
-#Retrieve sorted reads input absolute path
-inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-inputsDir="$inputsPath"/"$1"
-outputsPath="$inputsPath"
-
+#Determine what analysis method was used for the input folder of data
+if [[ "$2" == *assemblyTrinity* || "$2" == *assemblyStringtie* ]]; then
+	#Retrieve reads input absolute path
+	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
+	inputsDir="$inputsPath"/"$2"/"$1"
+	outputsPath="$inputsPath"/"$2"
+elif [[ "$2" == *assembly*Trinity* || "$2" == *assembly*Stringtie* ]]; then
+	#Retrieve reads input absolute path
+	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
+	inputsDir="$inputsPath"/"$2"/"$1"
+	outputsPath="$inputsPath"/"$2"
+elif [[ "$2" == genome ]]; then
+	#Retrieve sorted reads input absolute path
+	inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
+	inputsDir="$inputsPath"/"$1"
+	outputsPath="$inputsPath"
+else
+	echo "ERROR: Invalid sorted folder of bam files entered... exiting"
+	exit 1
+fi
 #Prepare for analysis
 dirFlag=0
 runNum=1
@@ -85,6 +101,3 @@ for f1 in "$inputsDir"/*/*.bam; do
 done
 #Copy previous summaries
 cp "$inputsDir"/*.txt "$outputFolder"
-
-# clean up
-rm -r $inputsDir

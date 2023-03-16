@@ -6,22 +6,21 @@
 #$ -N variantFiltering_jobOutput
 
 # script to perform variant filtering after calling
-# usage: qsub variantFiltering_bcftools.sh sortedFolderName filterType subset
-# usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 filteredMapQ Tol
-# usage Ex: qsub variantFiltering_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 filteredMapQ NTol
+# usage: qsub variantFiltering_bcftools.sh
+# usage Ex: qsub variantFiltering_bcftools.sh
 
 #Required modules for ND CRC servers
 module load bio
 
 # set inputs absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-inputsDir=$inputsPath"/"$1
+inputsDir=$inputsPath"/variantsCalled_samtoolsBcftools"
 
 #Retrieve input bam file type
-type="$2"
+type="filteredMapQ"
 
 # set inputs directory name
-inputsDir=$inputsDir"/variantCallingMerged_"$type"_"$3
+inputsDir=$inputsDir"/variantsMerged_"$type
 
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")

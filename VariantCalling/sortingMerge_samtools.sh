@@ -6,14 +6,14 @@
 #$ -pe smp 4
 
 # script to merge alignments for each input genotype
-# usage: qsub sortingMerge_genotype.sh alignedFolder genotype
-# usage Ex: qsub sortingMerge_genotype.sh sortedCoordinate_samtoolsHisat2_run1 E05
-# usage Ex: qsub sortingMerge_genotype.sh sortedCoordinate_samtoolsHisat2_run1 R2
-# usage Ex: qsub sortingMerge_genotype.sh sortedCoordinate_samtoolsHisat2_run1 Y05
-# usage Ex: qsub sortingMerge_genotype.sh sortedCoordinate_samtoolsHisat2_run1 Y023
+# usage: qsub sortingMerge_samtools.sh alignedFolder genotype
+# usage Ex: qsub sortingMerge_samtools.sh sortedCoordinate_samtoolsHisat2_run1 E05
+# usage Ex: qsub sortingMerge_samtools.sh sortedCoordinate_samtoolsHisat2_run1 R2
+# usage Ex: qsub sortingMerge_samtools.sh sortedCoordinate_samtoolsHisat2_run1 Y05
+# usage Ex: qsub sortingMerge_samtools.sh sortedCoordinate_samtoolsHisat2_run1 Y023
 
 #Required modules for ND CRC servers
-module load bio
+#module load bio
 
 # retrieve input folder of trimmed data
 inputFolder="$1"
@@ -25,10 +25,10 @@ inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | s
 genotype="$2"
 
 # set sorting outputs absolute path
-inputsPath=$inputsPath"/"$inputFolder
+inputsDir=$inputsPath"/"$inputFolder
 
 # set and create merged outputs directory
-outputPath=$inputsPath"_merged"
+outputPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 mkdir $outputPath
 
 # set and create genotype outputs directory
@@ -44,7 +44,7 @@ fi
 inputOutFile="$outputPath"/"samtools_merge_summary.txt"
 
 # add software version to output summary file
-samtools --version > $inputOutFile
+#samtools --version > $inputOutFile
 
 # loop through all reads and sort sam/bam files for input to samtools
 sampleList=$(for f1 in $inputsPath"/"*"_"$genotype"_"*"/accepted_hits.bam"; do echo $f1; done)

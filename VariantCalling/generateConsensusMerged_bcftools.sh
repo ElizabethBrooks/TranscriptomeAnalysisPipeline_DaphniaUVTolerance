@@ -1,22 +1,20 @@
 #!/bin/bash
 #Script to generate a consensus sequence using filtered called variants
-#Usage: bash generateConsensusMerged_bcftools.sh sortedFolderName filterType
-#Usage Ex: bash generateConsensusMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run1 filteredMapQ
-#Usage Ex: bash generateConsensusMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 filteredMapQ
-#Usage Ex: bash generateConsensusMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run3 filteredZS
+#Usage: bash generateConsensusMerged_bcftools.sh
+#Usage Ex: bash generateConsensusMerged_bcftools.sh
 
 #Required modules for ND CRC servers
 module load bio
 
 #Retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-inputsPath="$inputsPath"/"$1"
+inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 
 #Retrieve input bam file type
-type="$2"
+type="filteredMapQ"
 
 # set inputs directory name
-inputsPath=$inputsPath"/variantCallingMerged_"$type"_"$3
+inputsPath=$inputsPath"/variantsMerged_"$type
 inputsDir=$inputsPath"/variantsFiltered"
 
 #Retrieve genome features absolute path for alignment

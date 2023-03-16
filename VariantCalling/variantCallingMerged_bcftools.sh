@@ -6,15 +6,15 @@
 #$ -N variantCallingMerged_jobOutput
 
 # script to perform variant calling of mapq filtered bam files before variant filtering
-# usage: qsub variantCallingMerged_bcftools.sh sortedFolderName
-# usage Ex: qsub variantCallingMerged_bcftools.sh sortedCoordinate_samtoolsHisat2_run1
+# usage: qsub variantCallingMerged_bcftools.sh
+# usage Ex: qsub variantCallingMerged_bcftools.sh
 
 # load required modules for ND CRC servers
 module load bio
 
 # retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-inputsDir=$inputsPath"/"$1
+inputsDir=$inputsPath"/variantsCalled_samtoolsBcftools"
 
 # retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
@@ -26,7 +26,7 @@ type="filteredMapQ"
 inputBamList="../InputData/fileList_Olympics_genotype.txt"
 
 #Make output folder
-outFolder=$inputsDir"/variantCallingMerged_"$type
+outFolder=$inputsDir"/variantsMerged_"$type
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
