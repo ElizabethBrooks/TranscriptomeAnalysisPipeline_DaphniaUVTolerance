@@ -2,15 +2,15 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N alignmentMerge_jobOutput
+#$ -N sortingMerge_jobOutput
 #$ -pe smp 4
 
 # script to merge alignments for each input genotype
-# usage: qsub alignmentMerge_genotype.sh alignedFolder genotype
-# usage Ex: qsub alignmentMerge_genotype.sh aligned_hisat2_run1 E05
-# usage Ex: qsub alignmentMerge_genotype.sh aligned_hisat2_run1 R2
-# usage Ex: qsub alignmentMerge_genotype.sh aligned_hisat2_run1 Y05
-# usage Ex: qsub alignmentMerge_genotype.sh aligned_hisat2_run1 Y023
+# usage: qsub sortingMerge_genotype.sh alignedFolder genotype
+# usage Ex: qsub sortingMerge_genotype.sh sortedCoordinate_samtoolsHisat2_run1 E05
+# usage Ex: qsub sortingMerge_genotype.sh sortedCoordinate_samtoolsHisat2_run1 R2
+# usage Ex: qsub sortingMerge_genotype.sh sortedCoordinate_samtoolsHisat2_run1 Y05
+# usage Ex: qsub sortingMerge_genotype.sh sortedCoordinate_samtoolsHisat2_run1 Y023
 
 #Required modules for ND CRC servers
 module load bio
@@ -41,7 +41,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # name output file of inputs
-inputOutFile="$outputPath"/"$outputPath"_summary.txt
+inputOutFile="$outputPath"/"samtools_merge_summary.txt"
 
 # add software version to output summary file
 samtools --version > $inputOutFile

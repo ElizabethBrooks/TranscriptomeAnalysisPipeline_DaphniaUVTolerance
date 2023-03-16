@@ -7,8 +7,7 @@
 
 # script to perform read quaity filtering of coordinate sorted bam files
 # usage: qsub filterByMapQ_samtools.sh sortedFolderName
-# usage Ex: qsub filterByMapQ_samtools.sh sortedCoordinate_samtoolsHisat2_run1
-# usage Ex: qsub filterByMapQ_samtools.sh sortedCoordinate_samtoolsHisat2_run3
+# usage Ex: qsub filterByMapQ_samtools.sh sortedCoordinate_samtoolsHisat2_run1_merged
 
 #Required modules for ND CRC servers
 #module load bio
