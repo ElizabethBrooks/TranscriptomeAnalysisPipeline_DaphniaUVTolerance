@@ -18,6 +18,9 @@ sortedFolderName="$1"
 # set filter type
 filterType="filteredMapQ"
 
+# run script to add read groups
+bash addReadGroups_samtools.sh $sortedFolderName
+
 # run script to filter bam files by mapq
 bash filterByMapQ_samtools.sh $sortedFolderName $filterType
 

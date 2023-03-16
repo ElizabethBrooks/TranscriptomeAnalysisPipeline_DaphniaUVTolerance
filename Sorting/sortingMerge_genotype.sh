@@ -47,7 +47,7 @@ inputOutFile="$outputPath"/"samtools_merge_summary.txt"
 samtools --version > $inputOutFile
 
 # loop through all reads and sort sam/bam files for input to samtools
-sampleList=$(for f1 in $inputsPath"/"*$genotype*"/accepted_hits.bam"; do echo $f1; done)
+sampleList=$(for f1 in $inputsPath"/"*"_"$genotype"_"*"/accepted_hits.bam"; do echo $f1; done)
 
 # merge the list of aligned samples
 samtools merge -@ 4 $outputFolder"/accepted_hits.bam" $sampleList

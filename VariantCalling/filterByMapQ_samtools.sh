@@ -24,7 +24,7 @@ inputOutFile=$inputsDir"/mapqFiltering_summary.txt"
 samtools --version > $inputOutFile
 
 #Keep only unique read alignments using a mapq score of 60 
-for f in "$inputsDir"/*/accepted_hits.bam; do 
+for f in $inputsDir"/"*"/accepted_hits.bam"; do 
 	echo "Processing file $f"
 	path=$(dirname $f)
 	samtools view -@ 4 -bq 60 $f > $path"/filteredMapQ.bam"
