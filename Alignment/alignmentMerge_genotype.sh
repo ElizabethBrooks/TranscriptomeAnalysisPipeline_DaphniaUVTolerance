@@ -6,11 +6,11 @@
 #$ -pe smp 4
 
 # script to merge alignments for each input genotype
-# usage: qsub sorting_samtools.sh alignedFolder genotype
-# usage Ex: qsub sorting_samtools.sh aligned_hisat2_run1 E05
-# usage Ex: qsub sorting_samtools.sh aligned_hisat2_run1 R2
-# usage Ex: qsub sorting_samtools.sh aligned_hisat2_run1 Y05
-# usage Ex: qsub sorting_samtools.sh aligned_hisat2_run1 Y023
+# usage: qsub alignmentMerge_genotype.sh alignedFolder genotype
+# usage Ex: qsub alignmentMerge_genotype.sh aligned_hisat2_run1 E05
+# usage Ex: qsub alignmentMerge_genotype.sh aligned_hisat2_run1 R2
+# usage Ex: qsub alignmentMerge_genotype.sh aligned_hisat2_run1 Y05
+# usage Ex: qsub alignmentMerge_genotype.sh aligned_hisat2_run1 Y023
 
 #Required modules for ND CRC servers
 module load bio
@@ -50,7 +50,7 @@ samtools --version > $inputOutFile
 sampleList=$(for f1 in $inputsPath"/"*$genotype*"/accepted_hits.bam"; do echo $f1; done)
 
 # merge the list of aligned samples
-samtools merge -@ 4 -o $outputFolder"/accepted_hits.bam" $sampleList
+samtools merge -@ 4 $outputFolder"/accepted_hits.bam" $sampleList
 
 # add inputs to output summary
-echo "samtools merge -@ 4 -o "$outputFolder"/"accepted_hits.bam" "$sampleList >> $inputOutFile
+echo "samtools merge -@ 4 "$outputFolder"/"accepted_hits.bam" "$sampleList >> $inputOutFile
