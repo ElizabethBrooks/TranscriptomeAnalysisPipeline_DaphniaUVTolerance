@@ -1,4 +1,9 @@
 #!/bin/bash
+#$ -M ebrooks5@nd.edu
+#$ -m abe
+#$ -r n
+#$ -pe smp 4
+#$ -N addRG_jobOutput
 
 # script to add read groups to merged and coordinate sorted bam files
 # usage: bash addReadGroups_samtools.sh sortedFolderName
@@ -23,9 +28,10 @@ for f in $inputsDir"/"*"/accepted_hits.bam"; do
 	# remove file extension
 	fileOut=$(echo $f | sed 's/\.bam/_RG\.bam/g')
 	# retrieve genotype
-	genotype=$(dirname $f | basename)
+	genotype=$(dirname $f)
+	genotype=$(basename $genotype)
 	# add read groups using picard tools
-	samtools addreplacerg -r SM:$genotype -o $fileOut $f
+	samtools addreplacerg -@ 4 -r ID:olympics_$genotype -r SM:$genotype -o $fileOut $f
 	# add run inputs to output summary
-	echo "samtools addreplacerg -r SM:"$genotype" -o "$fileOut" "$f >> $inputOutFile
+	echo "samtools addreplacerg -@ 4 -r SM:"$genotype" -o "$fileOut" "$f >> $inputOutFile
 done
