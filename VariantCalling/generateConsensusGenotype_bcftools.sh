@@ -2,14 +2,14 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N consensus_jobOutput
+#$ -N consensusGenotype_jobOutput
 
 # script to generate a consensus sequence using filtered called variants
-# usage: qsub generateConsensusMerged_bcftools.sh genotype
-# usage Ex: qsub generateConsensusMerged_bcftools.sh E05
-# usage Ex: qsub generateConsensusMerged_bcftools.sh R2
-# usage Ex: qsub generateConsensusMerged_bcftools.sh Y05
-# usage Ex: qsub generateConsensusMerged_bcftools.sh Y023
+# usage: qsub generateConsensusGenotype_bcftools.sh genotype
+# usage Ex: qsub generateConsensusGenotype_bcftools.sh E05
+# usage Ex: qsub generateConsensusGenotype_bcftools.sh R2
+# usage Ex: qsub generateConsensusGenotype_bcftools.sh Y05
+# usage Ex: qsub generateConsensusGenotype_bcftools.sh Y023
 
 # required modules for ND CRC servers
 #module load bio
@@ -27,9 +27,6 @@ type="filteredMapQ"
 # set inputs directory name
 inputsPath=$inputsPath"/variantsMerged_"$type
 
-# set input sample list
-sampleList="../InputData/fileList_Olympics_genotypes.txt"
-
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 
@@ -37,7 +34,7 @@ genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | se
 outFolder=$inputsPath
 
 #Name output file of inputs
-inputOutFile=$outFolder"/consensus_summary.txt"
+inputOutFile=$outFolder"/consensusGenotype_summary.txt"
 
 #Add version to output file of inputs
 bcftools --version > $inputOutFile

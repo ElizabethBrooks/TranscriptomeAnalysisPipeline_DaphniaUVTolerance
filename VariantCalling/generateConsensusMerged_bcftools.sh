@@ -21,9 +21,6 @@ type="filteredMapQ"
 # set inputs directory name
 inputsPath=$inputsPath"/variantsMerged_"$type
 
-# set input sample list
-sampleList="../InputData/fileList_Olympics_genotypes.txt"
-
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 
@@ -31,7 +28,7 @@ genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | se
 outFolder=$inputsPath
 
 #Name output file of inputs
-inputOutFile=$outFolder"/consensus_summary.txt"
+inputOutFile=$outFolder"/consensusMerged_summary.txt"
 
 #Add version to output file of inputs
 bcftools --version > $inputOutFile
