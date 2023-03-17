@@ -10,7 +10,7 @@
 # usage Ex: qsub variantFiltering_bcftools.sh
 
 #Required modules for ND CRC servers
-module load bio
+#module load bio
 
 # set inputs absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")

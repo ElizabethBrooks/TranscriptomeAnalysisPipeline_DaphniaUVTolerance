@@ -10,7 +10,7 @@
 # usage Ex: qsub variantCallingMerged_bcftools.sh
 
 # load required modules for ND CRC servers
-module load bio
+#module load bio
 
 # retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
@@ -23,7 +23,7 @@ genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | se
 type="filteredMapQ"
 
 # set input bam list
-inputBamList="../InputData/fileList_Olympics_genotype.txt"
+inputBamList="../InputData/fileList_Olympics_genotypes.txt"
 
 #Make output folder
 outFolder=$inputsDir"/variantsMerged_"$type
@@ -47,7 +47,7 @@ bcftools --version > "$inputOutFile"
 typeTag="SLASH"$type".bam"
 sed -e "s/$/$typeTag/" $inputBamList > $outFolder"/tmpList.txt"
 #Add directory to beginning of each sample path
-inDirTag=$(echo "$inputsDir"/ | sed "s/\//SLASH/g")
+inDirTag=$(echo $inputsDir"/" | sed "s/\//SLASH/g")
 sed -i -e "s/^/$inDirTag/" $outFolder"/tmpList.txt"
 #Add in slashes
 sed -i "s/SLASH/\//g" $outFolder"/tmpList.txt"
@@ -70,12 +70,12 @@ bcftools index --threads 4 $outFolder"/"$type"_calls.vcf.gz"
 echo "bcftools index --threads 4 "$outFolder"/"$type"_calls.vcf.gz" >> $inputOutFile
 
 #Normalize indels
-bcftools norm --threads 4 -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf
-echo bcftools norm --threads 4 -f "$genomeFile" "$path"/"$type"_calls.vcf.gz -Ob -o "$path"/"$type"_calls.norm.bcf >> "$inputOutFile"
+bcftools norm --threads 4 -f $genomeFile $outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.norm.bcf"
+echo "bcftools norm --threads 4 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.norm.bcf" >> "$inputOutFile"
 
 #Filter adjacent indels within 5bp
-#bcftools filter --threads 4 --IndelGap 5 "$path"/"$type"_calls.norm.bcf -Ob -o "$path"/"$type"_calls.norm.flt-indels.bcf
-#echo bcftools filter --threads 4 --IndelGap 5 "$path"/"$type"_calls.norm.bcf -Ob -o "$path"/"$type"_calls.norm.flt-indels.bcf >> "$inputOutFile"
+#bcftools filter --threads 4 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf
+#echo bcftools filter --threads 4 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf >> "$inputOutFile"
 
 #Include sites where FILTER is true
 #bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf > "$outFolder"/"$type"_filtered.bcf
