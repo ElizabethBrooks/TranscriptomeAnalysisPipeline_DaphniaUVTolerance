@@ -15,19 +15,13 @@ type="filteredMapQ"
 
 # set inputs directory name
 inputsPath=$inputsPath"/variantsMerged_"$type
-inputsDir=$inputsPath"/variantsFiltered"
+inputsDir=$inputsPath
 
 #Retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 
 #Make output folder
-outFolder=$inputsPath"/variantsConsensus"
-mkdir $outFolder
-#Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
+outFolder=$inputsPath
 
 #Name output file of inputs
 inputOutFile=$outFolder"/consensus_summary.txt"
@@ -36,5 +30,5 @@ inputOutFile=$outFolder"/consensus_summary.txt"
 bcftools --version > $inputOutFile
 
 #Generate consensus sequence
-cat $genomeFile | bcftools consensus $inputsDir"/"$type"_calls.normCollapse.bcf" > $outFolder"/"$type"_consensus.fa"
-echo "cat "$genomeFile" | bcftools consensus "$inputsDir"/"$type"_calls.normCollapse.bcf > "$outFolder"/"$type"_consensus.fa" >> "$inputOutFile"
+cat $genomeFile | bcftools consensus $inputsDir"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus.fa"
+echo "cat "$genomeFile" | bcftools consensus "$inputsDir"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus.fa" >> "$inputOutFile"
