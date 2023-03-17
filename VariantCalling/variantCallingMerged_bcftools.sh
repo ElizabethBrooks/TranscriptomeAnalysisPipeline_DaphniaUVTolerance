@@ -45,20 +45,20 @@ bcftools --version > "$inputOutFile"
 #grep "$genotype" "$inputBamList" > tmpList_genotype.txt
 #Add file type to end of each sample path
 typeTag="SLASH"$type".bam"
-sed -e "s/$/$typeTag/" $inputBamList > $outFolder"/tmpList.txt"
+sed -e "s/$/$typeTag/" $inputBamList > $outFolder"/tmpList_olym.txt"
 #Add directory to beginning of each sample path
 inDirTag=$(echo $inputsDir"/" | sed "s/\//SLASH/g")
-sed -i -e "s/^/$inDirTag/" $outFolder"/tmpList.txt"
+sed -i -e "s/^/$inDirTag/" $outFolder"/tmpList_olym.txt"
 #Add in slashes
-sed -i "s/SLASH/\//g" $outFolder"/tmpList.txt"
+sed -i "s/SLASH/\//g" $outFolder"/tmpList_olym.txt"
 
 #Output status mesasge
 echo "Generating variants for the following input set of bam files: " >> $inputOutFile
-cat $outFolder"/tmpList.txt" >> "$inputOutFile"
+cat $outFolder"/tmpList_olym.txt" >> "$inputOutFile"
 
 #Calculate the read coverage of positions in the genome
-#bcftools mpileup --threads 4 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b $outFolder"/tmpList.txt"
-bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o $outFolder"/"$type"_raw.bcf" -f $genomeFile -b $outFolder"/tmpList.txt"
+#bcftools mpileup --threads 4 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b $outFolder"/tmpList_olym.txt"
+bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o $outFolder"/"$type"_raw.bcf" -f $genomeFile -b $outFolder"/tmpList_olym.txt"
 echo "bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" "$f >> $inputOutFile
 
 #Detect the single nucleotide polymorphisms 
@@ -77,7 +77,6 @@ echo "bcftools norm --threads 4 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.
 #bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf > "$outFolder"/"$type"_filtered.bcf
 #echo bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf ">" "$outFolder"/"$type"_filtered.bcf >> "$inputOutFile"
 
-#Clean up
-rm $outFolder"/tmpList.txt"
+# clean up
 rm $outFolder"/"$type"_raw.bcf"
 rm $outFolder"/"$type"_calls.vcf.gz"*
