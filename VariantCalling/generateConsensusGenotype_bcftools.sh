@@ -43,6 +43,3 @@ bcftools --version > $inputOutFile
 echo "Generating $genotype consensus..."
 cat $genomeFile | bcftools consensus -s $genotype $inputsPath"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus_olym.fa"
 echo "cat "$genomeFile" | bcftools consensus -s "$genotype" "$inputsPath"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus_olym.fa" >> "$inputOutFile"
-
-# clean up
-rm $outFolder"/tmpList_olym.txt"
