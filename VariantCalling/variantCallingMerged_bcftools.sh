@@ -73,10 +73,6 @@ echo "bcftools index --threads 4 "$outFolder"/"$type"_calls.vcf.gz" >> $inputOut
 bcftools norm --threads 4 -f $genomeFile $outFolder"/"$type"_calls.vcf.gz" -Ob -o $outFolder"/"$type"_calls.norm.bcf"
 echo "bcftools norm --threads 4 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.gz -Ob -o "$outFolder"/"$type"_calls.norm.bcf" >> "$inputOutFile"
 
-#Filter adjacent indels within 5bp
-#bcftools filter --threads 4 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf
-#echo bcftools filter --threads 4 --IndelGap 5 "$outFolder"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.norm.flt-indels.bcf >> "$inputOutFile"
-
 #Include sites where FILTER is true
 #bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf > "$outFolder"/"$type"_filtered.bcf
 #echo bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf ">" "$outFolder"/"$type"_filtered.bcf >> "$inputOutFile"
