@@ -1,7 +1,12 @@
 #!/bin/bash
-#Script to generate a consensus sequence using filtered called variants
-#Usage: bash generateConsensusMerged_bcftools.sh
-#Usage Ex: bash generateConsensusMerged_bcftools.sh
+#$ -M ebrooks5@nd.edu
+#$ -m abe
+#$ -r n
+#$ -N consensusMerged_jobOutput
+
+# script to generate a consensus sequence using filtered called variants
+# usage: qsub generateConsensusMerged_bcftools.sh
+# usage Ex: qsub generateConsensusMerged_bcftools.sh
 
 #Required modules for ND CRC servers
 #module load bio
