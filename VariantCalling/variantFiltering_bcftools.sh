@@ -9,34 +9,28 @@
 # usage: qsub variantFiltering_bcftools.sh
 # usage Ex: qsub variantFiltering_bcftools.sh
 
-#Required modules for ND CRC servers
+# required modules for ND CRC servers
 #module load bio
 
 # set inputs absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsDir=$inputsPath"/variantsCalled_samtoolsBcftools"
 
-#Retrieve input bam file type
+# retrieve input bam file type
 type="filteredMapQ"
 
 # set inputs directory name
 inputsDir=$inputsDir"/variantsMerged_"$type
 
-#Retrieve genome features absolute path for alignment
+# retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 
-#Make output folder
-outFolder=$inputsDir"/variantsFiltered"
-mkdir $outFolder
-#Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
+# set output folder
+outFolder=$inputsDir
 
-#Name output file of inputs
+# name output file of inputs
 inputOutFile=$outFolder"/variantFiltering_summary.txt"
-#Name output file of filtering info
+# name output file of filtering info
 outputsFile=$outFolder"/variantFiltering_stats.txt"
 
 #Add version to output file of inputs
