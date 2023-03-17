@@ -79,3 +79,5 @@ echo "bcftools norm --threads 4 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.
 
 #Clean up
 rm $outFolder"/tmpList.txt"
+rm $outFolder"/"$type"_raw.bcf"
+rm $outFolder"/"$type"_calls.vcf.gz"*
