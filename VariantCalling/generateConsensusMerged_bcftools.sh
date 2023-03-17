@@ -2,11 +2,11 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N consensusMerged_jobOutput
+#$ -N consensus_jobOutput
 
 # script to generate a consensus sequence using filtered called variants
-# usage: qsub generateConsensusMerged_bcftools.sh
-# usage Ex: qsub generateConsensusMerged_bcftools.sh
+# usage: qsub generateConsensus_bcftools.sh
+# usage Ex: qsub generateConsensus_bcftools.sh
 
 #Required modules for ND CRC servers
 #module load bio
@@ -34,6 +34,17 @@ inputOutFile=$outFolder"/consensus_summary.txt"
 #Add version to output file of inputs
 bcftools --version > $inputOutFile
 
-#Generate consensus sequence
+# generate Olympics consensus sequence
+echo "Generating Olympics consensus..."
 cat $genomeFile | bcftools consensus $inputsDir"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus.fa"
 echo "cat "$genomeFile" | bcftools consensus "$inputsDir"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus.fa" >> "$inputOutFile"
+
+# generate tolerant genotypes consensus sequence
+echo "Generating tolerant genotypes consensus..."
+cat $genomeFile | bcftools consensus -s "Y05,Y023" $inputsDir"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus.fa"
+echo "cat "$genomeFile" | bcftools consensus -s Y05,Y023 "$inputsDir"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus.fa" >> "$inputOutFile"
+
+# generate non-tolerant genotypes consensus sequence
+echo "Generating non-tolerant genotypes consensus..."
+cat $genomeFile | bcftools consensus -s "E05,R2" $inputsDir"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus.fa"
+echo "cat "$genomeFile" | bcftools consensus -s E05,R2 "$inputsDir"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus.fa" >> "$inputOutFile"

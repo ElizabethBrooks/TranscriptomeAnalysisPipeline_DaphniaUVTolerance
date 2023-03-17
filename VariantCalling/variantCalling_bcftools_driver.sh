@@ -43,7 +43,7 @@ bash variantCallingMerged_bcftools.sh
 bash variantFiltering_bcftools.sh
 
 # run script to generate consensus sequences
-bash generateConsensusMerged_bcftools.sh
+bash generateConsensus_bcftools.sh
 
 #Copy previous summaries
 cp "$inputsDir"/*.txt "$outputFolder"
