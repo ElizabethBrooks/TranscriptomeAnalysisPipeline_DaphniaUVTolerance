@@ -36,15 +36,15 @@ bcftools --version > $inputOutFile
 
 # generate Olympics consensus sequence
 echo "Generating Olympics consensus..."
-cat $genomeFile | bcftools consensus $inputsDir"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus.fa"
-echo "cat "$genomeFile" | bcftools consensus "$inputsDir"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus.fa" >> "$inputOutFile"
+cat $genomeFile | bcftools consensus $inputsDir"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus_olym.fa"
+echo "cat "$genomeFile" | bcftools consensus "$inputsDir"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus_olym.fa" >> "$inputOutFile"
 
 # generate tolerant genotypes consensus sequence
 echo "Generating tolerant genotypes consensus..."
-cat $genomeFile | bcftools consensus -s "Y05,Y023" $inputsDir"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus.fa"
-echo "cat "$genomeFile" | bcftools consensus -s Y05,Y023 "$inputsDir"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus.fa" >> "$inputOutFile"
+cat $genomeFile | bcftools consensus -s "Y05,Y023" $inputsDir"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus_tol.fa"
+echo "cat "$genomeFile" | bcftools consensus -s Y05,Y023 "$inputsDir"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus_tol.fa" >> "$inputOutFile"
 
 # generate non-tolerant genotypes consensus sequence
 echo "Generating non-tolerant genotypes consensus..."
-cat $genomeFile | bcftools consensus -s "E05,R2" $inputsDir"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus.fa"
-echo "cat "$genomeFile" | bcftools consensus -s E05,R2 "$inputsDir"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus.fa" >> "$inputOutFile"
+cat $genomeFile | bcftools consensus -s "E05,R2" $inputsDir"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus_nTol.fa"
+echo "cat "$genomeFile" | bcftools consensus -s E05,R2 "$inputsDir"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus_nTol.fa" >> "$inputOutFile"
