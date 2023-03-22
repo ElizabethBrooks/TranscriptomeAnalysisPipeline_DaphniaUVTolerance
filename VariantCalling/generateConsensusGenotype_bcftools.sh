@@ -12,7 +12,7 @@
 # usage Ex: qsub generateConsensusGenotype_bcftools.sh Y023
 
 # required modules for ND CRC servers
-#module load bio
+module load bio
 
 # retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")

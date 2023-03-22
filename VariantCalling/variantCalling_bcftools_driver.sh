@@ -25,10 +25,7 @@ inputsDir=$inputsPath"/"$sortedFolderName
 filterType="filteredMapQ"
 
 # merge alignments for each genotype
-bash sortingMerge_samtools.sh $sortedFolderName E05
-bash sortingMerge_samtools.sh $sortedFolderName R2
-bash sortingMerge_samtools.sh $sortedFolderName Y05
-bash sortingMerge_samtools.sh $sortedFolderName Y023
+bash sortingMerge_samtools.sh $sortedFolderName
 
 # run script to add read groups
 bash addReadGroups_samtools.sh

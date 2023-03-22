@@ -10,7 +10,7 @@
 # usage Ex: qsub variantCallingMerged_bcftools.sh
 
 # load required modules for ND CRC servers
-#module load bio
+module load bio
 
 # retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
