@@ -58,8 +58,8 @@ bcftools --version > "$inputOutFile"
 #Calculate the read coverage of positions in the genome
 #bcftools mpileup --threads 4 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b $outFolder"/tmpList_olym.txt"
 #bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o $outFolder"/"$type"_raw.bcf" -f $genomeFile -b $outFolder"/tmpList_olym.txt"
-bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o $outFolder"/"$type"_raw.bcf" -f $genomeFile $inputsDir"/OLYM/filteredMapQ_readGroups.bam"
-echo "bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" "$inputsDir"/OLYM/filteredMapQ_readGroups.bam" >> $inputOutFile
+bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o $outFolder"/"$type"_raw.bcf" -f $genomeFile $inputsDir"/OLYM/"$type"_readGroups.bam"
+echo "bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" "$inputsDir"/OLYM/"$type"_readGroups.bam" >> $inputOutFile
 
 #Detect the single nucleotide polymorphisms 
 bcftools call --threads 4 -mv -Oz -o $outFolder"/"$type"_calls.vcf.gz" $outFolder"/"$type"_raw.bcf" 
@@ -78,5 +78,5 @@ echo "bcftools norm --threads 4 -f "$genomeFile" "$outFolder"/"$type"_calls.vcf.
 #echo bcftools query -i'FILTER="."' -f'%CHROM %POS %FILTER\n' "$outFolder"/"$type"_calls.norm.flt-indels.bcf ">" "$outFolder"/"$type"_filtered.bcf >> "$inputOutFile"
 
 # clean up
-rm $outFolder"/"$type"_raw.bcf"
-rm $outFolder"/"$type"_calls.vcf.gz"*
+#rm $outFolder"/"$type"_raw.bcf"
+#rm $outFolder"/"$type"_calls.vcf.gz"*
