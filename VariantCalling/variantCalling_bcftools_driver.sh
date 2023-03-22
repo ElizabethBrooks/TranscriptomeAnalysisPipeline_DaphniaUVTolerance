@@ -6,20 +6,20 @@
 #$ -N VC_pipeline_jobOutput
 
 # script to perform bam read quaity filtering
-# usage: qsub variantCalling_bcftools_driver.sh alignedFolder
-# usage Ex: qsub variantCalling_bcftools_driver.sh aligned_hisat2_run1
+# usage: qsub variantCalling_bcftools_driver.sh
+# usage Ex: qsub variantCalling_bcftools_driver.sh
 
 #Required modules for ND CRC servers
 module load bio
 
 # set sorted folder name
-alignedFolder="$1"
+sortedFolder="sortedCoordinate_samtoolsHisat2_run1"
 
 # retrieve aligned reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 
 # set sorting outputs absolute path
-inputsDir=$inputsPath"/"$alignedFolder
+inputsDir=$inputsPath"/"$sortedFolder
 
 # set filter type
 filterType="filteredMapQ"
@@ -33,12 +33,11 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-
-# merge alignments for each genotype
-bash sortingMerge_samtools.sh $alignedFolder
-
 # run script to filter bam files by mapq
 bash filterByMapQ_samtools.sh
+
+# merge alignments for each genotype
+bash sortingMerge_samtools.sh
 
 # run variant calling script
 bash variantCallingMerged_bcftools.sh

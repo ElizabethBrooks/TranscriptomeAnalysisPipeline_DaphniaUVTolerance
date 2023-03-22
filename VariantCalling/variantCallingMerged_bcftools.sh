@@ -39,9 +39,9 @@ inputOutFile=$outFolder"/variantCalling_summary.txt"
 #Add version to output file of inputs
 bcftools --version > "$inputOutFile"
 
-#Select lines associated with input genotype
-#genotype=_"$4"_
-#grep "$genotype" "$inputBamList" > tmpList_genotype.txt
+##Select lines associated with input genotype
+##genotype=_"$4"_
+##grep "$genotype" "$inputBamList" > tmpList_genotype.txt
 #Add file type to end of each sample path
 #typeTag="SLASH"$type".bam"
 #sed -e "s/$/$typeTag/" $inputBamList > $outFolder"/tmpList_olym.txt"
