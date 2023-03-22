@@ -28,60 +28,60 @@ outputPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 inputOutFile="$outputPath"/"samtools_merge_summary.txt"
 
 # add software version to output summary file
-#samtools --version > $inputOutFile
+samtools --version > $inputOutFile
 
 
 ## E05 genotype
 
 # set and create genotype outputs directory
-#outputFolder=$outputPath"/E05"
-#mkdir $outputFolder
+outputFolder=$outputPath"/E05"
+mkdir $outputFolder
 
 # loop through all reads and sort sam/bam files for input to samtools
-#sampleList=$(for f1 in $inputsDir"/"*"_E05_"*"/filteredMapQ.bam"; do echo $f1; done)
+sampleList=$(for f1 in $inputsDir"/"*"_E05_"*"/filteredMapQ.bam"; do echo $f1; done)
 
 # merge the list of aligned samples
-#samtools merge -@ 4 $outputFolder"/filteredMapQ.bam" $sampleList
-#echo "samtools merge -@ 4 "$outputFolder"/filteredMapQ.bam "$sampleList >> $inputOutFile
+samtools merge -@ 4 $outputFolder"/filteredMapQ.bam" $sampleList
+echo "samtools merge -@ 4 "$outputFolder"/filteredMapQ.bam "$sampleList >> $inputOutFile
 
 ## R2 genotype
 
 # set and create genotype outputs directory
-#outputFolder=$outputPath"/R2"
-#mkdir $outputFolder
+outputFolder=$outputPath"/R2"
+mkdir $outputFolder
 
 # loop through all reads and sort sam/bam files for input to samtools
-#sampleList=$(for f1 in $inputsDir"/"*"_R2_"*"/filteredMapQ.bam"; do echo $f1; done)
+sampleList=$(for f1 in $inputsDir"/"*"_R2_"*"/filteredMapQ.bam"; do echo $f1; done)
 
 # merge the list of aligned samples
-#samtools merge -@ 4 $outputFolder"/filteredMapQ.bam" $sampleList
-#echo "samtools merge -@ 4 "$outputFolder"/filteredMapQ.bam "$sampleList >> $inputOutFile
+samtools merge -@ 4 $outputFolder"/filteredMapQ.bam" $sampleList
+echo "samtools merge -@ 4 "$outputFolder"/filteredMapQ.bam "$sampleList >> $inputOutFile
 
 ## Y05 genotype
 
 # set and create genotype outputs directory
-#outputFolder=$outputPath"/Y05"
-#mkdir $outputFolder
+outputFolder=$outputPath"/Y05"
+mkdir $outputFolder
 
 # loop through all reads and sort sam/bam files for input to samtools
-#sampleList=$(for f1 in $inputsDir"/"*"_Y05_"*"/filteredMapQ.bam"; do echo $f1; done)
+sampleList=$(for f1 in $inputsDir"/"*"_Y05_"*"/filteredMapQ.bam"; do echo $f1; done)
 
 # merge the list of aligned samples
-#samtools merge -@ 4 $outputFolder"/filteredMapQ.bam" $sampleList
-#echo "samtools merge -@ 4 "$outputFolder"/filteredMapQ.bam "$sampleList >> $inputOutFile
+samtools merge -@ 4 $outputFolder"/filteredMapQ.bam" $sampleList
+echo "samtools merge -@ 4 "$outputFolder"/filteredMapQ.bam "$sampleList >> $inputOutFile
 
 ## Y023 genotype
 
 # set and create genotype outputs directory
-#outputFolder=$outputPath"/Y023"
-#mkdir $outputFolder
+outputFolder=$outputPath"/Y023"
+mkdir $outputFolder
 
 # loop through all reads and sort sam/bam files for input to samtools
-#sampleList=$(for f1 in $inputsDir"/"*"_Y023_"*"/filteredMapQ.bam"; do echo $f1; done)
+sampleList=$(for f1 in $inputsDir"/"*"_Y023_"*"/filteredMapQ.bam"; do echo $f1; done)
 
 # merge the list of aligned samples
-#samtools merge -@ 4 $outputFolder"/filteredMapQ.bam" $sampleList
-#echo "samtools merge -@ 4 "$outputFolder"/filteredMapQ.bam "$sampleList >> $inputOutFile
+samtools merge -@ 4 $outputFolder"/filteredMapQ.bam" $sampleList
+echo "samtools merge -@ 4 "$outputFolder"/filteredMapQ.bam "$sampleList >> $inputOutFile
 
 ## Oympics set
 
