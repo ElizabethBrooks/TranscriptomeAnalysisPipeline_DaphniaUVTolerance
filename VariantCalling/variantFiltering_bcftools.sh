@@ -7,10 +7,9 @@
 
 # script to perform variant filtering after calling
 # usage: qsub variantFiltering_bcftools.sh
-# usage Ex: qsub variantFiltering_bcftools.sh
 
 # required modules for ND CRC servers
-#module load bio
+module load bio
 
 # set inputs absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")

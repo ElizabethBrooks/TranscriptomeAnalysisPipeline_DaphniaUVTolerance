@@ -7,7 +7,6 @@
 
 # script to perform variant calling of mapq filtered bam files before variant filtering
 # usage: qsub variantCallingMerged_bcftools.sh
-# usage Ex: qsub variantCallingMerged_bcftools.sh
 
 # load required modules for ND CRC servers
 module load bio
