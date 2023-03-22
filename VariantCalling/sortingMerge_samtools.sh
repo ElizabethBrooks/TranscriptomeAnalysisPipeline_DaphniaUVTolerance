@@ -23,84 +23,84 @@ inputsDir=$inputsPath"/"$inputFolder
 
 # set and create merged outputs directory
 outputPath=$inputsPath"/variantsCalled_samtoolsBcftools"
-mkdir $outputPath
+#mkdir $outputPath
 # check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outputsPath directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#if [ $? -ne 0 ]; then
+#	echo "The $outputsPath directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 # name output file of inputs
 inputOutFile="$outputPath"/"samtools_merge_summary.txt"
 
 # add software version to output summary file
-samtools --version > $inputOutFile
+#samtools --version > $inputOutFile
 
 
 ## E05 genotype
 
 # set and create genotype outputs directory
-outputFolder=$outputPath"/E05"
-mkdir $outputFolder
+#outputFolder=$outputPath"/E05"
+#mkdir $outputFolder
 
 # loop through all reads and sort sam/bam files for input to samtools
-sampleList=$(for f1 in $inputsDir"/"*"_E05_"*"/accepted_hits.bam"; do echo $f1; done)
+#sampleList=$(for f1 in $inputsDir"/"*"_E05_"*"/accepted_hits.bam"; do echo $f1; done)
 
 # merge the list of aligned samples
-samtools merge -@ 4 $outputFolder"/accepted_hits.bam" $sampleList
-echo "samtools merge -@ 4 "$outputFolder"/"accepted_hits.bam" "$sampleList >> $inputOutFile
+#samtools merge -@ 4 $outputFolder"/accepted_hits.bam" $sampleList
+#echo "samtools merge -@ 4 "$outputFolder"/"accepted_hits.bam" "$sampleList >> $inputOutFile
 
 ## R2 genotype
 
 # set and create genotype outputs directory
-outputFolder=$outputPath"/R2"
-mkdir $outputFolder
+#outputFolder=$outputPath"/R2"
+#mkdir $outputFolder
 
 # loop through all reads and sort sam/bam files for input to samtools
-sampleList=$(for f1 in $inputsDir"/"*"_R2_"*"/accepted_hits.bam"; do echo $f1; done)
+#sampleList=$(for f1 in $inputsDir"/"*"_R2_"*"/accepted_hits.bam"; do echo $f1; done)
 
 # merge the list of aligned samples
-samtools merge -@ 4 $outputFolder"/accepted_hits.bam" $sampleList
-echo "samtools merge -@ 4 "$outputFolder"/"accepted_hits.bam" "$sampleList >> $inputOutFile
+#samtools merge -@ 4 $outputFolder"/accepted_hits.bam" $sampleList
+#echo "samtools merge -@ 4 "$outputFolder"/"accepted_hits.bam" "$sampleList >> $inputOutFile
 
 ## Y05 genotype
 
 # set and create genotype outputs directory
-outputFolder=$outputPath"/Y05"
-mkdir $outputFolder
+#outputFolder=$outputPath"/Y05"
+#mkdir $outputFolder
 
 # loop through all reads and sort sam/bam files for input to samtools
-sampleList=$(for f1 in $inputsDir"/"*"_Y05_"*"/accepted_hits.bam"; do echo $f1; done)
+#sampleList=$(for f1 in $inputsDir"/"*"_Y05_"*"/accepted_hits.bam"; do echo $f1; done)
 
 # merge the list of aligned samples
-samtools merge -@ 4 $outputFolder"/accepted_hits.bam" $sampleList
-echo "samtools merge -@ 4 "$outputFolder"/"accepted_hits.bam" "$sampleList >> $inputOutFile
+#samtools merge -@ 4 $outputFolder"/accepted_hits.bam" $sampleList
+#echo "samtools merge -@ 4 "$outputFolder"/"accepted_hits.bam" "$sampleList >> $inputOutFile
 
 ## Y023 genotype
 
 # set and create genotype outputs directory
-outputFolder=$outputPath"/Y023"
-mkdir $outputFolder
+#outputFolder=$outputPath"/Y023"
+#mkdir $outputFolder
 
 # loop through all reads and sort sam/bam files for input to samtools
-sampleList=$(for f1 in $inputsDir"/"*"_Y023_"*"/accepted_hits.bam"; do echo $f1; done)
+#sampleList=$(for f1 in $inputsDir"/"*"_Y023_"*"/accepted_hits.bam"; do echo $f1; done)
 
 # merge the list of aligned samples
-samtools merge -@ 4 $outputFolder"/accepted_hits.bam" $sampleList
-echo "samtools merge -@ 4 "$outputFolder"/"accepted_hits.bam" "$sampleList >> $inputOutFile
+#samtools merge -@ 4 $outputFolder"/accepted_hits.bam" $sampleList
+#echo "samtools merge -@ 4 "$outputFolder"/"accepted_hits.bam" "$sampleList >> $inputOutFile
 
 ## Oympics set
 
 # run script to add read groups
-bash addReadGroups_samtools.sh
+#bash addReadGroups_samtools.sh
 
 # set and create genotype outputs directory
 outputFolder=$outputPath"/OLYM"
 mkdir $outputFolder
 
 # loop through all reads and sort sam/bam files for input to samtools
-sampleList=$(for f1 in $outputPath"/"*"/accepted_hits.RG.bam"; do echo $f1; done)
+sampleList=$(for f1 in $outputPath"/"*"/accepted_hits_RG.bam"; do echo $f1; done)
 
 # merge the list of aligned samples
-samtools merge -@ 4 $outputFolder"/accepted_hits.bam" $sampleList
+samtools merge -@ 4 $outputFolder"/accepted_hits_RG.bam" $sampleList
 echo "samtools merge -@ 4 "$outputFolder"/"accepted_hits.bam" "$sampleList >> $inputOutFile
