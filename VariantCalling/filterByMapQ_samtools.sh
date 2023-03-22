@@ -24,13 +24,21 @@ inputOutFile=$inputsDir"/mapqFiltering_summary.txt"
 samtools --version > $inputOutFile
 
 #Keep only unique read alignments using a mapq score of 60 
-for f in $inputsDir"/"*"/accepted_hits_RG.bam"; do 
-	echo "Processing file $f"
-	path=$(dirname $f)
-	samtools view -@ 4 -bq 60 $f > $path"/filteredMapQ.bam"
-	echo "samtools view -@ 8 -bq 60 "$f" > "$path"/filteredMapQ.bam" >> $inputOutFile
+samtools view -@ 4 -bq 60 $inputsDir"/OLYM/accepted_hits.bam" > $inputsDir"/OLYM/filteredMapQ.bam"
+echo "samtools view -@ 8 -bq 60 "$inputsDir"/OLYM/accepted_hits.bam > "$inputsDir"/OLYM/filteredMapQ.bam" >> $inputOutFile
+# index bamfile
+samtools index -@ 4 $inputsDir"/OLYM/filteredMapQ.bam"
+# clean up
+rm $inputsDir"/OLYM/accepted_hits.bam"
+
+#Keep only unique read alignments using a mapq score of 60 
+#for f in $inputsDir"/"*"/accepted_hits_RG.bam"; do 
+#	echo "Processing file $f"
+#	path=$(dirname $f)
+#	samtools view -@ 4 -bq 60 $f > $path"/filteredMapQ.bam"
+#	echo "samtools view -@ 8 -bq 60 "$f" > "$path"/filteredMapQ.bam" >> $inputOutFile
 	# index bamfile
-	samtools index -@ 4 $path"/filteredMapQ.bam"
+#	samtools index -@ 4 $path"/filteredMapQ.bam"
 	# clean up
-	rm $f
-done
+#	rm $f
+#done

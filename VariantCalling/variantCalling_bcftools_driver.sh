@@ -27,9 +27,6 @@ filterType="filteredMapQ"
 # merge alignments for each genotype
 bash sortingMerge_samtools.sh $sortedFolderName
 
-# run script to add read groups
-bash addReadGroups_samtools.sh
-
 # run script to filter bam files by mapq
 bash filterByMapQ_samtools.sh
 

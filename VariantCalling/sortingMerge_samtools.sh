@@ -86,12 +86,15 @@ echo "samtools merge -@ 4 "$outputFolder"/"accepted_hits.bam" "$sampleList >> $i
 
 ## Oympics set
 
+# run script to add read groups
+bash addReadGroups_samtools.sh
+
 # set and create genotype outputs directory
 outputFolder=$outputPath"/OLYM"
 mkdir $outputFolder
 
 # loop through all reads and sort sam/bam files for input to samtools
-sampleList=$(for f1 in $outputPath"/"*"/accepted_hits.bam"; do echo $f1; done)
+sampleList=$(for f1 in $outputPath"/"*"/accepted_hits.RG.bam"; do echo $f1; done)
 
 # merge the list of aligned samples
 samtools merge -@ 4 $outputFolder"/accepted_hits.bam" $sampleList

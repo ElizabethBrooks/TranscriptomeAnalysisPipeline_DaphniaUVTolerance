@@ -44,22 +44,23 @@ bcftools --version > "$inputOutFile"
 #genotype=_"$4"_
 #grep "$genotype" "$inputBamList" > tmpList_genotype.txt
 #Add file type to end of each sample path
-typeTag="SLASH"$type".bam"
-sed -e "s/$/$typeTag/" $inputBamList > $outFolder"/tmpList_olym.txt"
+#typeTag="SLASH"$type".bam"
+#sed -e "s/$/$typeTag/" $inputBamList > $outFolder"/tmpList_olym.txt"
 #Add directory to beginning of each sample path
-inDirTag=$(echo $inputsDir"/" | sed "s/\//SLASH/g")
-sed -i -e "s/^/$inDirTag/" $outFolder"/tmpList_olym.txt"
+#inDirTag=$(echo $inputsDir"/" | sed "s/\//SLASH/g")
+#sed -i -e "s/^/$inDirTag/" $outFolder"/tmpList_olym.txt"
 #Add in slashes
-sed -i "s/SLASH/\//g" $outFolder"/tmpList_olym.txt"
+#sed -i "s/SLASH/\//g" $outFolder"/tmpList_olym.txt"
 
 #Output status mesasge
-echo "Generating variants for the following input set of bam files: " >> $inputOutFile
-cat $outFolder"/tmpList_olym.txt" >> "$inputOutFile"
+#echo "Generating variants for the following input set of bam files: " >> $inputOutFile
+#cat $outFolder"/tmpList_olym.txt" >> "$inputOutFile"
 
 #Calculate the read coverage of positions in the genome
 #bcftools mpileup --threads 4 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" -b $outFolder"/tmpList_olym.txt"
-bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o $outFolder"/"$type"_raw.bcf" -f $genomeFile -b $outFolder"/tmpList_olym.txt"
-echo "bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" "$f >> $inputOutFile
+#bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o $outFolder"/"$type"_raw.bcf" -f $genomeFile -b $outFolder"/tmpList_olym.txt"
+bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o $outFolder"/"$type"_raw.bcf" -f $genomeFile $inputsDir"/OLYM/filteredMapQ.bam"
+echo "bcftools mpileup --threads 4 -d 8000 -Q 20 -Ob -o "$outFolder"/"$type"_raw.bcf -f "$genomeFile" "$inputsDir"/OLYM/filteredMapQ.bam" >> $inputOutFile
 
 #Detect the single nucleotide polymorphisms 
 bcftools call --threads 4 -mv -Oz -o $outFolder"/"$type"_calls.vcf.gz" $outFolder"/"$type"_raw.bcf" 
