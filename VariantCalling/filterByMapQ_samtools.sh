@@ -11,10 +11,12 @@
 #Required modules for ND CRC servers
 module load bio
 
+# retrieve input folder of trimmed data
+inputFolder="sortedCoordinate_samtoolsHisat2_run1"
+
 #Retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-inputsDir=$inputsPath"/variantsCalled_samtoolsBcftools"
-outputsPath=$inputsPath
+inputsDir=$inputsPath"/"$inputFolder
 
 #Name output file of inputs
 inputOutFile=$inputsDir"/mapqFiltering_summary.txt"

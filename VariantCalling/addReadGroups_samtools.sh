@@ -23,7 +23,7 @@ inputOutFile=$inputsDir"/addReadGroups_summary.txt"
 samtools --version > $inputOutFile
 
 # loop over each genotype
-for f in $inputsDir"/"*"/accepted_hits.bam"; do 
+for f in $inputsDir"/"*"/filteredMapQ.bam"; do 
 	# remove file extension
 	fileOut=$(echo $f | sed 's/\.bam/_readGroups\.bam/g')
 	# retrieve genotype
