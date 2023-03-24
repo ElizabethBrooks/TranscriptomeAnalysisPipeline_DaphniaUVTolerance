@@ -27,7 +27,7 @@ filterType="filteredMapQ"
 # set and create merged outputs directory
 outputPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 mkdir $outputPath
- check if the folder already exists
+# check if the folder already exists
 if [ $? -ne 0 ]; then
 	echo "The $outputsPath directory already exsists... please remove before proceeding."
 	exit 1

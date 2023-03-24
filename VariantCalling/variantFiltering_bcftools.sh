@@ -70,25 +70,25 @@ bcftools filter --threads 4 -e 'GT="het"' $outFolder"/"$type"_calls.flt-qualDP.b
 #bcftools filter --threads 4 -G 2 $outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 #Filter adjacent SNPs within 2bp
-bcftools filter --threads 4 -g 2 $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-SNPs.bcf"
-echo "bcftools filter --threads 4 -g 2 "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-SNPs.bcf" >> $inputOutFile
-echo "& excluding adjacent SNPs within 2bp: " >> $outputsFile
-bcftools filter --threads 4 -g 2 $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
+#bcftools filter --threads 4 -g 2 $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-SNPs.bcf"
+#echo "bcftools filter --threads 4 -g 2 "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-SNPs.bcf" >> $inputOutFile
+#echo "& excluding adjacent SNPs within 2bp: " >> $outputsFile
+#bcftools filter --threads 4 -g 2 $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 #Turn on left alignment, normalize indels, and collapse multi allelic sites
-bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-SNPs.bcf" -Ob -o $outFolder"/"$type"_calls.flt-norm.bcf"
-echo "bcftools norm --threads 4 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-SNPs.bcf -Ob -o "$outFolder"/"$type"_calls.flt-norm.bcf" >> $inputOutFile
+bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-norm.bcf"
+echo "bcftools norm --threads 4 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-norm.bcf" >> $inputOutFile
 echo "& with left alignment, normalized indels, and collapsed multi allelic sites: " >> $outputsFile
-bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-SNPs.bcf" | grep -v "#" | wc -l >> $outputsFile
+bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 #Index bcf file
 bcftools index --threads 4 $outFolder"/"$type"_calls.flt-norm.bcf"
 echo "bcftools index --threads 4 "$outFolder"/"$type"_calls.flt-norm.bcf" >> $inputOutFile
 
 # clean up
-rm $outFolder"/"$type"_calls.flt-qual.bcf"
-rm $outFolder"/"$type"_calls.flt-qualDP.bcf"
-rm $outFolder"/"$type"_calls.flt-qualDP-homo.bcf"
+#rm $outFolder"/"$type"_calls.flt-qual.bcf"
+#rm $outFolder"/"$type"_calls.flt-qualDP.bcf"
+#rm $outFolder"/"$type"_calls.flt-qualDP-homo.bcf"
 #rm $outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf"
 #rm $outFolder"/"$type"_calls.flt-indels.bcf"
-rm $outFolder"/"$type"_calls.flt-SNPs.bcf"
+#rm $outFolder"/"$type"_calls.flt-SNPs.bcf"

@@ -3,21 +3,22 @@
 #$ -m abe
 #$ -r n
 #$ -N trimmingQC_trimmomaticFastqc_jobOutput
-#$ -pe smp 8
-#Script to perform trimmomatic trimming and fastqc quality control
-# of paired end reads
+#$ -pe smp 4
+
+#Script to perform trimmomatic trimming and fastqc quality control of paired end reads
 #Usage: qsub trimmingQC_trimmomaticFastqc.sh
 #Usage Ex: qsub trimmingQC_trimmomaticFastqc.sh
 
 #Required modules for ND CRC servers
 module load bio
 #module load bio/trimmomatic/0.32
+
 #Prepare for adapter trimming and quality control
 qcCountStart=0
 qcCountEnd=0
 score=0
-dirFlag=0
-runNum=1
+
+
 #Retrieve paired reads absolute path for alignment
 readPath=$(grep "pairedReads:" ../InputData/inputPaths.txt | tr -d " " | sed "s/pairedReads://g")
 #Retrieve adapter absolute path for alignment
@@ -26,20 +27,15 @@ adapterPath=$(grep "adapter:" ../InputData/inputPaths.txt | tr -d " " | sed "s/a
 outputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
 #Move to outputs directory
 cd "$outputsPath"
-#Make a new directory for each trimming run
-while [ $dirFlag -eq 0 ]; do
-	trimOut=trimmed_run"$runNum"
-	mkdir $trimOut
-	#Check if the folder already exists
-	if [ $? -ne 0 ]; then
-		#Increment the folder name
-		let runNum+=1
-	else
-		#Indicate that the folder was successfully made
-		dirFlag=1
-		echo "Creating folder for run $runNum of trimming..."
-	fi
-done
+#Make a new directory for the trimming run
+trimOut="trimmed"
+mkdir $trimOut
+# check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $trimOut directory already exsists... please remove before proceeding."
+	exit 1
+fi
+
 #Loop through all forward and reverse reads and run trimmomatic on each pair
 for f1 in "$readPath"/*1.fq.gz; do
 	#Trim extension from current file name

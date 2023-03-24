@@ -13,7 +13,7 @@
 module load bio
 
 # retrieve input folder of trimmed data
-inputFolder="sortedCoordinate_samtoolsHisat2_run1"
+inputFolder="sortedCoordinate_samtoolsHisat2"
 
 # retrieve aligned reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")

@@ -4,20 +4,21 @@
 #$ -r n
 #$ -N sorting_samtools_jobOutput
 #$ -pe smp 4
-#Script to perform samtools sorting of trimmed, then aligned
+
+# Script to perform samtools sorting of trimmed, then aligned
 # paired end reads
-# usage: qsub sorting_samtools.sh sortingTarget sortingMethod alignedFolder optionalAssembledFolder
-# usage Ex: qsub sorting_samtools.sh genome name aligned_hisat2_run1
+# usage: qsub sorting_samtools.sh sortingMethod alignedFolder optionalAssembledFolder
+# usage Ex: qsub sorting_samtools.sh name aligned_hisat2
 
 #Required modules for ND CRC servers
 module load bio
 
 #Retrieve sorting method flags from input
-if [[ "$2" == "name" || "$2" == "Name" || "$2" == "n" || "$2" == "N" ]]; then
+if [[ "$1" == "name" || "$1" == "Name" || "$1" == "n" || "$1" == "N" ]]; then
 	#Name sorted flag with num threads flag
 	flags="-@ 4 -n"
 	methodTag="Name"
-elif [[ "$2" == "coordinate" || "$2" == "Coordinate" || "$2" == "c" || "$2" == "C" ]]; then
+elif [[ "$1" == "coordinate" || "$1" == "Coordinate" || "$1" == "c" || "$1" == "C" ]]; then
 	#Coordinate sorted with num threads flag
 	flags="-@ 4"
 	methodTag="Coordinate"
@@ -32,15 +33,17 @@ inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | s
 #Retrieve sorting outputs absolute path
 outputsPath="$inputsPath"
 
-#Set analysis method for folder naming
-analysisMethod="Hisat2"
-
 #Move to outputs directory
 cd "$outputsPath"
 
 # create outputs directory
-outputFolder="sorted"$methodTag"_samtools"$analysisMethod
+outputFolder="sorted"$methodTag"_samtoolsHisat2"
 mkdir "$outputFolder"
+# check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputsPath directory already exsists... please remove before proceeding."
+	exit 1
+fi
 
 #Name output file of inputs
 inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
@@ -48,7 +51,7 @@ inputOutFile="$outputFolder"/"$outputFolder"_summary.txt
 samtools --version > $inputOutFile
 
 #Loop through all reads and sort sam/bam files for input to samtools
-for f1 in "$inputsPath"/"$3"/*/; do
+for f1 in "$inputsPath"/"$2"/*/; do
 	#Name of aligned file
 	curAlignedSample="$f1"accepted_hits.bam
 	#Trim file path from current folder name
