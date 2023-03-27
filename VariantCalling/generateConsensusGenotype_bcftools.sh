@@ -41,5 +41,5 @@ bcftools --version > $inputOutFile
 
 # generate Olympics consensus sequence
 echo "Generating $genotype consensus..."
-cat $genomeFile | bcftools consensus -s $genotype $inputsPath"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus_olym.fa"
-echo "cat "$genomeFile" | bcftools consensus -s "$genotype" "$inputsPath"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus_olym.fa" >> "$inputOutFile"
+cat $genomeFile | bcftools consensus -s $genotype $inputsPath"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus_"$genotype".fa"
+echo "cat "$genomeFile" | bcftools consensus -s "$genotype" "$inputsPath"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus_"$genotype".fa" >> "$inputOutFile"

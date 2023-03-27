@@ -47,10 +47,10 @@ bash variantFiltering_bcftools.sh
 
 # run script to generate consensus sequences
 bash generateConsensusMerged_bcftools.sh
-bash generateConsensusGenotype_bcftools.sh "E05"
-bash generateConsensusGenotype_bcftools.sh "R2"
-bash generateConsensusGenotype_bcftools.sh "Y05"
-bash generateConsensusGenotype_bcftools.sh "Y023"
+#bash generateConsensusGenotype_bcftools.sh "E05"
+#bash generateConsensusGenotype_bcftools.sh "R2"
+#bash generateConsensusGenotype_bcftools.sh "Y05"
+#bash generateConsensusGenotype_bcftools.sh "Y023"
 
 #Copy previous summaries
 cp "$inputsDir"/*.txt "$outputPath"

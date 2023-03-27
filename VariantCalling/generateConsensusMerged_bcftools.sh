@@ -34,5 +34,5 @@ bcftools --version > $inputOutFile
 
 # generate merged consensus sequence
 echo "Generating merged consensus..."
-cat $genomeFile | bcftools consensus $inputsPath"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus_olym.fa"
-echo "cat "$genomeFile" | bcftools consensus "$inputsPath"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus_olym.fa" >> "$inputOutFile"
+cat $genomeFile | bcftools consensus $inputsPath"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus.fa"
+echo "cat "$genomeFile" | bcftools consensus "$inputsPath"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus.fa" >> "$inputOutFile"
