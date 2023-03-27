@@ -34,10 +34,10 @@ if [ $? -ne 0 ]; then
 fi
 
 # run script to filter bam files by mapq
-bash filterByMapQ_samtools.sh
+#bash filterByMapQ_samtools.sh
 
 # merge alignments for each genotype
-bash sortingMerge_samtools.sh
+#bash sortingMerge_samtools.sh
 
 # run variant calling script
 bash variantCallingMerged_bcftools.sh
