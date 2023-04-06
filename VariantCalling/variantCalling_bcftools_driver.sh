@@ -40,7 +40,7 @@ outputPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 #bash sortingMerge_samtools.sh
 
 # run variant calling script
-bash variantCallingMerged_bcftools.sh
+#bash variantCallingMerged_bcftools.sh
 
 # run variant filtering script
 bash variantFiltering_bcftools.sh
