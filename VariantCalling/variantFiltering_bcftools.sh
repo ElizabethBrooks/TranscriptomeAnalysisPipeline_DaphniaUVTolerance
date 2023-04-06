@@ -57,29 +57,35 @@ echo "bcftools filter --threads 4 -e 'GT=\"het\"' "$outFolder"/"$type"_calls.flt
 echo "& excluding heterozygous sites: " >> $outputsFile
 bcftools filter --threads 4 -e 'GT="het"' $outFolder"/"$type"_calls.flt-qualDP.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-#Exclude sites homozygous to the reference
+# exclude sites homozygous to the reference
 #bcftools filter --threads 4 -e 'GT="RR"' $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf"
 #echo "bcftools filter --threads 4 -e 'GT=\"RR\"' "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf" >> $inputOutFile
 #echo "& excluding sites homozygous to the reference: " >> $outputsFile
 #bcftools filter --threads 4 -e 'GT="RR"' $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-#Filter adjacent indels within 2bp
+# filter adjacent indels within 2bp
 #bcftools filter --threads 4 -G 2 $outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf" -Ob -o $outFolder"/"$type"_calls.flt-indels.bcf"
 #echo "bcftools filter --threads 4 -G 2 "$outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf -Ob -o "$outFolder"/"$type"_calls.flt-indels.bcf" >> $inputOutFile
 #echo "& excluding adjacent indels within 2bp: " >> $outputsFile
 #bcftools filter --threads 4 -G 2 $outFolder"/"$type"_calls.flt-qualDP-homo-dif.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-#Filter adjacent SNPs within 2bp
+# filter adjacent SNPs within 2bp
 #bcftools filter --threads 4 -g 2 $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-SNPs.bcf"
 #echo "bcftools filter --threads 4 -g 2 "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-SNPs.bcf" >> $inputOutFile
 #echo "& excluding adjacent SNPs within 2bp: " >> $outputsFile
 #bcftools filter --threads 4 -g 2 $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-#Turn on left alignment, normalize indels, and collapse multi allelic sites
-bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-norm.bcf"
-echo "bcftools norm --threads 4 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-norm.bcf" >> $inputOutFile
+# remove an uncalled genotype in any sample
+bcftools query -e 'GT="."' -f $genomeFile $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-uncalled.bcf"
+echo "bcftools query -e 'GT=\".\"' -f "$genomeFile" "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-uncalled.bcf" >> $inputOutFile
 echo "& with left alignment, normalized indels, and collapsed multi allelic sites: " >> $outputsFile
-bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
+bcftools query -e 'GT="."' -f $genomeFile $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
+
+#Turn on left alignment, normalize indels, and collapse multi allelic sites
+bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-uncalled.bcf" -Ob -o $outFolder"/"$type"_calls.flt-norm.bcf"
+echo "bcftools norm --threads 4 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-uncalled.bcf -Ob -o "$outFolder"/"$type"_calls.flt-norm.bcf" >> $inputOutFile
+echo "& with left alignment, normalized indels, and collapsed multi allelic sites: " >> $outputsFile
+bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-uncalled.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 #Index bcf file
 bcftools index --threads 4 $outFolder"/"$type"_calls.flt-norm.bcf"
