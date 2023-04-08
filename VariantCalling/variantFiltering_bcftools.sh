@@ -75,17 +75,17 @@ bcftools filter --threads 4 -e 'GT="het"' $outFolder"/"$type"_calls.flt-qualDP.b
 #echo "& excluding adjacent SNPs within 2bp: " >> $outputsFile
 #bcftools filter --threads 4 -g 2 $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-# remove an uncalled genotype in any sample
-bcftools filter --threads 4 -e 'GT="."' $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-uncalled.bcf"
-echo "bcftools filter --threads 4 -e 'GT=\".\"' -f "$genomeFile" "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-uncalled.bcf" >> $inputOutFile
-echo "& excluding uncalled genotype in any sample: " >> $outputsFile
-bcftools filter --threads 4 -e 'GT="."' $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
+# remove variants with uncalled genotypes
+bcftools filter --threads 4 -i 'INFO/AN=8' $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-AN8.bcf"
+echo "bcftools filter --threads 4 -i 'INFO/AN=8' "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-AN8.bcf" >> $inputOutFile
+echo "& excluding uncalled genotypes: " >> $outputsFile
+bcftools filter --threads 4 -i 'INFO/AN=8' $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 #Turn on left alignment, normalize indels, and collapse multi allelic sites
-bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-uncalled.bcf" -Ob -o $outFolder"/"$type"_calls.flt-norm.bcf"
-echo "bcftools norm --threads 4 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-uncalled.bcf -Ob -o "$outFolder"/"$type"_calls.flt-norm.bcf" >> $inputOutFile
+bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-AN8.bcf" -Ob -o $outFolder"/"$type"_calls.flt-norm.bcf"
+echo "bcftools norm --threads 4 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-AN8.bcf -Ob -o "$outFolder"/"$type"_calls.flt-norm.bcf" >> $inputOutFile
 echo "& with left alignment, normalized indels, and collapsed multi allelic sites: " >> $outputsFile
-bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-uncalled.bcf" | grep -v "#" | wc -l >> $outputsFile
+bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-AN8.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 #Index bcf file
 bcftools index --threads 4 $outFolder"/"$type"_calls.flt-norm.bcf"
