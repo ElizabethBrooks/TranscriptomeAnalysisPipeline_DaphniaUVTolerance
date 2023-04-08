@@ -66,8 +66,8 @@ bcftools view --threads 4 $outFolder"/"$type"_calls.flt-AN.bcf" | grep -v "#" | 
 # keep variants that have a MQSB value
 # Mann-Whitney U test of Mapping Quality vs Strand Bias
 # see MQB in https://www.reneshbedre.com/blog/vcf-fields.html
-bcftools filter --threads 4 -i 'INFO/MQSB>0.05' $outFolder"/"$type"_calls.flt-qualDP-AN.bcf" -Ob -o $outFolder"/"$type"_calls.flt-MQSB.bcf"
-echo "bcftools filter --threads 4 -i 'INFO/MQSB>0.05' "$outFolder"/"$type"_calls.flt-qualDP-AN.bcf -Ob -o "$outFolder"/"$type"_calls.flt-MQSB.bcf" >> $inputOutFile
+bcftools filter --threads 4 -i 'INFO/MQSB>0.05' $outFolder"/"$type"_calls.flt-AN.bcf" -Ob -o $outFolder"/"$type"_calls.flt-MQSB.bcf"
+echo "bcftools filter --threads 4 -i 'INFO/MQSB>0.05' "$outFolder"/"$type"_calls.flt-AN.bcf -Ob -o "$outFolder"/"$type"_calls.flt-MQSB.bcf" >> $inputOutFile
 echo "& including variants with MQSB > 0.05: " >> $outputsFile
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-MQSB.bcf" | grep -v "#" | wc -l >> $outputsFile
 
