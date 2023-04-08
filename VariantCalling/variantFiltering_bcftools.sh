@@ -51,7 +51,7 @@ echo "bcftools filter --threads 4 -i 'INFO/DP>10' "$outFolder"/"$type"_calls.flt
 echo "& including sites with average read depth > 10: " >> $outputsFile
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-DP.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-# keep variants that have a MQSB value
+# include sites that have a MQSB value
 # MQSB is a Mann-Whitney U test of Mapping Quality vs Strand Bias
 # see MQB in https://www.reneshbedre.com/blog/vcf-fields.html
 bcftools filter --threads 4 -i 'INFO/MQSB>0.05' $outFolder"/"$type"_calls.flt-DP.bcf" -Ob -o $outFolder"/"$type"_calls.flt-MQSB.bcf"
@@ -59,24 +59,32 @@ echo "bcftools filter --threads 4 -i 'INFO/MQSB>0.05' "$outFolder"/"$type"_calls
 echo "& including variants with MQSB > 0.05: " >> $outputsFile
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-MQSB.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-# keep variants with 8 alleles, which indicates no uncalled genotypes
+# include site with 8 alleles, which indicates no uncalled genotypes
+# integer Total number of alleles in called genotypes
 bcftools filter --threads 4 -i 'INFO/AN=8' $outFolder"/"$type"_calls.flt-MQSB.bcf" -Ob -o $outFolder"/"$type"_calls.flt-AN.bcf"
 echo "bcftools filter --threads 4 -i 'INFO/AN=8' "$outFolder"/"$type"_calls.flt-MQSB.bcf -Ob -o "$outFolder"/"$type"_calls.flt-AN.bcf" >> $inputOutFile
 echo "& including sites with 8 alleles: " >> $outputsFile
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-AN.bcf" | grep -v "#" | wc -l >> $outputsFile
 
+# include variants with 8 alleles, which indicates no uncalled genotypes
+# integer Allele count in genotypes for each ALT allele, in the same order as listed
+bcftools filter --threads 4 -i 'INFO/AC=8' $outFolder"/"$type"_calls.flt-AN.bcf" -Ob -o $outFolder"/"$type"_calls.flt-AC.bcf"
+echo "bcftools filter --threads 4 -i 'INFO/AC=8' "$outFolder"/"$type"_calls.flt-AN.bcf -Ob -o "$outFolder"/"$type"_calls.flt-AC.bcf" >> $inputOutFile
+echo "& including sites with 8 ALT alleles: " >> $outputsFile
+bcftools view --threads 4 $outFolder"/"$type"_calls.flt-AC.bcf" | grep -v "#" | wc -l >> $outputsFile
+
 # exclude heterozygous sites
-bcftools filter --threads 4 -e 'GT="het"' $outFolder"/"$type"_calls.flt-AN.bcf" -Ob -o $outFolder"/"$type"_calls.flt-homo.bcf"
-echo "bcftools filter --threads 4 -e 'GT=\"het\"' "$outFolder"/"$type"_calls.flt-AN.bcf -Ob -o "$outFolder"/"$type"_calls.flt-homo.bcf" >> $inputOutFile
+bcftools filter --threads 4 -e 'GT="het"' $outFolder"/"$type"_calls.flt-AC.bcf" -Ob -o $outFolder"/"$type"_calls.flt-homo.bcf"
+echo "bcftools filter --threads 4 -e 'GT=\"het\"' "$outFolder"/"$type"_calls.flt-AC.bcf -Ob -o "$outFolder"/"$type"_calls.flt-homo.bcf" >> $inputOutFile
 echo "& excluding heterozygous sites: " >> $outputsFile
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-# exclude sites with an IDV of 1
-# IDV is the maximum number of reads supporting an indel
+# exclude sites with an IMF < 1
+# Maximum fraction of reads supporting an indel
 # https://github.com/samtools/bcftools/issues/911
-bcftools filter --threads 4 -e 'INFO/IDV=1' $outFolder"/"$type"_calls.flt-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-IDV.bcf"
+bcftools filter --threads 4 -e 'INFO/IMF<1' $outFolder"/"$type"_calls.flt-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-IDV.bcf"
 echo "bcftools filter --threads 4 -e 'GT=\"het\"' "$outFolder"/"$type"_calls.flt-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-IDV.bcf" >> $inputOutFile
-echo "& excluding sites with an IDV of 1: " >> $outputsFile
+echo "& excluding sites with an IMF < 1: " >> $outputsFile
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 # turn on left alignment, normalize indels, and collapse multi allelic sites
@@ -94,5 +102,5 @@ echo "bcftools index --threads 4 "$outFolder"/"$type"_calls.flt-norm.bcf" >> $in
 #rm $outFolder"/"$type"_calls.flt-DP.bcf"
 #rm $outFolder"/"$type"_calls.flt-MQSB.bcf"
 #rm $outFolder"/"$type"_calls.flt-AN.bcf"
-#rm $outFolder"/"$type"_calls.flt-homo.bcf"
+#rm $outFolder"/"$type"_calls.flt-homo.bcf"b
 #rm $outFolder"/"$type"_calls.flt-IDV.bcf"
