@@ -32,58 +32,67 @@ inputOutFile=$outFolder"/variantFiltering_summary.txt"
 # name output file of filtering info
 outputsFile=$outFolder"/variantFiltering_stats.txt"
 
-#Add version to output file of inputs
+# add version to output file of inputs
 bcftools --version > $inputOutFile
 
-#Check total variants
+# check total variants
 echo "Total variants from filtered reads with MQ > 60: " > $outputsFile
 bcftools view --threads 4 $inputsDir"/"$type"_calls.norm.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-#Include sites with quality > 20 
+# include sites with quality > 20 
 bcftools filter --threads 4 -i '%QUAL>20' $inputsDir"/"$type"_calls.norm.bcf" -Ob -o $outFolder"/"$type"_calls.flt-qual.bcf"
 echo "bcftools filter --threads 4 -i '%QUAL>20' "$inputsDir"/"$type"_calls.norm.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qual.bcf" >> $inputOutFile
 echo "& including sites with quality > 20: " >> $outputsFile
 bcftools view --threads 4 $inputsDir"/"$type"_calls.flt-qual.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-#Include sites with average read depth > 10
-bcftools filter --threads 4 -i 'INFO/DP>10' $outFolder"/"$type"_calls.flt-qual.bcf" -Ob -o $outFolder"/"$type"_calls.flt-qualDP.bcf"
-echo "bcftools filter --threads 4 -i 'INFO/DP>10' "$outFolder"/"$type"_calls.flt-qual.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP.bcf" >> $inputOutFile
+# include sites with average read depth > 10
+bcftools filter --threads 4 -i 'INFO/DP>10' $outFolder"/"$type"_calls.flt-qual.bcf" -Ob -o $outFolder"/"$type"_calls.flt-DP.bcf"
+echo "bcftools filter --threads 4 -i 'INFO/DP>10' "$outFolder"/"$type"_calls.flt-qual.bcf -Ob -o "$outFolder"/"$type"_calls.flt-DP.bcf" >> $inputOutFile
 echo "& including sites with average read depth > 10: " >> $outputsFile
-bcftools view --threads 4 $outFolder"/"$type"_calls.flt-qualDP.bcf" | grep -v "#" | wc -l >> $outputsFile
-
-#Exclude heterozygous sites
-bcftools filter --threads 4 -e 'GT="het"' $outFolder"/"$type"_calls.flt-qualDP.bcf" -Ob -o $outFolder"/"$type"_calls.flt-qualDP-homo.bcf"
-echo "bcftools filter --threads 4 -e 'GT=\"het\"' "$outFolder"/"$type"_calls.flt-qualDP.bcf -Ob -o "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf" >> $inputOutFile
-echo "& excluding heterozygous sites: " >> $outputsFile
-bcftools view --threads 4 $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
-
-# remove variants with uncalled genotypes
-bcftools filter --threads 4 -i 'INFO/AN=8' $outFolder"/"$type"_calls.flt-qualDP-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-AN.bcf"
-echo "bcftools filter --threads 4 -i 'INFO/AN=8' "$outFolder"/"$type"_calls.flt-qualDP-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-AN.bcf" >> $inputOutFile
-echo "& excluding uncalled genotypes: " >> $outputsFile
-bcftools view --threads 4 $outFolder"/"$type"_calls.flt-AN.bcf" | grep -v "#" | wc -l >> $outputsFile
+bcftools view --threads 4 $outFolder"/"$type"_calls.flt-DP.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 # keep variants that have a MQSB value
-# Mann-Whitney U test of Mapping Quality vs Strand Bias
+# MQSB is a Mann-Whitney U test of Mapping Quality vs Strand Bias
 # see MQB in https://www.reneshbedre.com/blog/vcf-fields.html
-bcftools filter --threads 4 -i 'INFO/MQSB>0.05' $outFolder"/"$type"_calls.flt-AN.bcf" -Ob -o $outFolder"/"$type"_calls.flt-MQSB.bcf"
-echo "bcftools filter --threads 4 -i 'INFO/MQSB>0.05' "$outFolder"/"$type"_calls.flt-AN.bcf -Ob -o "$outFolder"/"$type"_calls.flt-MQSB.bcf" >> $inputOutFile
+bcftools filter --threads 4 -i 'INFO/MQSB>0.05' $outFolder"/"$type"_calls.flt-DP.bcf" -Ob -o $outFolder"/"$type"_calls.flt-MQSB.bcf"
+echo "bcftools filter --threads 4 -i 'INFO/MQSB>0.05' "$outFolder"/"$type"_calls.flt-DP.bcf -Ob -o "$outFolder"/"$type"_calls.flt-MQSB.bcf" >> $inputOutFile
 echo "& including variants with MQSB > 0.05: " >> $outputsFile
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-MQSB.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-#Turn on left alignment, normalize indels, and collapse multi allelic sites
-bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-MQSB.bcf" -Ob -o $outFolder"/"$type"_calls.flt-norm.bcf"
-echo "bcftools norm --threads 4 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-MQSB.bcf -Ob -o "$outFolder"/"$type"_calls.flt-norm.bcf" >> $inputOutFile
+# keep variants with 8 alleles, which indicates no uncalled genotypes
+bcftools filter --threads 4 -i 'INFO/AN=8' $outFolder"/"$type"_calls.flt-MQSB.bcf" -Ob -o $outFolder"/"$type"_calls.flt-AN.bcf"
+echo "bcftools filter --threads 4 -i 'INFO/AN=8' "$outFolder"/"$type"_calls.flt-MQSB.bcf -Ob -o "$outFolder"/"$type"_calls.flt-AN.bcf" >> $inputOutFile
+echo "& including sites with 8 alleles: " >> $outputsFile
+bcftools view --threads 4 $outFolder"/"$type"_calls.flt-AN.bcf" | grep -v "#" | wc -l >> $outputsFile
+
+# exclude heterozygous sites
+bcftools filter --threads 4 -e 'GT="het"' $outFolder"/"$type"_calls.flt-AN.bcf" -Ob -o $outFolder"/"$type"_calls.flt-homo.bcf"
+echo "bcftools filter --threads 4 -e 'GT=\"het\"' "$outFolder"/"$type"_calls.flt-AN.bcf -Ob -o "$outFolder"/"$type"_calls.flt-homo.bcf" >> $inputOutFile
+echo "& excluding heterozygous sites: " >> $outputsFile
+bcftools view --threads 4 $outFolder"/"$type"_calls.flt-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
+
+# exclude sites with an IDV of 1
+# IDV is the maximum number of reads supporting an indel
+# https://github.com/samtools/bcftools/issues/911
+bcftools filter --threads 4 -e 'INFO/IDV=1' $outFolder"/"$type"_calls.flt-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-IDV.bcf"
+echo "bcftools filter --threads 4 -e 'GT=\"het\"' "$outFolder"/"$type"_calls.flt-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-IDV.bcf" >> $inputOutFile
+echo "& excluding sites with an IDV of 1: " >> $outputsFile
+bcftools view --threads 4 $outFolder"/"$type"_calls.flt-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
+
+# turn on left alignment, normalize indels, and collapse multi allelic sites
+bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-IDV.bcf" -Ob -o $outFolder"/"$type"_calls.flt-norm.bcf"
+echo "bcftools norm --threads 4 -m +any -f "$genomeFile" "$outFolder"/"$type"_calls.flt-IDV.bcf -Ob -o "$outFolder"/"$type"_calls.flt-norm.bcf" >> $inputOutFile
 echo "& with left alignment, normalized indels, and collapsed multi allelic sites: " >> $outputsFile
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-norm.bcf" | grep -v "#" | wc -l >> $outputsFile
 
-#Index bcf file
+# index bcf file
 bcftools index --threads 4 $outFolder"/"$type"_calls.flt-norm.bcf"
 echo "bcftools index --threads 4 "$outFolder"/"$type"_calls.flt-norm.bcf" >> $inputOutFile
 
 # clean up
 #rm $outFolder"/"$type"_calls.flt-qual.bcf"
-#rm $outFolder"/"$type"_calls.flt-qualDP.bcf"
-#rm $outFolder"/"$type"_calls.flt-qualDP-homo.bcf"
-#rm $outFolder"/"$type"_calls.flt-AN.bcf"
+#rm $outFolder"/"$type"_calls.flt-DP.bcf"
 #rm $outFolder"/"$type"_calls.flt-MQSB.bcf"
+#rm $outFolder"/"$type"_calls.flt-AN.bcf"
+#rm $outFolder"/"$type"_calls.flt-homo.bcf"
+#rm $outFolder"/"$type"_calls.flt-IDV.bcf"
