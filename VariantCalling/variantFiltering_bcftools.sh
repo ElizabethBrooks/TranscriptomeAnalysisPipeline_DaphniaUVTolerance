@@ -85,7 +85,7 @@ bcftools view --threads 4 $outFolder"/"$type"_calls.flt-homo.bcf" | grep -v "#" 
 bcftools filter --threads 4 -e 'INFO/IMF<1' $outFolder"/"$type"_calls.flt-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-IDV.bcf"
 echo "bcftools filter --threads 4 -e 'GT=\"het\"' "$outFolder"/"$type"_calls.flt-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-IDV.bcf" >> $inputOutFile
 echo "& excluding sites with an IMF < 1: " >> $outputsFile
-bcftools view --threads 4 $outFolder"/"$type"_calls.flt-homo.bcf" | grep -v "#" | wc -l >> $outputsFile
+bcftools view --threads 4 $outFolder"/"$type"_calls.flt-IDV.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 # turn on left alignment, normalize indels, and collapse multi allelic sites
 bcftools norm --threads 4 -m +any -f $genomeFile $outFolder"/"$type"_calls.flt-IDV.bcf" -Ob -o $outFolder"/"$type"_calls.flt-norm.bcf"
