@@ -21,7 +21,6 @@ type="filteredMapQ"
 outFolder=$inputsPath"/cds"
 mkdir $outFolder
 #Check if the folder already exists
-mkdir "$outFolder"
 if [ $? -ne 0 ]; then
 	echo "The $outFolder directory already exsists... please remove before proceeding."
 	exit 1
