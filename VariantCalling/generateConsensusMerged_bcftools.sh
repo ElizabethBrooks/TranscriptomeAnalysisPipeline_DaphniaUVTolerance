@@ -20,7 +20,7 @@ type="filteredMapQ"
 # set inputs directory name
 inputsPath=$inputsPath"/variantsMerged_"$type
 
-#Retrieve genome features absolute path for alignment
+#Retrieve genome reference absolute path for alignment
 genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
 
 #Make output folder

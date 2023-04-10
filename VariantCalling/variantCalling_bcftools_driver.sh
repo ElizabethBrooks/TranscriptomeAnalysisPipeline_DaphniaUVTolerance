@@ -26,21 +26,21 @@ filterType="filteredMapQ"
 
 # set and create merged outputs directory
 outputPath=$inputsPath"/variantsCalled_samtoolsBcftools"
-#mkdir $outputPath
+mkdir $outputPath
 # check if the folder already exists
-#if [ $? -ne 0 ]; then
-#	echo "The $outputsPath directory already exsists... please remove before proceeding."
-#	exit 1
-#fi
+if [ $? -ne 0 ]; then
+	echo "The $outputsPath directory already exsists... please remove before proceeding."
+	exit 1
+fi
 
 # run script to filter bam files by mapq
-#bash filterByMapQ_samtools.sh
+bash filterByMapQ_samtools.sh
 
 # merge alignments for each genotype
-#bash sortingMerge_samtools.sh
+bash sortingMerge_samtools.sh
 
 # run variant calling script
-#bash variantCallingMerged_bcftools.sh
+bash variantCallingMerged_bcftools.sh
 
 # run variant filtering script
 bash variantFiltering_bcftools.sh
