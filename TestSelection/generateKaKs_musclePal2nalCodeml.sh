@@ -23,6 +23,12 @@ type="filteredMapQ"
 
 # make outputs directory name
 outFolder=$inputsPath"/selectionTests"
+mkdir $outFolder
+#Check if the folder already exists
+#if [ $? -ne 0 ]; then
+#	echo "The $outFolder directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 # set inputs folder
 inputsPath=$inputsPath"/features_gffread"

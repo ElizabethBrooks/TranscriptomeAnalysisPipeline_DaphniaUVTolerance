@@ -18,15 +18,6 @@ inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | s
 # set inputs path
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 
-# make outputs directory name
-outFolder=$inputsPath"/selectionTests"
-mkdir $outFolder
-#Check if the folder already exists
-#if [ $? -ne 0 ]; then
-#	echo "The $outFolder directory already exsists... please remove before proceeding."
-#	exit 1
-#fi
-
 # retrieve protein sequences
 #bash retrieveFeatures_gffread.sh
 
