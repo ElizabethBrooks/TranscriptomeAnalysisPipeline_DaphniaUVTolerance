@@ -64,10 +64,14 @@ cat $inputsPath | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $t
 # retrieve base directory path
 baseDir=$(dirname $currDir)
 
+# save ka ks values to final results file
+resultsFile="$outFolder"/kaksResults.csv
+echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
+
 # loop over all genes in the reference
 while IFS= read -r line; do
 	# retrieve selected peptide sequences and convert back to multiline fasta format
-	gTag=$(echo $line | sed 's/NEWLINE/\n/g' | grep ">" | sed 's/>//g')
+	gTag=$(echo "$line" | sed 's/NEWLINE/\n/g' | grep ">" | sed 's/>//g')
 	gFile=$outFolder"/tmp_"$gTag"_Daphnia_pep.fa"
 	grep "^>$gTag" $tmpRef | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > "$gFile"
 	
@@ -93,9 +97,9 @@ while IFS= read -r line; do
 	rm $outAln
 
 	# prepare tree file
-	echo "(>PA42_v4.1_$gTag, >Olympics_$gTag);" > "$outFolder"/"$gTag".tree
+	echo "(>Pulex_$gTag, >Olympics_$gTag);" > $outFolder"/"$gTag".tree"
 
-	# prepare control file
+	# prepare control file template from pal2nal
 	# seqtype = 1 for codon alignments
 	# runmode = -2 performs ML estimation of dS and dN in pairwise comparisons
 	cat $baseDir"/util/test.cnt" | sed "s/test\.codon/$gTag\.codon/g" | sed "s/test\.tree/$gTag\.tree/g" | sed "s/test\.codeml/$gTag\.codeml/g" > $outFolder"/"$gTag".cnt"
@@ -130,6 +134,10 @@ while IFS= read -r line; do
 	rm $gTag".tree"
 	rm $gTag".cnt"
 done < $tmpRef
+
+# fix formatting of the results file
+finalResults="$outFolder"/Pulex_Olympics_kaksResults.csv
+cat $resultsFile | sed "s/  /,/g" | sed "s/=,/=/g" | sed "s/ //g" | sed "s/dN\/dS=//g" | sed "s/dN=//g" | sed "s/dS=//g" | sed "s/t=//g" | sed "s/,S=//g" | sed "s/N=//g" > "$finalResults"
 
 # clean up
 rm $tmpSample
