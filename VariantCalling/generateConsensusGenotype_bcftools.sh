@@ -15,20 +15,21 @@
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 
+#Retrieve genome features absolute path for alignment
+genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+
 # retrieve input genotype
 genotype=$1
 
 # set input bam file type
 type="filteredMapQ"
 
+#Make output folder
+outFolder=$inputsPath"/variantsConsensus"
+mkdir $outFolder
+
 # set inputs directory name
 inputsPath=$inputsPath"/variantsMerged_"$type
-
-#Retrieve genome features absolute path for alignment
-genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-
-#Make output folder
-outFolder=$inputsPath
 
 #Name output file of inputs
 inputOutFile=$outFolder"/consensusGenotype_summary.txt"

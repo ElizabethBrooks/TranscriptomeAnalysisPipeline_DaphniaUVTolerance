@@ -7,12 +7,11 @@
 # script to retrieve features from a referene fasta using a gff
 # usage: bash retrieveFeatures_gffread.sh
 
-#Required modules for ND CRC servers
-#module load bio
+# retrieve sorted reads input absolute path
+inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
+#inputsPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics/"
 
-#Retrieve sorted reads input absolute path
-#inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-inputsPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics/"
+# set inputs path
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 
 #Retrieve input bam file type
@@ -23,22 +22,23 @@ outFolder=$inputsPath"/features_gffread"
 mkdir $outFolder
 
 # set inputs folder
-inputsPath=$inputsPath"/variantsMerged_"$type
+inputsPath=$inputsPath"/variantsConsensus"
 
-#Retrieve genome reference absolute path for alignment
-#genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-genomeFile="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/GCF_021134715.1_ASM2113471v1_genomic.fna"
-#Retrieve genome features absolute path for alignment
-#genomeFeatures=$(grep "genomeFeatures" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
-genomeFeatures="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/genomic.gff"
+# retrieve genome reference absolute path for alignment
+genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+#genomeFile="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/GCF_021134715.1_ASM2113471v1_genomic.fna"
+
+# retrieve genome features absolute path for alignment
+genomeFeatures=$(grep "genomeFeatures" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
+#genomeFeatures="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/genomic.gff"
 
 # retrieve file name of reference
 refTag=$(basename $genomeFile)
 
-#Name output file of inputs
+# name output file of inputs
 inputOutFile=$outFolder"/retrieveCDS_summary.txt"
 
-#Add version to output file of inputs
+# add version to output file of inputs
 bedtools --version > $inputOutFile
 
 # TO-DO
@@ -54,7 +54,6 @@ gffread -v -C -y $outFolder"/"$refTag"_pep.fa" -x $outFolder"/"$refTag"_cds.fa" 
 
 # retrieve all cds, discarding shorter duplicates, and output translated proteins
 gffread -v -C -M -K -d $outFolder"/"$refTag"_duplicateInfo.txt" -y $outFolder"/"$refTag"_longest_pep.fa" -x $outFolder"/"$refTag"_longest_cds.fa" -g $genomeFile $genomeFeatures
-
 
 # status message
 echo "Generating features for the consensus genome..."
