@@ -49,13 +49,6 @@ inputsPath=$inputsPath"/"$type"_consensus_longest_pep.fa"
 # set results file path
 resultsFile=$outFolder"/kaksResults.csv"
 
-# name output file of inputs
-inputOutFile=$outFolder"/generateMSA_summary.txt"
-
-# add version to output file of inputs
-muscle --version > $inputOutFile
-#pal2nal.pl --version >> $inputOutFile
-
 # status message
 echo "Generating MSA for protein sequences..."
 
@@ -76,9 +69,13 @@ echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 
 # loop over all genes in the reference
 while IFS= read -r line; do
-	# retrieve selected peptide sequences and convert back to multiline fasta format
+	# retrieve gene tag
 	gTag=$(echo $line | sed 's/NEWLINE/\n/g' | grep ">" | cut -d " " -f 1 | sed 's/>rna-//g')
+
+	# set tmp output pep file
 	gFile=$outFolder"/tmp_"$gTag"_Daphnia_pep.fa"
+
+	# retrieve selected peptide sequences and convert back to multiline fasta format
 	grep "^>$gTag" $tmpRef | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > $gFile
 	
 	# Status message
