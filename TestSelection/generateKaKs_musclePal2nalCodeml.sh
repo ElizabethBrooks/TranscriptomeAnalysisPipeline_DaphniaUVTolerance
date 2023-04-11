@@ -79,21 +79,22 @@ while IFS= read -r line; do
 	# retrieve selected peptide sequences and convert back to multiline fasta format
 	gTag=$(echo $line | sed 's/NEWLINE/\n/g' | grep ">" | cut -d " " -f 1 | sed 's/>rna-//g')
 	gFile=$outFolder"/tmp_"$gTag"_Daphnia_pep.fa"
-	grep "^>$gTag" $tmpRef | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > "$gFile"
+	grep "^>$gTag" $tmpRef | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > $gFile
 	
 	# Status message
 	echo "Generating MSA for $gTag..."
 
 	# prepare multiline pep fasta to retrieve seqs
-	grep "^>$gTag" $tmpSample | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>OLYM_$gTag/g" >> "$gFile"
+	grep "^>$gTag" $tmpSample | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>OLYM_$gTag/g" >> $gFile
 
 	# set file paths
 	outAln=$outFolder"/tmp_"$gTag"_Daphnia_aligned_pep.fa"
 	inAln=$outFolder"/"$gTag"_Daphnia_pep.fa"
 
-	# create MSA using muscle from biopython
+	# create MSA using muscle
 	# https://stackoverflow.com/questions/70769809/muscle-command-line-wrapper
-	muscle -align "$gFile" -output "$outAln"
+	muscle -in "$gFile" -out "$outAln"
+	#muscle -align "$gFile" -output "$outAln"
 
 	# replace X wildcard with stop codon *
 	sed 's/X/\*/g'  "$outAln" > "$inAln"
