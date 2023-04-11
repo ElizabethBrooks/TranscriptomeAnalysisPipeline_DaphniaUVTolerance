@@ -6,19 +6,26 @@
 
 # script to run tests for selection for each protein sequence
 # usage: qsub testSelection_driver.sh
-# usage ex: qsub testSelectionDriver.sh
+# usage ex: qsub testSelection_driver.sh
 
 # load necessary modules
 module load bio
+
+# retrieve sorted reads input absolute path
+inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
+#inputsPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics/"
+
+# set inputs path
+inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 
 # make outputs directory name
 outFolder=$inputsPath"/selectionTests"
 mkdir $outFolder
 #Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#if [ $? -ne 0 ]; then
+#	echo "The $outFolder directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 # retrieve protein sequences
 bash retrieveFeatures_gffread.sh
