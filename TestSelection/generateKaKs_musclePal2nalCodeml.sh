@@ -8,11 +8,17 @@
 # usage: bash generateKaKs_musclePal2nalCodeml.sh
 # usage ex: bash generateKaKs_musclePal2nalCodeml.sh
 
+# retrieve current working directory
+currDir=$(pwd)
+
+# retrieve base directory path
+baseDir=$(dirname $currDir)
+
 # set software path
-softwarePath=$(grep "pal2nal:" ../InputData/softwarePaths.txt | tr -d " " | sed "s/pal2nal://g")
+softwarePath=$(grep "pal2nal:" $baseDir"/InputData/softwarePaths.txt" | tr -d " " | sed "s/pal2nal://g")
 
 # retrieve sorted reads input absolute path
-inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
+inputsPath=$(grep "aligningGenome:" $baseDir"/InputData/outputPaths.txt" | tr -d " " | sed "s/aligningGenome://g")
 #inputsPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics/"
 
 # set inputs path
@@ -34,7 +40,7 @@ mkdir $outFolder
 inputsPath=$inputsPath"/features_gffread"
 
 # retrieve genome reference absolute path for alignment
-refPath=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
+refPath=$(grep "genomeReference" $baseDir"/InputData/inputPaths.txt" | tr -d " " | sed "s/genomeReference://g")
 #refPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/GCF_021134715.1_ASM2113471v1_genomic.fna"
 
 # retrieve file name of reference
@@ -53,15 +59,12 @@ resultsFile=$outFolder"/kaksResults.csv"
 echo "Generating MSA for protein sequences..."
 
 # prepare reference multiline pep fasta to retrieve seqs
-tmpRef=$outFolder"/tmpPulex_pep.fa"
+tmpRef=$outFolder"/Pulex_pep.tmp.fa"
 cat $refPath | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRef
 
 # prepare input multiline pep fasta
-tmpSample=$outFolder"/tmpOLYM_pep.fa"
+tmpSample=$outFolder"/OLYM_pep.tmp.fa"
 cat $inputsPath | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpSample
-
-# retrieve base directory path
-baseDir=$(dirname $currDir)
 
 # save ka ks values to final results file
 resultsFile="$outFolder"/kaksResults.csv
@@ -70,10 +73,10 @@ echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 # loop over all genes in the reference
 while IFS= read -r line; do
 	# retrieve gene tag
-	gTag=$(echo $line | sed 's/NEWLINE/\n/g' | grep ">" | cut -d " " -f 1 | sed 's/>rna-//g')
+	gTag=$(echo $line | sed 's/NEWLINE/\n/g' | grep ">" | cut -d " " -f 1 | sed 's/>//g')
 
 	# set tmp output pep file
-	gFile=$outFolder"/tmp_"$gTag"_Daphnia_pep.fa"
+	gFile=$outFolder"/"$gTag"_Daphnia_pep.tmp.fa"
 
 	# retrieve selected peptide sequences and convert back to multiline fasta format
 	grep "^>$gTag" $tmpRef | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > $gFile
@@ -85,7 +88,7 @@ while IFS= read -r line; do
 	grep "^>$gTag" $tmpSample | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>OLYM_$gTag/g" >> $gFile
 
 	# set file paths
-	outAln=$outFolder"/tmp_"$gTag"_Daphnia_aligned_pep.fa"
+	outAln=$outFolder"/"$gTag"_Daphnia_aligned_pep.tmp.fa"
 	inAln=$outFolder"/"$gTag"_Daphnia_pep.fa"
 
 	# create MSA using muscle
