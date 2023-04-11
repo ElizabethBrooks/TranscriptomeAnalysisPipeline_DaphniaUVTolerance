@@ -7,9 +7,6 @@
 # script to generate a consensus sequence using filtered called variants
 # usage: qsub generateConsensusMerged_bcftools.sh
 
-#Required modules for ND CRC servers
-module load bio
-
 #Retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
@@ -36,3 +33,6 @@ bcftools --version > $inputOutFile
 echo "Generating merged consensus..."
 cat $genomeFile | bcftools consensus $inputsPath"/"$type"_calls.flt-norm.bcf" > $outFolder"/"$type"_consensus.fa"
 echo "cat "$genomeFile" | bcftools consensus "$inputsPath"/"$type"_calls.flt-norm.bcf > "$outFolder"/"$type"_consensus.fa" >> "$inputOutFile"
+
+# index consensus fasta
+samtools faidx $outFolder"/"$type"_consensus.fa"

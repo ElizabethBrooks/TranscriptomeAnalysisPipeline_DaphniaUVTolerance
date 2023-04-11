@@ -40,20 +40,17 @@ outputPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 #bash sortingMerge_samtools.sh
 
 # run variant calling script
-bash variantCallingMerged_bcftools.sh
+#bash variantCallingMerged_bcftools.sh
 
 # run variant filtering script
 bash variantFiltering_bcftools.sh
 
 # run script to generate consensus sequences
-bash generateConsensusMerged_bcftools.sh
-#bash generateConsensusGenotype_bcftools.sh "E05"
-#bash generateConsensusGenotype_bcftools.sh "R2"
-#bash generateConsensusGenotype_bcftools.sh "Y05"
-#bash generateConsensusGenotype_bcftools.sh "Y023"
-
-#Copy previous summaries
-cp "$inputsDir"/*.txt "$outputPath"
+#bash generateConsensusMerged_bcftools.sh
+bash generateConsensusGenotype_bcftools.sh "E05"
+bash generateConsensusGenotype_bcftools.sh "R2"
+bash generateConsensusGenotype_bcftools.sh "Y05"
+bash generateConsensusGenotype_bcftools.sh "Y023"
 
 # clean up
 #rm -r $inputsDir

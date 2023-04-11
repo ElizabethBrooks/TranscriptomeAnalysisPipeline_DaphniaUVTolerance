@@ -8,9 +8,6 @@
 # script to add read groups to merged and coordinate sorted bam files
 # usage: qsub addReadGroups_samtools.sh
 
-# required modules for ND CRC servers
-module load bio
-
 # retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsDir=$inputsPath"/variantsCalled_samtoolsBcftools"

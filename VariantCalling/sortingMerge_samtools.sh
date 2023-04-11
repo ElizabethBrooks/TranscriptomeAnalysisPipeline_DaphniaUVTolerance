@@ -9,9 +9,6 @@
 # usage: qsub sortingMerge_samtools.sh
 # usage Ex: qsub sortingMerge_samtools.sh
 
-#Required modules for ND CRC servers
-module load bio
-
 # retrieve input folder of trimmed data
 inputFolder="sortedCoordinate_samtoolsHisat2"
 
