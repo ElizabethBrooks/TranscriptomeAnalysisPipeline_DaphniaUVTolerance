@@ -91,7 +91,7 @@ echo "& with left alignment, normalized indels, and collapsed multi allelic site
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-norm.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 # index the vcf
-bcftools index $outputsPath"/"$runNum"_calls.flt-norm.vcf"
+bcftools index $outputsPath"/"$runNum"_calls.flt-norm.bcf"
 
 # clean up
 #rm $outFolder"/"$type"_calls.flt-qual.bcf"

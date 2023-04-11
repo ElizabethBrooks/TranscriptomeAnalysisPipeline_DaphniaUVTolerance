@@ -43,7 +43,7 @@ outputPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 #bash variantCallingMerged_bcftools.sh
 
 # run variant filtering script
-bash variantFiltering_bcftools.sh
+#bash variantFiltering_bcftools.sh
 
 # run script to generate consensus sequences
 #bash generateConsensusMerged_bcftools.sh
