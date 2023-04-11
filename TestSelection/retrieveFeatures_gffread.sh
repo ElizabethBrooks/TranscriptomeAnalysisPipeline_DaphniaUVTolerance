@@ -47,19 +47,32 @@ bedtools --version > $inputOutFile
 # https://bedtools.readthedocs.io/en/latest/content/tools/slop.html
 
 # status message
-echo "Generating features for the reference genome..."
+echo "Generating features..."
 
 # retrieve all cds for the reference and output translated proteins
-gffread -v -C -y $outFolder"/"$refTag"_pep.fa" -x $outFolder"/"$refTag"_cds.fa" -g $genomeFile $genomeFeatures
-
+#gffread -v -C -y $outFolder"/"$refTag"_pep.fa" -x $outFolder"/"$refTag"_cds.fa" -g $genomeFile $genomeFeatures
 # retrieve all cds, discarding shorter duplicates, and output translated proteins
 gffread -v -C -M -K -d $outFolder"/"$refTag"_duplicateInfo.txt" -y $outFolder"/"$refTag"_longest_pep.fa" -x $outFolder"/"$refTag"_longest_cds.fa" -g $genomeFile $genomeFeatures
 
-# status message
-echo "Generating features for the consensus genome..."
-
-# retrieve all cds for the consensus and output translated proteins
-gffread -v -C -y $outFolder"/"$type"_consensus_pep.fa" -x $outFolder"/"$type"_consensus_cds.fa" -g $inputsPath"/"$type"_consensus.fa" $genomeFeatures
-
+# OLYM
 # retrieve all cds, discarding shorter duplicates, and output translated proteins
 gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo.txt" -y $outFolder"/"$type"_consensus_longest_pep.fa" -x $outFolder"/"$type"_consensus_longest_cds.fa" -g $inputsPath"/"$type"_consensus.fa" $genomeFeatures
+
+# E05
+# retrieve all cds, discarding shorter duplicates, and output translated proteins
+gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo.txt" -y $outFolder"/"$type"_consensus_longest_pep.fa" -x $outFolder"/"$type"_consensus_longest_cds.fa" -g $inputsPath"/"$type"_consensus_E05.fa" $genomeFeatures
+
+# R2
+# retrieve all cds, discarding shorter duplicates, and output translated proteins
+gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo.txt" -y $outFolder"/"$type"_consensus_longest_pep.fa" -x $outFolder"/"$type"_consensus_longest_cds.fa" -g $inputsPath"/"$type"_consensus_R2.fa" $genomeFeatures
+
+# Y05
+# retrieve all cds, discarding shorter duplicates, and output translated proteins
+gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo.txt" -y $outFolder"/"$type"_consensus_longest_pep.fa" -x $outFolder"/"$type"_consensus_longest_cds.fa" -g $inputsPath"/"$type"_consensus_Y05.fa" $genomeFeatures
+
+# Y023
+# retrieve all cds, discarding shorter duplicates, and output translated proteins
+gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo.txt" -y $outFolder"/"$type"_consensus_longest_pep.fa" -x $outFolder"/"$type"_consensus_longest_cds.fa" -g $inputsPath"/"$type"_consensus_Y023.fa" $genomeFeatures
+
+# status message
+echo "Features generated!"

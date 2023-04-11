@@ -71,7 +71,7 @@ echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 # loop over all genes in the reference
 while IFS= read -r line; do
 	# retrieve selected peptide sequences and convert back to multiline fasta format
-	gTag=$(echo "$line" | sed 's/NEWLINE/\n/g' | grep ">" | sed 's/>//g')
+	gTag=$(echo "$line" | sed 's/NEWLINE/\n/g' | grep ">" | cut -d " " -f 1 | sed 's/>rna-//g')
 	gFile=$outFolder"/tmp_"$gTag"_Daphnia_pep.fa"
 	grep "^>$gTag" $tmpRef | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > "$gFile"
 	
