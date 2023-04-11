@@ -31,5 +31,5 @@ mkdir $outFolder
 bash retrieveFeatures_gffread.sh
 
 # generate Ka and Ks values for protein sequences
-bash generateKaKs_musclePal2nalCodeml.sh
+#bash generateKaKs_musclePal2nalCodeml.sh
 

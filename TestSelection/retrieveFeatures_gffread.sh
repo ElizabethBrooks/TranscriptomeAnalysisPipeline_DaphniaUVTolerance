@@ -60,19 +60,19 @@ gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo.txt" -y $outF
 
 # E05
 # retrieve all cds, discarding shorter duplicates, and output translated proteins
-gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo.txt" -y $outFolder"/"$type"_consensus_longest_pep.fa" -x $outFolder"/"$type"_consensus_longest_cds.fa" -g $inputsPath"/"$type"_consensus_E05.fa" $genomeFeatures
+gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo_E05.txt" -y $outFolder"/"$type"_consensus_E05_longest_pep.fa" -x $outFolder"/"$type"_consensus_E05_longest_cds.fa" -g $inputsPath"/"$type"_consensus_E05.fa" $genomeFeatures
 
 # R2
 # retrieve all cds, discarding shorter duplicates, and output translated proteins
-gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo.txt" -y $outFolder"/"$type"_consensus_longest_pep.fa" -x $outFolder"/"$type"_consensus_longest_cds.fa" -g $inputsPath"/"$type"_consensus_R2.fa" $genomeFeatures
+gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo_R2.txt" -y $outFolder"/"$type"_consensus_R2_longest_pep.fa" -x $outFolder"/"$type"_consensus_R2_longest_cds.fa" -g $inputsPath"/"$type"_consensus_R2.fa" $genomeFeatures
 
 # Y05
 # retrieve all cds, discarding shorter duplicates, and output translated proteins
-gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo.txt" -y $outFolder"/"$type"_consensus_longest_pep.fa" -x $outFolder"/"$type"_consensus_longest_cds.fa" -g $inputsPath"/"$type"_consensus_Y05.fa" $genomeFeatures
+gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo_Y05.txt" -y $outFolder"/"$type"_consensus_Y05_longest_pep.fa" -x $outFolder"/"$type"_consensus_Y05_longest_cds.fa" -g $inputsPath"/"$type"_consensus_Y05.fa" $genomeFeatures
 
 # Y023
 # retrieve all cds, discarding shorter duplicates, and output translated proteins
-gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo.txt" -y $outFolder"/"$type"_consensus_longest_pep.fa" -x $outFolder"/"$type"_consensus_longest_cds.fa" -g $inputsPath"/"$type"_consensus_Y023.fa" $genomeFeatures
+gffread -v -C -M -K -d $outFolder"/"$type"_consensus_duplicateInfo_Y023.txt" -y $outFolder"/"$type"_consensus_Y023_longest_pep.fa" -x $outFolder"/"$type"_consensus_Y023_longest_cds.fa" -g $inputsPath"/"$type"_consensus_Y023.fa" $genomeFeatures
 
 # status message
 echo "Features generated!"
