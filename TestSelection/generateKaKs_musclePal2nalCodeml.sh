@@ -46,11 +46,13 @@ refPath=$(grep "genomeReference" $baseDir"/InputData/inputPaths.txt" | tr -d " "
 # retrieve file name of reference
 refTag=$(basename $refPath)
 
-# set reference pep path
-inRefNuc=$inputsPath"/"$refTag"_longest_pep.fa"
+# set reference pep and cds paths
+inRefPep=$inputsPath"/"$refTag"_longest_pep.fa"
+inRefNuc=$inputsPath"/"$refTag"_longest_cds.fa"
 
-# set consensus pep path
-inConNuc=$inputsPath"/"$type"_consensus_longest_pep.fa"
+# set consensus pep and cds paths
+inConPep=$inputsPath"/"$type"_consensus_longest_pep.fa"
+inConNuc=$inputsPath"/"$type"_consensus_longest_cds.fa"
 
 # set results file path
 resultsFile=$outFolder"/kaksResults.csv"
@@ -59,63 +61,46 @@ resultsFile=$outFolder"/kaksResults.csv"
 echo "Begining analysis..."
 
 # prepare reference multiline pep fasta to retrieve seqs
-tmpRef=$outFolder"/Pulex_pep.tmp.fa"
-cat $inRefNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRef
+tmpRefPep=$outFolder"/Pulex_pep.tmp.fa"
+cat $inRefPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefPep
 
-# prepare input multiline pep fasta
-tmpSample=$outFolder"/Olympics_pep.tmp.fa"
-cat $inConNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpSample
+# prepare input consensus multiline pep fasta
+tmpConPep=$outFolder"/Olympics_pep.tmp.fa"
+cat $inConPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpConPep
+
+# prepare reference multiline cds fasta to retrieve seqs
+tmpRefNuc=$outFolder"/Pulex_cds.tmp.fa"
+cat $inRefNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefNuc
+
+# prepare input consensus multiline cds fasta
+tmpConNuc=$outFolder"/Olympics_cds.tmp.fa"
+cat $inConNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpConNuc
 
 # save ka ks values to final results file
 resultsFile="$outFolder"/kaksResults.csv
 echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
+
+# move to directory of inputs for running codeml
+cd $outFolder
 
 # loop over all genes in the reference
 while IFS= read -r line; do
 	# retrieve gene tag
 	gTag=$(echo "$line" | sed 's/NEWLINE/\n/g' | grep ">" | cut -d " " -f 1 | sed 's/>//g')
 
-	# set tmp output pep file
+	# set gene output paths
 	gFile=$outFolder"/"$gTag"_Daphnia_pep.tmp.fa"
-	tmpRefNuc=$outFolder"/"$gTag"_tmpRefNuc_cds.fa"
-	tmpConNuc=$outFolder"/"$gTag"_tmpConNuc_cds.fa"
+	gRefNuc=$outFolder"/"$gTag"_tmpRefNuc_cds.fa"
+	gConNuc=$outFolder"/"$gTag"_tmpConNuc_cds.fa"
 	outAln=$outFolder"/"$gTag"_Daphnia_aligned_pep.tmp.fa"
 
-	# retrieve reference peptide sequences and convert back to multiline fasta format
-	grep "^>$gTag" $tmpRef | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > $gFile
-	grep "^>$gTag" $tmpRef | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > $tmpRefNuc
+	# retrieve peptide sequences and convert back to multiline fasta format
+	grep "^>$gTag" $tmpRefPep | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > $gFile
+	grep "^>$gTag" $tmpConPep | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> $gFile
 
-	# retrieve consensus peptide sequences and convert back to multiline fasta format
-	grep "^>$gTag" $tmpSample | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> $gFile
-	grep "^>$gTag" $tmpSample | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > $tmpConNuc
-
-	# Status message
-	echo "Generating MSA for $gTag..."
-
-	# create MSA using muscle
-	# https://stackoverflow.com/questions/70769809/muscle-command-line-wrapper
-	muscle -in "$gFile" -out "$outAln"
-	#muscle -align "$gFile" -output "$outAln"
-
-	# clean up
-	rm $gFile
-
-	# status message
-	echo "Generating codon alignment for $gTag..."
-
-	# usage:  pal2nal.pl  pep.aln  nuc.fasta  [nuc.fasta...]  [options]
-	"$softwarePath"/pal2nal.pl "$outAln" "$tmpRefNuc" "$tmpConNuc" -output paml -nogap  >  $outFolder"/"$gTag".codon"
-	#pal2nal.pl "$outAln" "$tmpRefNuc" "$tmpConNuc" -output paml -nogap  >  $outFolder"/"$gTag".codon"
-
-	# clean up
-	rm $tmpRefNuc
-	rm $tmpConNuc
-
-	# status message
-	echo "Generating ka ks values for $gTag..."
-
-	# move to directory of inputs for codeml
-	cd $outFolder
+	# retrieve nucleotide sequences and convert back to multiline fasta format
+	grep "^>$gTag" $tmpRefNuc | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > $gRefNuc
+	grep "^>$gTag" $tmpConNuc | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > $gConNuc
 
 	# prepare tree file
 	echo "(>Pulex_$gTag, >Olympics_$gTag);" > $outFolder"/"$gTag".tree"
@@ -125,16 +110,37 @@ while IFS= read -r line; do
 	# runmode = -2 performs ML estimation of dS and dN in pairwise comparisons
 	cat $baseDir"/util/test.cnt" | sed "s/test\.codon/$gTag\.codon/g" | sed "s/test\.tree/$gTag\.tree/g" | sed "s/test\.codeml/$gTag\.codeml/g" > $outFolder"/"$gTag".cnt"
 
+	# Status message
+	echo "Generating MSA for $gTag..."
+
+	# create MSA using muscle
+	# https://stackoverflow.com/questions/70769809/muscle-command-line-wrapper
+	muscle -in "$gFile" -out "$outAln"
+	#muscle -align "$gFile" -output "$outAln"
+
+	# status message
+	echo "Generating codon alignment for $gTag..."
+
+	# usage:  pal2nal.pl  pep.aln  nuc.fasta  [nuc.fasta...]  [options]
+	"$softwarePath"/pal2nal.pl "$outAln" "$gRefNuc" "$gConNuc" -output paml -nogap  >  $outFolder"/"$gTag".codon"
+	#pal2nal.pl "$outAln" "$gRefNuc" "$gConNuc" -output paml -nogap  >  $outFolder"/"$gTag".codon"
+
+	# status message
+	echo "Generating ka ks values for $gTag..."
+
 	# run codeml to retrieve ka ks values
 	# you can find the output of codeml in the .codeml file
 	# Ks, Ka values are very end of the output file
-	codeml $outFolder"/"$gTag".cnt"
+	codeml $gTag".cnt"
 
 	# save ka ks values to final results file
 	kaks=$(tail -1 $gTag".codeml")
 	echo "$gTag  $kaks" >> $resultsFile
 
 	# clean up
+	rm $gFile
+	rm $gRefNuc
+	rm $gConNuc
 	[ -f "rst" ] && rm "rst"
 	[ -f "rst1" ] && rm "rst1"
 	[ -f "rub" ] && rm "rub"
@@ -148,8 +154,10 @@ finalResults="$outFolder"/Pulex_Olympics_kaksResults.csv
 cat $resultsFile | sed "s/  /,/g" | sed "s/=,/=/g" | sed "s/ //g" | sed "s/dN\/dS=//g" | sed "s/dN=//g" | sed "s/dS=//g" | sed "s/t=//g" | sed "s/,S=//g" | sed "s/N=//g" > "$finalResults"
 
 # clean up
-rm $tmpSample
-rm $tmpRef
+rm $tmpRefPep
+rm $tmpConPep
+rm $tmpRefNuc
+rm $tmpConNuc
 
 # status message
 echo "Analysis complete!"
