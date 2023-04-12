@@ -56,7 +56,7 @@ inConNuc=$inputsPath"/"$type"_consensus_longest_pep.fa"
 resultsFile=$outFolder"/kaksResults.csv"
 
 # status message
-echo "Generating MSA for protein sequences..."
+echo "Begining analysis..."
 
 # prepare reference multiline pep fasta to retrieve seqs
 tmpRef=$outFolder"/Pulex_pep.tmp.fa"
@@ -94,12 +94,11 @@ while IFS= read -r line; do
 
 	# create MSA using muscle
 	# https://stackoverflow.com/questions/70769809/muscle-command-line-wrapper
-	muscle -in "$gFileCleaned" -out "$outAln"
+	muscle -in "$gFile" -out "$outAln"
 	#muscle -align "$gFile" -output "$outAln"
 
 	# clean up
 	rm $gFile
-	rm $gFileCleaned
 
 	# status message
 	echo "Generating codon alignment for $gTag..."
@@ -153,5 +152,5 @@ rm $tmpSample
 rm $tmpRef
 
 # status message
-echo "MSA generated for protein sequences!"
+echo "Analysis complete!"
 
