@@ -62,7 +62,7 @@ echo "Begining analysis..."
 
 # prepare reference multiline pep fasta to retrieve seqs
 tmpRefPep=$outFolder"/Pulex_pep.tmp.fa"
-cat $inRefPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefPep
+head -2 $inRefPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefPep
 
 # prepare input consensus multiline pep fasta
 tmpConPep=$outFolder"/Olympics_pep.tmp.fa"
@@ -138,9 +138,9 @@ while IFS= read -r line; do
 	echo "$gTag  $kaks" >> $resultsFile
 
 	# clean up
-	rm $gFile
-	rm $gRefNuc
-	rm $gConNuc
+	#rm $gFile
+	#rm $gRefNuc
+	#rm $gConNuc
 	[ -f "rst" ] && rm "rst"
 	[ -f "rst1" ] && rm "rst1"
 	[ -f "rub" ] && rm "rub"
