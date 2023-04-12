@@ -147,7 +147,7 @@ while IFS= read -r line; do
 	rm $gTag".codon"
 	rm $gTag".tree"
 	rm $gTag".cnt"
-done < $tmpRef
+done < $tmpRefPep
 
 # fix formatting of the results file
 finalResults="$outFolder"/Pulex_Olympics_kaksResults.csv
