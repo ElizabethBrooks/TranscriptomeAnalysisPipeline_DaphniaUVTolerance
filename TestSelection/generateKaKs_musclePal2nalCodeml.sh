@@ -62,7 +62,7 @@ echo "Begining analysis..."
 
 # prepare reference multiline pep fasta to retrieve seqs
 tmpRefPep=$outFolder"/Pulex_pep.tmp.fa"
-head -2 $inRefPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefPep
+cat $inRefPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefPep
 
 # prepare input consensus multiline pep fasta
 tmpConPep=$outFolder"/Olympics_pep.tmp.fa"
@@ -154,10 +154,11 @@ finalResults="$outFolder"/Pulex_Olympics_kaksResults.csv
 cat $resultsFile | sed "s/  /,/g" | sed "s/=,/=/g" | sed "s/ //g" | sed "s/dN\/dS=//g" | sed "s/dN=//g" | sed "s/dS=//g" | sed "s/t=//g" | sed "s/,S=//g" | sed "s/N=//g" > "$finalResults"
 
 # clean up
-rm $tmpRefPep
-rm $tmpConPep
-rm $tmpRefNuc
-rm $tmpConNuc
+#rm $resultsFile
+#rm $tmpRefPep
+#rm $tmpConPep
+#rm $tmpRefNuc
+#rm $tmpConNuc
 
 # status message
 echo "Analysis complete!"
