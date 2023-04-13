@@ -95,12 +95,16 @@ while IFS= read -r line; do
 	outAln=$outFolder"/"$gTag"_Daphnia_aligned.pep.tmp.fa"
 
 	# retrieve peptide sequences and convert back to multiline fasta format
-	grep "^>$gTag" $tmpRefPep | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > $gFile
-	grep "^>$gTag" $tmpConPep | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" >> $gFile
+	echo ">Pulex_$gTag" > $gFile
+	grep "^>$gTag" $tmpRefPep | sed 's/NEWLINE/\n/g' | grep -v "^>$gTag" | sed 's/\./X/g' >> $gFile
+	echo ">Olympics_$gTag" >> $gFile
+	grep "^>$gTag" $tmpConPep | sed 's/NEWLINE/\n/g' | grep -v "^>$gTag" | sed 's/\./X/g' >> $gFile
 
 	# retrieve nucleotide sequences and convert back to multiline fasta format
-	grep "^>$gTag" $tmpRefNuc | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > $gRefNuc
-	grep "^>$gTag" $tmpConNuc | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Olympics_$gTag/g" > $gConNuc
+	echo ">Pulex_$gTag" > $gRefNuc
+	grep "^>$gTag" $tmpRefNuc | sed 's/NEWLINE/\n/g' | grep -v "^>$gTag" >> $gRefNuc
+	echo ">Olympics_$gTag" > $gConNuc
+	grep "^>$gTag" $tmpConNuc | sed 's/NEWLINE/\n/g' | grep -v "^>$gTag" >> $gConNuc
 
 	# prepare tree file
 	echo "(>Pulex_$gTag, >Olympics_$gTag);" > $outFolder"/"$gTag".tree"

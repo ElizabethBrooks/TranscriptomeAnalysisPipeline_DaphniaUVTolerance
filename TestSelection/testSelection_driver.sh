@@ -19,8 +19,8 @@ inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | s
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 
 # retrieve protein sequences
-bash retrieveFeatures_gffread.sh
+#bash retrieveFeatures_gffread.sh
 
 # generate Ka and Ks values for protein sequences
-#bash generateKaKs_musclePal2nalCodeml.sh
+bash generateKaKs_musclePal2nalCodeml.sh
 
