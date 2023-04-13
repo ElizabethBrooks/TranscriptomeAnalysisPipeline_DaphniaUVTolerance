@@ -47,12 +47,12 @@ refPath=$(grep "genomeReference" $baseDir"/InputData/inputPaths.txt" | tr -d " "
 refTag=$(basename $refPath)
 
 # set reference pep and cds paths
-inRefPep=$inputsPath"/"$refTag"_longest_pep.fa"
-inRefNuc=$inputsPath"/"$refTag"_longest_cds.fa"
+inRefPep=$inputsPath"/"$refTag"_longest.pep.fa"
+inRefNuc=$inputsPath"/"$refTag"_longest.cds.fa"
 
 # set consensus pep and cds paths
-inConPep=$inputsPath"/"$type"_consensus_longest_pep.fa"
-inConNuc=$inputsPath"/"$type"_consensus_longest_cds.fa"
+inConPep=$inputsPath"/"$type"_consensus_longest.pep.fa"
+inConNuc=$inputsPath"/"$type"_consensus_longest.cds.fa"
 
 # set results file path
 resultsFile=$outFolder"/kaksResults.csv"
@@ -61,19 +61,19 @@ resultsFile=$outFolder"/kaksResults.csv"
 echo "Begining analysis..."
 
 # prepare reference multiline pep fasta to retrieve seqs
-tmpRefPep=$outFolder"/Pulex_pep.tmp.fa"
+tmpRefPep=$outFolder"/Pulex.pep.tmp.fa"
 cat $inRefPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefPep
 
 # prepare input consensus multiline pep fasta
-tmpConPep=$outFolder"/Olympics_pep.tmp.fa"
+tmpConPep=$outFolder"/Olympics.pep.tmp.fa"
 cat $inConPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpConPep
 
 # prepare reference multiline cds fasta to retrieve seqs
-tmpRefNuc=$outFolder"/Pulex_cds.tmp.fa"
+tmpRefNuc=$outFolder"/Pulex.cds.tmp.fa"
 cat $inRefNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefNuc
 
 # prepare input consensus multiline cds fasta
-tmpConNuc=$outFolder"/Olympics_cds.tmp.fa"
+tmpConNuc=$outFolder"/Olympics.cds.tmp.fa"
 cat $inConNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpConNuc
 
 # save ka ks values to final results file
@@ -89,10 +89,10 @@ while IFS= read -r line; do
 	gTag=$(echo "$line" | sed 's/NEWLINE/\n/g' | grep ">" | cut -d " " -f 1 | sed 's/>//g')
 
 	# set gene output paths
-	gFile=$outFolder"/"$gTag"_Daphnia_pep.tmp.fa"
-	gRefNuc=$outFolder"/"$gTag"_tmpRefNuc_cds.fa"
-	gConNuc=$outFolder"/"$gTag"_tmpConNuc_cds.fa"
-	outAln=$outFolder"/"$gTag"_Daphnia_aligned_pep.tmp.fa"
+	gFile=$outFolder"/"$gTag"_Daphnia.pep.tmp.fa"
+	gRefNuc=$outFolder"/"$gTag"_refNuc.cds.tmp.fa"
+	gConNuc=$outFolder"/"$gTag"_conNuc.cds.tmp.fa"
+	outAln=$outFolder"/"$gTag"_Daphnia_aligned.pep.tmp.fa"
 
 	# retrieve peptide sequences and convert back to multiline fasta format
 	grep "^>$gTag" $tmpRefPep | sed 's/NEWLINE/\n/g' | sed "s/^>$gTag.*/>Pulex_$gTag/g" > $gFile

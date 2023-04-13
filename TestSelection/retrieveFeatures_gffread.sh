@@ -49,21 +49,19 @@ bedtools --version > $inputOutFile
 # status message
 echo "Generating features..."
 
-# retrieve all cds for the reference and output translated proteins
-# and discard any transcripts that either lack initial START codon or the
-# terminal STOP codon, or have an in-frame stop codon
+# retrieve all cds and output translated proteins
 # Pulex
-gffread -v -C -J -y $outFolder"/"$refTag"_pep.fa" -x $outFolder"/"$refTag"_cds.fa" -g $genomeFile $genomeFeatures
+gffread -C -y $outFolder"/"$refTag"_longest.pep.fa" -x $outFolder"/"$refTag"_longest.cds.fa" -g $genomeFile $genomeFeatures
 # OLYM
-gffread -v -C -J -y $outFolder"/"$type"_consensus_longest_pep.fa" -x $outFolder"/"$type"_consensus_longest_cds.fa" -g $inputsPath"/"$type"_consensus.fa" $genomeFeatures
+gffread -C -y $outFolder"/"$type"_consensus_longest.pep.fa" -x $outFolder"/"$type"_consensus_longest.cds.fa" -g $inputsPath"/"$type"_consensus.fa" $genomeFeatures
 # E05
-gffread -v -C -J -y $outFolder"/"$type"_consensus_E05_longest_pep.fa" -x $outFolder"/"$type"_consensus_E05_longest_cds.fa" -g $inputsPath"/"$type"_consensus_E05.fa" $genomeFeatures
+gffread -C -y $outFolder"/"$type"_consensus_E05_longest.pep.fa" -x $outFolder"/"$type"_consensus_E05_longest.cds.fa" -g $inputsPath"/"$type"_consensus_E05.fa" $genomeFeatures
 # R2
-gffread -v -C -J -y $outFolder"/"$type"_consensus_R2_longest_pep.fa" -x $outFolder"/"$type"_consensus_R2_longest_cds.fa" -g $inputsPath"/"$type"_consensus_R2.fa" $genomeFeatures
+gffread -C -y $outFolder"/"$type"_consensus_R2_longest.pep.fa" -x $outFolder"/"$type"_consensus_R2_longest.cds.fa" -g $inputsPath"/"$type"_consensus_R2.fa" $genomeFeatures
 # Y05
-gffread -v -C -J -y $outFolder"/"$type"_consensus_Y05_longest_pep.fa" -x $outFolder"/"$type"_consensus_Y05_longest_cds.fa" -g $inputsPath"/"$type"_consensus_Y05.fa" $genomeFeatures
+gffread -C -y $outFolder"/"$type"_consensus_Y05_longest.pep.fa" -x $outFolder"/"$type"_consensus_Y05_longest.cds.fa" -g $inputsPath"/"$type"_consensus_Y05.fa" $genomeFeatures
 # Y023
-gffread -v -C -J -y $outFolder"/"$type"_consensus_Y023_longest_pep.fa" -x $outFolder"/"$type"_consensus_Y023_longest_cds.fa" -g $inputsPath"/"$type"_consensus_Y023.fa" $genomeFeatures
+gffread -C -y $outFolder"/"$type"_consensus_Y023_longest.pep.fa" -x $outFolder"/"$type"_consensus_Y023_longest.cds.fa" -g $inputsPath"/"$type"_consensus_Y023.fa" $genomeFeatures
 
 # status message
 echo "Features generated!"
