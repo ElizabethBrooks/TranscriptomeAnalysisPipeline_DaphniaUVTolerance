@@ -5,8 +5,7 @@
 #$ -N generateKaKs_jobOutput
 
 # script to generate MSAs for each gene in the reference set of peptide sequences
-# usage: bash generateKaKs_musclePal2nalCodeml.sh
-# usage ex: bash generateKaKs_musclePal2nalCodeml.sh
+# usage: bash generateKaKs_musclePal2nalCodeml.sh $tmpRefPep $tmpConPep $tmpRefNuc $tmpConNuc $resultsFile
 
 # retrieve current working directory
 currDir=$(pwd)
@@ -19,66 +18,38 @@ softwarePath=$(grep "pal2nal:" $baseDir"/InputData/softwarePaths.txt" | tr -d " 
 
 # retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" $baseDir"/InputData/outputPaths.txt" | tr -d " " | sed "s/aligningGenome://g")
-#inputsPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics/"
+#inputsPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics"
 
 # set inputs path
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 
-# retrieve input bam file type
-type="filteredMapQ"
-
-# make outputs directory name
-outFolder=$inputsPath"/selectionTests"
-mkdir $outFolder
-#Check if the folder already exists
-#if [ $? -ne 0 ]; then
-#	echo "The $outFolder directory already exsists... please remove before proceeding."
-#	exit 1
-#fi
-
 # set inputs folder
 inputsPath=$inputsPath"/features_gffread"
 
-# retrieve genome reference absolute path for alignment
-refPath=$(grep "genomeReference" $baseDir"/InputData/inputPaths.txt" | tr -d " " | sed "s/genomeReference://g")
-#refPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/GCF_021134715.1_ASM2113471v1_genomic.fna"
+# make outputs directory name
+outFolder=$inputsPath"/selectionTests"
 
-# retrieve file name of reference
-refTag=$(basename $refPath)
+# retrieve subset tag
+subsetTag=$1
 
-# set reference pep and cds paths
-inRefPep=$inputsPath"/"$refTag"_longest.pep.fa"
-inRefNuc=$inputsPath"/"$refTag"_longest.cds.fa"
+# save ka ks values to final results file
+resultsFile=$outFolder"/kaksResults_"$subsetTag".csv"
+echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 
-# set consensus pep and cds paths
-inConPep=$inputsPath"/"$type"_consensus_longest.pep.fa"
-inConNuc=$inputsPath"/"$type"_consensus_longest.cds.fa"
+# prepare reference multiline pep fasta to retrieve seqs
+tmpRefPep=$inputsPath"/Pulex.pep.flt"$subsetTag
 
-# set results file path
-resultsFile=$outFolder"/kaksResults.csv"
+# prepare input consensus multiline pep fasta
+tmpConPep=$inputsPath"/Olympics.pep.flt"$subsetTag
+
+# prepare reference multiline cds fasta to retrieve seqs
+tmpRefNuc=$inputsPath"/Pulex.cds.flt"$subsetTag
+
+# prepare input consensus multiline cds fasta
+tmpConNuc=$inputsPath"/Olympics.cds.flt"$subsetTag
 
 # status message
 echo "Begining analysis..."
-
-# prepare reference multiline pep fasta to retrieve seqs
-tmpRefPep=$outFolder"/Pulex.pep.tmp.fa"
-cat $inRefPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefPep
-
-# prepare input consensus multiline pep fasta
-tmpConPep=$outFolder"/Olympics.pep.tmp.fa"
-cat $inConPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpConPep
-
-# prepare reference multiline cds fasta to retrieve seqs
-tmpRefNuc=$outFolder"/Pulex.cds.tmp.fa"
-cat $inRefNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefNuc
-
-# prepare input consensus multiline cds fasta
-tmpConNuc=$outFolder"/Olympics.cds.tmp.fa"
-cat $inConNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpConNuc
-
-# save ka ks values to final results file
-resultsFile="$outFolder"/kaksResults.csv
-echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 
 # move to directory of inputs for running codeml
 cd $outFolder
@@ -142,9 +113,9 @@ while IFS= read -r line; do
 	echo "$gTag  $kaks" >> $resultsFile
 
 	# clean up
-	#rm $gFile
-	#rm $gRefNuc
-	#rm $gConNuc
+	rm $gFile
+	rm $gRefNuc
+	rm $gConNuc
 	[ -f "rst" ] && rm "rst"
 	[ -f "rst1" ] && rm "rst1"
 	[ -f "rub" ] && rm "rub"
@@ -153,16 +124,15 @@ while IFS= read -r line; do
 	rm $gTag".cnt"
 done < $tmpRefPep
 
-# fix formatting of the results file
-finalResults="$outFolder"/Pulex_Olympics_kaksResults.csv
-cat $resultsFile | sed "s/  /,/g" | sed "s/=,/=/g" | sed "s/ //g" | sed "s/dN\/dS=//g" | sed "s/dN=//g" | sed "s/dS=//g" | sed "s/t=//g" | sed "s/,S=//g" | sed "s/N=//g" > "$finalResults"
-
 # clean up
 #rm $resultsFile
 #rm $tmpRefPep
 #rm $tmpConPep
 #rm $tmpRefNuc
 #rm $tmpConNuc
+
+# move back to current directory
+cd $currDir
 
 # status message
 echo "Analysis complete!"

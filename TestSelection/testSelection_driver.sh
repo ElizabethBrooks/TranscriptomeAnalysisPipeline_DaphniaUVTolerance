@@ -11,16 +11,96 @@
 # load necessary modules
 module load bio
 
+# retrieve protein sequences
+#bash retrieveFeatures_gffread.sh
+
+# retreive protein coding sequence transcript names
+#bash retrieve_proteinCoding.sh
+
+# retrieve current working directory
+currDir=$(pwd)
+
+# retrieve base directory path
+baseDir=$(dirname $currDir)
+
+# set software path
+softwarePath=$(grep "pal2nal:" $baseDir"/InputData/softwarePaths.txt" | tr -d " " | sed "s/pal2nal://g")
+
+# retrieve genome features absolute path for alignment
+genomeFeatures=$(grep "genomeFeatures" $baseDir"/InputData/softwarePaths.txt" | tr -d " " | sed "s/genomeFeatures://g")
+#genomeFeatures="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/genomic.gff"
+
 # retrieve sorted reads input absolute path
-inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
-#inputsPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics/"
+inputsPath=$(grep "aligningGenome:" $baseDir"/InputData/outputPaths.txt" | tr -d " " | sed "s/aligningGenome://g")
+#inputsPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics"
+
+# retrieve genome reference absolute path for alignment
+refPath=$(grep "genomeReference" $baseDir"/InputData/inputPaths.txt" | tr -d " " | sed "s/genomeReference://g")
+#refPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/GCF_021134715.1_ASM2113471v1_genomic.fna"
 
 # set inputs path
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 
-# retrieve protein sequences
-#bash retrieveFeatures_gffread.sh
+# retrieve input bam file type
+type="filteredMapQ"
 
-# generate Ka and Ks values for protein sequences
-bash generateKaKs_musclePal2nalCodeml.sh
+# make outputs directory name
+outFolder=$inputsPath"/selectionTests"
+mkdir $outFolder
+#Check if the folder already exists
+#if [ $? -ne 0 ]; then
+#	echo "The $outFolder directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
+# set inputs folder
+inputsPath=$inputsPath"/features_gffread"
+
+# retrieve file name of reference
+refTag=$(basename $refPath)
+
+# set results file path
+resultsFile=$outFolder"/kaksResults.csv"
+echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
+
+# set reference multiline pep fasta to retrieve seqs
+fltRefPep=$inputsPath"/Pulex.pep.flt.fa"
+
+# set input consensus multiline pep fasta
+fltConPep=$inputsPath"/Olympics.pep.flt.fa"
+
+# set reference multiline cds fasta to retrieve seqs
+fltRefNuc=$inputsPath"/Pulex.cds.flt.fa"
+
+# set input consensus multiline cds fasta
+fltConNuc=$inputsPath"/Olympics.cds.flt.fa"
+
+# split the gene sequence sets into segments
+split -l 1000 $fltRefPep $outFolder"/Pulex.pep.flt"
+split -l 1000 $fltConPep $outFolder"/Olympics.pep.flt"
+split -l 1000 $fltRefNuc $outFolder"/Pulex.cds.flt"
+split -l 1000 $fltConNuc $outFolder"/Olympics.cds.flt"
+
+# loop over each segment
+for i in $outFolder"/Pulex.pep.flt"*; do
+	# retrieve subset tag
+	subsetTag=$(basename $i | sed 's/Pulex\.pep\.flt//g')
+	# generate Ka and Ks values for protein sequences
+	qsub generateKaKs_musclePal2nalCodeml.sh $subsetTag
+done
+
+# merge each of the ka ks results files
+
+
+# fix formatting of the results file
+#finalResults="$outFolder"/Pulex_Olympics_kaksResults.csv
+#cat $resultsFile | sed "s/  /,/g" | sed "s/=,/=/g" | sed "s/ //g" | sed "s/dN\/dS=//g" | sed "s/dN=//g" | sed "s/dS=//g" | sed "s/t=//g" | sed "s/,S=//g" | sed "s/N=//g" > "$finalResults"
+
+# clean up
+#rm $resultsFile
+#rm $geneList
+#rm $transList
+#rm $outFolder"/Pulex.pep.flt"*
+#rm $outFolder"/Olympics.pep.flt"*
+#rm $outFolder"/Pulex.cds.flt"*
+#rm $outFolder"/Olympics.cds.flt"*
