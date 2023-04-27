@@ -1,7 +1,11 @@
 #!/bin/bash
+#$ -M ebrooks5@nd.edu
+#$ -m abe
+#$ -r n
+#$ -N retrieveProteins_jobOutput
 
 # script to run tests for selection for each protein sequence
-# usage: bash retrieve_proteinCoding.sh
+# usage: qsub retrieve_proteinCoding.sh
 
 # retrieve current working directory
 currDir=$(pwd)
