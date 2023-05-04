@@ -39,7 +39,7 @@ refTag=$(basename $refPath)
 
 # set paths for protein coding sequence lists
 geneList=$outFolder"/"$refTag"_proteinCoding_genes.txt"
-transList=$outFolder"/"$refTag"_proteinCoding_trans.txt"
+#transList=$outFolder"/"$refTag"_proteinCoding_trans.txt"
 
 # set reference pep and cds paths
 inRefPep=$outFolder"/"$refTag"_longest.pep.fa"
@@ -87,7 +87,7 @@ while IFS= read -r line; do
 	# create list of protein coding sequence transcript name
 	transName=$(cat $genomeFeatures | grep "$line" | grep "rna" | cut -d ";" -f4 | sed 's/Name=//g')
 	# add transcript name to the list
-	echo $transName >> $transList
+	#echo $transName >> $transList
 	# prepare reference multiline pep fasta to retrieve seqs
 	cat $tmpRefPep | grep "$transName" >> $fltRefPep
 	# prepare input consensus multiline pep fasta
@@ -100,7 +100,7 @@ done < $geneList
 
 # clean up
 rm $geneList
-rm $transList
+#rm $transList
 rm $tmpRefPep
 rm $tmpConPep
 rm $tmpRefNuc
