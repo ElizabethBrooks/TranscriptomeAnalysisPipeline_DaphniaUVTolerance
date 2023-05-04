@@ -14,7 +14,7 @@ currDir=$(pwd)
 baseDir=$(dirname $currDir)
 
 # retrieve genome features absolute path for alignment
-genomeFeatures=$(grep "genomeFeatures" $baseDir"/InputData/softwarePaths.txt" | tr -d " " | sed "s/genomeFeatures://g")
+genomeFeatures=$(grep "genomeFeatures" $baseDir"/InputData/inputPaths.txt" | tr -d " " | sed "s/genomeFeatures://g")
 #genomeFeatures="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/genomic.gff"
 
 # retrieve sorted reads input absolute path
@@ -71,7 +71,7 @@ cat $inConNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmp
 
 # pre-clean up
 rm $geneList
-rm $transList
+#rm $transList
 rm $fltRefPep
 rm $fltConPep
 rm $fltRefNuc
@@ -99,7 +99,7 @@ while IFS= read -r line; do
 done < $geneList
 
 # clean up
-rm $geneList
+#rm $geneList
 #rm $transList
 rm $tmpRefPep
 rm $tmpConPep
