@@ -89,6 +89,10 @@ for i in $outFolder"/Pulex.pep.flt"*; do
 	qsub generateKaKs_musclePal2nalCodeml.sh $subsetTag
 done
 
+# wait
+# https://stackoverflow.com/questions/11525214/wait-for-set-of-qsub-jobs-to-complete
+
+
 # merge each of the ka ks results files
 
 

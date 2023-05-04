@@ -7,6 +7,9 @@
 # script to generate MSAs for each gene in the reference set of peptide sequences
 # usage: bash generateKaKs_musclePal2nalCodeml.sh $tmpRefPep $tmpConPep $tmpRefNuc $tmpConNuc $resultsFile
 
+# load necessary modules
+module load bio
+
 # retrieve current working directory
 currDir=$(pwd)
 
