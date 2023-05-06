@@ -84,8 +84,8 @@ cat $genomeFeatures | grep "biotype" | grep "protein_coding" | cut -d ";" -f 5 |
 while IFS= read -r line; do
 	# status message
 	echo "Processing $line ..."
-	# create list of protein coding sequence transcript name
-	transName=$(cat $genomeFeatures | grep "$line" | grep "rna" | cut -d ";" -f4 | sed 's/Name=//g')
+	# create list of protein coding sequence transcript names, and grab the first listed transcript
+	transName=$(cat $genomeFeatures | grep "$line" | grep "rna" | cut -d ";" -f4 | sed 's/Name=//g' | head -1)
 	# add transcript name to the list
 	echo $transName >> $transList
 	# prepare reference multiline pep fasta to retrieve seqs
