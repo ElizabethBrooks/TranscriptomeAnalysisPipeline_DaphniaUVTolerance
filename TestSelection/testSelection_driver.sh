@@ -88,7 +88,7 @@ for i in $outFolder"/Pulex.pep.flt"*; do
 	# output status message
 	echo "Starting analysis for $i"
 	# generate Ka and Ks values for protein sequences
-	#qsub generateKaKs_musclePal2nalCodeml.sh $subsetTag
+	qsub generateKaKs_musclePal2nalCodeml.sh $subsetTag
 done
 
 # wait
