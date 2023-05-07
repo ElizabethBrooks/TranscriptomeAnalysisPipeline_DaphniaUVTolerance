@@ -5,7 +5,7 @@
 #$ -N retrieveProteins_jobOutput
 
 # script to run tests for selection for each protein sequence
-# usage: qsub retrieve_proteinCoding.sh
+# usage: g
 
 # retrieve current working directory
 currDir=$(pwd)
@@ -39,7 +39,7 @@ refTag=$(basename $refPath)
 
 # set paths for protein coding sequence lists
 geneList=$outFolder"/"$refTag"_proteinCoding_genes.txt"
-transList=$outFolder"/"$refTag"_proteinCoding_trans.txt"
+transList=$outFolder"/"$refTag"_proteinCoding_map.txt"
 
 # set reference pep and cds paths
 inRefPep=$outFolder"/"$refTag"_longest.pep.fa"
@@ -85,17 +85,17 @@ while IFS= read -r line; do
 	# status message
 	echo "Processing $line ..."
 	# create list of protein coding sequence transcript names, and grab the first listed transcript
-	transName=$(cat $genomeFeatures | grep "$line" | grep "rna" | cut -d ";" -f4 | sed 's/Name=//g' | head -1)
-	# add transcript name to the list
-	echo $transName >> $transList
+	transName=$(cat $genomeFeatures | grep "$line" | grep "mRNA" | head -1 | cut -f9 | cut -d ";" -f1 | cut -d "=" -f2)
+	# add transcript name to the gene to transcript map file
+	echo "$line $transName" >> $transList
 	# prepare reference multiline pep fasta to retrieve seqs
-	cat $tmpRefPep | grep "$transName" >> $fltRefPep
+	cat $tmpRefPep | grep "$transName" | sed 's/NEWLINE/\n>/g' >> $fltRefPep
 	# prepare input consensus multiline pep fasta
-	cat $tmpConPep | grep "$transName" >> $fltConPep
+	cat $tmpConPep | grep "$transName" | sed 's/NEWLINE/\n>/g' >> $fltConPep
 	# prepare reference multiline cds fasta to retrieve seqs
-	cat $tmpRefNuc | grep "$transName" >> $fltRefNuc
+	cat $tmpRefNuc | grep "$transName" | sed 's/NEWLINE/\n>/g' >> $fltRefNuc
 	# prepare input consensus multiline cds fasta
-	cat $tmpConNuc | grep "$transName" >> $fltConNuc
+	cat $tmpConNuc | grep "$transName" | sed 's/NEWLINE/\n>/g' >> $fltConNuc
 done < $geneList
 
 # clean up
