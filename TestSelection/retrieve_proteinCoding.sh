@@ -94,15 +94,19 @@ while IFS= read -r line; do
 	# create list of protein coding sequence transcript names, and grab the first listed transcript
 	transName=$(cat $genomeFeatures | grep "$line" | grep "mRNA" | head -1 | cut -f9 | cut -d ";" -f1 | cut -d "=" -f2)
 	# add transcript name to the gene to transcript map file
-	echo "$line $transName" >> $transList
+	echo "$transName $line" >> $transList
 	# prepare reference multiline pep fasta to retrieve seqs
-	cat $tmpRefPep | grep -w "$transName" | sed 's/NEWLINE/\n/g' >> $fltRefPep
+	refPep=$(cat $tmpRefPep | grep -w "$transName")
+	echo $refPep | sed 's/NEWLINE/\n/g' >> $fltRefPep
 	# prepare input consensus multiline pep fasta
-	cat $tmpConPep | grep -w "$transName" | sed 's/NEWLINE/\n/g' >> $fltConPep
+	conPep=$(cat $tmpConPep | grep -w "$transName" | sed 's/NEWLINE/\n/g')
+	echo $conPep | sed 's/NEWLINE/\n/g' >> $fltConPep
 	# prepare reference multiline cds fasta to retrieve seqs
-	cat $tmpRefNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g' >> $fltRefNuc
+	refNuc=$(cat $tmpRefNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g')
+	echo $refNuc | sed 's/NEWLINE/\n/g' >> $fltRefNuc
 	# prepare input consensus multiline cds fasta
-	cat $tmpConNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g' >> $fltConNuc
+	conNuc=$(cat $tmpConNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g')
+	echo $conNuc | sed 's/NEWLINE/\n/g' >> $fltConNuc
 done < $geneList
 
 # clean up
