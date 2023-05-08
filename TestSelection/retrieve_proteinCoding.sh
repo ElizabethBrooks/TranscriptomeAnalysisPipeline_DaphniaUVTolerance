@@ -96,13 +96,13 @@ while IFS= read -r line; do
 	# add transcript name to the gene to transcript map file
 	echo "$line $transName" >> $transList
 	# prepare reference multiline pep fasta to retrieve seqs
-	cat $tmpRefPep | grep "$transName" | sed 's/NEWLINE/\n/g' >> $fltRefPep
+	cat $tmpRefPep | grep -w "$transName" | sed 's/NEWLINE/\n/g' >> $fltRefPep
 	# prepare input consensus multiline pep fasta
-	cat $tmpConPep | grep "$transName" | sed 's/NEWLINE/\n/g' >> $fltConPep
+	cat $tmpConPep | grep -w "$transName" | sed 's/NEWLINE/\n/g' >> $fltConPep
 	# prepare reference multiline cds fasta to retrieve seqs
-	cat $tmpRefNuc | grep "$transName" | sed 's/NEWLINE/\n/g' >> $fltRefNuc
+	cat $tmpRefNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g' >> $fltRefNuc
 	# prepare input consensus multiline cds fasta
-	cat $tmpConNuc | grep "$transName" | sed 's/NEWLINE/\n/g' >> $fltConNuc
+	cat $tmpConNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g' >> $fltConNuc
 done < $geneList
 
 # clean up
