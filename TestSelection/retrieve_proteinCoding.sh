@@ -96,17 +96,17 @@ while IFS= read -r line; do
 	# add transcript name to the gene to transcript map file
 	echo "$transName $line" >> $transList
 	# prepare reference multiline pep fasta to retrieve seqs
-	refPep=$(cat $tmpRefPep | grep -w "$transName")
-	echo $refPep | sed 's/NEWLINE/\n/g' >> $fltRefPep
+	refPep=$(cat $tmpRefPep | grep -w "$transName" | sed 's/NEWLINE/\n/g')
+	echo $refPep | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' >> $fltRefPep
 	# prepare input consensus multiline pep fasta
 	conPep=$(cat $tmpConPep | grep -w "$transName" | sed 's/NEWLINE/\n/g')
-	echo $conPep | sed 's/NEWLINE/\n/g' >> $fltConPep
+	echo $conPep | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' >> $fltConPep
 	# prepare reference multiline cds fasta to retrieve seqs
 	refNuc=$(cat $tmpRefNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g')
-	echo $refNuc | sed 's/NEWLINE/\n/g' >> $fltRefNuc
+	echo $refNuc | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' >> $fltRefNuc
 	# prepare input consensus multiline cds fasta
 	conNuc=$(cat $tmpConNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g')
-	echo $conNuc | sed 's/NEWLINE/\n/g' >> $fltConNuc
+	echo $conNuc | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' >> $fltConNuc
 done < $geneList
 
 # clean up

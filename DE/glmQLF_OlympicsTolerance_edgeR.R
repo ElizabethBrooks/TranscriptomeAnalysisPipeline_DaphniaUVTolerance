@@ -8,6 +8,7 @@
 #    install.packages("BiocManager")
 #BiocManager::install("edgeR")
 #install.packages("statmod")
+#install.packages("ggrepel")
 
 #Turn off scientific notation
 options(scipen = 999)
@@ -17,6 +18,7 @@ library(edgeR)
 library(statmod)
 library(ghibli)
 library(ggplot2)
+library(ggrepel)
 library(ggVennDiagram)
 
 #Retrieve input file name of gene counts
@@ -167,6 +169,15 @@ ggplot(data=tagsTblANOVATreatment, aes(x=logFC, y=-log10(FDR), color = topDE)) +
   theme_minimal() +
   scale_colour_discrete(type = ghibli_subset, breaks = c("Up", "Down"))
 dev.off()
+# create volcano plot with labels
+labelSetTreatment <- tagsTblANOVATreatment[tagsTblANOVATreatment$topDE == "UP" | tagsTblANOVATreatment$topDE == "DOWN",]
+jpeg("glmQLF_2WayANOVA_treatment_volcanoLabeled_LFC1.2.jpg")
+ggplot(data=tagsTblANOVATreatment, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+  geom_point() +
+  ggrepel::geom_text_repel(data = labelSetTreatment, aes(label = row.names(labelSetTreatment))) +
+  theme_minimal() +
+  scale_colour_discrete(type = ghibli_subset, breaks = c("Up", "Down"))
+dev.off()
 # identify significantly DE genes by FDR
 tagsTblANOVATreatment.glm_keep <- tagsTblANOVATreatment$FDR < 0.05
 # create filtered results table of DE genes
@@ -201,6 +212,15 @@ tagsTblANOVATolerance$topDE[tagsTblANOVATolerance$logFC < -1 & tagsTblANOVAToler
 jpeg("glmQLF_2WayANOVA_tolerance_volcano_LFC1.2.jpg")
 ggplot(data=tagsTblANOVATolerance, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
   geom_point() +
+  theme_minimal() +
+  scale_colour_discrete(type = ghibli_subset, breaks = c("Up", "Down"))
+dev.off()
+# create volcano plot with labels
+labelSetTolerance <- tagsTblANOVATolerance[tagsTblANOVATolerance$topDE == "UP" | tagsTblANOVATolerance$topDE == "DOWN",]
+jpeg("glmQLF_2WayANOVA_tolerance_volcanoLabeled_LFC1.2.jpg")
+ggplot(data=tagsTblANOVATolerance, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+  geom_point() +
+  ggrepel::geom_text_repel(data = labelSetTolerance, aes(label = row.names(labelSetTolerance)), max.overlaps=20) +
   theme_minimal() +
   scale_colour_discrete(type = ghibli_subset, breaks = c("Up", "Down"))
 dev.off()
@@ -242,6 +262,15 @@ ggplot(data=tagsTblANOVAInter, aes(x=logFC, y=-log10(FDR), color = topDE)) +
   theme_minimal() +
   scale_colour_discrete(type = ghibli_subset, breaks = c("Up", "Down"))
 dev.off()
+# create volcano plot with labels
+labelSetInteraction <- tagsTblANOVAInter[tagsTblANOVAInter$topDE == "UP" | tagsTblANOVAInter$topDE == "DOWN",]
+jpeg("glmQLF_2WayANOVA_interaction_volcanoLabeled_LFC1.2.jpg")
+ggplot(data=tagsTblANOVAInter, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+  geom_point() +
+  ggrepel::geom_text_repel(data = labelSetInteraction, aes(label = row.names(labelSetInteraction)), max.overlaps=100) +
+  theme_minimal() +
+  scale_colour_discrete(type = ghibli_subset, breaks = c("Up", "Down"))
+dev.off()
 # identify significantly DE genes by FDR
 tagsTblANOVAInter.glm_keep <- tagsTblANOVAInter$FDR < 0.05
 # create filtered results table of DE genes
@@ -262,6 +291,6 @@ glm_list_venn <- list(treatment = geneSet_treatment,
 # create venn diagram
 jpeg("glmQLF_2WayANOVA_venn_LFC1.2.jpg")
 ggVennDiagram(glm_list_venn, label_alpha=0.25, category.names = c("treatment","tolerance","interaction")) +
-  scale_color_brewer(palette = "Paired")
+  scale_colour_discrete(type = ghibli_subset)
 dev.off()
 
