@@ -79,7 +79,7 @@ cat $inRefNuc | sed 's/\ gene=.*/\t/g' | tr -d '\n' | sed 's/>/\n>/g' > $tmpRefN
 cat $inConNuc | sed 's/\ gene=.*/\t/g' | tr -d '\n' | sed 's/>/\n>/g' > $tmpConNuc
 
 # create list of protein coding sequence gene names
-cat $genomeFeatures | grep "biotype" | grep "protein_coding" | cut -d ";" -f 5 | sed 's/=/-/g' > $geneList
+cat $genomeFeatures | grep "biotype" | grep "protein_coding" | cut -f 9 | cut -d ";" -f1 | cut -d "=" -f 2 > $geneList
 
 # loop over each gene name
 while IFS= read -r line; do
@@ -100,7 +100,7 @@ while IFS= read -r line; do
 	grep "^>$transName" $tmpRefNuc | cut -f 2 >> $fltRefNuc
 	# consensus cds fasta
 	echo -en ">"$line"\t" >> $fltConNuc
-	grep "^>$transName" $tmpConNuc | cut -f 2 >> $fltRefNuc
+	grep "^>$transName" $tmpConNuc | cut -f 2 >> $fltConNuc
 done < $geneList
 
 # clean up
