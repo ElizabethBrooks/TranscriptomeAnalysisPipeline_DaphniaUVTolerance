@@ -73,10 +73,10 @@ rm $fltRefNuc
 rm $fltConNuc
 
 # create singleline fasta of seqs
-cat $inRefPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefPep
-cat $inConPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpConPep
-cat $inRefNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefNuc
-cat $inConNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpConNuc
+cat $inRefPep | sed 's/\ gene=.*/\t/g' | tr -d '\n' | sed 's/>/\n>/g' > $tmpRefPep
+cat $inConPep | sed 's/\ gene=.*/\t/g' | tr -d '\n' | sed 's/>/\n>/g' > $tmpConPep
+cat $inRefNuc | sed 's/\ gene=.*/\t/g' | tr -d '\n' | sed 's/>/\n>/g' > $tmpRefNuc
+cat $inConNuc | sed 's/\ gene=.*/\t/g' | tr -d '\n' | sed 's/>/\n>/g' > $tmpConNuc
 
 # create list of protein coding sequence gene names
 cat $genomeFeatures | grep "biotype" | grep "protein_coding" | cut -d ";" -f 5 | sed 's/=/-/g' > $geneList
@@ -90,26 +90,21 @@ while IFS= read -r line; do
 	# add transcript name to the gene to transcript map file
 	echo "$transName $line" >> $transList
 	# reference pep fasta
-	refPep=$(cat $tmpRefPep | grep -w "$transName" | sed 's/NEWLINE/\n/g' | tail -n +2 | tr -d '\n')
 	echo ">"$line >> $fltRefPep
-	echo $refPep >> $fltRefPep
+	cat $tmpRefPep | grep -w "$transName" | cut -f 2 >> $fltRefPep
 	# consensus pep fasta
-	conPep=$(cat $tmpConPep | grep -w "$transName" | sed 's/NEWLINE/\n/g' | tail -n +2 | tr -d '\n')
 	echo ">"$line >> $fltConPep
-	echo $conPep >> $fltConPep
+	cat $tmpConPep | grep -w "$transName" | cut -f 2 >> $fltConPep
 	# reference cds fasta
-	refNuc=$(cat $tmpRefNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g' | tail -n +2 | tr -d '\n')
 	echo ">"$line >> $fltRefNuc
-	echo $refNuc >> $fltRefNuc
+	cat $tmpRefNuc | grep -w "$transName" | cut -f 2 >> $fltRefNuc
 	# consensus cds fasta
-	conNuc=$(cat $tmpConNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g' | tail -n +2 | tr -d '\n')
 	echo ">"$line >> $fltConNuc
-	echo $conNuc >> $fltConNuc
+	cat $tmpConNuc | grep -w "$transName" | cut -f 2 >> $fltRefNuc
 done < $geneList
 
 # clean up
 #rm $geneList
-#rm $transList
 #rm $tmpRefPep
 #rm $tmpConPep
 #rm $tmpRefNuc
