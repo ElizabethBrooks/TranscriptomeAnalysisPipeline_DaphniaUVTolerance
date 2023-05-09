@@ -52,22 +52,18 @@ inConNuc=$outFolder"/"$type"_consensus_longest.cds.fa"
 # set reference multiline pep fasta to retrieve seqs
 tmpRefPep=$outFolder"/Pulex.pep.tmp.fa"
 fltRefPep=$outFolder"/Pulex.pep.flt.fa"
-fmtRefPep=$outFolder"/Pulex.pep.fmt.fa"
 
 # set input consensus multiline pep fasta
 tmpConPep=$outFolder"/Olympics.pep.tmp.fa"
 fltConPep=$outFolder"/Olympics.pep.flt.fa"
-fmtConPep=$outFolder"/Olympics.pep.fmt.fa"
 
 # set reference multiline cds fasta to retrieve seqs
 tmpRefNuc=$outFolder"/Pulex.cds.tmp.fa"
 fltRefNuc=$outFolder"/Pulex.cds.flt.fa"
-fmtRefNuc=$outFolder"/Pulex.cds.fmt.fa"
 
 # set input consensus multiline cds fasta
 tmpConNuc=$outFolder"/Olympics.cds.tmp.fa"
 fltConNuc=$outFolder"/Olympics.cds.flt.fa"
-fmtConNuc=$outFolder"/Olympics.cds.fmt.fa"
 
 # pre-clean up
 rm $transList
@@ -75,10 +71,6 @@ rm $fltRefPep
 rm $fltConPep
 rm $fltRefNuc
 rm $fltConNuc
-rm $fmtRefPep
-rm $fmtConPep
-rm $fmtRefNuc
-rm $fmtConNuc
 
 # create singleline fasta of seqs
 cat $inRefPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefPep
@@ -98,24 +90,22 @@ while IFS= read -r line; do
 	# add transcript name to the gene to transcript map file
 	echo "$transName $line" >> $transList
 	# reference pep fasta
-	refPep=$(cat $tmpRefPep | grep -w "$transName" | sed 's/NEWLINE/\n/g')
+	refPep=$(cat $tmpRefPep | grep -w "$transName" | sed 's/NEWLINE/\n/g' | tail -n +2 | tr -d '\n')
+	echo ">"$line >> $fltRefPep
 	echo $refPep >> $fltRefPep
 	# consensus pep fasta
-	conPep=$(cat $tmpConPep | grep -w "$transName" | sed 's/NEWLINE/\n/g')
+	conPep=$(cat $tmpConPep | grep -w "$transName" | sed 's/NEWLINE/\n/g' | tail -n +2 | tr -d '\n')
+	echo ">"$line >> $fltConPep
 	echo $conPep >> $fltConPep
 	# reference cds fasta
-	refNuc=$(cat $tmpRefNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g')
+	refNuc=$(cat $tmpRefNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g' | tail -n +2 | tr -d '\n')
+	echo ">"$line >> $fltRefNuc
 	echo $refNuc >> $fltRefNuc
 	# consensus cds fasta
-	conNuc=$(cat $tmpConNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g')
+	conNuc=$(cat $tmpConNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g' | tail -n +2 | tr -d '\n')
+	echo ">"$line >> $fltConNuc
 	echo $conNuc >> $fltConNuc
 done < $geneList
-
-# replace spaces with new lines
-cat $fltRefPep | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' > $fmtRefPep
-cat $fltConPep | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' > $fmtConPep
-cat $fltRefNuc | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' > $fmtRefNuc
-cat $fltConNuc | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' > $fmtConNuc
 
 # clean up
 #rm $geneList
@@ -124,10 +114,6 @@ cat $fltConNuc | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/
 #rm $tmpConPep
 #rm $tmpRefNuc
 #rm $tmpConNuc
-#rm $fltRefPep
-#rm $fltConPep
-#rm $fltRefNuc
-#rm $fltConNuc
 
 # status message
 echo "Analysis complete!"
