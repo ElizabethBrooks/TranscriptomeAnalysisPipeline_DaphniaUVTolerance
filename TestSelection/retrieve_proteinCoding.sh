@@ -90,17 +90,17 @@ while IFS= read -r line; do
 	# add transcript name to the gene to transcript map file
 	echo "$transName $line" >> $transList
 	# reference pep fasta
-	echo ">"$line >> $fltRefPep
-	cat $tmpRefPep | grep -w "$transName" | cut -f 2 >> $fltRefPep
+	echo -en ">"$line"\t" >> $fltRefPep
+	grep -w "$transName" $tmpRefPep | cut -f 2 >> $fltRefPep
 	# consensus pep fasta
-	echo ">"$line >> $fltConPep
-	cat $tmpConPep | grep -w "$transName" | cut -f 2 >> $fltConPep
+	echo -en ">"$line"\t" >> $fltConPep
+	grep -w "$transName" $tmpConPep | cut -f 2 >> $fltConPep
 	# reference cds fasta
-	echo ">"$line >> $fltRefNuc
-	cat $tmpRefNuc | grep -w "$transName" | cut -f 2 >> $fltRefNuc
+	echo -en ">"$line"\t" >> $fltRefNuc
+	grep -w "$transName" $tmpRefNuc | cut -f 2 >> $fltRefNuc
 	# consensus cds fasta
-	echo ">"$line >> $fltConNuc
-	cat $tmpConNuc | grep -w "$transName" | cut -f 2 >> $fltRefNuc
+	echo -en ">"$line"\t" >> $fltConNuc
+	grep -w "$transName" $tmpConNuc | cut -f 2 >> $fltRefNuc
 done < $geneList
 
 # clean up
