@@ -52,18 +52,22 @@ inConNuc=$outFolder"/"$type"_consensus_longest.cds.fa"
 # set reference multiline pep fasta to retrieve seqs
 tmpRefPep=$outFolder"/Pulex.pep.tmp.fa"
 fltRefPep=$outFolder"/Pulex.pep.flt.fa"
+fmtRefPep=$outFolder"/Pulex.pep.fmt.fa"
 
 # set input consensus multiline pep fasta
 tmpConPep=$outFolder"/Olympics.pep.tmp.fa"
 fltConPep=$outFolder"/Olympics.pep.flt.fa"
+fmtConPep=$outFolder"/Olympics.pep.fmt.fa"
 
 # set reference multiline cds fasta to retrieve seqs
 tmpRefNuc=$outFolder"/Pulex.cds.tmp.fa"
 fltRefNuc=$outFolder"/Pulex.cds.flt.fa"
+fmtRefNuc=$outFolder"/Pulex.cds.fmt.fa"
 
 # set input consensus multiline cds fasta
 tmpConNuc=$outFolder"/Olympics.cds.tmp.fa"
 fltConNuc=$outFolder"/Olympics.cds.flt.fa"
+fmtConNuc=$outFolder"/Olympics.cds.fmt.fa"
 
 # pre-clean up
 rm $transList
@@ -71,17 +75,15 @@ rm $fltRefPep
 rm $fltConPep
 rm $fltRefNuc
 rm $fltConNuc
+rm $fmtRefPep
+rm $fmtConPep
+rm $fmtRefNuc
+rm $fmtConNuc
 
-# prepare reference multiline pep fasta to retrieve seqs
+# create singleline fasta of seqs
 cat $inRefPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefPep
-
-# prepare input consensus multiline pep fasta
 cat $inConPep | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpConPep
-
-# prepare reference multiline cds fasta to retrieve seqs
 cat $inRefNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpRefNuc
-
-# prepare input consensus multiline cds fasta
 cat $inConNuc | sed 's/$/NEWLINE/g' | tr -d '\n' | sed 's/NEWLINE>/\n>/g' > $tmpConNuc
 
 # create list of protein coding sequence gene names
@@ -95,19 +97,25 @@ while IFS= read -r line; do
 	transName=$(cat $genomeFeatures | grep "$line" | grep "mRNA" | head -1 | cut -f9 | cut -d ";" -f1 | cut -d "=" -f2)
 	# add transcript name to the gene to transcript map file
 	echo "$transName $line" >> $transList
-	# prepare reference multiline pep fasta to retrieve seqs
+	# reference pep fasta
 	refPep=$(cat $tmpRefPep | grep -w "$transName" | sed 's/NEWLINE/\n/g')
-	echo $refPep | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' >> $fltRefPep
-	# prepare input consensus multiline pep fasta
+	echo $refPep >> $fltRefPep
+	# consensus pep fasta
 	conPep=$(cat $tmpConPep | grep -w "$transName" | sed 's/NEWLINE/\n/g')
-	echo $conPep | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' >> $fltConPep
-	# prepare reference multiline cds fasta to retrieve seqs
+	echo $conPep >> $fltConPep
+	# reference cds fasta
 	refNuc=$(cat $tmpRefNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g')
-	echo $refNuc | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' >> $fltRefNuc
-	# prepare input consensus multiline cds fasta
+	echo $refNuc >> $fltRefNuc
+	# consensus cds fasta
 	conNuc=$(cat $tmpConNuc | grep -w "$transName" | sed 's/NEWLINE/\n/g')
-	echo $conNuc | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' >> $fltConNuc
+	echo $conNuc >> $fltConNuc
 done < $geneList
+
+# replace spaces with new lines
+cat $fltRefPep | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' > $fmtRefPep
+cat $fltConPep | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' > $fmtConPep
+cat $fltRefNuc | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' > $fmtRefNuc
+cat $fltConNuc | sed 's/\ gene=/SPACEgene=/g' | tr ' ' '\n' | sed 's/SPACEgene=/\ gene=/g' > $fmtConNuc
 
 # clean up
 #rm $geneList
@@ -116,6 +124,10 @@ done < $geneList
 #rm $tmpConPep
 #rm $tmpRefNuc
 #rm $tmpConNuc
+#rm $fltRefPep
+#rm $fltConPep
+#rm $fltRefNuc
+#rm $fltConNuc
 
 # status message
 echo "Analysis complete!"
