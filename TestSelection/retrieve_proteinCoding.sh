@@ -91,16 +91,16 @@ while IFS= read -r line; do
 	echo "$transName $line" >> $transList
 	# reference pep fasta
 	echo -en ">"$line"\t" >> $fltRefPep
-	grep -w "$transName" $tmpRefPep | cut -f 2 >> $fltRefPep
+	grep "^>$transName" $tmpRefPep | cut -f 2 >> $fltRefPep
 	# consensus pep fasta
 	echo -en ">"$line"\t" >> $fltConPep
-	grep -w "$transName" $tmpConPep | cut -f 2 >> $fltConPep
+	grep "^>$transName" $tmpConPep | cut -f 2 >> $fltConPep
 	# reference cds fasta
 	echo -en ">"$line"\t" >> $fltRefNuc
-	grep -w "$transName" $tmpRefNuc | cut -f 2 >> $fltRefNuc
+	grep "^>$transName" $tmpRefNuc | cut -f 2 >> $fltRefNuc
 	# consensus cds fasta
 	echo -en ">"$line"\t" >> $fltConNuc
-	grep -w "$transName" $tmpConNuc | cut -f 2 >> $fltRefNuc
+	grep "^>$transName" $tmpConNuc | cut -f 2 >> $fltRefNuc
 done < $geneList
 
 # clean up

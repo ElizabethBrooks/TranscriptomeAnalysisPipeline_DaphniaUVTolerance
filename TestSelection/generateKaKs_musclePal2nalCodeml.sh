@@ -60,7 +60,7 @@ cd $outFolder
 # loop over all genes in the reference
 while IFS= read -r line; do
 	# retrieve gene tag
-	gTag=$(echo "$line" | sed 's/NEWLINE/\n/g' | grep ">" | cut -d " " -f 1 | sed 's/>//g')
+	gTag=$(echo "$line" | cut -f 1 | sed 's/>//g')
 
 	# set gene output paths
 	gFile=$outFolder"/"$gTag"_Daphnia.pep.tmp.fa"
