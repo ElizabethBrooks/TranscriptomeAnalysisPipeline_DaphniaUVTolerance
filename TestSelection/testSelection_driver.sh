@@ -76,15 +76,15 @@ fltRefNuc=$inputsPath"/Pulex.cds.flt.fa"
 fltConNuc=$inputsPath"/Olympics.cds.flt.fa"
 
 # split the gene sequence sets into segments
-split -l 1000 $fltRefPep $outFolder"/Pulex.pep.flt"
-split -l 1000 $fltConPep $outFolder"/Olympics.pep.flt"
-split -l 1000 $fltRefNuc $outFolder"/Pulex.cds.flt"
-split -l 1000 $fltConNuc $outFolder"/Olympics.cds.flt"
+split -l 1000 $fltRefPep $outFolder"/Pulex.pep.flt.fa."
+split -l 1000 $fltConPep $outFolder"/Olympics.pep.flt.fa."
+split -l 1000 $fltRefNuc $outFolder"/Pulex.cds.flt.fa."
+split -l 1000 $fltConNuc $outFolder"/Olympics.cds.flt.fa."
 
 # loop over each segment
-for i in $outFolder"/Pulex.pep.flt"*; do
+for i in $outFolder"/Pulex.pep.flt.fa."*; do
 	# retrieve subset tag
-	subsetTag=$(basename $i | sed 's/Pulex\.pep\.flt//g')
+	subsetTag=$(basename $i | sed 's/Pulex\.pep\.flt\.fa\.//g')
 	# output status message
 	echo "Starting analysis for subset $subsetTag ..."
 	# generate Ka and Ks values for protein sequences
@@ -106,10 +106,6 @@ done
 #rm $resultsFile
 #rm $geneList
 #rm $transList
-#rm $outFolder"/Pulex.pep.flt"*
-#rm $outFolder"/Olympics.pep.flt"*
-#rm $outFolder"/Pulex.cds.flt"*
-#rm $outFolder"/Olympics.cds.flt"*
 
 # status message
 echo "Analysis complete!"

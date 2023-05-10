@@ -37,16 +37,16 @@ resultsFile=$outFolder"/kaksResults_"$subsetTag".csv"
 echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 
 # prepare reference multiline pep fasta to retrieve seqs
-tmpRefPep=$outFolder"/Pulex.pep.flt"$subsetTag
+tmpRefPep=$outFolder"/Pulex.pep.flt.fa."$subsetTag
 
 # prepare input consensus multiline pep fasta
-tmpConPep=$outFolder"/Olympics.pep.flt"$subsetTag
+tmpConPep=$outFolder"/Olympics.pep.flt.fa."$subsetTag
 
 # prepare reference multiline cds fasta to retrieve seqs
-tmpRefNuc=$outFolder"/Pulex.cds.flt"$subsetTag
+tmpRefNuc=$outFolder"/Pulex.cds.flt.fa."$subsetTag
 
 # prepare input consensus multiline cds fasta
-tmpConNuc=$outFolder"/Olympics.cds.flt"$subsetTag
+tmpConNuc=$outFolder"/Olympics.cds.flt.fa."$subsetTag
 
 # status message
 echo "Begining analysis..."
@@ -114,6 +114,7 @@ while IFS= read -r line; do
 
 	# clean up
 	rm $gFile
+	rm $outAln
 	rm $gRefNuc
 	rm $gConNuc
 	[ -f "rst" ] && rm "rst"
@@ -125,11 +126,14 @@ while IFS= read -r line; do
 done < $tmpRefPep
 
 # clean up
-#rm $resultsFile
-#rm $tmpRefPep
-#rm $tmpConPep
-#rm $tmpRefNuc
-#rm $tmpConNuc
+rm $tmpRefPep
+rm $tmpConPep
+rm $tmpRefNuc
+rm $tmpConNuc
+rm $outFolder"/Pulex.pep.flt.fa."$subsetTag
+rm $outFolder"/Olympics.pep.flt.fa."$subsetTag
+rm $outFolder"/Pulex.cds.flt.fa."$subsetTag
+rm $outFolder"/Olympics.cds.flt.fa."$subsetTag
 
 # move back to current directory
 cd $currDir
