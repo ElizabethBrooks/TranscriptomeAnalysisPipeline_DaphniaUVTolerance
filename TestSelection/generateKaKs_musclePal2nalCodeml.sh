@@ -70,15 +70,15 @@ while IFS= read -r line; do
 
 	# retrieve peptide sequences and convert back to multiline fasta format
 	echo ">Pulex_$gTag" > $gFile
-	grep "^>$gTag" $tmpRefPep | cut -f 2 | sed 's/\./X/g' >> $gFile
+	grep -w "^>$gTag" $tmpRefPep | cut -f 2 | sed 's/\./X/g' >> $gFile
 	echo ">Olympics_$gTag" >> $gFile
-	grep "^>$gTag" $tmpConPep | cut -f 2 | sed 's/\./X/g' >> $gFile
+	grep -w "^>$gTag" $tmpConPep | cut -f 2 | sed 's/\./X/g' >> $gFile
 
 	# retrieve nucleotide sequences and convert back to multiline fasta format
 	echo ">Pulex_$gTag" > $gRefNuc
-	grep "^>$gTag" $tmpRefNuc | cut -f 2 >> $gRefNuc
+	grep -w "^>$gTag" $tmpRefNuc | cut -f 2 >> $gRefNuc
 	echo ">Olympics_$gTag" > $gConNuc
-	grep "^>$gTag" $tmpConNuc | cut -f 2 >> $gConNuc
+	grep -w "^>$gTag" $tmpConNuc | cut -f 2 >> $gConNuc
 
 	# prepare tree file
 	echo "(>Pulex_$gTag, >Olympics_$gTag);" > $outFolder"/"$gTag".tree"
