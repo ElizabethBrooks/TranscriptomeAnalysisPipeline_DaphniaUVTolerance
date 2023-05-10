@@ -26,9 +26,6 @@ inputsPath=$(grep "aligningGenome:" $baseDir"/InputData/outputPaths.txt" | tr -d
 # set inputs path
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 
-# set inputs folder
-inputsPath=$inputsPath"/features_gffread"
-
 # make outputs directory name
 outFolder=$inputsPath"/selectionTests"
 
@@ -40,16 +37,16 @@ resultsFile=$outFolder"/kaksResults_"$subsetTag".csv"
 echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 
 # prepare reference multiline pep fasta to retrieve seqs
-tmpRefPep=$inputsPath"/Pulex.pep.flt"$subsetTag
+tmpRefPep=$outFolder"/Pulex.pep.flt"$subsetTag
 
 # prepare input consensus multiline pep fasta
-tmpConPep=$inputsPath"/Olympics.pep.flt"$subsetTag
+tmpConPep=$outFolder"/Olympics.pep.flt"$subsetTag
 
 # prepare reference multiline cds fasta to retrieve seqs
-tmpRefNuc=$inputsPath"/Pulex.cds.flt"$subsetTag
+tmpRefNuc=$outFolder"/Pulex.cds.flt"$subsetTag
 
 # prepare input consensus multiline cds fasta
-tmpConNuc=$inputsPath"/Olympics.cds.flt"$subsetTag
+tmpConNuc=$outFolder"/Olympics.cds.flt"$subsetTag
 
 # status message
 echo "Begining analysis..."
