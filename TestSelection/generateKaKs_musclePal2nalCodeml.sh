@@ -60,7 +60,7 @@ cd $outFolder
 # loop over all genes in the reference
 while IFS= read -r line; do
 	# retrieve gene tag
-	gTag=$(echo "$line" | cut -f 1 | sed 's/>//g')
+	gTag=$(echo "$line" | cut -f1 | sed 's/>//g')
 
 	# set gene output paths
 	gFile=$outFolder"/"$gTag"_Daphnia.pep.tmp.fa"
@@ -70,15 +70,15 @@ while IFS= read -r line; do
 
 	# retrieve peptide sequences and convert back to multiline fasta format
 	echo ">Pulex_$gTag" > $gFile
-	grep -w "^>$gTag" $tmpRefPep | cut -f 2 | sed 's/\./X/g' >> $gFile
+	grep -w "^>$gTag" $tmpRefPep | cut -f2 | sed 's/\./X/g' >> $gFile
 	echo ">Olympics_$gTag" >> $gFile
-	grep -w "^>$gTag" $tmpConPep | cut -f 2 | sed 's/\./X/g' >> $gFile
+	grep -w "^>$gTag" $tmpConPep | cut -f2 | sed 's/\./X/g' >> $gFile
 
 	# retrieve nucleotide sequences and convert back to multiline fasta format
 	echo ">Pulex_$gTag" > $gRefNuc
-	grep -w "^>$gTag" $tmpRefNuc | cut -f 2 >> $gRefNuc
+	grep -w "^>$gTag" $tmpRefNuc | cut -f2 >> $gRefNuc
 	echo ">Olympics_$gTag" > $gConNuc
-	grep -w "^>$gTag" $tmpConNuc | cut -f 2 >> $gConNuc
+	grep -w "^>$gTag" $tmpConNuc | cut -f2 >> $gConNuc
 
 	# prepare tree file
 	echo "(>Pulex_$gTag, >Olympics_$gTag);" > $outFolder"/"$gTag".tree"

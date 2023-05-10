@@ -86,7 +86,7 @@ for i in $outFolder"/Pulex.pep.flt"*; do
 	# retrieve subset tag
 	subsetTag=$(basename $i | sed 's/Pulex\.pep\.flt//g')
 	# output status message
-	echo "Starting analysis for $i"
+	echo "Starting analysis for subset $i ..."
 	# generate Ka and Ks values for protein sequences
 	qsub generateKaKs_musclePal2nalCodeml.sh $subsetTag
 done
@@ -110,3 +110,6 @@ done
 #rm $outFolder"/Olympics.pep.flt"*
 #rm $outFolder"/Pulex.cds.flt"*
 #rm $outFolder"/Olympics.cds.flt"*
+
+# status message
+echo "Analysis complete!"

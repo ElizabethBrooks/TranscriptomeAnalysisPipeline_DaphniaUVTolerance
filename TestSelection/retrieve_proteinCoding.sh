@@ -79,7 +79,7 @@ cat $inRefNuc | sed 's/\ gene=.*/\t/g' | tr -d '\n' | sed 's/>/\n>/g' > $tmpRefN
 cat $inConNuc | sed 's/\ gene=.*/\t/g' | tr -d '\n' | sed 's/>/\n>/g' > $tmpConNuc
 
 # create list of protein coding sequence gene names
-cat $genomeFeatures | grep "biotype" | grep "protein_coding" | cut -f 9 | cut -d ";" -f1 | cut -d "=" -f 2 > $geneList
+cat $genomeFeatures | grep -w "gene_biotype=protein_coding" | cut -f9 | cut -d ";" -f1 | cut -d "=" -f2 > $geneList
 
 # loop over each gene name
 while IFS= read -r line; do
@@ -91,24 +91,24 @@ while IFS= read -r line; do
 	echo "$transName $line" >> $transList
 	# reference pep fasta
 	echo -en ">"$line"\t" >> $fltRefPep
-	grep -w "^>$transName" $tmpRefPep | cut -f 2 >> $fltRefPep
+	grep -w "^>$transName" $tmpRefPep | cut -f2 >> $fltRefPep
 	# consensus pep fasta
 	echo -en ">"$line"\t" >> $fltConPep
-	grep -w "^>$transName" $tmpConPep | cut -f 2 >> $fltConPep
+	grep -w "^>$transName" $tmpConPep | cut -f2 >> $fltConPep
 	# reference cds fasta
 	echo -en ">"$line"\t" >> $fltRefNuc
-	grep -w "^>$transName" $tmpRefNuc | cut -f 2 >> $fltRefNuc
+	grep -w "^>$transName" $tmpRefNuc | cut -f2 >> $fltRefNuc
 	# consensus cds fasta
 	echo -en ">"$line"\t" >> $fltConNuc
-	grep -w "^>$transName" $tmpConNuc | cut -f 2 >> $fltConNuc
+	grep -w "^>$transName" $tmpConNuc | cut -f2 >> $fltConNuc
 done < $geneList
 
 # clean up
-#rm $geneList
-#rm $tmpRefPep
-#rm $tmpConPep
-#rm $tmpRefNuc
-#rm $tmpConNuc
+rm $geneList
+rm $tmpRefPep
+rm $tmpConPep
+rm $tmpRefNuc
+rm $tmpConNuc
 
 # status message
 echo "Analysis complete!"
