@@ -123,6 +123,7 @@ while IFS= read -r line; do
 	rm $gTag".codon"
 	rm $gTag".tree"
 	rm $gTag".cnt"
+	rm $gTag".codeml"
 done < $tmpRefPep
 
 # clean up
