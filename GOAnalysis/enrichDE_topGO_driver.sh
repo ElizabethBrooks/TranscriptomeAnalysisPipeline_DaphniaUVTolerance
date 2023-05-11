@@ -2,8 +2,8 @@
 
 # BASH script to drive GO analysis for DE results
 
-# usage: bash enrich_topGO_driver.sh analysisType
-# default usage ex: bash enrich_topGO_driver.sh Tolerance
+# usage: bash enrichDE_topGO_driver.sh analysisType
+# default usage ex: bash enrichDE_topGO_driver.sh Tolerance
 
 # retrieve analysis type
 analysisType=$1
@@ -25,8 +25,8 @@ mkdir $outDir
 
 # determine the direction of expression for each module and effect set
 # interaction
-Rscript enrich_topGO.R $outDir "interaction" $inDir $GOmaps
+Rscript enrichDE_topGO.R $outDir "interaction" $inDir $GOmaps
 # treatment
-Rscript enrich_topGO.R $outDir "treatment" $inDir $GOmaps
+Rscript enrichDE_topGO.R $outDir "treatment" $inDir $GOmaps
 # tolerance
-Rscript enrich_topGO.R $outDir "tolerance" $inDir $GOmaps
+Rscript enrichDE_topGO.R $outDir "tolerance" $inDir $GOmaps

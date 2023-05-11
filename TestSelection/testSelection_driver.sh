@@ -96,16 +96,28 @@ done
 
 
 # merge each of the ka ks results files
-
+tail -n+2 $outFolder"/kaksResults_"*".csv" >> $resultsFile
 
 # fix formatting of the results file
-#finalResults="$outFolder"/Pulex_Olympics_kaksResults.csv
-#cat $resultsFile | sed "s/  /,/g" | sed "s/=,/=/g" | sed "s/ //g" | sed "s/dN\/dS=//g" | sed "s/dN=//g" | sed "s/dS=//g" | sed "s/t=//g" | sed "s/,S=//g" | sed "s/N=//g" > "$finalResults"
+finalResults="$outFolder"/Pulex_Olympics_kaksResults.csv
+cat $resultsFile | grep -v "^==>" | tr -s '[:blank:]' ',' | sed "s/=,/=/g" | sed "s/dN\/dS=//g" | sed "s/dN,=//g" | sed "s/dS,=//g" | sed "s/t=//g" | sed "s/S=//g" | sed "s/N=//g" > $finalResults
+
+# remove genes with no dNdS value
+finalResults="$outFolder"/Pulex_Olympics_kaksResults_dNdS_cleaned.csv
+cat $resultsFile | grep -v "^==>" | awk '$4!=""' | tr -s '[:blank:]' ',' | sed "s/=,/=/g" | sed "s/dN\/dS=//g" | sed "s/dN,=//g" | sed "s/dS,=//g" | sed "s/t=//g" | sed "s/S=//g" | sed "s/N=//g" > $finalResults
+
+# keep only genes with dN/dS= 99.0000
+finalResults="$outFolder"/Pulex_Olympics_kaksResults_dNdS_99.csv
+echo "geneID,t,S,N,dNdS,dN,dS" > $finalResults
+cat $resultsFile | grep "dN/dS= 99.0000" | tr -s '[:blank:]' ',' | sed "s/=,/=/g" | sed "s/dN\/dS=//g" | sed "s/dN,=//g" | sed "s/dS,=//g" | sed "s/t=//g" | sed "s/S=//g" | sed "s/N=//g" >> $finalResults
+
+# keep only genes without dNdS values
+finalResults="$outFolder"/Pulex_Olympics_kaksResults_dNdS_NA.csv
+cat $resultsFile | awk '$4==""' | tr -s '[:blank:]' ',' | sed "s/=,/=/g" | sed "s/dN\/dS=//g" | sed "s/dN,=//g" | sed "s/dS,=//g" | sed "s/t=//g" | sed "s/S=//g" | sed "s/N=//g" > $finalResults
 
 # clean up
-#rm $resultsFile
-#rm $geneList
-#rm $transList
+rm $outFolder"/kaksResults_"*".csv"
+rm $resultsFile
 
 # status message
 echo "Analysis complete!"
