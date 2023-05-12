@@ -73,6 +73,9 @@ all_plotTable$Selection <- "NA"
 all_plotTable$Selection[all_plotTable$dNdS > 1] <- "Positive"
 all_plotTable$Selection[all_plotTable$dNdS < 1] <- "Negative"
 
+# create label set
+labelSetAll <- all_plotTable[all_plotTable$dNdS > 1,]
+
 # box plot colored by selection
 jpeg("dNdS_DEGs_boxPlot.jpg")
 ggplot(all_plotTable, aes(x=Effect, y=dNdS)) +
@@ -85,6 +88,15 @@ jpeg("dNdS_DEGs_selection_boxPlot.jpg")
 ggplot(all_plotTable, aes(x=Effect, y=dNdS, fill=Selection)) +
   geom_boxplot() +
   theme_minimal() +
+  scale_fill_discrete(type = ghibli_subset, breaks = c("Positive", "Negative"))
+dev.off()
+
+# box plot colored by selection with labels
+jpeg("dNdS_DEGs_selection_boxPlot_labeled.jpg")
+ggplot(all_plotTable, aes(x=Effect, y=dNdS, fill=Selection)) +
+  geom_boxplot() +
+  theme_minimal() +
+  ggrepel::geom_text_repel(data = labelSetAll, aes(label = labelSetAll$geneID), max.overlaps=100) +
   scale_fill_discrete(type = ghibli_subset, breaks = c("Positive", "Negative"))
 dev.off()
 
@@ -107,3 +119,12 @@ ggplot(all_plotTable, aes(x=Effect, y=dNdS, fill=Selection)) +
   scale_fill_discrete(type = ghibli_subset, breaks = c("Positive", "Negative"))
 dev.off()
 
+# violin plot color by selection with labels
+jpeg("dNdS_modules_selection_violinPlot_labeled.jpg")
+ggplot(all_plotTable, aes(x=Effect, y=dNdS, fill=Selection)) +
+  theme_minimal() +
+  ggrepel::geom_text_repel(data = labelSetAll, aes(label = labelSetAll$geneID), max.overlaps=100) +
+  geom_violin(trim=FALSE) +
+  scale_fill_discrete(type = ghibli_subset, breaks = c("Positive", "Negative")) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+dev.off()

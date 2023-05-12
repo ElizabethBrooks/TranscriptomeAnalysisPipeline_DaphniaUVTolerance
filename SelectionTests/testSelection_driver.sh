@@ -11,9 +11,6 @@
 # load necessary modules
 #module load bio
 
-# retrieve protein sequences
-#bash retrieveFeatures_gffread.sh
-
 # retreive protein coding sequence transcript names
 #bash retrieve_proteinCoding.sh
 
