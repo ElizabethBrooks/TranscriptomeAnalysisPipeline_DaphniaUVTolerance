@@ -7,6 +7,9 @@
 # script to run tests for selection for each protein sequence
 # usage: qsub retrieve_proteinCoding.sh
 
+# load necessary modules
+module load bio
+
 # retrieve current working directory
 currDir=$(pwd)
 
@@ -29,7 +32,7 @@ refPath=$(grep "genomeReference" $baseDir"/InputData/inputPaths.txt" | tr -d " "
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 
 # make outputs directory name
-outFolder=$inputsPath"/features_gffread"
+outFolder=$inputsPath"/variantsConsensus"
 
 # retrieve input bam file type
 type="filteredMapQ"
@@ -39,8 +42,25 @@ refTag=$(basename $refPath)
 
 # set paths for protein coding sequence lists
 geneList=$outFolder"/"$refTag"_proteinCoding_genes.txt"
-transList=$outFolder"/"$refTag"_proteinCoding_transcripts.tmp.txt"
+transList=$outFolder"/"$refTag"_proteinCoding_transcripts.txt"
 
+# retrieve consensus genome
+consPath=$outFolder"/"$type"_consensus.fa"
+
+# set files for cds fasta seqs
+refNuc=$outFolder"/"$refTag".cds.fa"
+conNuc=$outFolder"/"$type"_consensus.cds.fa"
+
+# set files for bed12 info
+geneBed=$outFolder"/"$refTag".cds.bed12"
+tmpFirstBed=$outFolder"/"$refTag".cds.tmp1.bed12"
+tmpSecondBed=$outFolder"/"$refTag".cds.tmp2.bed12"
+
+# pre-clean up
+rm $transList
+rm $refNuc
+rm $conNuc
+rm $geneBed
 
 # create list of protein coding sequence gene names
 cat $genomeFeatures | grep -w "gene_biotype=protein_coding" | cut -f9 | cut -d ";" -f1 | cut -d "=" -f2 > $geneList
@@ -50,35 +70,38 @@ cat $genomeFeatures | grep -w "gene_biotype=protein_coding" | cut -f9 | cut -d "
 # required required required optional optional optional optional ignored ignored ignored ignored ignored
 while IFS= read -r line; do
 	# status message
-	echo "Processing $line ..."
+	echo "Processing $gene ..."
 	# retrieve transcript IDs
-	cat $genomeFeatures | grep -w "$line" | awk '$3 == "mRNA"' | cut -f9 | cut -d ";" -f1 | cut -d "=" -f2 > $transList
+	cat $genomeFeatures | grep -w "$gene" | awk '$3 == "mRNA"' | cut -f9 | cut -d ";" -f1 | cut -d "=" -f2 > $transList
 	# loop over each transcript for the current gene
 	while IFS= read -r trans; do
-		# create string with a score placeholder
-		scoreTag=$(echo -e "0")
+		# create string with name tag and a score placeholder
+		initialTags=$(echo -e "$gene\t0")
+		# retrieve and add chrom name
+		chromTag=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f1) > $tmpFirstBed
+		# retrieve and add start coordinate
+		startTag=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f4 | paste $tmpFirstBed -) > $tmpSecondBed
+		# retrieve and add end coordinate
+		endTag=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f5 | paste $tmpSecondBed -) > $tmpFirstBed
 		# create string with placeholders for thickStart thickEnd itemRgb blockCount blockSizes blockStarts
-		endTags=$(echo -e "0\t0\t0\t0\t0\t0")
-		# retrieve chrom name
-		chromName=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f1)
-		# retrieve start coordinate
-		startCoord=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f4)
-		# retrieve end coordinate
-		endCoord=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f5)
-		# retrieve CDS name
-		cdsName=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f9 | cut -d ";" -f1 | cut -d "=" -f2)
-		# retrieve strand
-		# prepend the CDS score and append the thickStart thickEnd itemRgb blockCount blockSizes blockStarts
-		strand=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f7 | sed "s/^/$scoreTag\t/g" | sed "s/$/\t$endTags/g")
+		finalTags=$(echo -e "$endTag\t$endTag\t0\t0\t0\t0")
+		# retrieve and add strand with initial and final tags
+		strandTag=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f7 | sed "s/^/$initialTags\t/g" | sed "s/$/\t$finalTags/g" | paste $tmpFirstBed -) > $tmpSecondBed
+		# add info for current transcript to the gene bed12 file
+		cat $tmpSecondBed >> $geneBed
 	done < $transList
+	# split the reference genome file and retreive gene sequences
+	bedtools getfasta -fi $refPath -bed $geneBed -split -name
+	# split the consensus genome file and retreive gene sequences
+	bedtools getfasta -fi $consPath -bed $geneBed -split -name
+	# clean up
+	rm $transList
+	rm $geneBed
 done < $geneList
 
 # clean up
 rm $geneList
-rm $tmpRefPep
-rm $tmpConPep
-rm $tmpRefNuc
-rm $tmpConNuc
+rm $transList
 
 # status message
 echo "Analysis complete!"
