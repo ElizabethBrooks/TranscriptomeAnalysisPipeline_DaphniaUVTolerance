@@ -8,7 +8,7 @@
 # usage: qsub retrieve_proteinCoding.sh
 
 # load necessary modules
-module load bio
+#module load bio
 
 # retrieve current working directory
 currDir=$(pwd)
@@ -51,16 +51,17 @@ consPath=$outFolder"/"$type"_consensus.fa"
 refNuc=$outFolder"/"$refTag".cds.fa"
 conNuc=$outFolder"/"$type"_consensus.cds.fa"
 
-# set files for bed12 info
+# set tmp and final output files for bed12 info
 geneBed=$outFolder"/"$refTag".cds.bed12"
-tmpFirstBed=$outFolder"/"$refTag".cds.tmp1.bed12"
-tmpSecondBed=$outFolder"/"$refTag".cds.tmp2.bed12"
+totalBed=$outFolder"/"$refTag"_gene.cds.tmp.bed12"
+tmpFirstBed=$outFolder"/"$refTag"_first.cds.tmp.bed12"
+tmpSecondBed=$outFolder"/"$refTag"_second.cds.tmp.bed12"
 
 # pre-clean up
-rm $transList
 rm $refNuc
 rm $conNuc
 rm $geneBed
+rm $totalBed
 
 # create list of protein coding sequence gene names
 cat $genomeFeatures | grep -w "gene_biotype=protein_coding" | cut -f9 | cut -d ";" -f1 | cut -d "=" -f2 > $geneList
@@ -90,10 +91,12 @@ while IFS= read -r line; do
 		# add info for current transcript to the gene bed12 file
 		cat $tmpSecondBed >> $geneBed
 	done < $transList
+	# add bed12 info for current gene to the total bed12 file
+	cat $geneBed >> $totalBed
 	# split the reference genome file and retreive gene sequences
-	bedtools getfasta -fi $refPath -bed $geneBed -split -name
+	#bedtools getfasta -fi $refPath -bed $geneBed -split -name >> $refNuc 
 	# split the consensus genome file and retreive gene sequences
-	bedtools getfasta -fi $consPath -bed $geneBed -split -name
+	#bedtools getfasta -fi $consPath -bed $geneBed -split -name >> $conNuc
 	# clean up
 	rm $transList
 	rm $geneBed
@@ -101,7 +104,6 @@ done < $geneList
 
 # clean up
 rm $geneList
-rm $transList
 
 # status message
 echo "Analysis complete!"
