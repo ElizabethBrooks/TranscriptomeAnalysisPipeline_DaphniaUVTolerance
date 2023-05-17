@@ -52,7 +52,6 @@ refNuc=$outFolder"/"$refTag".cds.fa"
 conNuc=$outFolder"/"$type"_consensus.cds.fa"
 
 # set tmp and final output files for bed12 info
-geneBed=$outFolder"/"$refTag".cds.bed12"
 totalBed=$outFolder"/"$refTag"_gene.cds.tmp.bed12"
 tmpFirstBed=$outFolder"/"$refTag"_first.cds.tmp.bed12"
 tmpSecondBed=$outFolder"/"$refTag"_second.cds.tmp.bed12"
@@ -60,7 +59,6 @@ tmpSecondBed=$outFolder"/"$refTag"_second.cds.tmp.bed12"
 # pre-clean up
 rm $refNuc
 rm $conNuc
-rm $geneBed
 rm $totalBed
 
 # create list of protein coding sequence gene names
@@ -78,32 +76,28 @@ while IFS= read -r line; do
 	while IFS= read -r trans; do
 		# create string with name tag and a score placeholder
 		initialTags=$(echo -e "$gene\t0")
-		# retrieve and add chrom name
-		chromTag=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f1) > $tmpFirstBed
-		# retrieve and add start coordinate
-		startTag=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f4 | paste $tmpFirstBed -) > $tmpSecondBed
-		# retrieve and add end coordinate
-		endTag=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f5 | paste $tmpSecondBed -) > $tmpFirstBed
 		# create string with placeholders for thickStart thickEnd itemRgb blockCount blockSizes blockStarts
-		finalTags=$(echo -e "$endTag\t$endTag\t0\t0\t0\t0")
+		finalTags=$(echo -e "0\t0\t0\t0\t0\t0")
+		# retrieve and add chrom name
+		cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f1 > $tmpFirstBed
+		# retrieve and add start coordinate
+		cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f4 | paste $tmpFirstBed - > $tmpSecondBed
+		# retrieve and add end coordinate
+		cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f5 | paste $tmpSecondBed - > $tmpFirstBed
 		# retrieve and add strand with initial and final tags
-		strandTag=$(cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f7 | sed "s/^/$initialTags\t/g" | sed "s/$/\t$finalTags/g" | paste $tmpFirstBed -) > $tmpSecondBed
-		# add info for current transcript to the gene bed12 file
-		cat $tmpSecondBed >> $geneBed
+		cat $genomeFeatures | grep -w "$trans" | awk '$3 == "CDS"' | cut -f7 | sed "s/^/$initialTags\t/g" | sed "s/$/\t$finalTags/g" | paste $tmpFirstBed - > $tmpSecondBed
+		# add info for current transcript to the total gene bed12 file
+		cat $tmpSecondBed >> $totalBed
 	done < $transList
-	# add bed12 info for current gene to the total bed12 file
-	cat $geneBed >> $totalBed
-	# split the reference genome file and retreive gene sequences
-	#bedtools getfasta -fi $refPath -bed $geneBed -split -name >> $refNuc 
-	# split the consensus genome file and retreive gene sequences
-	#bedtools getfasta -fi $consPath -bed $geneBed -split -name >> $conNuc
-	# clean up
-	rm $transList
-	rm $geneBed
 done < $geneList
 
+# split the reference genome file and retreive gene sequences
+#bedtools getfasta -fi $refPath -bed $totalBed -split -name > $refNuc 
+# split the consensus genome file and retreive gene sequences
+#bedtools getfasta -fi $consPath -bed $totalBed -split -name > $conNuc
+
 # clean up
-rm $geneList
+#rm $geneList
 
 # status message
 echo "Analysis complete!"

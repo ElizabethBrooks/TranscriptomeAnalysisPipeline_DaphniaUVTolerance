@@ -15,30 +15,42 @@
 options(scipen = 999)
 
 #Load the edgeR library
-library("edgeR")
-library("statmod")
+library(edgeR)
+library(statmod)
+library(ghibli)
+library(ggplot2)
+library(ggrepel)
+library(ggVennDiagram)
 
 #Retrieve input file name of gene counts
-args = commandArgs(trailingOnly=TRUE)
+#args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
-workingDir = args[1];
-#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/DEAnalysis/Genotypes"
+#workingDir = args[1];
+workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes"
+#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCNA_DEGenotypes"
 setwd(workingDir)
 
 #Import gene count data
-#inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/ensembl/GCA_021134715.1/biostatistics/GeneCounts/Formatted/cleaned.csv", row.names="gene")[ ,1:24]
-inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
+#inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
+inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GeneCountsAnalyzed/Formatted/cleaned.csv", row.names="gene")[ ,1:24]
+#inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_OLYM_WGCNA/OLYM_60_eigengeneExpression.csv", row.names="gene")[ ,1:24]
 
 #Trim the data table
 countsTable <- head(inputTable, - 5)
 
 #Import grouping factor
-#targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsGenotypes.csv", row.names="sample")
-targets <- read.csv(file=args[5], row.names="sample")
+#targets <- read.csv(file=args[5], row.names="sample")
+targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsGenotypes.csv", row.names="sample")
 
 #Retrieve input FDR cutoff
 #fdrCut=as.numeric(args[5])
+
+# Plotting Palettes
+# retrieve the vector of colors associated with PonyoMedium
+ghibli_colors <- ghibli_palette("PonyoMedium", type = "discrete")
+# vector with a subset of colors associated with PonyoMedium
+ghibli_subset <- c(ghibli_colors[3], ghibli_colors[6], ghibli_colors[4])
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$genotype,sep="."))
@@ -73,13 +85,13 @@ write.table(normListLog, file="glmQLF_normalizedCounts_logTransformed.csv", sep=
 #Write plot to file
 jpeg("glmQLF_plotMDBefore.jpg")
 plotMD(cpm(list, log=TRUE), column=1)
-abline(h=0, col="red", lty=2, lwd=2)
+abline(h=0, col=ghibli_colors[4], lty=2, lwd=2)
 dev.off()
 
 #Use a MDS plot to visualizes the differences
 # between the expression profiles of different samples
 points <- c(0,1,2,3,15,16,17,18)
-colors <- rep(c("blue", "darkgreen", "red", "black"), 2)
+colors <- rep(c(ghibli_colors[1], ghibli_colors[3], ghibli_colors[6], ghibli_colors[4]), 2)
 #Write plot with legend to file
 jpeg("glmQLF_plotMDS.jpg")
 plotMDS(list, col=colors[group], pch=points[group])
@@ -90,6 +102,18 @@ jpeg("glmQLF_plotMDS_noLegend.jpg")
 plotMDS(list, col=colors[group], pch=points[group])
 dev.off()
 
+# Create a PCA plot with a legend
+jpeg("glmQLF_plotPCA.jpg")
+plotMDS(list, col=colors[group], pch=points[group], gene.selection="common")
+legend("topleft", legend=levels(group), pch=points, col=colors, ncol=2)
+dev.off()
+
+# Create a PCA plot without a legend
+jpeg("glmQLF_plotPCA_noLegend.jpg")
+plotMDS(list, col=colors[group], pch=points[group], gene.selection="common")
+dev.off()
+
+##
 #The experimental design is parametrized with a one-way layout, 
 # where one coefficient is assigned to each group
 design <- model.matrix(~ 0 + group)

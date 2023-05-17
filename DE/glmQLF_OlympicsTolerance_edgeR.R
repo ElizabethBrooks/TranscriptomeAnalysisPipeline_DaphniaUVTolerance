@@ -41,7 +41,6 @@ countsTable <- head(inputTable, - 5)
 #Import grouping factor
 #targets <- read.csv(file=args[5], row.names="sample")
 targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsTolerance.csv", row.names="sample")
-#targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsTolerance.csv", row.names="sample")
 
 #Retrieve input FDR cutoff
 #fdrCut=as.numeric(args[5])
