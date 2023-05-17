@@ -67,7 +67,7 @@ cat $genomeFeatures | grep -w "gene_biotype=protein_coding" | cut -f9 | cut -d "
 # loop over each gene name and create a tab delimeted BED12 file
 # chrom start end name score strand thickStart thickEnd itemRgb blockCount blockSizes blockStarts
 # required required required optional optional optional optional ignored ignored ignored ignored ignored
-while IFS= read -r line; do
+while IFS= read -r gene; do
 	# status message
 	echo "Processing $gene ..."
 	# retrieve transcript IDs
