@@ -8,11 +8,14 @@
 # usage: qsub testSelection_driver.sh
 # usage ex: qsub testSelection_driver.sh
 
-# retrieve features for the reference and consensus genomes
-bash retrieveFeatures_gffread.sh
+# load necessary modules
+#module load bio
+
+# create bed12 file of protein coding CDS info
+#bash createdBed_proteinCoding.sh
 
 # retreive protein coding sequence transcript names
-bash retrieve_proteinCoding.sh
+#bash retrieve_proteinCoding.sh
 
 # retrieve current working directory
 currDir=$(pwd)
@@ -44,11 +47,11 @@ type="filteredMapQ"
 # make outputs directory name
 outFolder=$inputsPath"/selectionTests"
 mkdir $outFolder
-# check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#Check if the folder already exists
+#if [ $? -ne 0 ]; then
+#	echo "The $outFolder directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 # set inputs folder
 inputsPath=$inputsPath"/features_gffread"

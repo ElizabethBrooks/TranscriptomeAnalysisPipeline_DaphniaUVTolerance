@@ -7,9 +7,6 @@
 # script to run tests for selection for each protein sequence
 # usage: qsub retrieve_proteinCoding.sh
 
-# load necessary modules
-module load bio
-
 # retrieve current working directory
 currDir=$(pwd)
 
@@ -32,7 +29,7 @@ refPath=$(grep "genomeReference" $baseDir"/InputData/inputPaths.txt" | tr -d " "
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 
 # make outputs directory name
-outFolder=$inputsPath"/variantsConsensus"
+outFolder=$inputsPath"/features_gffread"
 
 # retrieve input bam file type
 type="filteredMapQ"
@@ -40,27 +37,78 @@ type="filteredMapQ"
 # retrieve file name of reference
 refTag=$(basename $refPath)
 
-# retrieve consensus genome
-consPath=$outFolder"/"$type"_consensus.fa"
+# set paths for protein coding sequence lists
+geneList=$outFolder"/"$refTag"_proteinCoding_genes.txt"
+transList=$outFolder"/"$refTag"_proteinCoding_map.txt"
 
-# set files for cds fasta seqs
-refNuc=$outFolder"/"$refTag".cds.fa"
-conNuc=$outFolder"/"$type"_consensus.cds.fa"
+# set reference pep and cds paths
+inRefPep=$outFolder"/"$refTag"_longest.pep.fa"
+inRefNuc=$outFolder"/"$refTag"_longest.cds.fa"
 
-# set tmp and final output files for bed12 info
-totalBed=$outFolder"/"$refTag".cds.bed12"
+# set consensus pep and cds paths
+inConPep=$outFolder"/"$type"_consensus_longest.pep.fa"
+inConNuc=$outFolder"/"$type"_consensus_longest.cds.fa"
 
-# status message
-echo "Splitting reference genome file..."
+# set reference multiline pep fasta to retrieve seqs
+tmpRefPep=$outFolder"/Pulex.pep.tmp.fa"
+fltRefPep=$outFolder"/Pulex.pep.flt.fa"
 
-# split the reference genome file and retreive gene sequences
-bedtools getfasta -fi $refPath -bed $totalBed -split -name > $refNuc 
+# set input consensus multiline pep fasta
+tmpConPep=$outFolder"/Olympics.pep.tmp.fa"
+fltConPep=$outFolder"/Olympics.pep.flt.fa"
 
-# status message
-echo "Splitting consensus genome file..."
+# set reference multiline cds fasta to retrieve seqs
+tmpRefNuc=$outFolder"/Pulex.cds.tmp.fa"
+fltRefNuc=$outFolder"/Pulex.cds.flt.fa"
 
-# split the consensus genome file and retreive gene sequences
-bedtools getfasta -fi $consPath -bed $totalBed -split -name > $conNuc
+# set input consensus multiline cds fasta
+tmpConNuc=$outFolder"/Olympics.cds.tmp.fa"
+fltConNuc=$outFolder"/Olympics.cds.flt.fa"
+
+# pre-clean up
+rm $transList
+rm $fltRefPep
+rm $fltConPep
+rm $fltRefNuc
+rm $fltConNuc
+
+# create singleline fasta of seqs
+cat $inRefPep | sed 's/\ gene=.*/\t/g' | tr -d '\n' | sed 's/>/\n>/g' > $tmpRefPep
+cat $inConPep | sed 's/\ gene=.*/\t/g' | tr -d '\n' | sed 's/>/\n>/g' > $tmpConPep
+cat $inRefNuc | sed 's/\ gene=.*/\t/g' | tr -d '\n' | sed 's/>/\n>/g' > $tmpRefNuc
+cat $inConNuc | sed 's/\ gene=.*/\t/g' | tr -d '\n' | sed 's/>/\n>/g' > $tmpConNuc
+
+# create list of protein coding sequence gene names
+cat $genomeFeatures | grep -w "gene_biotype=protein_coding" | cut -f9 | cut -d ";" -f1 | cut -d "=" -f2 > $geneList
+
+# loop over each gene name
+while IFS= read -r line; do
+	# status message
+	echo "Processing $line ..."
+	# create list of protein coding sequence transcript names, and grab the first listed transcript
+	transName=$(cat $genomeFeatures | grep -w "$line" | awk '$3 == "mRNA"' | head -1 | cut -f9 | cut -d ";" -f1 | cut -d "=" -f2)
+	# add transcript name to the gene to transcript map file
+	echo "$transName $line" >> $transList
+	# reference pep fasta
+	echo -en ">"$line"\t" >> $fltRefPep
+	grep -w "^>$transName" $tmpRefPep | cut -f2 >> $fltRefPep
+	# consensus pep fasta
+	echo -en ">"$line"\t" >> $fltConPep
+	grep -w "^>$transName" $tmpConPep | cut -f2 >> $fltConPep
+	# reference cds fasta
+	echo -en ">"$line"\t" >> $fltRefNuc
+	grep -w "^>$transName" $tmpRefNuc | cut -f2 >> $fltRefNuc
+	# consensus cds fasta
+	echo -en ">"$line"\t" >> $fltConNuc
+	grep -w "^>$transName" $tmpConNuc | cut -f2 >> $fltConNuc
+done < $geneList
+
+# clean up
+rm $geneList
+rm $tmpRefPep
+rm $tmpConPep
+rm $tmpRefNuc
+rm $tmpConNuc
 
 # status message
 echo "Analysis complete!"
