@@ -11,6 +11,9 @@
 # load necessary modules
 #module load bio
 
+# create bed12 file of protein coding CDS info
+#bash createdBed_proteinCoding.sh
+
 # retreive protein coding sequence transcript names
 #bash retrieve_proteinCoding.sh
 
