@@ -82,8 +82,19 @@ while IFS= read -r gene; do
 	done < $transList
 done < $geneList
 
+# copy end column to thickStart and thickEnd columns
+tmpEnd=$outFolder"/"$refTag"_end.cds.tmp.bed12"
+cat $totalBed | cut -f3 > $tmpEnd
+cat $totalBed | cut -f1-6 | paste - $tmpEnd | paste - $tmpEnd > $tmpFirstBed
+cat $totalBed | cut -f9-12 | paste $tmpFirstBed - > $tmpSecondBed
+mv $tmpSecondBed $totalBed
+
 # clean up
-#rm $geneList
+rm $tmpFirstBed
+rm $tmpSecondBed
+rm $tmpEnd
+rm $geneList
+rm $transList
 
 # status message
 echo "Analysis complete!"
