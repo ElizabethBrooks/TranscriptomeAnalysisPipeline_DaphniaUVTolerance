@@ -44,18 +44,12 @@ transList=$outFolder"/"$refTag"_proteinCoding_transcripts.txt"
 # retrieve consensus genome
 consPath=$outFolder"/"$type"_consensus.fa"
 
-# set files for cds fasta seqs
-refNuc=$outFolder"/"$refTag".cds.fa"
-conNuc=$outFolder"/"$type"_consensus.cds.fa"
-
 # set tmp and final output files for bed12 info
 totalBed=$outFolder"/"$refTag".cds.bed12"
 tmpFirstBed=$outFolder"/"$refTag"_first.cds.tmp.bed12"
 tmpSecondBed=$outFolder"/"$refTag"_second.cds.tmp.bed12"
 
 # pre-clean up
-rm $refNuc
-rm $conNuc
 rm $totalBed
 
 # create list of protein coding sequence gene names
@@ -87,11 +81,6 @@ while IFS= read -r gene; do
 		cat $tmpSecondBed >> $totalBed
 	done < $transList
 done < $geneList
-
-# split the reference genome file and retreive gene sequences
-#bedtools getfasta -fi $refPath -bed $totalBed -split -name > $refNuc 
-# split the consensus genome file and retreive gene sequences
-#bedtools getfasta -fi $consPath -bed $totalBed -split -name > $conNuc
 
 # clean up
 #rm $geneList
