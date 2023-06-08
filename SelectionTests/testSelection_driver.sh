@@ -2,11 +2,15 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
+#$ -pe smp 4
 #$ -N testSelection_jobOutput
 
 # script to run tests for selection for each protein sequence
 # usage: qsub testSelection_driver.sh
 # usage ex: qsub testSelection_driver.sh
+
+#Required modules for ND CRC servers
+module load bio
 
 # retrieve features for the reference and consensus genomes
 bash retrieveFeatures_gffread.sh
@@ -49,6 +53,11 @@ if [ $? -ne 0 ]; then
 	echo "The $outFolder directory already exsists... please remove before proceeding."
 	exit 1
 fi
+
+# split VCF files by SNPs and indels
+bash variantSplitting_bcftools.sh
+
+
 
 # set inputs folder
 inputsPath=$inputsPath"/features_gffread"

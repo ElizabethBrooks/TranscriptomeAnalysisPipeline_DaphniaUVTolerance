@@ -8,6 +8,9 @@
 # script to perform variant splitting after calling
 # usage: qsub variantSplitting_bcftools.sh
 
+#Required modules for ND CRC servers
+module load bio
+
 # set inputs absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsDir=$inputsPath"/variantsCalled_samtoolsBcftools"
