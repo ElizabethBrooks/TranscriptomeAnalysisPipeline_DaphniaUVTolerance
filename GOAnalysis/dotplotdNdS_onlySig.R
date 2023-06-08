@@ -10,8 +10,8 @@ library(gridExtra)
 args = commandArgs(trailingOnly=TRUE)
 
 # retrieve working directory
-workingDir <- args[1]
-#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics/variantsCalled_samtoolsBcftools/selectionTests/GOAnalysis"
+#workingDir <- args[1]
+workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/GOAnalysis"
 
 # set working directory
 setwd(workingDir)
@@ -87,5 +87,28 @@ dotplot
 
 # save the plot to a PDF file
 ggsave('dotplot_sigGO.pdf', plot = dotplot, device = 'pdf')
+
+# subset positively selected genes
+plot_tableSubset <- plot_table[plot_table$Selection == "positive",]
+
+# create dot plot of significant GO terms
+x_axis_order <- factor(plot_tableSubset$Selection, levels = c('positive'))
+facet <- factor(plot_tableSubset$GO_cat, levels = c('BP', 'MF', 'CC'))
+
+dotplotSubset <- ggplot(data = plot_tableSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
+  facet_grid(rows = facet, space = 'free_y', scales = 'free') +
+  geom_point() +
+  scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
+  #scale_color_gradientn(colors = wes_palette("Zissou1", type = "continuous")) +
+  theme_bw() +
+  xlab('Selection') +
+  ylab('GO Term') + 
+  labs(color = 'FDR Adjusted p-Value', size = 'Gene rank')
+
+# view plot
+dotplotSubset
+
+# save the plot to a PDF file
+ggsave('dotplotPositive_sigGO.pdf', plot = dotplotSubset, device = 'pdf')
 
 

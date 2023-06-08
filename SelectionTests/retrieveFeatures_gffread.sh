@@ -39,7 +39,7 @@ refTag=$(basename $genomeFile)
 inputOutFile=$outFolder"/retrieveCDS_summary.txt"
 
 # add version to output file of inputs
-bedtools --version > $inputOutFile
+#gffread --version > $inputOutFile
 
 # TO-DO
 # consider adding length to the contigs of the consensus

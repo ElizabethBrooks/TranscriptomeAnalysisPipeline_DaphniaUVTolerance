@@ -72,7 +72,8 @@ inputTable <- read.csv(file="Pulex_Olympics_kaksResults.csv", row.names="geneID"
 # https://sparkbyexamples.com/r-programming/r-join-data-frames-with-examples/#full-outer-join
 
 # remove genes with dN/dS > 3
-subsetTable <- inputTable[inputTable$dNdS < 3,]
+#subsetTable <- inputTable[inputTable$dNdS < 10,]
+subsetTable <- inputTable
 
 # add geneID column
 geneID <- row.names(subsetTable)
@@ -90,6 +91,7 @@ resultsTable <- na.omit(resultsTable)
 resultsTable$Selection <- "NA"
 resultsTable$Selection[resultsTable$dNdS > 1] <- "Positive"
 resultsTable$Selection[resultsTable$dNdS < 1] <- "Negative"
+
 
 # box plot colored by selection
 jpeg("dNdS_modules_boxPlot.jpg")

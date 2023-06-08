@@ -90,8 +90,8 @@ while IFS= read -r line; do
 
 	# create MSA using muscle
 	# https://stackoverflow.com/questions/70769809/muscle-command-line-wrapper
-	muscle -in "$gFile" -out "$outAln"
-	#muscle -align "$gFile" -output "$outAln"
+	#muscle -in "$gFile" -out "$outAln"
+	muscle -align "$gFile" -output "$outAln"
 
 	# status message
 	echo "Generating codon alignment for $gTag..."

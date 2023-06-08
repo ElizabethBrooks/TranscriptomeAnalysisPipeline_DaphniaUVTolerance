@@ -57,14 +57,14 @@ echo "& including variants with MQSB > 0.05: " >> $outputsFile
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-MQSB.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 # include site with 8 alleles, which indicates no uncalled genotypes
-# integer Total number of alleles in called genotypes
+# integer total number of alleles in called genotypes
 bcftools filter --threads 4 -i 'INFO/AN=8' $outFolder"/"$type"_calls.flt-MQSB.bcf" -Ob -o $outFolder"/"$type"_calls.flt-AN.bcf"
 echo "bcftools filter --threads 4 -i 'INFO/AN=8' "$outFolder"/"$type"_calls.flt-MQSB.bcf -Ob -o "$outFolder"/"$type"_calls.flt-AN.bcf" >> $inputOutFile
 echo "& including sites with 8 alleles: " >> $outputsFile
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-AN.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 # include variants with 8 alleles, which indicates no multiallelic sites
-# integer Allele count in genotypes for each ALT allele, in the same order as listed
+# integer allele count in genotypes for each ALT allele, in the same order as listed
 bcftools filter --threads 4 -i 'INFO/AC=8' $outFolder"/"$type"_calls.flt-AN.bcf" -Ob -o $outFolder"/"$type"_calls.flt-AC.bcf"
 echo "bcftools filter --threads 4 -i 'INFO/AC=8' "$outFolder"/"$type"_calls.flt-AN.bcf -Ob -o "$outFolder"/"$type"_calls.flt-AC.bcf" >> $inputOutFile
 echo "& including sites with 8 ALT alleles: " >> $outputsFile

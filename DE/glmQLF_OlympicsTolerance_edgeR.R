@@ -22,7 +22,7 @@ library(ggrepel)
 library(ggVennDiagram)
 
 #Retrieve input file name of gene counts
-args = commandArgs(trailingOnly=TRUE)
+#args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
 #workingDir = args[1];
