@@ -29,6 +29,8 @@ outFolder=$inputsPath"/selectionTests"
 
 # name output file of inputs
 inputOutFile=$outFolder"/variantSplitting_summary.txt"
+# name output file of filtering info
+outputsFile=$outFolder"/variantSplitting_stats.txt"
 
 # add version to output file of inputs
 bcftools --version > $inputOutFile
