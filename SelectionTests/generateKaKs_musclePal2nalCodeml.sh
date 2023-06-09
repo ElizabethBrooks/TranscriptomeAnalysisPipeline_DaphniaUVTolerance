@@ -8,7 +8,7 @@
 # usage: bash generateKaKs_musclePal2nalCodeml.sh $tmpRefPep $tmpConPep $tmpRefNuc $tmpConNuc $resultsFile
 
 # load necessary modules
-module load bio
+module load bio/2.0
 
 # retrieve current working directory
 currDir=$(pwd)

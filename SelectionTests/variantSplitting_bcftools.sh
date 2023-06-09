@@ -9,7 +9,7 @@
 # usage: qsub variantSplitting_bcftools.sh
 
 #Required modules for ND CRC servers
-module load bio
+module load bio/2.0
 
 # set inputs absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")

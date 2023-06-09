@@ -10,7 +10,7 @@
 # usage ex: qsub testSelection_driver.sh
 
 #Required modules for ND CRC servers
-module load bio
+module load bio/2.0
 
 # retrieve features for the reference and consensus genomes
 bash retrieveFeatures_gffread.sh
