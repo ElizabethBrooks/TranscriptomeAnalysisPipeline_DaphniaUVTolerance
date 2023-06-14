@@ -55,7 +55,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # split VCF files by SNPs and indels
-bash variantSplitting_bcftools.sh
+bash incorporateVariants_liftOver.sh
 
 
 

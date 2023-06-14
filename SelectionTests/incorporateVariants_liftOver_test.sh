@@ -30,7 +30,8 @@ genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | se
 genomeFeatures=$(grep "genomeFeatures" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
 
 # set output folder
-outFolder=$inputsPath"/selectionTests"
+outFolder=$inputsPath"/selectionTests_test"
+mkdir $outFolder
 
 # convert BCF to VCF
 inputBcf=$inputsPath"/variantsMerged/"$type"_calls.flt-norm.bcf"
