@@ -90,8 +90,8 @@ tmpSnpChain=$outFolder"/"$type"_OLYM.flt-snp.chain"
 fmtChain=$outFolder"/"$type"_OLYM.fmt.chain"
 
 # subset chain file by snp and indel lines
-cat $pslChain | grep -A1 "chain 1" > $tmpSnpChain
-cat $pslChain | grep "chain 0" > $tmpIndelChain
+cat $vcfChain | grep -A1 "chain 1" > $tmpSnpChain
+cat $vcfChain | grep "chain 0" > $tmpIndelChain
 
 # add snp chain info
 cat $tmpSnpChain > $fmtChain
