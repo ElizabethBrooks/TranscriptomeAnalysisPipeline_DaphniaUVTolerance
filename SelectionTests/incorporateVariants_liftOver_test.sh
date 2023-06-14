@@ -37,8 +37,8 @@ mkdir $outFolder
 cd $softwarePath
 
 # convert BCF to VCF
-#inputBcf=$inputsPath"/variantsMerged/"$type"_calls.flt-norm.bcf"
-#outputVcf=$outFolder"/"$type"_calls.flt-norm.vcf.gz"
+inputBcf=$inputsPath"/variantsMerged/"$type"_calls.flt-norm.bcf"
+outputVcf=$outFolder"/"$type"_calls.flt-norm.vcf.gz"
 #bcftools view $inputBcf -Oz -o $outputVcf
 #bcftools view /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/variantsMerged/filteredMapQ_calls.flt-norm.bcf -Oz -o /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/selectionTests/filteredMapQ_calls.flt-norm.vcf.gz
 
