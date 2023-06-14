@@ -11,7 +11,7 @@
 module load bio/2.0
 
 # set software directory
-softwarePath="/afs/crc.nd.edu/user/e/ebrooks5/UTIL"
+softwarePath="afs/crc.nd.edu/user/e/ebrooks5/UTIL"
 
 # set inputs absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")

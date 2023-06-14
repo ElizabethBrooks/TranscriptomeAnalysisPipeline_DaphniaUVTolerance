@@ -5,13 +5,13 @@
 #$ -N incorporateVariants_jobOutput
 
 # script to incorporate variants and update the gff
-# usage: qsub incorporateVariants_liftOver.sh
+# usage: qsub incorporateVariants_liftOver_test.sh
 
 # load necessary software
 module load bio/2.0
 
 # set software directory
-softwarePath="/afs/crc.nd.edu/user/e/ebrooks5/UTIL"
+softwarePath="afs/crc.nd.edu/user/e/ebrooks5/UTIL"
 
 # set inputs absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
