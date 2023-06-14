@@ -31,7 +31,12 @@ genomeFeatures=$(grep "genomeFeatures" ../InputData/inputPaths.txt | tr -d " " |
 
 # set output folder
 outFolder=$inputsPath"/selectionTests_test"
-#mkdir $outFolder
+mkdir $outFolder
+# check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
 
 # move to software directory
 cd $softwarePath
@@ -42,40 +47,43 @@ echo "Beginnning file format conversions..."
 # convert BCF to VCF
 inputBcf=$inputsPath"/variantsMerged/"$type"_calls.flt-norm.bcf"
 outputVcf=$outFolder"/"$type"_calls.flt-norm.vcf.gz"
-#bcftools view $inputBcf -Oz -o $outputVcf
-#bcftools view /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/variantsMerged/filteredMapQ_calls.flt-norm.bcf -Oz -o /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/selectionTests/filteredMapQ_calls.flt-norm.vcf.gz
+bcftools view $inputBcf -Oz -o $outputVcf
+bcftools view /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/variantsMerged/filteredMapQ_calls.flt-norm.bcf -Oz -o /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/selectionTests/filteredMapQ_calls.flt-norm.vcf.gz
 
 # index VCF
-#bcftools index $outputVcf -t
-#bcftools index /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/selectionTests/filteredMapQ_calls.flt-norm.vcf.gz -t
+bcftools index $outputVcf -t
+bcftools index /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/selectionTests/filteredMapQ_calls.flt-norm.vcf.gz -t
 
 # convert VCF to BED9+ with optional extra fields
 vcfBed=$outFolder"/"$type"_OLYM"
-#./vcfToBed $outputVcf $vcfBed
+./vcfToBed $outputVcf $vcfBed
 
 # format bed file
 vcfBed=$outFolder"/"$type"_OLYM.bed"
 fmtBed=$outFolder"/"$type"_OLYM.fmt.bed"
-#cat $vcfBed | cut -f 1-9 > $fmtBed
+cat $vcfBed | cut -f 1-9 > $fmtBed
 
 # retrieve chrom sizes
 refTag=$(basename $genomeFile | sed 's/\.fna//g')
 refSizes=$outFolder"/"$refTag".chrom.sizes"
-#./faSize -detailed -tab $genomeFile > $refSizes
+./faSize -detailed -tab $genomeFile > $refSizes
 
 # convert bed format files to psl format
 vcfPsl=$outFolder"/"$type"_OLYM.psl"
-#./bedToPsl $refSizes $fmtBed $vcfPsl
+./bedToPsl $refSizes $fmtBed $vcfPsl
 
 # convert psl records to chain records
 vcfChain=$outFolder"/"$type"_OLYM.chain"
-#./pslToChain $vcfPsl $vcfChain
+./pslToChain $vcfPsl $vcfChain
 
 ## convert a GFF3 CIGAR file to a PSL file
 ##./gff3ToPsl [options] queryChromSizes targetChomSizes inGff3 out.psl
 
 ## tranform a psl format file to a bed format file
 ##./pslToBed [options] psl bed
+
+# status message
+echo "Beginnning chain file formatting..."
 
 # reformat chain file and correct indel sizes
 # map.chain has the old genome as the target and the new genome as the query
@@ -90,16 +98,16 @@ cat $pslChain | grep "chain 0" > $tmpIndelChain
 # add snp chain info
 cat $tmpSnpChain > $fmtChain
 
-# status message
-echo "Beginnning chain file formatting..."
-
 # chain score tName tSize tStrand tStart tEnd qName qSize qStrand qStart qEnd id
 # loop over each indel entry in the chain file
 while IFS= read -r line; do
-	# retrieve chain info
+	# retrieve query name
+	qName=$(echo $line | cut -d " " -f 8)
+	# status message
+	echo "Formatting $qName ..."
+	# retrieve remaining chain info
 	lineStart=$(echo $line | cut -d " " -f 1-5)
 	tEnd=$(echo $line | cut -d " " -f 7)
-	qName=$(echo $line | cut -d " " -f 8)
 	indelSize=$(echo $line | cut -d "/" -f 2 | cut -d " " -f 1 | wc -c)
 	indelSize=$(($indelSize-1))
 	qStrand=$(echo $line | cut -d " " -f 10)
