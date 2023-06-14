@@ -48,11 +48,9 @@ echo "Beginnning file format conversions..."
 inputBcf=$inputsPath"/variantsMerged/"$type"_calls.flt-norm.bcf"
 outputVcf=$outFolder"/"$type"_calls.flt-norm.vcf.gz"
 bcftools view $inputBcf -Oz -o $outputVcf
-bcftools view /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/variantsMerged/filteredMapQ_calls.flt-norm.bcf -Oz -o /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/selectionTests/filteredMapQ_calls.flt-norm.vcf.gz
 
 # index VCF
 bcftools index $outputVcf -t
-bcftools index /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/selectionTests/filteredMapQ_calls.flt-norm.vcf.gz -t
 
 # convert VCF to BED9+ with optional extra fields
 vcfBed=$outFolder"/"$type"_OLYM"
