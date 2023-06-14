@@ -19,7 +19,7 @@ inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 type="filteredMapQ"
 
 # set inputs directory name
-inputsDir=$inputsPath"/variantsMerged_"$type
+inputsDir=$inputsPath"/variantsMerged"
 
 # retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")

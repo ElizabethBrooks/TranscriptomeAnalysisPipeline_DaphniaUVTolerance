@@ -25,7 +25,7 @@ type="filteredMapQ"
 inputBamList="../InputData/fileList_Olympics_genotypes.txt"
 
 #Make output folder
-outFolder=$inputsDir"/variantsMerged_"$type
+outFolder=$inputsDir"/variantsMerged"
 mkdir "$outFolder"
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
