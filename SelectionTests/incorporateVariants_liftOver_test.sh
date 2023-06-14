@@ -31,10 +31,13 @@ genomeFeatures=$(grep "genomeFeatures" ../InputData/inputPaths.txt | tr -d " " |
 
 # set output folder
 outFolder=$inputsPath"/selectionTests_test"
-mkdir $outFolder
+#mkdir $outFolder
 
 # move to software directory
 cd $softwarePath
+
+# status message
+echo "Beginnning file format conversions..."
 
 # convert BCF to VCF
 inputBcf=$inputsPath"/variantsMerged/"$type"_calls.flt-norm.bcf"
@@ -53,20 +56,20 @@ vcfBed=$outFolder"/"$type"_OLYM"
 # format bed file
 vcfBed=$outFolder"/"$type"_OLYM.bed"
 fmtBed=$outFolder"/"$type"_OLYM.fmt.bed"
-cat $vcfBed | cut -f 1-9 > $fmtBed
+#cat $vcfBed | cut -f 1-9 > $fmtBed
 
 # retrieve chrom sizes
 refTag=$(basename $genomeFile | sed 's/\.fna//g')
 refSizes=$outFolder"/"$refTag".chrom.sizes"
-./faSize -detailed -tab $genomeFile > $refSizes
+#./faSize -detailed -tab $genomeFile > $refSizes
 
 # convert bed format files to psl format
 vcfPsl=$outFolder"/"$type"_OLYM.psl"
-./bedToPsl $refSizes $fmtBed $vcfPsl
+#./bedToPsl $refSizes $fmtBed $vcfPsl
 
 # convert psl records to chain records
 vcfChain=$outFolder"/"$type"_OLYM.chain"
-./pslToChain $vcfPsl $vcfChain
+#./pslToChain $vcfPsl $vcfChain
 
 ## convert a GFF3 CIGAR file to a PSL file
 ##./gff3ToPsl [options] queryChromSizes targetChomSizes inGff3 out.psl
@@ -79,11 +82,16 @@ vcfChain=$outFolder"/"$type"_OLYM.chain"
 tmpIndelChain=$outFolder"/"$type"_OLYM.flt-indel.chain"
 tmpSnpChain=$outFolder"/"$type"_OLYM.flt-snp.chain"
 fmtChain=$outFolder"/"$type"_OLYM.fmt.chain"
+
+# subset chain file by snp and indel lines
+cat $pslChain | grep -A1 "chain 1" > $tmpSnpChain
 cat $pslChain | grep "chain 0" > $tmpIndelChain
-cat $pslChain | grep "chain 1" > $tmpSnpChain
 
 # add snp chain info
 cat $tmpSnpChain > $fmtChain
+
+# status message
+echo "Beginnning chain file formatting..."
 
 # chain score tName tSize tStrand tStart tEnd qName qSize qStrand qStart qEnd id
 # loop over each indel entry in the chain file
@@ -113,3 +121,7 @@ done < $tmpIndelChain
 # move annotations from one assembly to another
 #noMap=$outFolder"/"$type"_OLYM.unMapped.txt"
 #./liftOver -gff $genomeFeatures $fmtChain -bedPlus=9 $vcfBed $noMap
+
+# status message
+echo "Analysis complete!"
+
