@@ -53,7 +53,7 @@ vcfBed=$outFolder"/"$type"_OLYM"
 # format bed file
 vcfBed=$outFolder"/"$type"_OLYM.bed"
 fmtBed=$outFolder"/"$type"_OLYM.fmt.bed"
-cat $vcfBed | -f 1-9 > $fmtBed
+cat $vcfBed | cut -f 1-9 > $fmtBed
 
 # retrieve chrom sizes
 refTag=$(basename $genomeFile | sed 's/\.fna//g')
