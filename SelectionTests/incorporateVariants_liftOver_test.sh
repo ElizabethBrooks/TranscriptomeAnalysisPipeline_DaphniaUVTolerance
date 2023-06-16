@@ -124,12 +124,12 @@ while IFS= read -r line; do
 done < $tmpIndelChain
 
 # clean up
-#rm $tmpSnpChain
-#rm $tmpIndelChain
+rm $tmpSnpChain
+rm $tmpIndelChain
 
 # move annotations from one assembly to another
-#noMap=$outFolder"/"$type"_OLYM.unMapped.txt"
-#./liftOver -gff $genomeFeatures $fmtChain -bedPlus=9 $vcfBed $noMap
+noMap=$outFolder"/"$type"_OLYM.unMapped.txt"
+./liftOver -gff $genomeFeatures $fmtChain -bedPlus=9 $vcfBed $noMap
 
 # status message
 echo "Analysis complete!"
