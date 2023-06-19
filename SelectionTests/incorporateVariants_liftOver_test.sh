@@ -104,10 +104,7 @@ while IFS= read -r line; do
 	# status message
 	echo "Formatting $qName ..."
 	# retrieve remaining chain info
-	tName=$(echo $line | cut -d " " -f 3)
-	tSize=$(echo $line | cut -d " " -f 4)
-	tStrand=$(echo $line | cut -d " " -f 5)
-	tEnd=$(echo $line | cut -d " " -f 7)
+	tNaSiStrStaEn=$(echo $line | cut -d " " -f 3-7)
 	indelSize=$(echo $line | cut -d "/" -f 2 | cut -d " " -f 1 | wc -c)
 	indelSize=$(($indelSize-1))
 	qStrand=$(echo $line | cut -d " " -f 10)
@@ -119,7 +116,7 @@ while IFS= read -r line; do
 	qStart=0
 	qEnd=$indelSize
 	# output updated chain line
-	echo "chain $score $tName $tSize $tStrand $tStart $tEnd $qName $qSize $qStrand $qStart $qEnd $id" >> $fmtChain
+	echo "chain $score $tNaSiStrStaEn $qName $qSize $qStrand $qStart $qEnd $id" >> $fmtChain
 	echo $qSize >> $fmtChain
 done < $tmpIndelChain
 
