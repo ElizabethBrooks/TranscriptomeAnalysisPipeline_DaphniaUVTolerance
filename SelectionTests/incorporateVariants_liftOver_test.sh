@@ -93,8 +93,8 @@ fmtChain=$outFolder"/"$type"_OLYM.fmt.chain"
 cat $vcfChain | grep -A1 "chain 1" | grep -v -- "^--$" > $tmpSnpChain
 cat $vcfChain | grep "chain 0" > $tmpIndelChain
 
-# add snp chain info
-cat $tmpSnpChain > $fmtChain
+# clean up
+rm $fmtChain
 
 # chain score tName tSize tStrand tStart tEnd qName qSize qStrand qStart qEnd id
 # loop over each indel entry in the chain file
@@ -119,6 +119,9 @@ while IFS= read -r line; do
 	echo "chain $score $tNaSiStrStaEn $qName $qSize $qStrand $qStart $qEnd $id" >> $fmtChain
 	echo $qSize >> $fmtChain
 done < $tmpIndelChain
+
+# add snp chain info
+cat $tmpSnpChain >> $fmtChain
 
 # clean up
 #rm $tmpSnpChain
