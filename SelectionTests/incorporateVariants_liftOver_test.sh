@@ -90,7 +90,7 @@ tmpSnpChain=$outFolder"/"$type"_OLYM.flt-snp.chain"
 fmtChain=$outFolder"/"$type"_OLYM.fmt.chain"
 
 # subset chain file by snp and indel lines
-cat $vcfChain | grep -A1 "chain 1" > $tmpSnpChain
+cat $vcfChain | grep -A1 "chain 1" | grep -v -- "^--$" > $tmpSnpChain
 cat $vcfChain | grep "chain 0" > $tmpIndelChain
 
 # add snp chain info
@@ -124,8 +124,8 @@ while IFS= read -r line; do
 done < $tmpIndelChain
 
 # clean up
-rm $tmpSnpChain
-rm $tmpIndelChain
+#rm $tmpSnpChain
+#rm $tmpIndelChain
 
 # move annotations from one assembly to another
 noMap=$outFolder"/"$type"_OLYM.unMapped.txt"
