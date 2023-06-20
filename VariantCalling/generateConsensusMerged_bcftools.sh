@@ -7,6 +7,9 @@
 # script to generate a consensus sequence using filtered called variants
 # usage: qsub generateConsensusMerged_bcftools.sh
 
+#Required modules for ND CRC servers
+module load bio/2.0
+
 #Retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"

@@ -10,7 +10,7 @@
 # usage Ex: qsub variantCalling_bcftools_driver.sh
 
 #Required modules for ND CRC servers
-module load bio
+module load bio/2.0
 
 # set sorted folder name
 sortedFolder="sortedCoordinate_samtoolsHisat2_run1"

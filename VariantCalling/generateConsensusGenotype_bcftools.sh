@@ -11,6 +11,9 @@
 # usage Ex: qsub generateConsensusGenotype_bcftools.sh Y05
 # usage Ex: qsub generateConsensusGenotype_bcftools.sh Y023
 
+#Required modules for ND CRC servers
+module load bio/2.0
+
 # retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
