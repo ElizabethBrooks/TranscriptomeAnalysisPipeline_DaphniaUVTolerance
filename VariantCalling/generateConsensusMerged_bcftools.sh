@@ -30,7 +30,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # set inputs directory name
-inputsPath=$inputsPath"/variantsMerged_"$type
+inputsPath=$inputsPath"/variantsMerged"
 
 #Name output file of inputs
 inputOutFile=$outFolder"/consensusMerged_summary.txt"
