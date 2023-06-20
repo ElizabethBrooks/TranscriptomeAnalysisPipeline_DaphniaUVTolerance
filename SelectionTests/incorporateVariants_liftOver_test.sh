@@ -42,7 +42,7 @@ fi
 cd $softwarePath
 
 # status message
-echo "Beginnning file format conversions..."
+echo "Beginnning analysis..."
 
 # convert BCF to VCF
 inputBcf=$inputsPath"/variantsMerged/"$type"_calls.flt-norm.bcf"
@@ -56,11 +56,15 @@ bcftools index $outputVcf -t
 vcfBedPrefix=$outFolder"/"$type"_OLYM"
 ./vcfToBed $outputVcf $vcfBedPrefix
 
+# prepare gff file
+gpFile=$vcfBedPrefix".gp"
+./ldHgGene -out=$gpFile $genomeFeatures
+
 # move annotations from one assembly to another
 fmtChain=$inputsPath"/variantsConsensus/"$type"_consensus.chain"
 vcfBed=$vcfBedPrefix".bed"
 noMap=$outFolder"/"$type"_OLYM.unMapped.txt"
-./liftOver -gff $genomeFeatures $fmtChain -bedPlus=9 $vcfBed $noMap
+./liftOver -genePred $gpFile $fmtChain -bedPlus=9 $vcfBed $noMap
 
 # status message
 echo "Analysis complete!"
