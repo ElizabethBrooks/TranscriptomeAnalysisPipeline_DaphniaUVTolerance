@@ -46,11 +46,14 @@ bash variantCallingMerged_bcftools.sh
 bash variantFiltering_bcftools.sh
 
 # run script to generate consensus sequences
-#bash generateConsensusMerged_bcftools.sh
+bash generateConsensusMerged_bcftools.sh
 #bash generateConsensusGenotype_bcftools.sh "E05"
 #bash generateConsensusGenotype_bcftools.sh "R2"
 #bash generateConsensusGenotype_bcftools.sh "Y05"
 #bash generateConsensusGenotype_bcftools.sh "Y023"
+
+# incorporate variants and update the sample gff
+bash incorporateVariants_liftOver.sh
 
 # clean up
 #rm -r $inputsDir

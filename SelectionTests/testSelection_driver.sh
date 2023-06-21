@@ -13,7 +13,8 @@
 module load bio/2.0
 
 # retrieve features for the reference and consensus genomes
-bash retrieveFeatures_gffread.sh
+bash retrieveFeaturesMerged_gffread.sh
+#bash retrieveFeaturesGenotype_gffread.sh
 
 # retreive protein coding sequence transcript names
 bash retrieve_proteinCoding.sh
