@@ -7,6 +7,9 @@
 # script to retrieve features from a referene fasta using a gff
 # usage: bash retrieveFeaturesMerged_gffread.sh
 
+#Required modules for ND CRC servers
+module load bio/2.0
+
 # retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
 
@@ -19,6 +22,11 @@ type="filteredMapQ"
 # make outputs directory name
 outFolder=$inputsPath"/features_gffread"
 mkdir $outFolder
+# check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
 
 # set inputs folder
 inputsPath=$inputsPath"/variantsConsensus"
