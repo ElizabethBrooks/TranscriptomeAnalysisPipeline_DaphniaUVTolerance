@@ -5,7 +5,7 @@
 #$ -N incorporateVariants_jobOutput
 
 # script to incorporate variants and update the gff
-# usage: qsub incorporateVariants_liftOver_test.sh
+# usage: qsub incorporateVariants_liftOver.sh
 
 # load necessary software
 module load bio/2.0
@@ -25,7 +25,7 @@ inputsDir=$inputsPath"/variantsMerged"
 
 # retrieve genome features absolute path for alignment
 genomeFile=$(grep "genomeReference" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeReference://g")
-genomeTag=$(basename $genomeFile | sed 's/\.fna//g')
+#genomeTag=$(basename $genomeFile | sed 's/\.fna//g')
 
 # retrieve genome features absolute path for alignment
 genomeFeatures=$(grep "genomeFeatures" ../InputData/inputPaths.txt | tr -d " " | sed "s/genomeFeatures://g")
@@ -78,8 +78,8 @@ noMap=$outFolder"/"$type"_OLYM.unMapped.bed"
 refSizes=$outFolder"/"$refTag".chrom.sizes"
 sampleGenome=$inputsPath"/variantsConsensus/"$type"_consensus.fa"
 sampleSizes=$outFolder"/"$type"_OLYM.chrom.sizes"
-./$softwarePath"/"faSize -detailed -tab $genomeFile > $refSizes
-./$softwarePath"/"faSize -detailed -tab $sampleGenome > $sampleSizes
+./faSize -detailed -tab $genomeFile > $refSizes
+./faSize -detailed -tab $sampleGenome > $sampleSizes
 #./UTIL/faSize -detailed -tab /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/daphnia_pulex/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/GCF_021134715.1_ASM2113471v1_genomic.fna > /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/selectionTests_test/GCF_021134715.1_ASM2113471v1_genomic.chrom.sizes
 #./UTIL/faSize -detailed -tab /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/variantsConsensus/filteredMapQ_consensus.fa > /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/selectionTests_test/filteredMapQ_OLYM.chrom.sizes
 
