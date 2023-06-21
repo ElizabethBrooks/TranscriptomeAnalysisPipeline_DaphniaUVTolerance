@@ -1,18 +1,7 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N testSelection_jobOutput
 
-# script to run tests for selection for each protein sequence
-# usage: qsub testSelection_driver.sh
-# usage ex: qsub testSelection_driver.sh
-
-# retrieve features for the reference and consensus genomes
-bash retrieveFeatures_gffread.sh
-
-# retreive protein coding sequence transcript names
-bash retrieve_proteinCoding.sh
+# script to format results from tests for selection
+# usage: bash format_kaksResults.sh
 
 # retrieve current working directory
 currDir=$(pwd)
@@ -25,15 +14,12 @@ softwarePath=$(grep "pal2nal:" $baseDir"/InputData/softwarePaths.txt" | tr -d " 
 
 # retrieve genome features absolute path for alignment
 genomeFeatures=$(grep "genomeFeatures" $baseDir"/InputData/softwarePaths.txt" | tr -d " " | sed "s/genomeFeatures://g")
-#genomeFeatures="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/genomic.gff"
 
 # retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" $baseDir"/InputData/outputPaths.txt" | tr -d " " | sed "s/aligningGenome://g")
-#inputsPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics"
 
 # retrieve genome reference absolute path for alignment
 refPath=$(grep "genomeReference" $baseDir"/InputData/inputPaths.txt" | tr -d " " | sed "s/genomeReference://g")
-#refPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/GCF_021134715.1_ASM2113471v1_genomic.fna"
 
 # set inputs path
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
@@ -43,12 +29,6 @@ type="filteredMapQ"
 
 # make outputs directory name
 outFolder=$inputsPath"/selectionTests"
-mkdir $outFolder
-# check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
 
 # set inputs folder
 inputsPath=$inputsPath"/features_gffread"

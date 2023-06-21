@@ -8,7 +8,7 @@
 # usage: qsub retrieve_proteinCoding.sh
 
 #Required modules for ND CRC servers
-module load bio/2.0
+#module load bio/2.0
 
 # retrieve current working directory
 currDir=$(pwd)

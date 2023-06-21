@@ -5,7 +5,7 @@
 #$ -N generateKaKs_jobOutput
 
 # script to generate MSAs for each gene in the reference set of peptide sequences
-# usage: bash generateKaKs_musclePal2nalCodeml.sh $tmpRefPep $tmpConPep $tmpRefNuc $tmpConNuc $resultsFile
+# usage: qsub generateKaKs_musclePal2nalCodeml.sh $subsetTag
 
 # load necessary modules
 module load bio/2.0
