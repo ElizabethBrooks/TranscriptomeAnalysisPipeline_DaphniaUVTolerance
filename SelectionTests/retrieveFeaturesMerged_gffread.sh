@@ -8,7 +8,7 @@
 # usage: bash retrieveFeaturesMerged_gffread.sh
 
 #Required modules for ND CRC servers
-module load bio/2.0
+#module load bio/2.0
 
 # retrieve sorted reads input absolute path
 inputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/aligningGenome://g")
