@@ -9,7 +9,10 @@
 analysisType=$1
 
 # set directory for output files
-inPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics/variantsCalled_samtoolsBcftools/selectionTests/Pulex_Olympics_kaksResults_dNdS_cleaned.csv"
+inPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics/variantsCalled_samtoolsBcftools/selectionTests"
+
+# retrieve dN dS values
+inFile=$inPath"/Pulex_Olympics_kaksResults_dNdS_cleaned.csv"
 
 # retrieve functional annotations
 GOmaps=$(grep "functionalAnnotations:" ../InputData/inputPaths.txt | tr -d " " | sed "s/functionalAnnotations://g")
@@ -23,4 +26,7 @@ outDir=$inPath"/GOAnalysis"
 mkdir $outDir
 
 # determine the direction of expression for genes under positive selection
-Rscript enrichdNdS_topGO.R $inPath $GOmaps $outDir
+Rscript enrichdNdS_positive_topGO.R $inFile $GOmaps $outDir
+
+# determine the direction of expression for genes under negative selection
+Rscript enrichdNdS_negative_topGO.R $inFile $GOmaps $outDir
