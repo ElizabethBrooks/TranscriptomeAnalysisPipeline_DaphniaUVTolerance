@@ -124,6 +124,12 @@ while IFS= read -r line; do
 	rm $gTag".tree"
 	rm $gTag".cnt"
 	rm $gTag".codeml"
+	rm 2ML.dN
+	rm 2ML.dS
+	rm 2ML.t
+	rm 2NG.dN
+	rm 2NG.dS
+	rm 2NG.t
 done < $tmpRefPep
 
 # clean up

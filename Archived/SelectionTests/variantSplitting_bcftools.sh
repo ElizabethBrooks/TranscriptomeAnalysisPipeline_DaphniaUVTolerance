@@ -38,7 +38,7 @@ bcftools --version > $inputOutFile
 # include sites with SNPs 
 bcftools filter --threads 4 -i 'TYPE="snp"' $inputsDir"/"$type"_calls.flt-norm.bcf" -Ob -o $outFolder"/"$type"_calls.flt-snp.bcf"
 echo "bcftools filter --threads 4 -i 'TYPE=\"snp\"' "$inputsDir"/"$type"_calls.flt-norm.bcf -Ob -o "$outFolder"/"$type"_calls.flt-snp.bcf" >> $inputOutFile
-echo "& including sites with SNPs: " >> $outputsFile
+echo "& including sites with SNPs: " > $outputsFile
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-snp.bcf" | grep -v "#" | wc -l >> $outputsFile
 
 # include sites with indels 

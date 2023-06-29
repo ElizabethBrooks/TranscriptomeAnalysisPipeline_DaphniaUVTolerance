@@ -24,9 +24,9 @@ inputTable <- read.csv(file="Pulex_Olympics_kaksResults.csv", row.names="geneID"
 # merging data frames
 # https://sparkbyexamples.com/r-programming/r-join-data-frames-with-examples/#full-outer-join
 
-# remove genes with dN/dS > 10
-#subsetTable <- inputTable[inputTable$dNdS < 10,]
-subsetTable <- inputTable
+# remove genes with dN/dS > 7
+subsetTable <- inputTable[inputTable$dNdS < 7,]
+#subsetTable <- inputTable
 
 # retrieve DEGs
 interactionTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv")
