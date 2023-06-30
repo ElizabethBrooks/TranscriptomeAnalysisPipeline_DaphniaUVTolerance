@@ -51,7 +51,7 @@ list_genes_filtered <- list_genes[names(list_genes) %in% names(GOmaps)]
 get_interesting_DE_genes <- function(geneUniverse){
   interesting_DE_genes <- rep(0, length(geneUniverse))
   for(i in 1:length(geneUniverse)){
-    if(geneUniverse[i] > 1 & geneUniverse[i] < 99){
+    if(geneUniverse[i] > 1 & geneUniverse[i] < 7){
       interesting_DE_genes[i] = 1
     }
   }
@@ -94,7 +94,7 @@ pval_MF_GO <- score(MF_GO_results)
 pval_CC_GO <- score(CC_GO_results)
 
 # plot histogram to see range of p-values
-pdf(file="positive_pValueRanges.pdf")
+pdf(file="strictPositive_pValueRanges.pdf")
 par(mfrow=c(3, 1),mar=c(1,1,1,1))
 hist(pval_BP_GO, 35, xlab = "p-values", main = "Range of BP GO term p-values")
 hist(pval_MF_GO, 35, xlab = "p-values", main = "Range of MF GO term p-values")
@@ -114,9 +114,9 @@ CC_GO_results_table <- GenTable(CC_GO_data, weightFisher = CC_GO_results, orderB
                                 topNodes = length(list_CC_GO_terms))
 
 # write table of GO terms to a CSV file
-write.table(BP_GO_results_table, file="positive_BP_GO_terms.csv", sep=",", row.names=FALSE, quote=FALSE)
-write.table(MF_GO_results_table, file="positive_MF_GO_terms.csv", sep=",", row.names=FALSE, quote=FALSE)
-write.table(CC_GO_results_table, file="positive_CC_GO_terms.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(BP_GO_results_table, file="strictPositive_BP_GO_terms.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(MF_GO_results_table, file="strictPositive_MF_GO_terms.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(CC_GO_results_table, file="strictPositive_CC_GO_terms.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 # create table of significant GO terms
 BP_sigGO_results_table <- BP_GO_results_table[BP_GO_results_table$weightFisher <= 0.05, ]
@@ -124,9 +124,9 @@ MF_sigGO_results_table <- MF_GO_results_table[MF_GO_results_table$weightFisher <
 CC_sigGO_results_table <- CC_GO_results_table[CC_GO_results_table$weightFisher <= 0.05, ]
 
 # write table of significant GO terms to a CSV file
-write.table(BP_sigGO_results_table, file="positive_BP_sigGO_terms.csv", sep=",", row.names=FALSE, quote=FALSE)
-write.table(MF_sigGO_results_table, file="positive_MF_sigGO_terms.csv", sep=",", row.names=FALSE, quote=FALSE)
-write.table(CC_sigGO_results_table, file="positive_CC_sigGO_terms.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(BP_sigGO_results_table, file="strictPositive_BP_sigGO_terms.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(MF_sigGO_results_table, file="strictPositive_MF_sigGO_terms.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(CC_sigGO_results_table, file="strictPositive_CC_sigGO_terms.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 # retrieve most significant GO term
 BP_topSigGO_ID <- BP_GO_results_table[1, 'GO.ID']
@@ -134,7 +134,7 @@ MF_topSigGO_ID <- MF_GO_results_table[1, 'GO.ID']
 CC_topSigGO_ID <- CC_GO_results_table[1, 'GO.ID']
 
 # create density plots
-pdf(file = "positive_TopSigGO_Density.pdf")
+pdf(file = "strictPositive_TopSigGO_Density.pdf")
 showGroupDensity(BP_GO_data, whichGO = BP_topSigGO_ID, ranks = TRUE)
 showGroupDensity(MF_GO_data, whichGO = MF_topSigGO_ID, ranks = TRUE)
 showGroupDensity(CC_GO_data, whichGO = CC_topSigGO_ID, ranks = TRUE)
@@ -142,11 +142,11 @@ dev.off()
 
 # plot subgraphs induced by the most significant GO terms and save to a PDF file
 printGraph(BP_GO_data, BP_GO_results, firstSigNodes = 5, 
-           fn.prefix = "positive_BP_sigGO_subgraphs", useInfo = "all", pdfSW = TRUE)
+           fn.prefix = "strictPositive_BP_sigGO_subgraphs", useInfo = "all", pdfSW = TRUE)
 printGraph(MF_GO_data, MF_GO_results, firstSigNodes = 5, 
-           fn.prefix = "positive_MF_sigGO_subgraphs", useInfo = "all", pdfSW = TRUE)
+           fn.prefix = "strictPositive_MF_sigGO_subgraphs", useInfo = "all", pdfSW = TRUE)
 printGraph(CC_GO_data, CC_GO_results, firstSigNodes = 5, 
-           fn.prefix = "positive_CC_sigGO_subgraphs", useInfo = "all", pdfSW = TRUE)
+           fn.prefix = "strictPositive_CC_sigGO_subgraphs", useInfo = "all", pdfSW = TRUE)
 
 #showGroupDensity for UV tolerance assocaited GO terms
 #CC_DNA_repair_complex <- "GO:1990391"

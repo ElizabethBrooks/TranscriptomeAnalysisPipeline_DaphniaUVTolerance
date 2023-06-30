@@ -9,7 +9,7 @@
 analysisType=$1
 
 # set directory for output files
-inPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bioinformatics/variantsCalled_samtoolsBcftools/selectionTests"
+inPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests"
 
 # retrieve dN dS values
 inFile=$inPath"/Pulex_Olympics_kaksResults_dNdS_cleaned.csv"
@@ -25,8 +25,20 @@ outDir=$inPath"/GOAnalysis"
 # create outputs directory
 mkdir $outDir
 
+# determine the direction of expression for genes under negative selection
+Rscript enrichdNdS_negative_topGO.R $inFile $GOmaps $outDir
+
 # determine the direction of expression for genes under positive selection
 Rscript enrichdNdS_positive_topGO.R $inFile $GOmaps $outDir
 
-# determine the direction of expression for genes under negative selection
-Rscript enrichdNdS_negative_topGO.R $inFile $GOmaps $outDir
+# determine the direction of expression for genes under positive selection
+Rscript enrichdNdS_strictPositive_topGO.R $inFile $GOmaps $outDir
+
+# determine the direction of expression for genes under positive selection
+Rscript enrichdNdS_overPositive_topGO.R $inFile $GOmaps $outDir
+
+# determine the direction of expression for genes under positive selection
+Rscript enrichdNdS_99Positive_topGO.R $inFile $GOmaps $outDir
+
+# determine the direction of expression for genes under positive selection
+Rscript enrichdNdS_overPositiveUnder99_topGO.R $inFile $GOmaps $outDir

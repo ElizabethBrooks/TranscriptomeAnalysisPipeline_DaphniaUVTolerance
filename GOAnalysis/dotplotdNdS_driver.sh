@@ -2,18 +2,14 @@
 
 # BASH script to drive GO analysis for DE results
 
-# usage: bash dotplotdNdS_driver.sh analysisType
-# default usage ex: bash dotplotdNdS_driver.sh Tolerance
-
-# retrieve analysis type
-analysisType=$1
+# usage: bash dotplotdNdS_driver.sh
+# default usage ex: bash dotplotdNdS_driver.sh
 
 # set directory for output files
-inDir=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
-inDir=$inDir"/"$analysisType
+inPath="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests"
 
 # set outputs directory
-outDir=$inDir"/GOAnalysis"
+outDir=$inPath"/GOAnalysis"
 
 # create outputs directory
 mkdir $outDir

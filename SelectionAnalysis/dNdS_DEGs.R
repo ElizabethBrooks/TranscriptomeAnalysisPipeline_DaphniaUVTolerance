@@ -24,8 +24,9 @@ inputTable <- read.csv(file="Pulex_Olympics_kaksResults.csv", row.names="geneID"
 # merging data frames
 # https://sparkbyexamples.com/r-programming/r-join-data-frames-with-examples/#full-outer-join
 
-# remove genes with dN/dS > 7
-subsetTable <- inputTable[inputTable$dNdS < 7,]
+# remove genes with dN/dS = 99
+# https://ocw.mit.edu/courses/6-877j-computational-evolutionary-biology-fall-2005/9a6d5e515fb1e7608eb3919855b01880_pamlfaqs.pdf
+subsetTable <- inputTable[inputTable$dNdS < 99,]
 #subsetTable <- inputTable
 
 # retrieve DEGs
@@ -75,7 +76,7 @@ all_plotTable$Selection[all_plotTable$dNdS > 1] <- "Positive"
 all_plotTable$Selection[all_plotTable$dNdS < 1] <- "Negative"
 
 # create label set
-labelSetAll <- all_plotTable[all_plotTable$dNdS > 1,]
+labelSetAll <- all_plotTable[all_plotTable$Selection == "Positive",]
 
 
 # box plot colored by selection
@@ -122,11 +123,35 @@ ggplot(all_plotTable, aes(x=Effect, y=dNdS, fill=Selection)) +
 dev.off()
 
 # violin plot color by selection with labels
-jpeg("dNdS_modules_selection_violinPlot_labeled.jpg")
+jpeg("dNdS_DEGs_selection_violinPlot_labeled.jpg")
 ggplot(all_plotTable, aes(x=Effect, y=dNdS, fill=Selection)) +
   theme_minimal() +
   ggrepel::geom_text_repel(data = labelSetAll, aes(label = labelSetAll$geneID), max.overlaps=100) +
   geom_violin(trim=FALSE) +
   scale_fill_discrete(type = ghibli_subset, breaks = c("Positive", "Negative")) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+dev.off()
+
+
+# scatter plots
+# http://www.sthda.com/english/wiki/ggplot2-scatter-plots-quick-start-guide-r-software-and-data-visualization
+# https://stackoverflow.com/questions/15015356/how-to-do-selective-labeling-with-ggplot-geom-point
+
+# scatter plot colored by selection
+# shaped by DEG effect set
+jpeg("dNdS_DEGs_selection_scatterPlot.jpg")
+ggplot(all_plotTable, aes(x=dS, y=dN, shape=Selection, color=Effect)) +
+  theme_minimal() +
+  geom_point()
+dev.off()
+
+# scatter plot colored by selection
+# shaped by DEG effect set
+# with positvely selected genes labeled by geneID
+jpeg("dNdS_DEGs_selection_scatterPlot_labeled.jpg")
+ggplot(all_plotTable, aes(x=dS, y=dN, shape=Selection, color=Effect)) +
+  theme_minimal() +
+  geom_point() +
+  ggrepel::geom_text_repel(data = labelSetAll, aes(label = labelSetAll$geneID), max.overlaps=100) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 dev.off()

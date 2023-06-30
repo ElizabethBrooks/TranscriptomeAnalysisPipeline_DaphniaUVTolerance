@@ -71,8 +71,9 @@ inputTable <- read.csv(file="Pulex_Olympics_kaksResults.csv", row.names="geneID"
 # merging data frames
 # https://sparkbyexamples.com/r-programming/r-join-data-frames-with-examples/#full-outer-join
 
-# remove genes with dN/dS > 7
-subsetTable <- inputTable[inputTable$dNdS < 7,]
+# remove genes with dN/dS = 99
+# https://ocw.mit.edu/courses/6-877j-computational-evolutionary-biology-fall-2005/9a6d5e515fb1e7608eb3919855b01880_pamlfaqs.pdf
+subsetTable <- inputTable[inputTable$dNdS < 99,]
 #subsetTable <- inputTable
 
 # add geneID column
