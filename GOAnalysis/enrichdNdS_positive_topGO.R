@@ -51,7 +51,7 @@ list_genes_filtered <- list_genes[names(list_genes) %in% names(GOmaps)]
 get_interesting_DE_genes <- function(geneUniverse){
   interesting_DE_genes <- rep(0, length(geneUniverse))
   for(i in 1:length(geneUniverse)){
-    if(geneUniverse[i] > 1 & geneUniverse[i] < 99){
+    if(geneUniverse[i] > 1){
       interesting_DE_genes[i] = 1
     }
   }

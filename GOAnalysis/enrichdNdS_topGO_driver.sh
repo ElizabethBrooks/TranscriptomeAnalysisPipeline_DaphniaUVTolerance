@@ -32,13 +32,7 @@ Rscript enrichdNdS_negative_topGO.R $inFile $GOmaps $outDir
 Rscript enrichdNdS_positive_topGO.R $inFile $GOmaps $outDir
 
 # determine the direction of expression for genes under positive selection
-Rscript enrichdNdS_strictPositive_topGO.R $inFile $GOmaps $outDir
+Rscript enrichdNdS_strict_topGO.R $inFile $GOmaps $outDir
 
 # determine the direction of expression for genes under positive selection
-Rscript enrichdNdS_overPositive_topGO.R $inFile $GOmaps $outDir
-
-# determine the direction of expression for genes under positive selection
-Rscript enrichdNdS_99Positive_topGO.R $inFile $GOmaps $outDir
-
-# determine the direction of expression for genes under positive selection
-Rscript enrichdNdS_overPositiveUnder99_topGO.R $inFile $GOmaps $outDir
+Rscript enrichdNdS_error_topGO.R $inFile $GOmaps $outDir
