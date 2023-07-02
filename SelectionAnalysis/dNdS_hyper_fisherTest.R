@@ -38,7 +38,7 @@ toleranceSig <- subset(toleranceTable, toleranceTable$FDR < 0.05)
 
 # add effect tags
 interactionSig$Effect <- "Interaction"
-treatmentTable$Effect <- "Treatment"
+treatmentSig$Effect <- "Treatment"
 toleranceSig$Effect <- "Tolerance"
 
 # add geneID column
@@ -69,6 +69,13 @@ toleranceSubset <- na.omit(toleranceSubset)
 # hypergeometric distribution (fishers test)
 # https://seqqc.wordpress.com/2019/07/25/how-to-use-phyper-in-r/
 
+# results data frame
+pValues <- data.frame(
+  effect = c("Interaction", "Treatment", "Tolerance"),
+  enrichment = rep(99,3),
+  depletion = rep(99,3)
+)
+
 # interaction
 # initialize variables
 positive <- nrow(positiveSubset)
@@ -77,10 +84,10 @@ overlap <- nrow(interactionSubset)
 total <- nrow(interactionTable)
 
 # test for over-representation (enrichment)
-phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)
+pValues$enrichment[1] <- phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)
 
 # test for under-representation (depletion)
-phyper(overlap, de, total-de, positive,lower.tail= FALSE)
+pValues$depletion[1] <-  phyper(overlap, de, total-de, positive,lower.tail= FALSE)
 
 # treatment
 # initialize variables
@@ -90,10 +97,10 @@ overlap <- nrow(treatmentSubset)
 total <- nrow(treatmentTable)
 
 # test for over-representation (enrichment)
-phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)
+pValues$enrichment[2] <- phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)
 
 # test for under-representation (depletion)
-phyper(overlap, de, total-de, positive,lower.tail= FALSE)
+pValues$depletion[2] <-  phyper(overlap, de, total-de, positive,lower.tail= FALSE)
 
 # tolerance
 # initialize variables
@@ -103,7 +110,10 @@ overlap <- nrow(toleranceSubset)
 total <- nrow(toleranceTable)
 
 # test for over-representation (enrichment)
-phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)
+pValues$enrichment[3] <- phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)
 
 # test for under-representation (depletion)
-phyper(overlap, de, total-de, positive,lower.tail= FALSE)
+pValues$depletion[3] <-  phyper(overlap, de, total-de, positive,lower.tail= FALSE)
+
+# write results to a csv file
+write.csv(pValues, "fisherTest_positiveSelection_DEGs.csv", row.names=FALSE)

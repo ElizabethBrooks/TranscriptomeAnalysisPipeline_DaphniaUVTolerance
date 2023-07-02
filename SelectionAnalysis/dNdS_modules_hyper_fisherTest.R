@@ -93,7 +93,11 @@ resultsSubset <- na.omit(resultsSubset)
 # https://seqqc.wordpress.com/2019/07/25/how-to-use-phyper-in-r/
 
 # loop over each module color
-pValues <- rep(0,numMods)
+pValues <- data.frame(
+  color = unique(moduleColors),
+  enrichment = rep(99,numMods),
+  depletion = rep(99,numMods)
+)
 total <- nrow(resultsTable)
 positive <- nrow(positiveSubset)
 for(i in 1:numMods){
@@ -102,9 +106,12 @@ for(i in 1:numMods){
   overlap <- nrow(resultsSubset[resultsSubset$number == i,])
   
   # test for over-representation (enrichment)
-  pValues[i] <- phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)
+  pValues$enrichment[i] <- phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)
   
   # test for under-representation (depletion)
-  pValues[i] <- phyper(overlap, de, total-de, positive,lower.tail= FALSE)
+  pValues$depletion[i] <- phyper(overlap, de, total-de, positive,lower.tail= FALSE)
 }
+
+# write results to a csv file
+write.csv(pValues, "fisherTest_positiveSelection_modules.csv", row.names=FALSE)
 
