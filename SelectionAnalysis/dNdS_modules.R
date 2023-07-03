@@ -2,7 +2,14 @@
 
 # load libraries
 library(ggplot2)
-library(ghibli)
+library(rcartocolor)
+library(tidyr)
+
+# Plotting Palettes
+# https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
+# https://github.com/Nowosad/rcartocolor
+plotColors <- carto_pal(12, "Safe")
+plotColorSubset <- c(plotColors[4], plotColors[5], plotColors[9])
 
 # turn off scientific notation
 options(scipen = 999)
@@ -58,43 +65,53 @@ for(i in 1:numMods){
 }
 
 
-# Plotting Palettes
-# retrieve the vector of colors associated with PonyoMedium
-ghibli_colors <- ghibli_palette("PonyoMedium", type = "discrete")
-# vector with a subset of colors associated with PonyoMedium
-ghibli_subset <- c(ghibli_colors[3], ghibli_colors[6], ghibli_colors[4])
-
 # retrieve dN dS values
-inputTable <- read.csv(file="Pulex_Olympics_kaksResults.csv", row.names="geneID")
+dNdSTable <- read.csv(file="Pulex_Olympics_kaksResults.csv", row.names="geneID")
+
+# remove NAs
+dNdSSubset <- na.omit(dNdSTable)
+
+# subset dN dS values to remove outliers
+#dNdSSubset <- dNdSSubset[dNdSSubset$dNdS < 99,]
 
 
 # merging data frames
 # https://sparkbyexamples.com/r-programming/r-join-data-frames-with-examples/#full-outer-join
 
-# remove genes with dN/dS = 99
-# https://ocw.mit.edu/courses/6-877j-computational-evolutionary-biology-fall-2005/9a6d5e515fb1e7608eb3919855b01880_pamlfaqs.pdf
-subsetTable <- inputTable[inputTable$dNdS < 99,]
-#subsetTable <- inputTable
-
 # add geneID column
-geneID <- row.names(subsetTable)
-subsetTable <- cbind(geneID,subsetTable)
+geneID <- row.names(dNdSSubset)
+dNdSSubset <- cbind(geneID,dNdSSubset)
 colnames(resultsTable)[1] ="geneID"
 
 # full outer join data frames
-resultsTable <- merge(x = resultsTable, y = subsetTable, 
-                          by = "geneID", all=TRUE)
+resultsTable <- merge(x = resultsTable, y = dNdSSubset, 
+                      by = "geneID", all=TRUE)
 
-# remove rows with NAs
+# set color and numner tags for NAs
+resultsTable$color <- resultsTable$color %>% replace_na('None')
+resultsTable$number <- resultsTable$number %>% replace_na('None')
+
+# remove NAs
 resultsTable <- na.omit(resultsTable)
 
 # add column for identifying mode of selection
-resultsTable$Selection <- "NA"
-resultsTable$Selection[resultsTable$dNdS > 1] <- "Positive"
+resultsTable$Selection[resultsTable$dNdS == 99] <- "Error"
+resultsTable$Selection[resultsTable$dNdS > 1 & resultsTable$dNdS < 99] <- "Positive"
 resultsTable$Selection[resultsTable$dNdS < 1] <- "Negative"
 
+# create label set
+labelSetNeg <- resultsTable[resultsTable$Selection == "Negative",]
+labelSetPos <- resultsTable[resultsTable$Selection == "Positive",]
+labelSetError <- resultsTable[resultsTable$Selection == "Error",]
 
-# box plot colored by selection
+# subset results
+resultsSubset <- resultsTable[resultsTable$dNdS < 99,]
+resultsSubset <- resultsSubset[resultsSubset$color != "None",]
+
+
+# plotting
+
+# box plot
 jpeg("dNdS_modules_boxPlot.jpg")
 ggplot(resultsTable, aes(x=color, y=dNdS)) +
   geom_boxplot() +
@@ -103,20 +120,30 @@ ggplot(resultsTable, aes(x=color, y=dNdS)) +
 dev.off()
 
 # box plot colored by selection
-jpeg("dNdS_modules_selection_boxPlot.jpg")
-ggplot(resultsTable, aes(x=color, y=dNdS, fill=Selection)) +
+jpeg("dNdS_modules_selection_boxPlot_error.jpg")
+ggplot(resultsTable, aes(x=color, y=dNdS, color=Selection)) +
   geom_boxplot() +
   theme_minimal() +
-  scale_fill_discrete(type = ghibli_subset, breaks = c("Positive", "Negative")) +
+  scale_colour_discrete(type = plotColorSubset) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+dev.off()
+
+# box plot colored by selection
+# without error values
+jpeg("dNdS_modules_selection_boxPlot.jpg")
+ggplot(resultsSubset, aes(x=color, y=dNdS, color=Selection)) +
+  geom_boxplot() +
+  theme_minimal() +
+  scale_colour_discrete(type = plotColorSubset) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 dev.off()
 
 # violin plots
 # http://www.sthda.com/english/wiki/ggplot2-violin-plot-quick-start-guide-r-software-and-data-visualization
 
-# violin plot color by selection
+# violin plot color
 jpeg("dNdS_modules_violinPlot.jpg")
-ggplot(resultsTable, aes(x=color, y=dNdS)) +
+ggplot(resultsSubset, aes(x=color, y=dNdS)) +
   theme_minimal() +
   geom_violin(trim=FALSE) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
@@ -124,10 +151,44 @@ dev.off()
 
 # violin plot color by selection
 jpeg("dNdS_modules_selection_violinPlot.jpg")
-ggplot(resultsTable, aes(x=color, y=dNdS, fill=Selection)) +
+ggplot(resultsSubset, aes(x=color, y=dNdS, color=Selection)) +
   theme_minimal() +
   geom_violin(trim=FALSE) +
-  scale_fill_discrete(type = ghibli_subset, breaks = c("Positive", "Negative")) +
+  scale_colour_discrete(type = plotColorSubset) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 dev.off()
 
+# violin plot color by selection
+jpeg("dNdS_modules_selection_violinPlot_error.jpg")
+ggplot(resultsTable, aes(x=color, y=dNdS, color=Selection)) +
+  theme_minimal() +
+  geom_violin(trim=FALSE) +
+  scale_colour_discrete(type = plotColorSubset) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+dev.off()
+
+# scatter plots
+# http://www.sthda.com/english/wiki/ggplot2-scatter-plots-quick-start-guide-r-software-and-data-visualization
+# https://stackoverflow.com/questions/15015356/how-to-do-selective-labeling-with-ggplot-geom-point
+# http://www.sthda.com/english/wiki/ggplot2-point-shapes
+
+# scatter plot colored by selection
+# shaped by DEG effect set
+jpeg("dNdS_modules_selection_scatterPlot.jpg")
+ggplot(resultsTable, aes(x=dS, y=dN, shape=Selection, color=color)) +
+  theme_minimal() +
+  geom_point() +
+  scale_shape_manual(values=c(2, 1, 3))
+dev.off()
+
+# scatter plot colored by selection
+# shaped by DEG effect set
+# with error genes labeled by geneID
+#jpeg("dNdS_modules_selection_scatterPlot_labeled_error.jpg")
+#ggplot(resultsTable, aes(x=dS, y=dN, shape=Selection, color=color)) +
+#  theme_minimal() +
+#  geom_point() +
+#  ggrepel::geom_text_repel(data = labelSetError, aes(label = labelSetError$geneID), max.overlaps=100, color="Black") +
+#  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+#  scale_shape_manual(values=c(2, 1, 3))
+#dev.off()
