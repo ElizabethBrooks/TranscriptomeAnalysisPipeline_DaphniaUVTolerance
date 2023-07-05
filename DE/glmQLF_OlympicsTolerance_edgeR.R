@@ -16,10 +16,16 @@ options(scipen = 999)
 #Load the edgeR library
 library(edgeR)
 library(statmod)
-library(ghibli)
 library(ggplot2)
 library(ggrepel)
 library(ggVennDiagram)
+library(rcartocolor)
+
+# Plotting Palettes
+# https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
+# https://github.com/Nowosad/rcartocolor
+plotColors <- carto_pal(12, "Safe")
+plotColorSubset <- c(plotColors[4], plotColors[5], plotColors[6])
 
 #Retrieve input file name of gene counts
 #args = commandArgs(trailingOnly=TRUE)
@@ -44,12 +50,6 @@ targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_D
 
 #Retrieve input FDR cutoff
 #fdrCut=as.numeric(args[5])
-
-# Plotting Palettes
-# retrieve the vector of colors associated with PonyoMedium
-ghibli_colors <- ghibli_palette("PonyoMedium", type = "discrete")
-# vector with a subset of colors associated with PonyoMedium
-ghibli_subset <- c(ghibli_colors[3], ghibli_colors[6], ghibli_colors[4])
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$tolerance,sep="."))
@@ -85,13 +85,13 @@ write.table(normListLog, file="glmQLF_normalizedCounts_logTransformed.csv", sep=
 #Write plot to file
 jpeg("glmQLF_plotMDBefore.jpg")
 plotMD(cpm(list, log=TRUE), column=1)
-abline(h=0, col=ghibli_colors[4], lty=2, lwd=2)
+abline(h=0, col=plotColorSubset[1], lty=2, lwd=2)
 dev.off()
 
 #Use a MDS plot to visualizes the differences
 # between the expression profiles of different samples
 points <- c(0,1,15,16)
-colors <- rep(c(ghibli_colors[3], ghibli_colors[4]), 2)
+colors <- rep(c(plotColorSubset[3], plotColorSubset[2]), 2)
 #Write plot with legend to file
 jpeg("glmQLF_plotMDS.jpg")
 plotMDS(list, col=colors[group], pch=points[group])
@@ -149,7 +149,7 @@ summary(decideTests(treat.anov.treatment))
 #Write plot to file
 jpeg("glmQLF_2WayANOVA_treatment_plotMD_LFC1.2.jpg")
 plotMD(treat.anov.treatment)
-abline(h=c(-1, 1), col=ghibli_colors[3])
+abline(h=c(-1, 1), col=plotColorSubset[3])
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVATreatment <- topTags(treat.anov.treatment, n=nrow(treat.anov.treatment$table), adjust.method="fdr")$table
@@ -166,7 +166,7 @@ jpeg("glmQLF_2WayANOVA_treatment_volcano_LFC1.2.jpg")
 ggplot(data=tagsTblANOVATreatment, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
   geom_point() +
   theme_minimal() +
-  scale_colour_discrete(type = ghibli_subset, breaks = c("Up", "Down"))
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down"))
 dev.off()
 # create volcano plot with labels
 labelSetTreatment <- tagsTblANOVATreatment[tagsTblANOVATreatment$topDE == "UP" | tagsTblANOVATreatment$topDE == "DOWN",]
@@ -175,7 +175,7 @@ ggplot(data=tagsTblANOVATreatment, aes(x=logFC, y=-log10(FDR), color = topDE)) +
   geom_point() +
   ggrepel::geom_text_repel(data = labelSetTreatment, aes(label = row.names(labelSetTreatment))) +
   theme_minimal() +
-  scale_colour_discrete(type = ghibli_subset, breaks = c("Up", "Down"))
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down"))
 dev.off()
 # identify significantly DE genes by FDR
 tagsTblANOVATreatment.glm_keep <- tagsTblANOVATreatment$FDR < 0.05
@@ -195,7 +195,7 @@ summary(decideTests(treat.anov.tolerance))
 #Write plot to file
 jpeg("glmQLF_2WayANOVA_tolerance_plotMD_LFC1.2.jpg")
 plotMD(treat.anov.tolerance)
-abline(h=c(-1, 1), col=ghibli_colors[3])
+abline(h=c(-1, 1), col=plotColorSubset[3])
 dev.off()
 #Write tags table of DE genes to file
 tagsTblANOVATolerance <- topTags(treat.anov.tolerance, n=nrow(treat.anov.tolerance$table), adjust.method="fdr")$table
@@ -212,7 +212,7 @@ jpeg("glmQLF_2WayANOVA_tolerance_volcano_LFC1.2.jpg")
 ggplot(data=tagsTblANOVATolerance, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
   geom_point() +
   theme_minimal() +
-  scale_colour_discrete(type = ghibli_subset, breaks = c("Up", "Down"))
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down"))
 dev.off()
 # create volcano plot with labels
 labelSetTolerance <- tagsTblANOVATolerance[tagsTblANOVATolerance$topDE == "UP" | tagsTblANOVATolerance$topDE == "DOWN",]
@@ -221,7 +221,7 @@ ggplot(data=tagsTblANOVATolerance, aes(x=logFC, y=-log10(FDR), color = topDE)) +
   geom_point() +
   ggrepel::geom_text_repel(data = labelSetTolerance, aes(label = row.names(labelSetTolerance)), max.overlaps=20) +
   theme_minimal() +
-  scale_colour_discrete(type = ghibli_subset, breaks = c("Up", "Down"))
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down"))
 dev.off()
 # identify significantly DE genes by FDR
 tagsTblANOVATolerance.glm_keep <- tagsTblANOVATolerance$FDR < 0.05
@@ -242,7 +242,7 @@ summary(decideTests(treat.anov.Inter))
 #Write plot to file
 jpeg("glmQLF_2WayANOVA_interaction_plotMD_LFC1.2.jpg")
 plotMD(treat.anov.Inter)
-abline(h=c(-1, 1), col=ghibli_colors[3])
+abline(h=c(-1, 1), col=plotColorSubset[3])
 dev.off()
 #Generate table of DE genes
 tagsTblANOVAInter <- topTags(treat.anov.Inter, n=nrow(treat.anov.Inter$table), adjust.method="fdr")$table
@@ -259,7 +259,7 @@ jpeg("glmQLF_2WayANOVA_interaction_volcano_LFC1.2.jpg")
 ggplot(data=tagsTblANOVAInter, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
   geom_point() +
   theme_minimal() +
-  scale_colour_discrete(type = ghibli_subset, breaks = c("Up", "Down"))
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down"))
 dev.off()
 # create volcano plot with labels
 labelSetInteraction <- tagsTblANOVAInter[tagsTblANOVAInter$topDE == "UP" | tagsTblANOVAInter$topDE == "DOWN",]
@@ -268,7 +268,7 @@ ggplot(data=tagsTblANOVAInter, aes(x=logFC, y=-log10(FDR), color = topDE)) +
   geom_point() +
   ggrepel::geom_text_repel(data = labelSetInteraction, aes(label = row.names(labelSetInteraction)), max.overlaps=100) +
   theme_minimal() +
-  scale_colour_discrete(type = ghibli_subset, breaks = c("Up", "Down"))
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down"))
 dev.off()
 # identify significantly DE genes by FDR
 tagsTblANOVAInter.glm_keep <- tagsTblANOVAInter$FDR < 0.05
@@ -290,6 +290,6 @@ glm_list_venn <- list(treatment = geneSet_treatment,
 # create venn diagram
 jpeg("glmQLF_2WayANOVA_venn_LFC1.2.jpg")
 ggVennDiagram(glm_list_venn, label_alpha=0.25, category.names = c("treatment","tolerance","interaction")) +
-  scale_colour_discrete(type = ghibli_subset)
+  scale_colour_discrete(type = plotColorSubset)
 dev.off()
 

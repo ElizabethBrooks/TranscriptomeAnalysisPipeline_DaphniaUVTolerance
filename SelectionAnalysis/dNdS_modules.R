@@ -9,7 +9,7 @@ library(tidyr)
 # https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
 # https://github.com/Nowosad/rcartocolor
 plotColors <- carto_pal(12, "Safe")
-plotColorSubset <- c(plotColors[4], plotColors[5], plotColors[9])
+plotColorSubset <- c(plotColors[4], plotColors[5], plotColors[6])
 
 # turn off scientific notation
 options(scipen = 999)

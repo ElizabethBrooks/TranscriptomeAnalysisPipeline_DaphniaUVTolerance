@@ -17,10 +17,16 @@ options(scipen = 999)
 #Load the edgeR library
 library(edgeR)
 library(statmod)
-library(ghibli)
 library(ggplot2)
 library(ggrepel)
 library(ggVennDiagram)
+library(rcartocolor)
+
+# Plotting Palettes
+# https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
+# https://github.com/Nowosad/rcartocolor
+plotColors <- carto_pal(12, "Safe")
+plotColorSubset <- c(plotColors[4], plotColors[5], plotColors[6])
 
 #Retrieve input file name of gene counts
 #args = commandArgs(trailingOnly=TRUE)
@@ -45,12 +51,6 @@ targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_D
 
 #Retrieve input FDR cutoff
 #fdrCut=as.numeric(args[5])
-
-# Plotting Palettes
-# retrieve the vector of colors associated with PonyoMedium
-ghibli_colors <- ghibli_palette("PonyoMedium", type = "discrete")
-# vector with a subset of colors associated with PonyoMedium
-ghibli_subset <- c(ghibli_colors[3], ghibli_colors[6], ghibli_colors[4])
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$genotype,sep="."))
@@ -85,13 +85,13 @@ write.table(normListLog, file="glmQLF_normalizedCounts_logTransformed.csv", sep=
 #Write plot to file
 jpeg("glmQLF_plotMDBefore.jpg")
 plotMD(cpm(list, log=TRUE), column=1)
-abline(h=0, col=ghibli_colors[4], lty=2, lwd=2)
+abline(h=0, col=plotColorSubset[3], lty=2, lwd=2)
 dev.off()
 
 #Use a MDS plot to visualizes the differences
 # between the expression profiles of different samples
 points <- c(0,1,2,3,15,16,17,18)
-colors <- rep(c(ghibli_colors[1], ghibli_colors[3], ghibli_colors[6], ghibli_colors[4]), 2)
+colors <- rep(c(plotColors[4], plotColors[5], plotColors[6], plotColors[11]), 2)
 #Write plot with legend to file
 jpeg("glmQLF_plotMDS.jpg")
 plotMDS(list, col=colors[group], pch=points[group])

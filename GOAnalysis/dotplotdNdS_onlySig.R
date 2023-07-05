@@ -5,13 +5,20 @@
 #Load libraries
 library(ggplot2)
 library(gridExtra)
+library(rcartocolor)
+
+# Plotting Palettes
+# https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
+# https://github.com/Nowosad/rcartocolor
+plotColors <- carto_pal(12, "Safe")
+plotColorSubset <- c(plotColors[5], plotColors[6])
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
 
 # retrieve working directory
-#workingDir <- args[1]
-workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/GOAnalysis"
+workingDir <- args[1]
+#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/GOAnalysis"
 
 # set working directory
 setwd(workingDir)
@@ -106,19 +113,19 @@ facet <- factor(plot_table$GO_cat, levels = c('BP', 'MF', 'CC'))
 dotplot <- ggplot(data = plot_table, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
   facet_grid(rows = facet, space = 'free_y', scales = 'free') +
   geom_point() +
-  scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
-  #scale_color_gradientn(colors = wes_palette("Zissou1", type = "continuous")) +
+  #scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
+  scale_color_gradientn(colors = plotColorSubset) +
   theme_bw() +
   scale_x_discrete(guide = guide_axis(angle = 90)) +
   xlab('Selection') +
   ylab('GO Term') + 
-  labs(color = 'FDR Adjusted p-Value', size = 'Gene rank')
+  labs(color = 'p-value', size = 'Gene Rank')
 
 # view plot
 dotplot
 
 # save the plot to a PDF file
-ggsave('dotplot_sigGO.pdf', plot = dotplot, device = 'pdf')
+ggsave('dotplot_selection_sigGO.pdf', plot = dotplot, device = 'pdf')
 
 # subset positively selected genes
 plot_tableSubset <- plot_table[plot_table$Selection == "Positive" | plot_table$Selection == "Error",]
@@ -130,19 +137,19 @@ facet <- factor(plot_tableSubset$GO_cat, levels = c('BP', 'MF', 'CC'))
 dotplotSubset <- ggplot(data = plot_tableSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
   facet_grid(rows = facet, space = 'free_y', scales = 'free') +
   geom_point() +
-  scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
-  #scale_color_gradientn(colors = wes_palette("Zissou1", type = "continuous")) +
+  #scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
+  scale_color_gradientn(colors = plotColorSubset) +
   theme_bw() +
-  scale_x_discrete(guide = guide_axis(angle = 90)) +
+  #scale_x_discrete(guide = guide_axis(angle = 90)) +
   xlab('Selection') +
   ylab('GO Term') + 
-  labs(color = 'FDR Adjusted p-Value', size = 'Gene rank')
+  labs(color = 'p-value', size = 'Gene Rank')
 
 # view plot
 dotplotSubset
 
 # save the plot to a PDF file
-ggsave('dotplotPositiveError_sigGO.pdf', plot = dotplotSubset, device = 'pdf')
+ggsave('dotplot_positiveError_sigGO.pdf', plot = dotplotSubset, device = 'pdf')
 
 # subset positively selected genes
 plot_tableSubset <- plot_table[plot_table$Selection == "Positive",]
@@ -154,17 +161,17 @@ facet <- factor(plot_tableSubset$GO_cat, levels = c('BP', 'MF', 'CC'))
 dotplotSubset <- ggplot(data = plot_tableSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
   facet_grid(rows = facet, space = 'free_y', scales = 'free') +
   geom_point() +
-  scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
-  #scale_color_gradientn(colors = wes_palette("Zissou1", type = "continuous")) +
+  #scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
+  scale_color_gradientn(colors = plotColorSubset) +
   theme_bw() +
   xlab('Selection') +
   ylab('GO Term') + 
-  labs(color = 'FDR Adjusted p-Value', size = 'Gene rank')
+  labs(color = 'p-value', size = 'Gene Rank')
 
 # view plot
 dotplotSubset
 
 # save the plot to a PDF file
-ggsave('dotplotPositive_sigGO.pdf', plot = dotplotSubset, device = 'pdf')
+ggsave('dotplot_positive_sigGO.pdf', plot = dotplotSubset, device = 'pdf')
 
 

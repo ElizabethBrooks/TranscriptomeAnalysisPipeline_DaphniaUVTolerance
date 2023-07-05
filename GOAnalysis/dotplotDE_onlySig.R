@@ -5,6 +5,13 @@
 #Load libraries
 library(ggplot2)
 library(gridExtra)
+library(rcartocolor)
+
+# Plotting Palettes
+# https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
+# https://github.com/Nowosad/rcartocolor
+plotColors <- carto_pal(12, "Safe")
+plotColorSubset <- c(plotColors[5], plotColors[6])
 
 #Retrieve input file name of gene counts
 args = commandArgs(trailingOnly=TRUE)
@@ -15,6 +22,9 @@ workingDir <- args[1]
 
 # set working directory
 setwd(workingDir)
+
+# retrieve positive selection enrichment tests
+positiveTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/fisherTest_positiveSelection_DEGs.csv", row.names="effect")
 
 # read in data on significant GO terms (BP, MF, and CC) for each effect 
 interaction_BP_GO_terms <- read.csv('interaction_BP_sigGO_terms.csv', row.names = 1)
@@ -36,9 +46,9 @@ interaction_MF_GO_sig <- interaction_MF_GO_terms[1:5, ]
 interaction_CC_GO_sig <- interaction_CC_GO_terms[1:5, ]
 
 # add a column labeling the effect to each GO term set
-interaction_BP_plot_table <- cbind("Effect" = 'interaction', interaction_BP_GO_sig)
-interaction_MF_plot_table <- cbind("Effect" = 'interaction', interaction_MF_GO_sig)
-interaction_CC_plot_table <- cbind("Effect" = 'interaction', interaction_CC_GO_sig)
+interaction_BP_plot_table <- cbind("Effect" = 'Interaction', interaction_BP_GO_sig)
+interaction_MF_plot_table <- cbind("Effect" = 'Interaction', interaction_MF_GO_sig)
+interaction_CC_plot_table <- cbind("Effect" = 'Interaction', interaction_CC_GO_sig)
 
 ## treatment effect
 # filter for top 5 significant terms
@@ -47,9 +57,9 @@ treatment_MF_GO_sig <- treatment_MF_GO_terms[1:5, ]
 treatment_CC_GO_sig <- treatment_CC_GO_terms[1:5, ]
 
 # add a column labeling the effect to each GO term set
-treatment_BP_plot_table <- cbind("Effect" = 'treatment', treatment_BP_GO_sig)
-treatment_MF_plot_table <- cbind("Effect" = 'treatment', treatment_MF_GO_sig)
-treatment_CC_plot_table <- cbind("Effect" = 'treatment', treatment_CC_GO_sig)
+treatment_BP_plot_table <- cbind("Effect" = 'Treatment', treatment_BP_GO_sig)
+treatment_MF_plot_table <- cbind("Effect" = 'Treatment', treatment_MF_GO_sig)
+treatment_CC_plot_table <- cbind("Effect" = 'Treatment', treatment_CC_GO_sig)
 
 ## tolerance effect
 # filter for top 5 significant terms
@@ -58,9 +68,9 @@ tolerance_MF_GO_sig <- tolerance_MF_GO_terms[1:5, ]
 tolerance_CC_GO_sig <- tolerance_CC_GO_terms[1:5, ]
 
 # add a column labeling the effect to each GO term set
-tolerance_BP_plot_table <- cbind("Effect" = 'tolerance', tolerance_BP_GO_sig)
-tolerance_MF_plot_table <- cbind("Effect" = 'tolerance', tolerance_MF_GO_sig)
-tolerance_CC_plot_table <- cbind("Effect" = 'tolerance', tolerance_CC_GO_sig)
+tolerance_BP_plot_table <- cbind("Effect" = 'Tolerance', tolerance_BP_GO_sig)
+tolerance_MF_plot_table <- cbind("Effect" = 'Tolerance', tolerance_MF_GO_sig)
+tolerance_CC_plot_table <- cbind("Effect" = 'Tolerance', tolerance_CC_GO_sig)
 
 # create tables of all GO terms for each level
 #list_all_BP_GO_included <- unique(c(interaction_BP_GO_sig$GO.ID, treatment_BP_GO_sig$GO.ID, tolerance_BP_GO_sig$GO.ID))
@@ -84,18 +94,20 @@ all_plot_table <- rbind(all_BP_plot_table, all_MF_plot_table, all_CC_plot_table)
 plot_table <- na.omit(all_plot_table)
 
 # create dot plot of significant GO terms
-x_axis_order <- factor(plot_table$Effect, levels = c('interaction', 'treatment', 'tolerance'))
+x_axis_order <- factor(plot_table$Effect, levels = c('Interaction', 'Treatment', 'Tolerance'))
 facet <- factor(plot_table$GO_cat, levels = c('BP', 'MF', 'CC'))
 
 dotplot <- ggplot(data = plot_table, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
   facet_grid(rows = facet, space = 'free_y', scales = 'free') +
   geom_point() +
-  scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
-  #scale_color_gradientn(colors = wes_palette("Zissou1", type = "continuous")) +
+  #scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
+  scale_color_gradientn(colors = plotColorSubset) +
+  #scale_x_discrete(guide = guide_axis(angle = 90)) +
   theme_bw() +
   xlab('Effect') +
   ylab('GO Term') + 
-  labs(color = 'FDR Adjusted p-Value', size = 'Gene rank')
+  #scale_x_discrete(labels=c("Tolerance"=expression(bold("Tolerance")), parse=TRUE)) +
+  labs(color = 'p-value', size = 'Gene Rank')
 
 # view plot
 dotplot

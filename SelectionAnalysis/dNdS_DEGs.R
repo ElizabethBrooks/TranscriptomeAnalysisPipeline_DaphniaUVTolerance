@@ -16,7 +16,7 @@ setwd(workingDir)
 # https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
 # https://github.com/Nowosad/rcartocolor
 plotColors <- carto_pal(12, "Safe")
-plotColorSubset <- c(plotColors[4], plotColors[11], plotColors[5], plotColors[9])
+plotColorSubset <- c(plotColors[4], plotColors[11], plotColors[5], plotColors[6])
 
 # retrieve dN dS values
 dNdSTable <- read.csv(file="Pulex_Olympics_kaksResults.csv", row.names="geneID")
@@ -31,14 +31,14 @@ dNdSSubset[dNdSSubset$dS > 10,]
 dNdSSubset <- dNdSSubset[dNdSSubset$dS < 10,]
 
 # retrieve DEGs
-interactionTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv")
-treatmentTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv")
-toleranceTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_tolerance_topTags_LFC1.2.csv")
+interactionTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", row.names="gene")
+treatmentTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv", row.names="gene")
+toleranceTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_tolerance_topTags_LFC1.2.csv", row.names="gene")
 
 # keep only sig
-interactionSig <- subset(interactionTable, interactionTable$FDR < 0.05)
-treatmentSig <- subset(treatmentTable, treatmentTable$FDR < 0.05)
-toleranceSig <- subset(toleranceTable, toleranceTable$FDR < 0.05)
+interactionSig <- interactionTable[interactionTable$FDR < 0.05,]
+treatmentSig <- treatmentTable[treatmentTable$FDR < 0.05,]
+toleranceSig <- toleranceTable[toleranceTable$FDR < 0.05,]
 
 # add effect tags
 interactionSig$Effect <- "Interaction"

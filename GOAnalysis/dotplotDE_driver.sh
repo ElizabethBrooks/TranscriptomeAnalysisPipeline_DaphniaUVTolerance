@@ -2,8 +2,8 @@
 
 # BASH script to drive GO analysis for DE results
 
-# usage: bash dotplot_driver.sh analysisType
-# default usage ex: bash dotplot_driver.sh Tolerance
+# usage: bash dotplotDE_driver.sh analysisType
+# default usage ex: bash dotplotDE_driver.sh Tolerance
 
 # retrieve analysis type
 analysisType=$1
