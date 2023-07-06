@@ -141,7 +141,7 @@ plotSubset <- plotTable[plotTable$effect != "None",]
 
 # setup facet groups
 x_axis_order <- factor(plotSubset$Color, levels = color_list)
-facetLevel <- factor(plotSubset$Level, levels = c('BP', 'MF', 'CC'))
+facetLevel <- factor(plotSubset$Level, levels = c('BP', 'CC', 'MF'))
 
 # create dot plot of significant GO terms
 dotplot <- ggplot(data = plotSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
@@ -187,24 +187,20 @@ dotplot
 # save the plot to a PDF file
 ggsave('dotplotModule_sigGO_faceted.pdf', plot = dotplot, device = 'pdf')
 
-# remove rows not associated with BP
-plotSubset <- plotSubset[plotSubset$Level != "BP",]
+# remove rows only associated with BP
+plotSubset <- plotSubset[plotSubset$Level == "BP",]
 
 # setup facet groups
 x_axis_order <- factor(plotSubset$Color, levels = color_list)
-facetEffect <- factor(plotSubset$effect, levels = c('Treatment', 'Tolerance', 'Interaction'))
+#facetEffect <- factor(plotSubset$effect, levels = c('Treatment', 'Tolerance', 'Interaction'))
 
 # create dot plot of significant GO terms
 dotplot <- ggplot(data = plotSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
-  #facet_grid(rows = facetEffect, scales = "free_y", space = "free") +
   facet_grid(.~ effect, scales = "free", space = "free") +
   geom_point() +
-  #scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
   scale_color_gradientn(colors = plotColorSubset) +
   theme_bw()+
-  #theme(axis.text.x = element_text(angle = 90, color = plotSubset$selection)) +
   theme(axis.text.x = element_text(angle = 90)) +
-  #geom_text(position = position_dodge(width = 1), aes(x=effect, y=0)) +
   xlab('Color') +
   ylab('GO Term') + 
   scale_x_discrete(labels=c("navajowhite2"=expression(bold("navajowhite2")), parse=TRUE)) +
@@ -215,3 +211,51 @@ dotplot
 
 # save the plot to a PDF file
 ggsave('dotplotModule_sigGO_faceted_BP.pdf', plot = dotplot, device = 'pdf')
+
+# remove rows only associated with CC
+plotSubset <- plotSubset[plotSubset$Level == "CC",]
+
+# setup facet groups
+x_axis_order <- factor(plotSubset$Color, levels = color_list)
+
+# create dot plot of significant GO terms
+dotplot <- ggplot(data = plotSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
+  facet_grid(.~ effect, scales = "free", space = "free") +
+  geom_point() +
+  scale_color_gradientn(colors = plotColorSubset) +
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 90)) +
+  xlab('Color') +
+  ylab('GO Term') + 
+  scale_x_discrete(labels=c("navajowhite2"=expression(bold("navajowhite2")), parse=TRUE)) +
+  labs(color = 'P-Value', size = 'Gene Rank')
+
+# view plot
+dotplot
+
+# save the plot to a PDF file
+ggsave('dotplotModule_sigGO_faceted_CC.pdf', plot = dotplot, device = 'pdf')
+
+# remove rows only associated with MF
+plotSubset <- plotSubset[plotSubset$Level == "MF",]
+
+# setup facet groups
+x_axis_order <- factor(plotSubset$Color, levels = color_list)
+
+# create dot plot of significant GO terms
+dotplot <- ggplot(data = plotSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
+  facet_grid(.~ effect, scales = "free", space = "free") +
+  geom_point() +
+  scale_color_gradientn(colors = plotColorSubset) +
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 90)) +
+  xlab('Color') +
+  ylab('GO Term') + 
+  scale_x_discrete(labels=c("navajowhite2"=expression(bold("navajowhite2")), parse=TRUE)) +
+  labs(color = 'P-Value', size = 'Gene Rank')
+
+# view plot
+dotplot
+
+# save the plot to a PDF file
+ggsave('dotplotModule_sigGO_faceted_MF.pdf', plot = dotplot, device = 'pdf')

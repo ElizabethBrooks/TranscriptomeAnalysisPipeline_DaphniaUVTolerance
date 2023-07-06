@@ -92,7 +92,7 @@ resultsTable$color <- resultsTable$color %>% replace_na('None')
 resultsTable$number <- resultsTable$number %>% replace_na('None')
 
 # remove NAs
-resultsTable <- na.omit(resultsTable)
+#resultsTable <- na.omit(resultsTable)
 
 # add column for identifying mode of selection
 resultsTable$Selection[resultsTable$dNdS == 99] <- "Error"

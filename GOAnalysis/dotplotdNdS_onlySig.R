@@ -108,7 +108,7 @@ plot_table <- na.omit(all_plot_table)
 
 # create dot plot of significant GO terms
 x_axis_order <- factor(plot_table$Selection, levels = c('Negative', 'Positive', 'Strict', 'Error'))
-facet <- factor(plot_table$GO_cat, levels = c('BP', 'MF', 'CC'))
+facet <- factor(plot_table$GO_cat, levels = c('BP', 'CC', 'MF'))
 
 dotplot <- ggplot(data = plot_table, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
   facet_grid(rows = facet, space = 'free_y', scales = 'free') +
@@ -119,7 +119,7 @@ dotplot <- ggplot(data = plot_table, aes(x = x_axis_order, y = Term, size = Sign
   scale_x_discrete(guide = guide_axis(angle = 90)) +
   xlab('Selection') +
   ylab('GO Term') + 
-  labs(color = 'p-value', size = 'Gene Rank')
+  labs(color = 'P-Value', size = 'Gene Rank')
 
 # view plot
 dotplot
@@ -132,7 +132,7 @@ plot_tableSubset <- plot_table[plot_table$Selection == "Positive" | plot_table$S
 
 # create dot plot of significant GO terms
 x_axis_order <- factor(plot_tableSubset$Selection, levels = c('Positive', 'Error'))
-facet <- factor(plot_tableSubset$GO_cat, levels = c('BP', 'MF', 'CC'))
+facet <- factor(plot_tableSubset$GO_cat, levels = c('BP', 'CC', 'MF'))
 
 dotplotSubset <- ggplot(data = plot_tableSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
   facet_grid(rows = facet, space = 'free_y', scales = 'free') +
@@ -143,7 +143,7 @@ dotplotSubset <- ggplot(data = plot_tableSubset, aes(x = x_axis_order, y = Term,
   #scale_x_discrete(guide = guide_axis(angle = 90)) +
   xlab('Selection') +
   ylab('GO Term') + 
-  labs(color = 'p-value', size = 'Gene Rank')
+  labs(color = 'P-Value', size = 'Gene Rank')
 
 # view plot
 dotplotSubset

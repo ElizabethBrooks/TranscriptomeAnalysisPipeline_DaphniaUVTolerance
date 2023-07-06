@@ -57,9 +57,9 @@ toleranceSig <- cbind(geneID,toleranceSig)
 
 # keep necessary columns
 dNdSSubset <- dNdSSubset[,c("geneID","dN","dS","dNdS")]
-interactionSubset <- interactionSig[,c("geneID","Effect")]
 treatmentSubset <- treatmentSig[,c("geneID","Effect")]
 toleranceSubset <- toleranceSig[,c("geneID","Effect")]
+interactionSubset <- interactionSig[,c("geneID","Effect")]
 
 # merging data frames
 # https://sparkbyexamples.com/r-programming/r-join-data-frames-with-examples/#full-outer-join
@@ -128,3 +128,15 @@ ggplot(plotTable, aes(x=dS, y=dN, shape=Selection, color=Effect)) +
   scale_shape_manual(values=c(2, 1, 3)) +
   scale_colour_discrete(type = plotColorSubset)
 dev.off()
+
+# scatter plot colored by selection
+# shaped by DEG effect set
+jpeg("dNdS_DEGs_selection_scatterPlot_jittered.jpg")
+ggplot(plotTable, aes(x=dS, y=dN, shape=Selection, color=Effect)) +
+  theme_minimal() +
+  geom_point() +
+  geom_jitter() +
+  scale_shape_manual(values=c(2, 1, 3)) +
+  scale_colour_discrete(type = plotColorSubset)
+dev.off()
+

@@ -141,7 +141,7 @@ plotSubset <- plotTable[plotTable$effect != "None",]
 
 # setup facet groups
 x_axis_order <- factor(plotSubset$Color, levels = color_list)
-facetLevel <- factor(plotSubset$Level, levels = c('BP', 'MF', 'CC'))
+facetLevel <- factor(plotSubset$Level, levels = c('BP', 'CC', 'MF'))
 #facetEffect <- factor(plotSubset$effect, levels = c('Treatment', 'Tolerance', 'Interaction'))
 
 # create dot plot of significant GO terms

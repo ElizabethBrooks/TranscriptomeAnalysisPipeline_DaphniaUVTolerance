@@ -95,7 +95,7 @@ plot_table <- na.omit(all_plot_table)
 
 # create dot plot of significant GO terms
 x_axis_order <- factor(plot_table$Effect, levels = c('Interaction', 'Treatment', 'Tolerance'))
-facet <- factor(plot_table$GO_cat, levels = c('BP', 'MF', 'CC'))
+facet <- factor(plot_table$GO_cat, levels = c('BP', 'CC', 'MF'))
 
 dotplot <- ggplot(data = plot_table, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
   facet_grid(rows = facet, space = 'free_y', scales = 'free') +
