@@ -3,7 +3,7 @@
 # BASH script to plot GO analysis results for WGCNA network modules
 
 # usage: bash dotplotModule_driver.sh analysisType
-# usage ex: bash dotplotModule_driver.sh Tolerance OLYM
+# default usage ex: bash dotplotModule_driver.sh Tolerance OLYM
 # usage ex: bash dotplotModule_driver.sh Tolerance Tol
 # usage ex: bash dotplotModule_driver.sh Tolerance NTol
 
@@ -27,7 +27,7 @@ outDir=$inDir"/GOAnalysis_"$set"_"$minModSize
 #mkdir $outDir
 
 # create a dot plot of significant GO terms for each effect set
-#Rscript dotplotModule_onlySig.R $outDir $set $minModSize $inDir
+Rscript dotplotModule_onlySig.R $outDir $set $minModSize $inDir
 
 # create a dot plot of most significant GO terms for each effect set
 Rscript dotplotModule_onlyMostSig.R $outDir $set $minModSize $inDir

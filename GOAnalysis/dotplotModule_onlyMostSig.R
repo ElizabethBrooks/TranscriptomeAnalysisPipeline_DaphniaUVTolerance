@@ -5,6 +5,13 @@
 #Load libraries
 library(ggplot2)
 library(gridExtra)
+library(rcartocolor)
+
+# Plotting Palettes
+# https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
+# https://github.com/Nowosad/rcartocolor
+plotColors <- carto_pal(12, "Safe")
+plotColorSubset <- c(plotColors[5], plotColors[6])
 
 # turn off scientific notation
 options(scipen = 999)
@@ -51,27 +58,27 @@ colnames(module_MF_results) <- c("Color","Term","Significant","weightFisher")
 module_CC_results = data.frame(matrix(ncol = 4, nrow = 0))
 colnames(module_CC_results) <- c("Color","Term","Significant","weightFisher")
 
-#Loop through each module color
+# loop through each module color
 for(j in 1:num_mods){
-    # read in data on significant GO term (BP, MF, and CC) 
-    BP_GO_sig <- read.csv(paste(color_list[j], 'BP_sigGO_terms.csv', sep="_"), row.names = NULL)[1, c("Term","Significant","weightFisher")]
-    MF_GO_sig <- read.csv(paste(color_list[j], 'MF_sigGO_terms.csv', sep="_"), row.names = NULL)[1, c("Term","Significant","weightFisher")]
-    CC_GO_sig <- read.csv(paste(color_list[j], 'CC_sigGO_terms.csv', sep="_"), row.names = NULL)[1, c("Term","Significant","weightFisher")]
-
-    # add a column labeling the color to each GO term set
-    BP_GO_sig <- cbind("Color" = color_list[j], BP_GO_sig)
-    MF_GO_sig <- cbind("Color" = color_list[j], MF_GO_sig)
-    CC_GO_sig <- cbind("Color" = color_list[j], CC_GO_sig)
-
-    # create tables of all GO terms for each level
-    #list_all_BP_GO_included <- unique(c(BP_GO_sig$GO.ID))
-    #list_all_MF_GO_included <- unique(c(MF_GO_sig$GO.ID))
-    #list_all_CC_GO_included <- unique(c(CC_GO_sig$GO.ID))
-
-    # combine all tables
-    module_BP_results <- rbind(module_BP_results, BP_GO_sig)
-    module_MF_results <- rbind(module_MF_results, MF_GO_sig)
-    module_CC_results <- rbind(module_CC_results, CC_GO_sig)
+  # read in data on significant GO term (BP, MF, and CC) 
+  BP_GO_sig <- read.csv(paste(color_list[j], 'BP_sigGO_terms.csv', sep="_"), row.names = NULL)[1, c("Term","Significant","weightFisher")]
+  MF_GO_sig <- read.csv(paste(color_list[j], 'MF_sigGO_terms.csv', sep="_"), row.names = NULL)[1, c("Term","Significant","weightFisher")]
+  CC_GO_sig <- read.csv(paste(color_list[j], 'CC_sigGO_terms.csv', sep="_"), row.names = NULL)[1, c("Term","Significant","weightFisher")]
+  
+  # add a column labeling the color to each GO term set
+  BP_GO_sig <- cbind("Color" = color_list[j], BP_GO_sig)
+  MF_GO_sig <- cbind("Color" = color_list[j], MF_GO_sig)
+  CC_GO_sig <- cbind("Color" = color_list[j], CC_GO_sig)
+  
+  # create tables of all GO terms for each level
+  #list_all_BP_GO_included <- unique(c(BP_GO_sig$GO.ID))
+  #list_all_MF_GO_included <- unique(c(MF_GO_sig$GO.ID))
+  #list_all_CC_GO_included <- unique(c(CC_GO_sig$GO.ID))
+  
+  # combine all tables
+  module_BP_results <- rbind(module_BP_results, BP_GO_sig)
+  module_MF_results <- rbind(module_MF_results, MF_GO_sig)
+  module_CC_results <- rbind(module_CC_results, CC_GO_sig)
 }
 
 # add GO level tags
@@ -80,32 +87,105 @@ module_MF_results <- cbind('Level' = 'MF', module_MF_results)
 module_CC_results <- cbind('Level' = 'CC', module_CC_results)
 
 # combine GO level results for plotting
-plot_table <- rbind(module_BP_results, module_MF_results, module_CC_results)
+plotTable <- rbind(module_BP_results, module_MF_results, module_CC_results)
 
 # remove NAs
-plot_table <- na.omit(plot_table)
+plotTable <- na.omit(plotTable)
 
 # remove < signs
-plot_table$weightFisher <- gsub("<","",as.character(plot_table$weightFisher))
+plotTable$weightFisher <- gsub("<","",as.character(plotTable$weightFisher))
+
+# import positively selected gene set p-values
+#positiveTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/fisherTest_positiveSelection_modules.csv", row.names="color")
+
+# loop through each module color
+#plotTable$enrichment <- "NA"
+#plotTable$depletion <- "NA"
+#for(k in 1:num_mods){
+  # add enrichment and depletion values
+#  plotTable[plotTable$Color == row.names(positiveTable)[k],]$enrichment <- positiveTable$enrichment[k]
+#  plotTable[plotTable$Color == row.names(positiveTable)[k],]$depletion <- positiveTable$depletion[k]
+#}
+
+# add signifigance tags
+#plotTable$selection <- "#000000"
+#plotTable[plotTable$enrichment <= 0.05,]$selection <- plotColors[9]
+#plotTable[plotTable$depletion <= 0.05,]$selection <- plotColors[4]
+
+# import effect ANOVA p-values
+effectTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/ANOVA_OLYM_30/aov_summary_pValues.csv", row.names="module")
+
+# clean up row names
+row.names(effectTable) <- gsub("ME","",as.character(row.names(effectTable)))
+
+# loop through each module color
+plotTable$treatment <- "NA"
+plotTable$tolerance <- "NA"
+plotTable$interaction <- "NA"
+for(k in 1:num_mods){
+  # add enrichment and depletion values
+  plotTable[plotTable$Color == row.names(effectTable)[k],]$treatment <- effectTable$treatment[k]
+  plotTable[plotTable$Color == row.names(effectTable)[k],]$tolerance <- effectTable$tolerance[k]
+  plotTable[plotTable$Color == row.names(effectTable)[k],]$interaction <- effectTable$interaction[k]
+}
+
+# add signifigance tags
+plotTable$effect <- "None"
+plotTable[plotTable$treatment <= 0.05,]$effect <- "Treatment"
+plotTable[plotTable$tolerance <= 0.05,]$effect <- "Tolerance"
+plotTable[plotTable$interaction <= 0.05,]$effect <- "Interaction"
+plotTable[plotTable$treatment <= 0.05 & plotTable$tolerance <= 0.05,]$effect <- "Both"
+
+# remove rows not associated with an effect
+plotSubset <- plotTable[plotTable$effect != "None",]
+
+# setup facet groups
+x_axis_order <- factor(plotSubset$Color, levels = color_list)
+facetLevel <- factor(plotSubset$Level, levels = c('BP', 'MF', 'CC'))
+#facetEffect <- factor(plotSubset$effect, levels = c('Treatment', 'Tolerance', 'Interaction'))
 
 # create dot plot of significant GO terms
-x_axis_order <- factor(plot_table$Color, levels = color_list)
-facet <- factor(plot_table$Level, levels = c('BP', 'MF', 'CC'))
-
-dotplot <- ggplot(data = plot_table, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
-  facet_grid(rows = facet, space = 'free_y', scales = 'free') +
+dotplot <- ggplot(data = plotSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
+  facet_grid(rows = facetLevel, space = 'free_y', scales = 'free') +
   geom_point() +
-  scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
+  #scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
+  scale_color_gradientn(colors = plotColorSubset) +
   theme_bw()+
+  #theme(axis.text.x = element_text(angle = 90, color = plotSubset$selection)) +
   theme(axis.text.x = element_text(angle = 90)) +
+  #geom_text(position = position_dodge(width = 1), aes(x=effect, y=0)) +
   xlab('Color') +
   ylab('GO Term') + 
-  labs(color = 'FDR Adjusted p-Value', size = 'Gene rank')
+  labs(color = 'P-Value', size = 'Gene Rank')
 
 # view plot
 dotplot
 
 # save the plot to a PDF file
 ggsave('dotplotModule_mostSigGO.pdf', plot = dotplot, device = 'pdf')
+
+# create dot plot of significant GO terms
+dotplot <- ggplot(data = plotSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
+  #facet_grid(rows = facetLevel, space = 'free_y', scales = 'free') +
+  #facet_grid(. ~ Level + effect, scales = "free_x", space = "free") +
+  #facet_grid(Level + effect ~ ., scales = "free_y", space = "free") +
+  facet_grid(Level ~ effect, scales = "free", space = "free") +
+  geom_point() +
+  #scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
+  scale_color_gradientn(colors = plotColorSubset) +
+  theme_bw()+
+  #theme(axis.text.x = element_text(angle = 90, color = plotSubset$selection)) +
+  theme(axis.text.x = element_text(angle = 90)) +
+  #geom_text(position = position_dodge(width = 1), aes(x=effect, y=0)) +
+  xlab('Color') +
+  ylab('GO Term') + 
+  scale_x_discrete(labels=c("navajowhite2"=expression(bold("navajowhite2")), parse=TRUE)) +
+  labs(color = 'P-Value', size = 'Gene Rank')
+
+# view plot
+dotplot
+
+# save the plot to a PDF file
+ggsave('dotplotModule_mostSigGO_faceted.pdf', plot = dotplot, device = 'pdf')
 
 
