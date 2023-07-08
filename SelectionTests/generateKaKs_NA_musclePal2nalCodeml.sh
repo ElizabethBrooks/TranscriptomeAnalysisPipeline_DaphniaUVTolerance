@@ -39,16 +39,16 @@ tmpNAList=$outFolder"/Pulex_Olympics_kaksResults_dNdS_NA.fmt.csv"
 cat $outFolder"/Pulex_Olympics_kaksResults_dNdS_NA.csv" | grep "gene" | sed "s/,//g" > $tmpNAList
 
 # prepare reference multiline pep fasta to retrieve seqs
-tmpRefPep=$inputsPath"/Pulex.pep.flt.fa"
+tmpRefPep=$inputsPath"/features_gffread/Pulex.pep.flt.fa"
 
 # prepare input consensus multiline pep fasta
-tmpConPep=$inputsPath"/Olympics.pep.flt.fa"
+tmpConPep=$inputsPath"/features_gffread/Olympics.pep.flt.fa"
 
 # prepare reference multiline cds fasta to retrieve seqs
-tmpRefNuc=$inputsPath"/Pulex.cds.flt.fa"
+tmpRefNuc=$inputsPath"/features_gffread/Pulex.cds.flt.fa"
 
 # prepare input consensus multiline cds fasta
-tmpConNuc=$inputsPath"/Olympics.cds.flt.fa"
+tmpConNuc=$inputsPath"/features_gffread/Olympics.cds.flt.fa"
 
 # status message
 echo "Begining analysis..."
@@ -133,12 +133,6 @@ while IFS= read -r line; do
 	rm 2NG.dS
 	rm 2NG.t
 done < $tmpNAList
-
-# clean up
-rm $tmpRefPep
-rm $tmpConPep
-rm $tmpRefNuc
-rm $tmpConNuc
 
 # move back to current directory
 cd $currDir
