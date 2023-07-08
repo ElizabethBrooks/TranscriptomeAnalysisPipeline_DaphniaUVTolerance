@@ -115,7 +115,7 @@ while IFS= read -r line; do
 
 	# print a newline in case of stop codon warning prompt
 	# https://groups.google.com/g/pamlsoftware/c/HNx4O_YMHVA
-	echo "\n"
+	echo -e "\n"
 
 	# save ka ks values to final results file
 	kaks=$(tail -1 $gTag".codeml")
