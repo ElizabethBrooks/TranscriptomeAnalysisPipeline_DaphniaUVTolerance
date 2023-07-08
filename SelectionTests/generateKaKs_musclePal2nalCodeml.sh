@@ -30,10 +30,6 @@ inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 # set outputs directory name
 outFolder=$inputsPath"/selectionTests"
 
-# make working directory
-workingDir=$inputsPath"/selectionTests/"$subsetTag
-mkdir $workingDir
-
 # retrieve subset tag
 subsetTag=$1
 
@@ -55,6 +51,10 @@ tmpConNuc=$outFolder"/Olympics.cds.flt.fa."$subsetTag
 
 # status message
 echo "Begining $subsetTag subset analysis..."
+
+# make working directory
+workingDir=$outFolder"/selectionTests_"$subsetTag
+mkdir $workingDir
 
 # move to directory of inputs for running codeml
 cd $workingDir
