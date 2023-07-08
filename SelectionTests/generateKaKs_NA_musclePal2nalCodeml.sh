@@ -110,6 +110,10 @@ while IFS= read -r line; do
 	# Ks, Ka values are very end of the output file
 	codeml $gTag".cnt"
 
+	# print "yes" in case of stop codon warning prompt
+	# https://groups.google.com/g/pamlsoftware/c/HNx4O_YMHVA
+	echo "yes"
+
 	# save ka ks values to final results file
 	kaks=$(tail -1 $gTag".codeml")
 	echo "$gTag  $kaks" >> $resultsFile
