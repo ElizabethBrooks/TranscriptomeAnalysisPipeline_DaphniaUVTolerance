@@ -110,11 +110,10 @@ while IFS= read -r line; do
 	# run codeml to retrieve ka ks values
 	# you can find the output of codeml in the .codeml file
 	# Ks, Ka values are very end of the output file
-	codeml $gTag".cnt"
-
-	# print a newline in case of stop codon warning prompt
+	# enter yes in case of stop codon warning prompt
 	# https://groups.google.com/g/pamlsoftware/c/HNx4O_YMHVA
-	echo -e "\n"
+	# https://stackoverflow.com/questions/11190004/automatically-press-enter-to-continue-in-bash
+	yes "" | codeml $gTag".cnt"
 
 	# save ka ks values to final results file
 	kaks=$(tail -1 $gTag".codeml")
