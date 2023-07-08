@@ -19,7 +19,7 @@ plotColors <- carto_pal(12, "Safe")
 plotColorSubset <- c(plotColors[4], plotColors[11], plotColors[5], plotColors[6])
 
 # retrieve dN dS values
-dNdSTable <- read.csv(file="Pulex_Olympics_kaksResults.csv", row.names="geneID")
+dNdSTable <- read.csv(file="Pulex_Olympics_kaksResults.fmt.csv", row.names="geneID")
 
 # remove NAs
 dNdSSubset <- na.omit(dNdSTable)

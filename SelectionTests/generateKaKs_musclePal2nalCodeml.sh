@@ -60,6 +60,9 @@ while IFS= read -r line; do
 	# retrieve gene tag
 	gTag=$(echo "$line" | cut -f1 | sed 's/>//g')
 
+	# Status message
+	echo "Analyzing $gTag..."
+
 	# set gene output paths
 	gFile=$outFolder"/"$gTag"_Daphnia.pep.tmp.fa"
 	gRefNuc=$outFolder"/"$gTag"_refNuc.cds.tmp.fa"
@@ -109,9 +112,9 @@ while IFS= read -r line; do
 	# Ks, Ka values are very end of the output file
 	codeml $gTag".cnt"
 
-	# print "yes" in case of stop codon warning prompt
+	# print a newline in case of stop codon warning prompt
 	# https://groups.google.com/g/pamlsoftware/c/HNx4O_YMHVA
-	echo "yes"
+	echo "\n"
 
 	# save ka ks values to final results file
 	kaks=$(tail -1 $gTag".codeml")
