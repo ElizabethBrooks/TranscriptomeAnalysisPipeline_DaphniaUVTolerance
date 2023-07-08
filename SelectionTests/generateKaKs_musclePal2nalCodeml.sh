@@ -27,8 +27,12 @@ inputsPath=$(grep "aligningGenome:" $baseDir"/InputData/outputPaths.txt" | tr -d
 # set inputs path
 inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 
-# make outputs directory name
+# set outputs directory name
 outFolder=$inputsPath"/selectionTests"
+
+# make working directory
+workingDir=$inputsPath"/selectionTests/"$subsetTag
+mkdir $workingDir
 
 # retrieve subset tag
 subsetTag=$1
@@ -50,10 +54,10 @@ tmpRefNuc=$outFolder"/Pulex.cds.flt.fa."$subsetTag
 tmpConNuc=$outFolder"/Olympics.cds.flt.fa."$subsetTag
 
 # status message
-echo "Begining analysis..."
+echo "Begining $subsetTag subset analysis..."
 
 # move to directory of inputs for running codeml
-cd $outFolder
+cd $workingDir
 
 # loop over all genes in the reference
 while IFS= read -r line; do
@@ -149,9 +153,6 @@ rm $outFolder"/Olympics.pep.flt.fa."$subsetTag
 rm $outFolder"/Pulex.cds.flt.fa."$subsetTag
 rm $outFolder"/Olympics.cds.flt.fa."$subsetTag
 
-# move back to current directory
-cd $currDir
-
 # status message
-echo "Analysis complete!"
+echo "$subsetTag subset analysis complete!"
 
