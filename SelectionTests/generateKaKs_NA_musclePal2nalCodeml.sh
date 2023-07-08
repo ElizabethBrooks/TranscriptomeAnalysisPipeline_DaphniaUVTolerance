@@ -2,11 +2,11 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N generateKaKs_jobOutput
+#$ -N generateKaKs_NA_jobOutput
 
 # script to generate MSAs for each gene in the reference set of peptide sequences
 # then create the codon alignments before calculating dN dS values
-# usage: qsub generateKaKs_musclePal2nalCodeml.sh $subsetTag
+# usage: qsub generateKaKs_NA_musclePal2nalCodeml.sh
 
 # load necessary modules
 module load bio/2.0
@@ -30,24 +30,25 @@ inputsPath=$inputsPath"/variantsCalled_samtoolsBcftools"
 # make outputs directory name
 outFolder=$inputsPath"/selectionTests"
 
-# retrieve subset tag
-subsetTag=$1
-
 # save ka ks values to final results file
-resultsFile=$outFolder"/kaksResults_"$subsetTag".csv"
+resultsFile=$outFolder"/kaksResults_NA.csv"
 echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 
+# retrieve input NA list
+tmpNAList=$outFolder"/Pulex_Olympics_kaksResults_dNdS_NA.fmt.csv"
+cat $outFolder"/Pulex_Olympics_kaksResults_dNdS_NA.csv" | grep "gene" | sed "s/,//g" > $tmpNAList
+
 # prepare reference multiline pep fasta to retrieve seqs
-tmpRefPep=$outFolder"/Pulex.pep.flt.fa."$subsetTag
+tmpRefPep=$inputsPath"/Pulex.pep.flt.fa"
 
 # prepare input consensus multiline pep fasta
-tmpConPep=$outFolder"/Olympics.pep.flt.fa."$subsetTag
+tmpConPep=$inputsPath"/Olympics.pep.flt.fa"
 
 # prepare reference multiline cds fasta to retrieve seqs
-tmpRefNuc=$outFolder"/Pulex.cds.flt.fa."$subsetTag
+tmpRefNuc=$inputsPath"/Pulex.cds.flt.fa"
 
 # prepare input consensus multiline cds fasta
-tmpConNuc=$outFolder"/Olympics.cds.flt.fa."$subsetTag
+tmpConNuc=$inputsPath"/Olympics.cds.flt.fa"
 
 # status message
 echo "Begining analysis..."
@@ -58,7 +59,7 @@ cd $outFolder
 # loop over all genes in the reference
 while IFS= read -r line; do
 	# retrieve gene tag
-	gTag=$(echo "$line" | cut -f1 | sed 's/>//g')
+	gTag=$(echo "$line")
 
 	# set gene output paths
 	gFile=$outFolder"/"$gTag"_Daphnia.pep.tmp.fa"
@@ -131,17 +132,13 @@ while IFS= read -r line; do
 	rm 2NG.dN
 	rm 2NG.dS
 	rm 2NG.t
-done < $tmpRefPep
+done < $tmpNAList
 
 # clean up
 rm $tmpRefPep
 rm $tmpConPep
 rm $tmpRefNuc
 rm $tmpConNuc
-rm $outFolder"/Pulex.pep.flt.fa."$subsetTag
-rm $outFolder"/Olympics.pep.flt.fa."$subsetTag
-rm $outFolder"/Pulex.cds.flt.fa."$subsetTag
-rm $outFolder"/Olympics.cds.flt.fa."$subsetTag
 
 # move back to current directory
 cd $currDir
