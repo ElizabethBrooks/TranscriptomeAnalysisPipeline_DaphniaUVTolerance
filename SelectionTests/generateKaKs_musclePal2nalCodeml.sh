@@ -37,18 +37,6 @@ subsetTag=$1
 resultsFile=$outFolder"/kaksResults_"$subsetTag".csv"
 echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 
-# prepare reference multiline pep fasta to retrieve seqs
-tmpRefPep=$outFolder"/Pulex.pep.flt.fa."$subsetTag
-
-# prepare input consensus multiline pep fasta
-tmpConPep=$outFolder"/Olympics.pep.flt.fa."$subsetTag
-
-# prepare reference multiline cds fasta to retrieve seqs
-tmpRefNuc=$outFolder"/Pulex.cds.flt.fa."$subsetTag
-
-# prepare input consensus multiline cds fasta
-tmpConNuc=$outFolder"/Olympics.cds.flt.fa."$subsetTag
-
 # status message
 echo "Begining $subsetTag subset analysis..."
 
@@ -58,6 +46,18 @@ mkdir $workingDir
 
 # move to directory of inputs for running codeml
 cd $workingDir
+
+# set fasta files of pep and cds seqs
+tmpRefPep=$workingDir"/Pulex.pep.flt.fa."$subsetTag
+tmpConPep=$workingDir"/Olympics.pep.flt.fa."$subsetTag
+tmpRefNuc=$workingDir"/Pulex.cds.flt.fa."$subsetTag
+tmpConNuc=$workingDir"/Olympics.cds.flt.fa."$subsetTag
+
+# move subset fasta files to the current working directory
+mv $outFolder"/Pulex.pep.flt.fa."$subsetTag $tmpRefPep
+mv $outFolder"/Olympics.pep.flt.fa."$subsetTag $tmpConPep
+mv $outFolder"/Pulex.cds.flt.fa."$subsetTag $tmpRefNuc
+mv $outFolder"/Olympics.cds.flt.fa."$subsetTag $tmpConNuc
 
 # loop over all genes in the reference
 while IFS= read -r line; do
@@ -86,12 +86,12 @@ while IFS= read -r line; do
 	grep -w "^>$gTag" $tmpConNuc | cut -f2 >> $gConNuc
 
 	# prepare tree file
-	echo "(>Pulex_$gTag, >Olympics_$gTag);" > $outFolder"/"$gTag".tree"
+	echo "(>Pulex_$gTag, >Olympics_$gTag);" > $workingDir"/"$gTag".tree"
 
 	# prepare control file template from pal2nal
 	# seqtype = 1 for codon alignments
 	# runmode = -2 performs ML estimation of dS and dN in pairwise comparisons
-	cat $baseDir"/util/test.cnt" | sed "s/test\.codon/$gTag\.codon/g" | sed "s/test\.tree/$gTag\.tree/g" | sed "s/test\.codeml/$gTag\.codeml/g" > $outFolder"/"$gTag".cnt"
+	cat $baseDir"/util/test.cnt" | sed "s/test\.codon/$gTag\.codon/g" | sed "s/test\.tree/$gTag\.tree/g" | sed "s/test\.codeml/$gTag\.codeml/g" > $workingDir"/"$gTag".cnt"
 
 	# Status message
 	echo "Generating MSA for $gTag..."
@@ -105,8 +105,8 @@ while IFS= read -r line; do
 	echo "Generating codon alignment for $gTag..."
 
 	# usage:  pal2nal.pl  pep.aln  nuc.fasta  [nuc.fasta...]  [options]
-	"$softwarePath"/pal2nal.pl "$outAln" "$gRefNuc" "$gConNuc" -output paml -nogap  >  $outFolder"/"$gTag".codon"
-	#pal2nal.pl "$outAln" "$gRefNuc" "$gConNuc" -output paml -nogap  >  $outFolder"/"$gTag".codon"
+	"$softwarePath"/pal2nal.pl "$outAln" "$gRefNuc" "$gConNuc" -output paml -nogap  >  $workingDir"/"$gTag".codon"
+	#pal2nal.pl "$outAln" "$gRefNuc" "$gConNuc" -output paml -nogap  >  $workingDir"/"$gTag".codon"
 
 	# status message
 	echo "Generating ka ks values for $gTag..."
