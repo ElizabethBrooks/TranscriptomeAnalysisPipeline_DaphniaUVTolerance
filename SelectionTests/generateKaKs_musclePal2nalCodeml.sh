@@ -68,10 +68,10 @@ while IFS= read -r line; do
 	echo "Analyzing $gTag..."
 
 	# set gene output paths
-	gFile=$outFolder"/"$gTag"_Daphnia.pep.tmp.fa"
-	gRefNuc=$outFolder"/"$gTag"_refNuc.cds.tmp.fa"
-	gConNuc=$outFolder"/"$gTag"_conNuc.cds.tmp.fa"
-	outAln=$outFolder"/"$gTag"_Daphnia_aligned.pep.tmp.fa"
+	gFile=$workingDir"/"$gTag"_Daphnia.pep.tmp.fa"
+	gRefNuc=$workingDir"/"$gTag"_refNuc.cds.tmp.fa"
+	gConNuc=$workingDir"/"$gTag"_conNuc.cds.tmp.fa"
+	outAln=$workingDir"/"$gTag"_Daphnia_aligned.pep.tmp.fa"
 
 	# retrieve peptide sequences and convert back to multiline fasta format
 	echo ">Pulex_$gTag" > $gFile
@@ -124,23 +124,7 @@ while IFS= read -r line; do
 	echo "$gTag  $kaks" >> $resultsFile
 
 	# clean up
-	rm $gFile
-	rm $outAln
-	rm $gRefNuc
-	rm $gConNuc
-	[ -f "rst" ] && rm "rst"
-	[ -f "rst1" ] && rm "rst1"
-	[ -f "rub" ] && rm "rub"
-	rm $gTag".codon"
-	rm $gTag".tree"
-	rm $gTag".cnt"
-	rm $gTag".codeml"
-	rm 2ML.dN
-	rm 2ML.dS
-	rm 2ML.t
-	rm 2NG.dN
-	rm 2NG.dS
-	rm 2NG.t
+	rm $workingDir/*
 done < $tmpRefPep
 
 # clean up
@@ -148,10 +132,6 @@ rm $tmpRefPep
 rm $tmpConPep
 rm $tmpRefNuc
 rm $tmpConNuc
-rm $outFolder"/Pulex.pep.flt.fa."$subsetTag
-rm $outFolder"/Olympics.pep.flt.fa."$subsetTag
-rm $outFolder"/Pulex.cds.flt.fa."$subsetTag
-rm $outFolder"/Olympics.cds.flt.fa."$subsetTag
 
 # status message
 echo "$subsetTag subset analysis complete!"
