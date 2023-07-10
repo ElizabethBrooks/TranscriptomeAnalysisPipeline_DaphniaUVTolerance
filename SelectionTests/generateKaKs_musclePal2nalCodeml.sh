@@ -48,16 +48,10 @@ mkdir $workingDir
 cd $workingDir
 
 # set fasta files of pep and cds seqs
-tmpRefPep=$workingDir"/Pulex.pep.flt.fa."$subsetTag
-tmpConPep=$workingDir"/Olympics.pep.flt.fa."$subsetTag
-tmpRefNuc=$workingDir"/Pulex.cds.flt.fa."$subsetTag
-tmpConNuc=$workingDir"/Olympics.cds.flt.fa."$subsetTag
-
-# move subset fasta files to the current working directory
-mv $outFolder"/Pulex.pep.flt.fa."$subsetTag $tmpRefPep
-mv $outFolder"/Olympics.pep.flt.fa."$subsetTag $tmpConPep
-mv $outFolder"/Pulex.cds.flt.fa."$subsetTag $tmpRefNuc
-mv $outFolder"/Olympics.cds.flt.fa."$subsetTag $tmpConNuc
+tmpRefPep=$outFolder"/Pulex.pep.flt.fa."$subsetTag
+tmpConPep=$outFolder"/Olympics.pep.flt.fa."$subsetTag
+tmpRefNuc=$outFolder"/Pulex.cds.flt.fa."$subsetTag
+tmpConNuc=$outFolder"/Olympics.cds.flt.fa."$subsetTag
 
 # loop over all genes in the reference
 while IFS= read -r line; do
@@ -128,6 +122,7 @@ while IFS= read -r line; do
 done < $tmpRefPep
 
 # clean up
+rm -r $workingDir
 rm $tmpRefPep
 rm $tmpConPep
 rm $tmpRefNuc
