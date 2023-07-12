@@ -109,7 +109,7 @@ for(i in 1:numMods){
   pValues$enrichment[i] <- phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)
   
   # test for under-representation (depletion)
-  pValues$depletion[i] <- phyper(overlap, de, total-de, positive,lower.tail= FALSE)
+  pValues$depletion[i] <- phyper(overlap, de, total-de, positive,lower.tail= TRUE)
 }
 
 # write results to a csv file

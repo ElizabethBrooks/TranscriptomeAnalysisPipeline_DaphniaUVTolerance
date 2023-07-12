@@ -43,8 +43,14 @@ inputsPath=$inputsPath"/features_gffread"
 refTag=$(basename $refPath)
 
 # set results file path
-resultsFile=$outFolder"/kaksResults.csv"
-echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
+#resultsFile=$outFolder"/kaksResults.csv"
+#echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
+
+# set up gene lengths files
+pepLengths=$outFolder"/geneLengths_"$subsetTag".pep.csv"
+echo "geneID,reference,consensus" > "$pepLengths"
+cdsLengths=$outFolder"/geneLengths_"$subsetTag".cds.csv"
+echo "geneID,reference,consensus" > "$cdsLengths"
 
 # set reference multiline pep fasta to retrieve seqs
 fltRefPep=$inputsPath"/Pulex.pep.flt.fa"
@@ -77,6 +83,10 @@ done
 
 # wait
 # https://stackoverflow.com/questions/11525214/wait-for-set-of-qsub-jobs-to-complete
+
+# merge each of the gene lengths files
+#tail -n+2 $outFolder"/geneLengths_"*".pep.csv" >> $pepLengths
+#tail -n+2 $outFolder"/geneLengths_"*".cds.csv" >> $cdsLengths
 
 # format ka ks results
 #bash format_kaksResults.sh

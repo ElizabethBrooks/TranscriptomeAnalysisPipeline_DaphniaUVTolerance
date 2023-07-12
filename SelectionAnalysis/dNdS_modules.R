@@ -92,7 +92,7 @@ resultsTable$color <- resultsTable$color %>% replace_na('None')
 resultsTable$number <- resultsTable$number %>% replace_na('None')
 
 # remove NAs
-#resultsTable <- na.omit(resultsTable)
+resultsTable <- na.omit(resultsTable)
 
 # add column for identifying mode of selection
 resultsTable$Selection[resultsTable$dNdS == 99] <- "Error"
@@ -172,12 +172,16 @@ dev.off()
 # https://stackoverflow.com/questions/15015356/how-to-do-selective-labeling-with-ggplot-geom-point
 # http://www.sthda.com/english/wiki/ggplot2-point-shapes
 
+# subset dN dS values to remove outliers
+resultsTable <- resultsTable[resultsTable$dS < 10,]
+
 # scatter plot colored by selection
 # shaped by DEG effect set
-jpeg("dNdS_modules_selection_scatterPlot.jpg")
+jpeg("dNdS_modules_selection_scatterPlot_jittered.jpg")
 ggplot(resultsTable, aes(x=dS, y=dN, shape=Selection, color=color)) +
   theme_minimal() +
   geom_point() +
+  geom_jitter() +
   scale_shape_manual(values=c(2, 1, 3))
 dev.off()
 

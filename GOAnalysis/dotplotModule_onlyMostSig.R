@@ -17,26 +17,26 @@ plotColorSubset <- c(plotColors[5], plotColors[6])
 options(scipen = 999)
 
 #Retrieve input file name of gene counts
-args = commandArgs(trailingOnly=TRUE)
+#args = commandArgs(trailingOnly=TRUE)
 
 # retrieve working directory
-workingDir <- args[1]
-#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/GOAnalysis_OLYM_30"
+#workingDir <- args[1]
+workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/GOAnalysis_OLYM_30"
 
 # set working directory
 setwd(workingDir)
 
 # retrieve subset tag
-set <- args[2]
-#set <- "OLYM"
+#set <- args[2]
+set <- "OLYM"
 
 # set the minimum module size
-minModSize <- args[3]
-#minModSize <- "30"
+#minModSize <- args[3]
+minModSize <- "30"
 
 # retrieve WGCNA directory
-inDir <- args[4]
-#inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance"
+#inDir <- args[4]
+inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance"
 
 # set the full subset tag name
 tag <- paste(set, minModSize, sep="_")
@@ -47,8 +47,8 @@ importFile <- paste(inDir, importFile, sep="/")
 lnames2 = load(file = importFile)
 
 # create list of module colors mapped to numbers
-num_mods <- length(unique(moduleColors))
-color_list <- unique(moduleColors)
+num_mods <- length(unique(moduleColors)) + 1
+color_list <- c(unique(moduleColors), "None")
 
 # create data frame to hold plotting data for each module
 module_BP_results = data.frame(matrix(ncol = 4, nrow = 0))
@@ -122,7 +122,7 @@ row.names(effectTable) <- gsub("ME","",as.character(row.names(effectTable)))
 plotTable$treatment <- "NA"
 plotTable$tolerance <- "NA"
 plotTable$interaction <- "NA"
-for(k in 1:num_mods){
+for(k in 1:num_mods-1){
   # add enrichment and depletion values
   plotTable[plotTable$Color == row.names(effectTable)[k],]$treatment <- effectTable$treatment[k]
   plotTable[plotTable$Color == row.names(effectTable)[k],]$tolerance <- effectTable$tolerance[k]
@@ -136,26 +136,24 @@ plotTable[plotTable$tolerance <= 0.05,]$effect <- "Tolerance"
 plotTable[plotTable$interaction <= 0.05,]$effect <- "Interaction"
 plotTable[plotTable$treatment <= 0.05 & plotTable$tolerance <= 0.05,]$effect <- "Both"
 
-# remove rows not associated with an effect
-plotSubset <- plotTable[plotTable$effect != "None",]
-
 # setup facet groups
-x_axis_order <- factor(plotSubset$Color, levels = color_list)
-facetLevel <- factor(plotSubset$Level, levels = c('BP', 'CC', 'MF'))
-#facetEffect <- factor(plotSubset$effect, levels = c('Treatment', 'Tolerance', 'Interaction'))
+x_axis_order <- factor(plotTable$Color, levels = color_list)
+facetLevel <- factor(plotTable$Level, levels = c('BP', 'CC', 'MF'))
+#facetEffect <- factor(plotTable$effect, levels = c('Treatment', 'Tolerance', 'Interaction'))
 
 # create dot plot of significant GO terms
-dotplot <- ggplot(data = plotSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
+dotplot <- ggplot(data = plotTable, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
   facet_grid(rows = facetLevel, space = 'free_y', scales = 'free') +
   geom_point() +
   #scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
   scale_color_gradientn(colors = plotColorSubset) +
   theme_bw()+
-  #theme(axis.text.x = element_text(angle = 90, color = plotSubset$selection)) +
+  #theme(axis.text.x = element_text(angle = 90, color = plotTable$selection)) +
   theme(axis.text.x = element_text(angle = 90)) +
   #geom_text(position = position_dodge(width = 1), aes(x=effect, y=0)) +
   xlab('Color') +
   ylab('GO Term') + 
+  scale_x_discrete(labels=c("steelblue"=expression(bold("steelblue")), "darkmagenta"=expression(italic("darkmagenta")), "floralwhite"=expression(italic("floralwhite")), "darkslateblue"=expression(italic("darkslateblue")), parse=TRUE)) +
   labs(color = 'P-Value', size = 'Gene Rank')
 
 # view plot
@@ -163,6 +161,14 @@ dotplot
 
 # save the plot to a PDF file
 ggsave('dotplotModule_mostSigGO.pdf', plot = dotplot, device = 'pdf')
+
+# remove rows not associated with an effect
+plotSubset <- plotTable[plotTable$effect != "None",]
+
+# setup facet groups
+x_axis_order <- factor(plotSubset$Color, levels = color_list)
+facetLevel <- factor(plotSubset$Level, levels = c('BP', 'CC', 'MF'))
+#facetEffect <- factor(plotSubset$effect, levels = c('Treatment', 'Tolerance', 'Interaction'))
 
 # create dot plot of significant GO terms
 dotplot <- ggplot(data = plotSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
@@ -179,7 +185,7 @@ dotplot <- ggplot(data = plotSubset, aes(x = x_axis_order, y = Term, size = Sign
   #geom_text(position = position_dodge(width = 1), aes(x=effect, y=0)) +
   xlab('Color') +
   ylab('GO Term') + 
-  scale_x_discrete(labels=c("navajowhite2"=expression(bold("navajowhite2")), parse=TRUE)) +
+  scale_x_discrete(labels=c("steelblue"=expression(bold("steelblue")), "darkmagenta"=expression(italic("darkmagenta")), "floralwhite"=expression(italic("floralwhite")), "darkslateblue"=expression(italic("darkslateblue")), parse=TRUE)) +
   labs(color = 'P-Value', size = 'Gene Rank')
 
 # view plot

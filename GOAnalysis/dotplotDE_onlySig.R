@@ -106,7 +106,7 @@ dotplot <- ggplot(data = plot_table, aes(x = x_axis_order, y = Term, size = Sign
   theme_bw() +
   xlab('Effect') +
   ylab('GO Term') + 
-  #scale_x_discrete(labels=c("Tolerance"=expression(bold("Tolerance")), parse=TRUE)) +
+  scale_x_discrete(labels=c("Interaction"=expression(italic("Interaction")), parse=TRUE)) +
   labs(color = 'P-Value', size = 'Gene Rank')
 
 # view plot

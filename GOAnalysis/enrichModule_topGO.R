@@ -11,6 +11,7 @@ library(edgeR)
 library(ggplot2)
 library(Rgraphviz)
 #library(statmod)
+library(tidyr)
 
 # turn off scientific notation
 options(scipen = 999)
@@ -23,7 +24,7 @@ workingDir <- args[1]
 #workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/GOAnalysis_OLYM_30"
 
 # set working directory
-setwd(workingDir);
+setwd(workingDir)
 
 # retrieve subset tag
 set <- args[2]
@@ -40,6 +41,11 @@ inDir <- args[4]
 # retrieve gene to GO map
 GOmaps <- readMappings(file = args[5])
 #GOmaps <- readMappings(file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/geneToGO_tagged_map.txt")
+
+# retrieve dN dS values
+dNdSTable <- read.csv(file = args[6], row.names="geneID")
+#dNdSTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Pulex_Olympics_kaksResults.csv", row.names="geneID")
+
 
 # set the full subset tag name
 tag <- paste(set, minModSize, sep="_")
@@ -77,6 +83,40 @@ for(i in 1:numMods){
   moduleData <- cbind(gene, color, number)
   resultsTable <- rbind(resultsTable, moduleData)
 }
+
+
+# remove NAs
+dNdSSubset <- na.omit(dNdSTable)
+
+# subset dN dS values to remove outliers
+#dNdSSubset <- dNdSSubset[dNdSSubset$dNdS < 99,]
+
+
+# merging data frames
+# https://sparkbyexamples.com/r-programming/r-join-data-frames-with-examples/#full-outer-join
+
+# add geneID column
+geneID <- row.names(dNdSSubset)
+dNdSSubset <- cbind(geneID,dNdSSubset)
+colnames(resultsTable)[1] ="geneID"
+
+# full outer join data frames
+resultsTable <- merge(x = resultsTable, y = dNdSSubset, 
+                      by = "geneID", all=TRUE)
+
+# set color and numner tags for NAs
+resultsTable$color <- resultsTable$color %>% replace_na('None')
+resultsTable$number <- resultsTable$number %>% replace_na('0')
+
+# remove NAs
+resultsTable <- na.omit(resultsTable)
+
+# update the number of modules
+numMods <- numMods + 1
+
+# update the table of module colors
+colorTable[nrow(colorTable) + 1,] <- c("None","0")
+
 
 # create named list of all genes (gene universe) and p-values. The gene universe is set to be
 # the list of all genes contained in the gene2GO list of annotated genes.

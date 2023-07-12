@@ -3,7 +3,7 @@
 # BASH script to drive GO analysis for WGCNA network modules
 
 # usage: bash enrichModule_topGO_driver.sh analysisType set
-# usage ex: bash enrichModule_topGO_driver.sh Tolerance OLYM
+# default usage ex: bash enrichModule_topGO_driver.sh Tolerance OLYM
 # usage ex: bash enrichModule_topGO_driver.sh Tolerance Tol
 # usage ex: bash enrichModule_topGO_driver.sh Tolerance NTol
 
@@ -28,13 +28,11 @@ minModSize=30
 # name outputs directory
 outDir=$inDir"/GOAnalysis_"$set"_"$minModSize
 
+# retrieve table of dNdS results
+dNdSTable="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Pulex_Olympics_kaksResults.csv"
+
 # create outputs directory
 mkdir $outDir
 
 # determine the direction of expression for each module and effect set
-# interaction
-Rscript enrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps
-# treatment
-Rscript enrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps
-# tolerance
-Rscript enrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps
+Rscript enrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps $dNdSTable

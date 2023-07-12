@@ -87,7 +87,7 @@ total <- nrow(interactionTable)
 pValues$enrichment[1] <- phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)
 
 # test for under-representation (depletion)
-pValues$depletion[1] <-  phyper(overlap, de, total-de, positive,lower.tail= FALSE)
+pValues$depletion[1] <-  phyper(overlap, de, total-de, positive,lower.tail= TRUE)
 
 # treatment
 # initialize variables
@@ -100,7 +100,7 @@ total <- nrow(treatmentTable)
 pValues$enrichment[2] <- phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)
 
 # test for under-representation (depletion)
-pValues$depletion[2] <-  phyper(overlap, de, total-de, positive,lower.tail= FALSE)
+pValues$depletion[2] <-  phyper(overlap, de, total-de, positive,lower.tail= TRUE)
 
 # tolerance
 # initialize variables
@@ -113,7 +113,7 @@ total <- nrow(toleranceTable)
 pValues$enrichment[3] <- phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)
 
 # test for under-representation (depletion)
-pValues$depletion[3] <-  phyper(overlap, de, total-de, positive,lower.tail= FALSE)
+pValues$depletion[3] <-  phyper(overlap, de, total-de, positive,lower.tail= TRUE)
 
 # write results to a csv file
 write.csv(pValues, "fisherTest_positiveSelection_DEGs.csv", row.names=FALSE)

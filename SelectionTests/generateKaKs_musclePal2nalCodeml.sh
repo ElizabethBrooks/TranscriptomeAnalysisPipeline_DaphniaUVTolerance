@@ -33,9 +33,15 @@ outFolder=$inputsPath"/selectionTests"
 # retrieve subset tag
 subsetTag=$1
 
-# save ka ks values to final results file
-resultsFile=$outFolder"/kaksResults_"$subsetTag".csv"
-echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
+# set up final results file
+#resultsFile=$outFolder"/kaksResults_"$subsetTag".csv"
+#echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
+
+# set up gene lengths files
+pepLengths=$outFolder"/geneLengths_"$subsetTag".pep.csv"
+echo "geneID,reference,consensus" > "$pepLengths"
+cdsLengths=$outFolder"/geneLengths_"$subsetTag".cds.csv"
+echo "geneID,reference,consensus" > "$cdsLengths"
 
 # status message
 echo "Begining $subsetTag subset analysis..."
@@ -67,43 +73,53 @@ while IFS= read -r line; do
 	gConNuc=$workingDir"/"$gTag"_conNuc.cds.tmp.fa"
 	outAln=$workingDir"/"$gTag"_Daphnia_aligned.pep.tmp.fa"
 
+	# calculate gene lengths for pep sequences
+	pepRefSize=$(grep -w "^>$gTag" $tmpRefPep | cut -f2 | sed 's/\./X/g')
+	pepConSize=$(grep -w "^>$gTag" $tmpConPep | cut -f2 | sed 's/\./X/g')
+	echo $gTag","${#pepRefSize}","${#pepConSize} >> $pepLengths
+
+	# calculate gene lengths for pep sequences
+	cdsRefSize=$(grep -w "^>$gTag" $tmpRefNuc | cut -f2 | sed 's/\./X/g')
+	cdsConSize=$(grep -w "^>$gTag" $tmpConNuc | cut -f2 | sed 's/\./X/g')
+	echo $gTag","${#cdsRefSize}","${#cdsConSize} >> $cdsLengths
+
 	# retrieve peptide sequences and convert back to multiline fasta format
-	echo ">Pulex_$gTag" > $gFile
-	grep -w "^>$gTag" $tmpRefPep | cut -f2 | sed 's/\./X/g' >> $gFile
-	echo ">Olympics_$gTag" >> $gFile
-	grep -w "^>$gTag" $tmpConPep | cut -f2 | sed 's/\./X/g' >> $gFile
+	#echo ">Pulex_$gTag" > $gFile
+	#grep -w "^>$gTag" $tmpRefPep | cut -f2 | sed 's/\./X/g' >> $gFile
+	#echo ">Olympics_$gTag" >> $gFile
+	#grep -w "^>$gTag" $tmpConPep | cut -f2 | sed 's/\./X/g' >> $gFile
 
 	# retrieve nucleotide sequences and convert back to multiline fasta format
-	echo ">Pulex_$gTag" > $gRefNuc
-	grep -w "^>$gTag" $tmpRefNuc | cut -f2 >> $gRefNuc
-	echo ">Olympics_$gTag" > $gConNuc
-	grep -w "^>$gTag" $tmpConNuc | cut -f2 >> $gConNuc
+	#echo ">Pulex_$gTag" > $gRefNuc
+	#grep -w "^>$gTag" $tmpRefNuc | cut -f2 >> $gRefNuc
+	#echo ">Olympics_$gTag" > $gConNuc
+	#grep -w "^>$gTag" $tmpConNuc | cut -f2 >> $gConNuc
 
 	# prepare tree file
-	echo "(>Pulex_$gTag, >Olympics_$gTag);" > $workingDir"/"$gTag".tree"
+	#echo "(>Pulex_$gTag, >Olympics_$gTag);" > $workingDir"/"$gTag".tree"
 
 	# prepare control file template from pal2nal
 	# seqtype = 1 for codon alignments
 	# runmode = -2 performs ML estimation of dS and dN in pairwise comparisons
-	cat $baseDir"/util/test.cnt" | sed "s/test\.codon/$gTag\.codon/g" | sed "s/test\.tree/$gTag\.tree/g" | sed "s/test\.codeml/$gTag\.codeml/g" > $workingDir"/"$gTag".cnt"
+	#cat $baseDir"/util/test.cnt" | sed "s/test\.codon/$gTag\.codon/g" | sed "s/test\.tree/$gTag\.tree/g" | sed "s/test\.codeml/$gTag\.codeml/g" > $workingDir"/"$gTag".cnt"
 
 	# Status message
-	echo "Generating MSA for $gTag..."
+	#echo "Generating MSA for $gTag..."
 
 	# create MSA using muscle
 	# https://stackoverflow.com/questions/70769809/muscle-command-line-wrapper
-	muscle -in "$gFile" -out "$outAln"
+	#muscle -in "$gFile" -out "$outAln"
 	#muscle -align "$gFile" -output "$outAln"
 
 	# status message
-	echo "Generating codon alignment for $gTag..."
+	#echo "Generating codon alignment for $gTag..."
 
 	# usage:  pal2nal.pl  pep.aln  nuc.fasta  [nuc.fasta...]  [options]
-	"$softwarePath"/pal2nal.pl "$outAln" "$gRefNuc" "$gConNuc" -output paml -nogap  >  $workingDir"/"$gTag".codon"
+	#"$softwarePath"/pal2nal.pl "$outAln" "$gRefNuc" "$gConNuc" -output paml -nogap  >  $workingDir"/"$gTag".codon"
 	#pal2nal.pl "$outAln" "$gRefNuc" "$gConNuc" -output paml -nogap  >  $workingDir"/"$gTag".codon"
 
 	# status message
-	echo "Generating ka ks values for $gTag..."
+	#echo "Generating ka ks values for $gTag..."
 
 	# run codeml to retrieve ka ks values
 	# you can find the output of codeml in the .codeml file
@@ -111,14 +127,14 @@ while IFS= read -r line; do
 	# enter yes in case of stop codon warning prompt
 	# https://groups.google.com/g/pamlsoftware/c/HNx4O_YMHVA
 	# https://stackoverflow.com/questions/11190004/automatically-press-enter-to-continue-in-bash
-	yes "" | codeml $gTag".cnt"
+	#yes "" | codeml $gTag".cnt"
 
 	# save ka ks values to final results file
-	kaks=$(tail -1 $gTag".codeml")
-	echo "$gTag  $kaks" >> $resultsFile
+	#kaks=$(tail -1 $gTag".codeml")
+	#echo "$gTag  $kaks" >> $resultsFile
 
 	# clean up
-	rm $workingDir/*
+	#rm $workingDir/*
 done < $tmpRefPep
 
 # clean up
