@@ -29,12 +29,12 @@ type="filteredMapQ"
 
 # make outputs directory name
 outFolder=$inputsPath"/selectionTests"
-#mkdir $outFolder
+mkdir $outFolder
 # check if the folder already exists
-#if [ $? -ne 0 ]; then
-#	echo "The $outFolder directory already exsists... please remove before proceeding."
-#	exit 1
-#fi
+if [ $? -ne 0 ]; then
+	echo "The $outFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
 
 # set inputs folder
 inputsPath=$inputsPath"/features_gffread"
@@ -43,13 +43,13 @@ inputsPath=$inputsPath"/features_gffread"
 refTag=$(basename $refPath)
 
 # set results file path
-#resultsFile=$outFolder"/kaksResults.csv"
-#echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
+resultsFile=$outFolder"/kaksResults.csv"
+echo "geneID  t  S  N  dNdS  dN  dS" > "$resultsFile"
 
 # set up gene lengths files
-pepLengths=$outFolder"/geneLengths_"$subsetTag".pep.csv"
+pepLengths=$outFolder"/geneLengths.pep.csv"
 echo "geneID,reference,consensus" > "$pepLengths"
-cdsLengths=$outFolder"/geneLengths_"$subsetTag".cds.csv"
+cdsLengths=$outFolder"/geneLengths.cds.csv"
 echo "geneID,reference,consensus" > "$cdsLengths"
 
 # set reference multiline pep fasta to retrieve seqs
@@ -85,8 +85,11 @@ done
 # https://stackoverflow.com/questions/11525214/wait-for-set-of-qsub-jobs-to-complete
 
 # merge each of the gene lengths files
-#tail -n+2 $outFolder"/geneLengths_"*".pep.csv" >> $pepLengths
-#tail -n+2 $outFolder"/geneLengths_"*".cds.csv" >> $cdsLengths
+#tail -n+2 $outFolder"/geneLengths_"*".pep.csv" | grep -v "^==>" | sed '/^$/d' >> $pepLengths
+#tail -n+2 $outFolder"/geneLengths_"*".cds.csv" | grep -v "^==>" | sed '/^$/d' >> $cdsLengths
+
+# clean up
+#rm $outFolder"/geneLengths_"*".csv"
 
 # format ka ks results
 #bash format_kaksResults.sh
