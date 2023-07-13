@@ -40,7 +40,6 @@ importFile <- paste(tag, "networkConstruction-stepByStep.RData", sep="-")
 importFile <- paste(inDir, importFile, sep="/")
 lnames2 = load(file = importFile)
 
-#GO enrichment
 # create list of module colors mapped to numbers
 numMods <- length(unique(moduleColors))
 colorTable <- data.frame(

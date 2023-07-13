@@ -28,25 +28,25 @@ plotColors <- carto_pal(12, "Safe")
 plotColorSubset <- c(plotColors[4], plotColors[5], plotColors[6])
 
 #Retrieve input file name of gene counts
-#args = commandArgs(trailingOnly=TRUE)
+args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
-#workingDir = args[1]
-workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance"
+workingDir = args[1]
+#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance"
 #workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCNA_DEGenotypes"
 setwd(workingDir)
 
 #Import gene count data
-#inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
-inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GeneCountsAnalyzed/Formatted/cleaned.csv", row.names="gene")[ ,1:24]
+inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
+#inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GeneCountsAnalyzed/Formatted/cleaned.csv", row.names="gene")[ ,1:24]
 #inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_OLYM_WGCNA/OLYM_60_eigengeneExpression.csv", row.names="gene")[ ,1:24]
 
 #Trim the data table
 countsTable <- head(inputTable, - 5)
 
 #Import grouping factor
-#targets <- read.csv(file=args[5], row.names="sample")
-targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsTolerance.csv", row.names="sample")
+targets <- read.csv(file=args[5], row.names="sample")
+#targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsTolerance.csv", row.names="sample")
 
 #Retrieve input FDR cutoff
 #fdrCut=as.numeric(args[6])

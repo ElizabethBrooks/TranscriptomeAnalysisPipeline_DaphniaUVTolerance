@@ -3,7 +3,6 @@
 # usage: bash glmDriver_edgeR.sh analysisType
 # default usage Ex: bash glmDriver_edgeR.sh Tolerance
 # usage Ex: bash glmDriver_edgeR.sh Genotypes
-## potential Usage: bash glmDriver_edgeR.sh analysisType referenceGenome
 
 #Load module for R
 #module load bio
@@ -25,10 +24,10 @@ mkdir $outDir
 outDir=$outDir"/"$analysisType
 mkdir $outDir
 #Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outDir directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#if [ $? -ne 0 ]; then
+#	echo "The $outDir directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 # retrieve current directory
 curDir=$(pwd)
