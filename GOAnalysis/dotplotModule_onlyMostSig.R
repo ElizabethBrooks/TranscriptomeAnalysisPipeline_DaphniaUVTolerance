@@ -17,26 +17,26 @@ plotColorSubset <- c(plotColors[5], plotColors[6])
 options(scipen = 999)
 
 #Retrieve input file name of gene counts
-#args = commandArgs(trailingOnly=TRUE)
+args = commandArgs(trailingOnly=TRUE)
 
 # retrieve working directory
-#workingDir <- args[1]
-workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/GOAnalysis_OLYM_30"
+workingDir <- args[1]
+#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/GOAnalysis_OLYM_30"
 
 # set working directory
 setwd(workingDir)
 
 # retrieve subset tag
-#set <- args[2]
-set <- "OLYM"
+set <- args[2]
+#set <- "OLYM"
 
 # set the minimum module size
-#minModSize <- args[3]
-minModSize <- "30"
+minModSize <- args[3]
+#minModSize <- "30"
 
 # retrieve WGCNA directory
-#inDir <- args[4]
-inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance"
+inDir <- args[4]
+#inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance"
 
 # set the full subset tag name
 tag <- paste(set, minModSize, sep="_")

@@ -31,7 +31,7 @@ plotColorSubset <- c(plotColors[4], plotColors[5], plotColors[6])
 #args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
-#workingDir = args[1];
+#workingDir = args[1]
 workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance"
 #workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCNA_DEGenotypes"
 setwd(workingDir)
@@ -49,7 +49,7 @@ countsTable <- head(inputTable, - 5)
 targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsTolerance.csv", row.names="sample")
 
 #Retrieve input FDR cutoff
-#fdrCut=as.numeric(args[5])
+#fdrCut=as.numeric(args[6])
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$tolerance,sep="."))
@@ -289,7 +289,7 @@ glm_list_venn <- list(treatment = geneSet_treatment,
                       interaction = geneSet_interaction)
 # create venn diagram
 jpeg("glmQLF_2WayANOVA_venn_LFC1.2.jpg")
-ggVennDiagram(glm_list_venn, label_alpha=0.25, category.names = c("treatment","tolerance","interaction")) +
+ggVennDiagram(glm_list_venn, label_alpha=0.25, category.names = c("Treatment","Tolerance","Interaction")) +
   scale_colour_discrete(type = plotColorSubset)
 dev.off()
 
