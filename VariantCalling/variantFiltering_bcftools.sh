@@ -80,7 +80,7 @@ bcftools view --threads 4 $outFolder"/"$type"_calls.flt-homo.bcf" | grep -v "#" 
 # Maximum fraction of reads supporting an indel
 # https://github.com/samtools/bcftools/issues/911
 bcftools filter --threads 4 -e 'INFO/IMF<1' $outFolder"/"$type"_calls.flt-homo.bcf" -Ob -o $outFolder"/"$type"_calls.flt-IDV.bcf"
-echo "bcftools filter --threads 4 -e 'GT=\"het\"' "$outFolder"/"$type"_calls.flt-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-IDV.bcf" >> $inputOutFile
+echo "bcftools filter --threads 4 -e 'INFO/IMF<1' "$outFolder"/"$type"_calls.flt-homo.bcf -Ob -o "$outFolder"/"$type"_calls.flt-IDV.bcf" >> $inputOutFile
 echo "& excluding sites with an IMF < 1: " >> $outputsFile
 bcftools view --threads 4 $outFolder"/"$type"_calls.flt-IDV.bcf" | grep -v "#" | wc -l >> $outputsFile
 

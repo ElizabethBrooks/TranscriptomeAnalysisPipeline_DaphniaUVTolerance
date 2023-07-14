@@ -52,6 +52,9 @@ goTable$geneID <- paste("gene", goTable$geneID, sep="-")
 # retrieve dN dS values
 dNdSTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Pulex_Olympics_kaksResults.csv", row.names="geneID")
 
+# filter to keep dNdS > 1 & dNdS < 99
+dNdSSubset <- dNdSTable[dNdSTable$dNdS > 1 & dNdSTable$dNdS < 99,]
+
 # import DEGs
 interactionTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", row.names="gene")
 treatmentTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv", row.names="gene")
@@ -101,28 +104,32 @@ colorTable <- data.frame(
 # initialize module data frame
 resultsTable <- data.frame(
   gene = character(),
-  color = character()
+  color = character(),
+  number = numeric()
 )
 
 # match gene IDs with module colors
 for(i in 1:numMods){
   gene <- names(datExpr)[moduleColors==colorTable[i,1]]
   color <- rep(colorTable[i,1], length(gene))
-  moduleData <- cbind(gene, color)
+  number <- rep(colorTable[i,2], length(gene))
+  moduleData <- cbind(gene, color, number)
   resultsTable <- rbind(resultsTable, moduleData)
 }
 
 # setup data frame of module sizes
 modSizes <- data.frame(
+  number = numeric(),
   color = character(),
   size = numeric()
 )
 
 # retrieve module sizes
 for(i in 1:numMods){
+  number <- head(resultsTable[resultsTable$number == i,3],1)
   color <- head(resultsTable[resultsTable$number == i,2],1)
   size <- nrow(resultsTable[resultsTable$number == i,])
-  moduleData <- cbind(color, size)
+  moduleData <- cbind(number, color, size)
   modSizes <-rbind(modSizes, moduleData)
 }
 
@@ -177,7 +184,7 @@ dev.off()
 # positively selected
 
 # setup gene sets
-geneSet_positive <- row.names(dNdSTable)
+geneSet_positive <- row.names(dNdSSubset)
 
 # create combined list of gene sets
 positiveSet_list <- list(Positive = geneSet_positive, 
@@ -216,10 +223,18 @@ annotationVenn <- ggVennDiagram(annotationSet_list, label_alpha=0.25, category.n
   scale_colour_discrete(type = plotColorSubset)
 positiveVenn <- ggVennDiagram(positiveSet_list, label_alpha=0.25, category.names = c("Positive","DEGs","Modules")) +
   scale_colour_discrete(type = plotColorSubset)
+combinedVenn <- ggVennDiagram(combinedSet_list, label_alpha=0.25, category.names = c("GO","Positive","DE","Modules")) +
+  scale_colour_discrete(type = c(plotColorSubset,"#661100"))
 
 # one figure in row 1 and two figures in row 2
-ggarrange(effectVenn,                                                 # First row with scatter plot
-          ggarrange(annotationVenn, positiveVenn, ncol = 2, labels = c("B", "C")), # Second row with box and dot plots
-          nrow = 2, 
-          labels = "A"                                        # Labels of the scatter plot
-) 
+jpeg("DEGs_combined_venn.jpg")
+ggarrange(effectVenn, combinedVenn, ncol = 2, labels = c("A", "B"))
+dev.off()
+
+# one figure in row 1 and two figures in row 2
+#ggarrange(effectVenn,
+#          ggarrange(annotationVenn, positiveVenn, ncol = 2, labels = c("B", "C")),
+#          nrow = 2, 
+#          labels = "A"
+#) 
+
