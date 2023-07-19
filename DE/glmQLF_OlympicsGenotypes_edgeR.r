@@ -5,6 +5,11 @@
 #Usage Ex: Rscript glmQLF_OlympicsGenotypes_edgeR.r /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCNA_DEGenotypes /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_OLYM_WGCNA/OLYM_60_eigengeneExpression.csv 1 24 /Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsGenotypes.csv
 #R script to perform statistical analysis of gene count tables using edgeR GLM
 
+# https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf
+# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7873980/
+# https://support.bioconductor.org/p/132926/
+# https://support.bioconductor.org/p/106608/
+
 #Install edgeR and statmod, this should only need to be done once
 #if (!requireNamespace("BiocManager", quietly = TRUE))
 #    install.packages("BiocManager")
@@ -137,108 +142,157 @@ jpeg("glmQLF_plotQLDisp.jpg")
 plotQLDisp(fit)
 dev.off()
 
+# view column order
+colnames(fit)
 
-#Test whether the average across all treatment groups is equal to the average across
-#all VIS groups, to examine the overall effect of treatment
-con.treatment <- makeContrasts(treatment = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
-  - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4,
-  levels=design)
 
-#Look at genes expressed across all treatment groups using QL F-test
-#test.anov.treatment <- glmQLFTest(fit, contrast=con.treatment)
-#summary(decideTests(test.anov.treatment))
-#Write plot to file
-#jpeg("glmQLF_2WayANOVA_treatment_plotMD.jpg")
-#plotMD(test.anov.treatment)
-#abline(h=c(-1, 1), col="blue")
-#dev.off()
-#Write tags table of DE genes to file
-#tagsTblANOVA <- topTags(test.anov.treatment, n=nrow(test.anov.treatment$table), adjust.method="fdr")$table
-#tagsTblANOVA.keep <- tagsTblANOVA$FDR <= fdrCut
-#tagsTblANOVA.out <- tagsTblANOVA[tagsTblANOVA.keep,]
-#write.table(tagsTblANOVA, file="glmQLF_2WayANOVA_treatment_topTags.csv", sep=",", row.names=TRUE, quote=FALSE)
-
-#Look at genes with significant expression across all treatment groups
-treat.anov.treatment <- glmTreat(fit, contrast=con.treatment, lfc=log2(1.2))
+# testing explicit nested contrasts
+con.all.nest <- makeContrasts(treatment = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
+                              - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4,
+                              tolerance = (UV.Y023 + UV.Y05 + VIS.Y023 + VIS.Y05)/4
+                              - (UV.E05 + UV.R2 + VIS.E05 + VIS.R2)/4,
+                              levels=design)
+# treatment
+treat.anov.treatment <- glmTreat(fit, contrast=con.all.nest[,"treatment"], lfc=log2(1.2))
 summary(decideTests(treat.anov.treatment))
+# tolerance
+treat.anov.tolerance <- glmTreat(fit, contrast=con.all.nest[,"tolerance"], lfc=log2(1.2))
+summary(decideTests(treat.anov.tolerance))
+# interaction
+treat.anov.Inter <- glmTreat(fit, contrast=c(con.all.nest[,"treatment"]-con.all.nest[,"tolerance"]), lfc=log2(1.2))
+summary(decideTests(treat.anov.Inter))
+
+
+# export tables of DE genes
+#Write tags table of DE genes to file
+tagsTblANOVATreatment <- topTags(treat.anov.treatment, n=nrow(treat.anov.treatment$table), adjust.method="fdr")$table
+write.table(tagsTblANOVATreatment, file="glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)
+
+#Write tags table of DE genes to file
+tagsTblANOVATolerance <- topTags(treat.anov.tolerance, n=nrow(treat.anov.tolerance$table), adjust.method="fdr")$table
+write.table(tagsTblANOVATolerance, file="glmQLF_2WayANOVA_tolerance_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)
+
+#Generate table of DE genes
+tagsTblANOVAInter <- topTags(treat.anov.Inter, n=nrow(treat.anov.Inter$table), adjust.method="fdr")$table
+write.table(tagsTblANOVAInter, file="glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)
+
+
+# MD plots
 #Write plot to file
 jpeg("glmQLF_2WayANOVA_treatment_plotMD_LFC1.2.jpg")
 plotMD(treat.anov.treatment)
 abline(h=c(-1, 1), col="blue")
 dev.off()
-#Write tags table of DE genes to file
-tagsTblANOVA.filtered <- topTags(treat.anov.treatment, n=nrow(treat.anov.treatment$table), adjust.method="fdr")$table
-#tagsTblANOVA.filtered.keep <- tagsTblANOVA.filtered$FDR <= fdrCut
-#tagsTblANOVA.filtered.out <- tagsTblANOVA.filtered[tagsTblANOVA.filtered.keep,]
-write.table(tagsTblANOVA.filtered, file="glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)
 
-
-#Test whether the average across all tolerant groups is equal to the average across
-#all not tolerant groups, to examine the overall effect of tolerance
-con.tolerance <- makeContrasts(tolerance = (UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
-  - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4,
-  levels=design)
-
-#Look at genes expressed across all tolerance groups using QL F-test
-#test.anov.tolerance <- glmQLFTest(fit, contrast=con.tolerance)
-#summary(decideTests(test.anov.tolerance))
-#Write plot to file
-#jpeg("glmQLF_2WayANOVA_tolerance_plotMD.jpg")
-#plotMD(test.anov.tolerance)
-#abline(h=c(-1, 1), col="blue")
-#dev.off()
-#Write tags table of DE genes to file
-#tagsTblANOVAtolerance <- topTags(test.anov.tolerance, n=nrow(test.anov.tolerance$table), adjust.method="fdr")$table
-#tagsTblANOVAtolerance.keep <- tagsTblANOVAtolerance$FDR <= fdrCut
-#tagsTblANOVAtolerance.out <- tagsTblANOVAtolerance[tagsTblANOVAtolerance.keep,]
-#write.table(tagsTblANOVAtolerance, file="glmQLF_2WayANOVA_tolerance_topTags.csv", sep=",", row.names=TRUE, quote=FALSE)
-
-#Look at genes with significant expression across all tolerance groups
-treat.anov.tolerance <- glmTreat(fit, contrast=con.tolerance, lfc=log2(1.2))
-summary(decideTests(treat.anov.tolerance))
 #Write plot to file
 jpeg("glmQLF_2WayANOVA_tolerance_plotMD_LFC1.2.jpg")
 plotMD(treat.anov.tolerance)
 abline(h=c(-1, 1), col="blue")
 dev.off()
-#Write tags table of DE genes to file
-tagsTblANOVAtolerance.filtered <- topTags(treat.anov.tolerance, n=nrow(treat.anov.tolerance$table), adjust.method="fdr")$table
-#tagsTblANOVAtolerance.filtered.keep <- tagsTblANOVAtolerance.filtered$FDR <= fdrCut
-#tagsTblANOVAtolerance.filtered.out <- tagsTblANOVAtolerance.filtered[tagsTblANOVAtolerance.filtered.keep,]
-write.table(tagsTblANOVAtolerance.filtered, file="glmQLF_2WayANOVA_tolerance_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)
 
-
-#Test whether there is an interaction effect
-con.Inter <- makeContrasts(Inter = ((UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
-  - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4)
-  - ((UV.Y05 + VIS.Y05 + UV.Y023 + VIS.Y023)/4
-  - (UV.E05 + VIS.E05 + UV.R2 + VIS.R2)/4),
-  levels=design)
-
-#Look at genes expressed across all interaction groups using QL F-test
-#test.anov.Inter <- glmQLFTest(fit, contrast=con.Inter)
-#summary(decideTests(test.anov.Inter))
-#Write plot to file
-#jpeg("glmQLF_2WayANOVA_interaction_plotMD.jpg")
-#plotMD(test.anov.Inter)
-#abline(h=c(-1, 1), col="blue")
-#dev.off()
-#Write tags table of DE genes to file
-#tagsTblANOVAInter <- topTags(test.anov.Inter, n=nrow(test.anov.Inter$table), adjust.method="fdr")$table
-#tagsTblANOVAInter.keep <- tagsTblANOVAInter$FDR <= fdrCut
-#tagsTblANOVAInter.out <- tagsTblANOVAInter[tagsTblANOVAInter.keep,]
-#write.table(tagsTblANOVAInter, file="glmQLF_2WayANOVA_interaction_topTags.csv", sep=",", row.names=TRUE, quote=FALSE)
-
-#Look at genes with significant expression
-treat.anov.Inter <- glmTreat(fit, contrast=con.Inter, lfc=log2(1.2))
-summary(decideTests(treat.anov.Inter))
 #Write plot to file
 jpeg("glmQLF_2WayANOVA_interaction_plotMD_LFC1.2.jpg")
 plotMD(treat.anov.Inter)
 abline(h=c(-1, 1), col="blue")
 dev.off()
-#Generate table of DE genes
-tagsTblANOVAInter.filtered <- topTags(treat.anov.Inter, n=nrow(treat.anov.Inter$table), adjust.method="fdr")$table
-#tagsTblANOVAInter.filtered.keep <- tagsTblANOVAInter.filtered$FDR <= fdrCut
-#tagsTblANOVAInter.filtered.out <- tagsTblANOVAInter.filtered[tagsTblANOVAInter.filtered.keep,]
-write.table(tagsTblANOVAInter.filtered, file="glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", sep=",", row.names=TRUE, quote=FALSE)
+
+
+# Volcano plots
+# add column for identifying direction of DE gene expression
+tagsTblANOVATreatment$topDE <- "NA"
+# identify significantly up DE genes
+tagsTblANOVATreatment$topDE[tagsTblANOVATreatment$logFC > 1 & tagsTblANOVATreatment$FDR < 0.05] <- "UP"
+# identify significantly down DE genes
+tagsTblANOVATreatment$topDE[tagsTblANOVATreatment$logFC < -1 & tagsTblANOVATreatment$FDR < 0.05] <- "DOWN"
+# create volcano plot
+jpeg("glmQLF_2WayANOVA_treatment_volcano_LFC1.2.jpg")
+ggplot(data=tagsTblANOVATreatment, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+  geom_point() +
+  theme_minimal() +
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down"))
+dev.off()
+# create volcano plot with labels
+labelSetTreatment <- tagsTblANOVATreatment[tagsTblANOVATreatment$topDE == "UP" | tagsTblANOVATreatment$topDE == "DOWN",]
+jpeg("glmQLF_2WayANOVA_treatment_volcanoLabeled_LFC1.2.jpg")
+ggplot(data=tagsTblANOVATreatment, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+  geom_point() +
+  ggrepel::geom_text_repel(data = labelSetTreatment, aes(label = row.names(labelSetTreatment))) +
+  theme_minimal() +
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down"))
+dev.off()
+# identify significantly DE genes by FDR
+tagsTblANOVATreatment.glm_keep <- tagsTblANOVATreatment$FDR < 0.05
+# create filtered results table of DE genes
+tagsTblANOVATreatment.filtered <- tagsTblANOVATreatment[tagsTblANOVATreatment.glm_keep,]
+
+# add column for identifying direction of DE gene expression
+tagsTblANOVATolerance$topDE <- "NA"
+# identify significantly up DE genes
+tagsTblANOVATolerance$topDE[tagsTblANOVATolerance$logFC > 1 & tagsTblANOVATolerance$FDR < 0.05] <- "UP"
+# identify significantly down DE genes
+tagsTblANOVATolerance$topDE[tagsTblANOVATolerance$logFC < -1 & tagsTblANOVATolerance$FDR < 0.05] <- "DOWN"
+# create volcano plot
+jpeg("glmQLF_2WayANOVA_tolerance_volcano_LFC1.2.jpg")
+ggplot(data=tagsTblANOVATolerance, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+  geom_point() +
+  theme_minimal() +
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down"))
+dev.off()
+# create volcano plot with labels
+labelSetTolerance <- tagsTblANOVATolerance[tagsTblANOVATolerance$topDE == "UP" | tagsTblANOVATolerance$topDE == "DOWN",]
+jpeg("glmQLF_2WayANOVA_tolerance_volcanoLabeled_LFC1.2.jpg")
+ggplot(data=tagsTblANOVATolerance, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+  geom_point() +
+  ggrepel::geom_text_repel(data = labelSetTolerance, aes(label = row.names(labelSetTolerance)), max.overlaps=20) +
+  theme_minimal() +
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down"))
+dev.off()
+# identify significantly DE genes by FDR
+tagsTblANOVATolerance.glm_keep <- tagsTblANOVATolerance$FDR < 0.05
+# create filtered results table of DE genes
+tagsTblANOVATolerance.filtered <- tagsTblANOVATolerance[tagsTblANOVATolerance.glm_keep,]
+
+# add column for identifying direction of DE gene expression
+tagsTblANOVAInter$topDE <- "NA"
+# identify significantly up DE genes
+tagsTblANOVAInter$topDE[tagsTblANOVAInter$logFC > 1 & tagsTblANOVAInter$FDR < 0.05] <- "UP"
+# identify significantly down DE genes
+tagsTblANOVAInter$topDE[tagsTblANOVAInter$logFC < -1 & tagsTblANOVAInter$FDR < 0.05] <- "DOWN"
+# create volcano plot
+jpeg("glmQLF_2WayANOVA_interaction_volcano_LFC1.2.jpg")
+ggplot(data=tagsTblANOVAInter, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+  geom_point() +
+  theme_minimal() +
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down"))
+dev.off()
+# create volcano plot with labels
+labelSetInteraction <- tagsTblANOVAInter[tagsTblANOVAInter$topDE == "UP" | tagsTblANOVAInter$topDE == "DOWN",]
+jpeg("glmQLF_2WayANOVA_interaction_volcanoLabeled_LFC1.2.jpg")
+ggplot(data=tagsTblANOVAInter, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+  geom_point() +
+  ggrepel::geom_text_repel(data = labelSetInteraction, aes(label = row.names(labelSetInteraction)), max.overlaps=100) +
+  theme_minimal() +
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down"))
+dev.off()
+# identify significantly DE genes by FDR
+tagsTblANOVAInter.glm_keep <- tagsTblANOVAInter$FDR < 0.05
+# create filtered results table of DE genes
+tagsTblANOVAInter.filtered <- tagsTblANOVAInter[tagsTblANOVAInter.glm_keep,]
+
+
+# venn diagram
+# retrieve set of DE gene names for hours contrast
+geneSet_treatment <- rownames(tagsTblANOVATreatment.filtered)
+# retrieve set of DE gene names for hours contrast
+geneSet_tolerance <- rownames(tagsTblANOVATolerance.filtered)
+# retrieve set of DE gene names for interaction contrast
+geneSet_interaction <- rownames(tagsTblANOVAInter.filtered)
+# create combined glm_list of DE gene names
+glm_list_venn <- list(treatment = geneSet_treatment, 
+                      tolerance = geneSet_tolerance,
+                      interaction = geneSet_interaction)
+# create venn diagram
+jpeg("glmQLF_2WayANOVA_venn_LFC1.2.jpg")
+ggVennDiagram(glm_list_venn, label_alpha=0.25, category.names = c("Treatment","Tolerance","Interaction")) +
+  scale_colour_discrete(type = plotColorSubset)
+dev.off()

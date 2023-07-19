@@ -70,6 +70,7 @@ ggboxplot(data=expData, x="treatment", y="expression", color="tolerance",
 dev.off()
 
 # box plot with two variable factors
+#boxplot(expression ~ treatment * tolerance, data=expData, frame=FALSE,
 exportFile <- paste(modName, "twoVariableFactorBoxPlot.png", sep="_")
 png(file=exportFile)
 boxplot(expression ~ tolerance * treatment, data=expData, frame=FALSE,
@@ -88,6 +89,7 @@ interaction.plot(x.factor = expData$treatment, trace.factor = expData$tolerance,
 dev.off()
 
 # compute two-way anova
+#affy.aov <- aov(expression ~ treatment * tolerance, data = expData)
 affy.aov <- aov(expression ~ tolerance * treatment, data = expData)
 
 # output summary statistics

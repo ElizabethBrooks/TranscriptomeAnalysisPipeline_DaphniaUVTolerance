@@ -3,6 +3,11 @@
 #Usage Ex: Rscript glmQLF_edgeR.r /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/DEGenotypes cleaned.csv 1 24 expDesign_OlympicsTolerance.csv
 #R script to perform statistical analysis of gene count tables using edgeR GLM
 
+# https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf
+# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7873980/
+# https://support.bioconductor.org/p/132926/
+# https://support.bioconductor.org/p/106608/
+
 #Install edgeR and statmod, this should only need to be done once
 #if (!requireNamespace("BiocManager", quietly = TRUE))
 #    install.packages("BiocManager")
