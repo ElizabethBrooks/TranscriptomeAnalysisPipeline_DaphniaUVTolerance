@@ -8,7 +8,7 @@ library(ghibli)
 options(scipen = 999)
 
 # set the working directory
-workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests"
+workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Genotypes"
 setwd(workingDir)
 
 # Plotting Palettes
@@ -18,7 +18,7 @@ ghibli_colors <- ghibli_palette("PonyoMedium", type = "discrete")
 ghibli_subset <- c(ghibli_colors[3], ghibli_colors[6], ghibli_colors[4])
 
 # retrieve dN dS values
-positiveTable <- read.csv(file="Pulex_Olympics_kaksResults.csv", row.names="geneID")
+positiveTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Pulex_Olympics_kaksResults.csv", row.names="geneID")
 
 # remove NAs
 positiveTable <- na.omit(positiveTable)
@@ -27,19 +27,19 @@ positiveTable <- na.omit(positiveTable)
 positiveSubset <- positiveTable[positiveTable$dNdS > 1 & positiveTable$dNdS < 99,]
 
 # retrieve DEGs
-interactionTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv")
-treatmentTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv")
-toleranceTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_tolerance_topTags_LFC1.2.csv")
+interactionTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv")
+treatmentTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv")
+genotypesTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/glmQLF_2WayANOVA_tolerance_topTags_LFC1.2.csv")
 
 # keep only sig
 interactionSig <- subset(interactionTable, interactionTable$FDR < 0.05)
 treatmentSig <- subset(treatmentTable, treatmentTable$FDR < 0.05)
-toleranceSig <- subset(toleranceTable, toleranceTable$FDR < 0.05)
+genotypesSig <- subset(genotypesTable, genotypesTable$FDR < 0.05)
 
 # add effect tags
 interactionSig$Effect <- "Interaction"
 treatmentSig$Effect <- "Treatment"
-toleranceSig$Effect <- "Tolerance"
+genotypesSig$Effect <- "Tolerance"
 
 # add geneID column
 geneID <- row.names(positiveSubset)
@@ -48,22 +48,22 @@ geneID <- row.names(interactionSig)
 interactionSig <- cbind(geneID,interactionSig)
 geneID <- row.names(treatmentSig)
 treatmentSig <- cbind(geneID,treatmentSig)
-geneID <- row.names(toleranceSig)
-toleranceSig <- cbind(geneID,toleranceSig)
+geneID <- row.names(genotypesSig)
+genotypesSig <- cbind(geneID,genotypesSig)
 
 # full outer join data frames
 interactionSubset <- merge(x = interactionSig, y = positiveSubset, 
                           by = "geneID", all=TRUE)
 treatmentSubset <- merge(x = treatmentSig, y = positiveSubset, 
                         by = "geneID", all=TRUE)
-toleranceSubset <- merge(x = toleranceSig, y = positiveSubset, 
+genotypesSubset <- merge(x = genotypesSig, y = positiveSubset, 
                           by = "geneID", all=TRUE)
 
 # remove rows with NAs
 positiveSubset <- na.omit(positiveSubset)
 interactionSubset <- na.omit(interactionSubset)
 treatmentSubset <- na.omit(treatmentSubset)
-toleranceSubset <- na.omit(toleranceSubset)
+genotypesSubset <- na.omit(genotypesSubset)
 
 
 # hypergeometric distribution (fishers test)
@@ -102,12 +102,12 @@ pValues$enrichment[2] <- phyper(overlap-1, de, total-de, positive,lower.tail= FA
 # test for under-representation (depletion)
 pValues$depletion[2] <-  phyper(overlap, de, total-de, positive,lower.tail= TRUE)
 
-# tolerance
+# genotypes
 # initialize variables
 positive <- nrow(positiveSubset)
-de <- nrow(toleranceSig)
-overlap <- nrow(toleranceSubset)
-total <- nrow(toleranceTable)
+de <- nrow(genotypesSig)
+overlap <- nrow(genotypesSubset)
+total <- nrow(genotypesTable)
 
 # test for over-representation (enrichment)
 pValues$enrichment[3] <- phyper(overlap-1, de, total-de, positive,lower.tail= FALSE)

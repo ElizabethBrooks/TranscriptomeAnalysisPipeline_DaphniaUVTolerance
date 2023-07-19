@@ -38,6 +38,14 @@ minModSize <- args[3]
 inDir <- args[4]
 #inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance"
 
+# import positively selected gene set p-values
+positiveTable <- read.csv(file=args[5], row.names="color")
+#positiveTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/fisherTest_positiveSelection_modules.csv", row.names="color")
+
+# import effect ANOVA p-values
+effectTable <- read.csv(file=args[6], row.names="module")
+#effectTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/ANOVA_OLYM_30/aov_summary_pValues.csv", row.names="module")
+
 # set the full subset tag name
 tag <- paste(set, minModSize, sep="_")
 
@@ -95,9 +103,6 @@ plotTable <- na.omit(plotTable)
 # remove < signs
 plotTable$weightFisher <- gsub("<","",as.character(plotTable$weightFisher))
 
-# import positively selected gene set p-values
-#positiveTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/fisherTest_positiveSelection_modules.csv", row.names="color")
-
 # loop through each module color
 #plotTable$enrichment <- "NA"
 #plotTable$depletion <- "NA"
@@ -111,9 +116,6 @@ plotTable$weightFisher <- gsub("<","",as.character(plotTable$weightFisher))
 #plotTable$selection <- "#000000"
 #plotTable[plotTable$enrichment <= 0.05,]$selection <- plotColors[9]
 #plotTable[plotTable$depletion <= 0.05,]$selection <- plotColors[4]
-
-# import effect ANOVA p-values
-effectTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/ANOVA_OLYM_30/aov_summary_pValues.csv", row.names="module")
 
 # clean up row names
 row.names(effectTable) <- gsub("ME","",as.character(row.names(effectTable)))

@@ -33,7 +33,7 @@ workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.
 setwd(workingDir)
 
 # import module analysis results
-anovaTable <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/ANOVA_OLYM_30/aov_summary_pValues.csv")
+anovaTable <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/ANOVA_OLYM_30/aov_summary_pValues.csv")
 positiveTable <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/fisherTest_positiveSelection_modules.csv")
 
 # update anova module and column names
@@ -56,9 +56,9 @@ dNdSTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/G
 dNdSSubset <- dNdSTable[dNdSTable$dNdS > 1 & dNdSTable$dNdS < 99,]
 
 # import DEGs
-interactionTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", row.names="gene")
-treatmentTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv", row.names="gene")
-toleranceTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_tolerance_topTags_LFC1.2.csv", row.names="gene")
+interactionTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", row.names="gene")
+treatmentTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv", row.names="gene")
+toleranceTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/glmQLF_2WayANOVA_tolerance_topTags_LFC1.2.csv", row.names="gene")
 
 # keep only sig
 interactionSig <- interactionTable[interactionTable$FDR < 0.05,]
@@ -209,7 +209,7 @@ combinedSet_list <- list(KAP4 = geneSet_KAP4,
 # create venn diagram
 jpeg("annotatedGO_positive_DEGs_modules_venn.jpg")
 ggVennDiagram(combinedSet_list, label_alpha=0.25, category.names = c("GO","Positive","DE","Modules")) +
-  scale_colour_discrete(type = c(plotColorSubset,"#661100"))
+  scale_colour_discrete(type = c(plotColorSubset, plotColors[10]))
 dev.off()
 
 
@@ -224,7 +224,7 @@ annotationVenn <- ggVennDiagram(annotationSet_list, label_alpha=0.25, category.n
 positiveVenn <- ggVennDiagram(positiveSet_list, label_alpha=0.25, category.names = c("Positive","DEGs","Modules")) +
   scale_colour_discrete(type = plotColorSubset)
 combinedVenn <- ggVennDiagram(combinedSet_list, label_alpha=0.25, category.names = c("GO","Positive","DE","Modules")) +
-  scale_colour_discrete(type = c(plotColorSubset,"#661100"))
+  scale_colour_discrete(type = c(plotColorSubset, plotColors[10]))
 
 # one figure in row 1 and two figures in row 2
 jpeg("DEGs_combined_venn.jpg")

@@ -8,7 +8,7 @@ library(ghibli)
 options(scipen = 999)
 
 # set the working directory
-workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests"
+workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Genotypes"
 setwd(workingDir)
 
 # retrieve subset tag
@@ -18,7 +18,7 @@ set <- "OLYM"
 minModSize <- "30"
 
 # retrieve WGCNA directory
-inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance"
+inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes"
 
 # set the full subset tag name
 tag <- paste(set, minModSize, sep="_")
@@ -65,7 +65,7 @@ ghibli_colors <- ghibli_palette("PonyoMedium", type = "discrete")
 ghibli_subset <- c(ghibli_colors[3], ghibli_colors[6], ghibli_colors[4])
 
 # retrieve dN dS values
-positiveTable <- read.csv(file="Pulex_Olympics_kaksResults.csv", row.names="geneID")
+positiveTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Pulex_Olympics_kaksResults.csv", row.names="geneID")
 
 # remove NAs
 positiveTable <- na.omit(positiveTable)

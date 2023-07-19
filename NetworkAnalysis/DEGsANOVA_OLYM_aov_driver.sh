@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # usage: bash ANOVA_OLYM_aov_driver.sh analysisType set
-# default usage ex: bash ANOVA_OLYM_aov_driver.sh Tolerance OLYM
-# usage ex: bash ANOVA_OLYM_aov_driver.sh Tolerance Tol
-# usage ex: bash ANOVA_OLYM_aov_driver.sh Tolerance NTol
+# default usage ex: bash DEGsANOVA_OLYM_aov_driver.sh Genotypes OLYM
+# usage ex: bash DEGsANOVA_OLYM_aov_driver.sh Tolerance OLYM
+# usage ex: bash DEGsANOVA_OLYM_aov_driver.sh Tolerance Tol
+# usage ex: bash DEGsANOVA_OLYM_aov_driver.sh Tolerance NTol
 
 # retrieve analysis type
 analysisType=$1
@@ -19,7 +20,7 @@ inDir=$(grep "WGCNA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/WGCNA://
 inDir=$inDir"/"$analysisType
 
 # working directory
-workingDir=$inDir"/ANOVA_"$set"_"$minModSize
+workingDir=$inDir"/DEGsANOVA_"$set"_"$minModSize
 
 # create the working directory
 mkdir $workingDir
@@ -30,7 +31,8 @@ currDir=$(pwd)
 # retrieve experimental design data path
 cd $(dirname "../InputData/expDesign_Olympics"$analysisType".csv")
 designPath=$(pwd)
-designFile=$designPath"/expDesign_Olympics"$analysisType".csv"
+#designFile=$designPath"/expDesign_Olympics"$analysisType".csv"
+designFile=$designPath"/expDesign_OlympicsFullDesign.csv"
 
 # move back to scripts directory
 cd $currDir
@@ -43,14 +45,15 @@ counter=1
 while read line; do
 	if [ $counter -eq 1 ]; then
 		echo "$line" > $workingDir"/tmpHeader.csv"
+	#elif [ $counter -eq 2 ]; then # testing
 	else
 		# setup expression data
-		cat $workingDir"/tmpHeader.csv" > $workingDir"/tmpMod.csv"
-		echo "$line" >> $workingDir"/tmpMod.csv"
-		# calcluate ANOVA
-		Rscript "ANOVA_OLYM"$analysisType"_aov.R" $workingDir $workingDir"/tmpMod.csv" $designFile
+		cat $workingDir"/tmpHeader.csv" > $workingDir"/"$counter"_tmpMod.csv"
+		echo "$line" >> $workingDir"/"$counter"_tmpMod.csv"
+		# calcluate ANOVA for treatment and $analysisType effects
+		Rscript "DEGsANOVA_OLYM"$analysisType"_aov.R" $workingDir $workingDir"/"$counter"_tmpMod.csv" $designFile
 		# clean up
-		rm $workingDir"/tmpMod.csv"
+		rm $workingDir"/"$counter"_tmpMod.csv"
 	fi
 	let "counter=counter+1"
 done < $expData
@@ -59,4 +62,4 @@ done < $expData
 rm $workingDir"/tmpHeader.csv"
 
 # summarize the ANOVA results
-bash ANOVA_OLYMTolerance_summarize.sh $analysisType $set
+bash "DEGsANOVA_OLYM"$analysisType"_summarize.sh" $workingDir $analysisType $set $minModSize

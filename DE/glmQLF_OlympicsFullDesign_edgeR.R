@@ -9,6 +9,7 @@
 # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7873980/
 # https://support.bioconductor.org/p/132926/
 # https://support.bioconductor.org/p/106608/
+# https://conjugateprior.org/2013/01/formulae-in-r-anova/
 
 #Install edgeR and statmod, this should only need to be done once
 #if (!requireNamespace("BiocManager", quietly = TRUE))

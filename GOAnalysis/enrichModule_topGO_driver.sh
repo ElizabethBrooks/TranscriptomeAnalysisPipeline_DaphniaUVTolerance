@@ -3,7 +3,8 @@
 # BASH script to drive GO analysis for WGCNA network modules
 
 # usage: bash enrichModule_topGO_driver.sh analysisType set
-# default usage ex: bash enrichModule_topGO_driver.sh Tolerance OLYM
+# default usage ex: bash enrichModule_topGO_driver.sh Genotypes OLYM
+# usage ex: bash enrichModule_topGO_driver.sh Tolerance OLYM
 # usage ex: bash enrichModule_topGO_driver.sh Tolerance Tol
 # usage ex: bash enrichModule_topGO_driver.sh Tolerance NTol
 

@@ -15,7 +15,7 @@ plotColorSubset <- c(plotColors[4], plotColors[5], plotColors[6])
 options(scipen = 999)
 
 # set the working directory
-workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests"
+workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Genotypes"
 setwd(workingDir)
 
 # retrieve subset tag
@@ -25,7 +25,7 @@ set <- "OLYM"
 minModSize <- "30"
 
 # retrieve WGCNA directory
-inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance"
+inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes"
 
 # set the full subset tag name
 tag <- paste(set, minModSize, sep="_")
@@ -65,7 +65,7 @@ for(i in 1:numMods){
 
 
 # retrieve dN dS values
-dNdSTable <- read.csv(file="Pulex_Olympics_kaksResults.csv", row.names="geneID")
+dNdSTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Pulex_Olympics_kaksResults.csv", row.names="geneID")
 
 # remove NAs
 dNdSSubset <- na.omit(dNdSTable)
@@ -133,7 +133,7 @@ jpeg("dNdS_modules_selection_boxPlot.jpg")
 ggplot(resultsSubset, aes(x=color, y=dNdS, color=Selection)) +
   geom_boxplot() +
   theme_minimal() +
-  scale_colour_discrete(type = plotColorSubset) +
+  scale_colour_discrete(type = c(plotColorSubset[2],plotColorSubset[3])) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 dev.off()
 

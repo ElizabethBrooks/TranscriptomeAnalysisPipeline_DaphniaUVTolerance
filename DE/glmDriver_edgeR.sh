@@ -1,8 +1,8 @@
 #!/bin/bash
 # script to run Rscripts that perform DE analysis of gene count tables using glm in edgeR
 # usage: bash glmDriver_edgeR.sh analysisType
-# default usage Ex: bash glmDriver_edgeR.sh Tolerance
-# usage Ex: bash glmDriver_edgeR.sh Genotypes
+# usage Ex: bash glmDriver_edgeR.sh Tolerance
+# default usage Ex: bash glmDriver_edgeR.sh Genotypes
 
 #Load module for R
 #module load bio

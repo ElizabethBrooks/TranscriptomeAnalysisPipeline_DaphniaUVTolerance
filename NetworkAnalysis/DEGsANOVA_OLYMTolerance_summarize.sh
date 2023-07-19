@@ -1,23 +1,23 @@
 #!/bin/bash
 
-# usage: bash ANOVA_OLYMTolerance_summarize.sh analysisType set
-# usage ex: bash ANOVA_OLYMTolerance_summarize.sh Tolerance OLYM
+# usage: bash DEGsANOVA_OLYMTolerance_summarize.sh analysisType set
+# usage ex: bash DEGsANOVA_OLYMTolerance_summarize.sh Tolerance OLYM
+
+# working directory
+workingDir=$1
 
 # retrieve analysis type
-analysisType=$1
+analysisType=$2
 
 # retrieve set
-set=$2
+set=$3
 
 # minimum module size
-minModSize=30
+minModSize=$4
 
 #Create directory for output files
 inDir=$(grep "WGCNA:" ../InputData/outputPaths.txt | tr -d " " | sed "s/WGCNA://g")
 inDir=$inDir"/"$analysisType
-
-# working directory
-workingDir=$inDir"/ANOVA_"$set"_"$minModSize
 
 # move to the working directory
 cd $workingDir

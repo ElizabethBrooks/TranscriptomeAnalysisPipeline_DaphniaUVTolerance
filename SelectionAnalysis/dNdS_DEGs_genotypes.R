@@ -9,7 +9,7 @@ library(tidyr)
 options(scipen = 999)
 
 # set the working directory
-workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests"
+workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Genotypes"
 setwd(workingDir)
 
 # Plotting Palettes
@@ -19,29 +19,29 @@ plotColors <- carto_pal(12, "Safe")
 plotColorSubset <- c(plotColors[4], plotColors[11], plotColors[5], plotColors[6])
 
 # retrieve gene lengths
-lengthsTable <- read.csv(file="geneLengths.pep.csv", row.names="geneID")
+lengthsTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/geneLengths.pep.csv", row.names="geneID")
 
 # retrieve dN dS values
-dNdSTable <- read.csv(file="Pulex_Olympics_kaksResults.csv", row.names="geneID")
+dNdSTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Pulex_Olympics_kaksResults.csv", row.names="geneID")
 
 # remove NAs
 lengthSubset <- na.omit(lengthsTable)
 dNdSSubset <- na.omit(dNdSTable)
 
 # retrieve DEGs
-interactionTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", row.names="gene")
-treatmentTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv", row.names="gene")
-toleranceTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/glmQLF_2WayANOVA_tolerance_topTags_LFC1.2.csv", row.names="gene")
+interactionTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/glmQLF_2WayANOVA_interaction_topTags_LFC1.2.csv", row.names="gene")
+treatmentTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/glmQLF_2WayANOVA_treatment_topTags_LFC1.2.csv", row.names="gene")
+genotypesTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/glmQLF_2WayANOVA_tolerance_topTags_LFC1.2.csv", row.names="gene")
 
 # keep only sig
 interactionSig <- interactionTable[interactionTable$FDR < 0.05,]
 treatmentSig <- treatmentTable[treatmentTable$FDR < 0.05,]
-toleranceSig <- toleranceTable[toleranceTable$FDR < 0.05,]
+genotypesSig <- genotypesTable[genotypesTable$FDR < 0.05,]
 
 # add effect tags
 interactionSig$Effect <- "Interaction"
 treatmentSig$Effect <- "Treatment"
-toleranceSig$Effect <- "Tolerance"
+genotypesSig$Effect <- "Tolerance"
 
 # add geneID column
 geneID <- row.names(lengthSubset)
@@ -52,14 +52,14 @@ geneID <- row.names(interactionSig)
 interactionSig <- cbind(geneID,interactionSig)
 geneID <- row.names(treatmentSig)
 treatmentSig <- cbind(geneID,treatmentSig)
-geneID <- row.names(toleranceSig)
-toleranceSig <- cbind(geneID,toleranceSig)
+geneID <- row.names(genotypesSig)
+genotypesSig <- cbind(geneID,genotypesSig)
 
 # keep necessary columns
 lengthSubset <- lengthSubset[,c("geneID","reference")]
 dNdSSubset <- dNdSSubset[,c("geneID","dN","dS","dNdS")]
 treatmentSubset <- treatmentSig[,c("geneID","Effect")]
-toleranceSubset <- toleranceSig[,c("geneID","Effect")]
+genotypesSubset <- genotypesSig[,c("geneID","Effect")]
 interactionSubset <- interactionSig[,c("geneID","Effect")]
 
 # rename length column
@@ -69,7 +69,7 @@ colnames(lengthSubset)[colnames(lengthSubset) == "reference"] ="Length"
 # https://sparkbyexamples.com/r-programming/r-join-data-frames-with-examples/#full-outer-join
 
 # combine all tables
-effectTable <- rbind(interactionSubset, treatmentSubset, toleranceSubset)
+effectTable <- rbind(interactionSubset, treatmentSubset, genotypesSubset)
 
 # full outer join
 geneTable <- merge(x = dNdSSubset, y = lengthSubset, 
