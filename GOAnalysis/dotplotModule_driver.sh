@@ -29,7 +29,7 @@ outDir=$inDir"/GOAnalysis_"$set"_"$minModSize
 
 # set input paths
 positiveTable="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/"$analysisType"/fisherTest_positiveSelection_modules.csv"
-effectTable=$inDir"/ANOVA_"$set"_"$minModSize"/aov_summary_pValues.csv"
+effectTable=$inDir"/DEGsANOVA_"$set"_"$minModSize"/aov_summary_pValues.csv"
 
 # create a dot plot of significant GO terms for each effect set
 Rscript dotplotModule_onlySig.R $outDir $set $minModSize $inDir $positiveTable $effectTable

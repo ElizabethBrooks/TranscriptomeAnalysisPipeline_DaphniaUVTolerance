@@ -18,13 +18,14 @@ args = commandArgs(trailingOnly=TRUE)
 
 # retrieve working directory
 workingDir <- args[1]
-#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/GOAnalysis"
+#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis"
 
 # set working directory
 setwd(workingDir)
 
 # retrieve positive selection enrichment tests
-positiveTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/fisherTest_positiveSelection_DEGs.csv", row.names="effect")
+positiveTable <- args[2]
+#positiveTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/Genotypes/fisherTest_positiveSelection_DEGs.csv", row.names="effect")
 
 # read in data on significant GO terms (BP, MF, and CC) for each effect 
 interaction_BP_GO_terms <- read.csv('interaction_BP_sigGO_terms.csv', row.names = 1)
@@ -106,7 +107,7 @@ dotplot <- ggplot(data = plot_table, aes(x = x_axis_order, y = Term, size = Sign
   theme_bw() +
   xlab('Effect') +
   ylab('GO Term') + 
-  scale_x_discrete(labels=c("Interaction"=expression(italic("Interaction")), parse=TRUE)) +
+  #scale_x_discrete(labels=c("Interaction"=expression(italic("Interaction")), parse=TRUE)) +
   labs(color = 'P-Value', size = 'Gene Rank')
 
 # view plot

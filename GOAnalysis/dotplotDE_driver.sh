@@ -19,5 +19,8 @@ outDir=$inDir"/GOAnalysis"
 # create outputs directory
 mkdir $outDir
 
+# set input paths
+positiveTable="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/"$analysisType"/fisherTest_positiveSelection_modules.csv"
+
 # create a dot plot of significant GO terms for each effect set
-Rscript dotplotDE_onlySig.R $outDir
+Rscript dotplotDE_onlySig.R $outDir $positiveTable

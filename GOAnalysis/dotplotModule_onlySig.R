@@ -21,7 +21,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 # retrieve working directory
 workingDir <- args[1]
-#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/GOAnalysis_OLYM_30"
+#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30"
 
 # set working directory
 setwd(workingDir)
@@ -31,20 +31,20 @@ set <- args[2]
 #set <- "OLYM"
 
 # set the minimum module size
-minModSize <- args[3]
-#minModSize <- "30"
+#minModSize <- args[3]
+minModSize <- "30"
 
 # retrieve WGCNA directory
 inDir <- args[4]
-#inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance"
+#inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes"
 
 # import positively selected gene set p-values
 positiveTable <- read.csv(file=args[5], row.names="color")
-#positiveTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/fisherTest_positiveSelection_modules.csv", row.names="color")
+#positiveTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/Genotypes/fisherTest_positiveSelection_modules.csv", row.names="color")
 
 # import effect ANOVA p-values
 effectTable <- read.csv(file=args[6], row.names="module")
-#effectTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/ANOVA_OLYM_30/aov_summary_pValues.csv", row.names="module")
+#effectTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/DEGsANOVA_OLYM_30/aov_summary_pValues.csv", row.names="module")
 
 # set the full subset tag name
 tag <- paste(set, minModSize, sep="_")
@@ -69,14 +69,17 @@ colnames(module_CC_results) <- c("Color","Term","Significant","weightFisher")
 # loop through each module color
 for(j in 1:num_mods){
   # read in data on significant GO term (BP, MF, and CC) 
-  BP_GO_sig <- read.csv(paste(color_list[j], 'BP_sigGO_terms.csv', sep="_"), row.names = NULL)[1:5, c("Term","Significant","weightFisher")]
-  MF_GO_sig <- read.csv(paste(color_list[j], 'MF_sigGO_terms.csv', sep="_"), row.names = NULL)[1:5, c("Term","Significant","weightFisher")]
-  CC_GO_sig <- read.csv(paste(color_list[j], 'CC_sigGO_terms.csv', sep="_"), row.names = NULL)[1:5, c("Term","Significant","weightFisher")]
+  #BP_GO_sig <- read.csv(paste(color_list[j], 'BP_sigGO_terms.csv', sep="_"), row.names = NULL)[1:5, c("Term","Significant","weightFisher")]
+  #MF_GO_sig <- read.csv(paste(color_list[j], 'MF_sigGO_terms.csv', sep="_"), row.names = NULL)[1:5, c("Term","Significant","weightFisher")]
+  #CC_GO_sig <- read.csv(paste(color_list[j], 'CC_sigGO_terms.csv', sep="_"), row.names = NULL)[1:5, c("Term","Significant","weightFisher")]
+  BP_GO_sig <- read.csv(paste(color_list[j], 'BP_sigGO_terms.csv', sep="_"), row.names = NULL)[1:5,]
+  MF_GO_sig <- read.csv(paste(color_list[j], 'MF_sigGO_terms.csv', sep="_"), row.names = NULL)[1:5,]
+  CC_GO_sig <- read.csv(paste(color_list[j], 'CC_sigGO_terms.csv', sep="_"), row.names = NULL)[1:5,]
   
   # add a column labeling the color to each GO term set
-  BP_GO_sig <- cbind("Color" = color_list[j], BP_GO_sig)
-  MF_GO_sig <- cbind("Color" = color_list[j], MF_GO_sig)
-  CC_GO_sig <- cbind("Color" = color_list[j], CC_GO_sig)
+  BP_GO_sig <- cbind("Color" = color_list[j], BP_GO_sig[,2], BP_GO_sig[,4], BP_GO_sig[,6])
+  MF_GO_sig <- cbind("Color" = color_list[j], MF_GO_sig[,2], MF_GO_sig[,4], MF_GO_sig[,6])
+  CC_GO_sig <- cbind("Color" = color_list[j], CC_GO_sig[,2], CC_GO_sig[,4], CC_GO_sig[,6])
   
   # create tables of all GO terms for each level
   #list_all_BP_GO_included <- unique(c(BP_GO_sig$GO.ID))
@@ -88,6 +91,11 @@ for(j in 1:num_mods){
   module_MF_results <- rbind(module_MF_results, MF_GO_sig)
   module_CC_results <- rbind(module_CC_results, CC_GO_sig)
 }
+
+# re-name columns
+colnames(module_BP_results) <- c("Color","Term","Significant","weightFisher")
+colnames(module_MF_results) <- c("Color","Term","Significant","weightFisher")
+colnames(module_CC_results) <- c("Color","Term","Significant","weightFisher")
 
 # add GO level tags
 module_BP_results <- cbind('Level' = 'BP', module_BP_results)
@@ -123,19 +131,19 @@ row.names(effectTable) <- gsub("ME","",as.character(row.names(effectTable)))
 # loop through each module color
 plotTable$treatment <- "NA"
 plotTable$tolerance <- "NA"
-plotTable$interaction <- "NA"
+#plotTable$interaction <- "NA"
 for(k in 1:num_mods-1){
   # add enrichment and depletion values
   plotTable[plotTable$Color == row.names(effectTable)[k],]$treatment <- effectTable$treatment[k]
   plotTable[plotTable$Color == row.names(effectTable)[k],]$tolerance <- effectTable$tolerance[k]
-  plotTable[plotTable$Color == row.names(effectTable)[k],]$interaction <- effectTable$interaction[k]
+  #plotTable[plotTable$Color == row.names(effectTable)[k],]$interaction <- effectTable$interaction[k]
 }
 
 # add signifigance tags
 plotTable$effect <- "None"
 plotTable[plotTable$treatment <= 0.05,]$effect <- "Treatment"
 plotTable[plotTable$tolerance <= 0.05,]$effect <- "Tolerance"
-plotTable[plotTable$interaction <= 0.05,]$effect <- "Interaction"
+#plotTable[plotTable$interaction <= 0.05,]$effect <- "Interaction"
 plotTable[plotTable$treatment <= 0.05 & plotTable$tolerance <= 0.05,]$effect <- "Both"
 
 # setup facet groups
@@ -144,7 +152,7 @@ facetLevel <- factor(plotTable$Level, levels = c('BP', 'CC', 'MF'))
 #facetEffect <- factor(plotTable$effect, levels = c('Treatment', 'Tolerance', 'Interaction'))
 
 # create dot plot of significant GO terms
-dotplot <- ggplot(data = plotTable, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
+dotplot <- ggplot(data = plotTable, aes(x = x_axis_order, y = Term, size = as.numeric(Significant), color = as.numeric(weightFisher))) + 
   facet_grid(rows = facetLevel, space = 'free_y', scales = 'free') +
   geom_point() +
   #scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
@@ -155,7 +163,7 @@ dotplot <- ggplot(data = plotTable, aes(x = x_axis_order, y = Term, size = Signi
   #geom_text(position = position_dodge(width = 1), aes(x=effect, y=0)) +
   xlab('Color') +
   ylab('GO Term') + 
-  scale_x_discrete(labels=c("steelblue"=expression(bold("steelblue")), "darkmagenta"=expression(italic("darkmagenta")), "floralwhite"=expression(italic("floralwhite")), "darkslateblue"=expression(italic("darkslateblue")), "brown"=expression(italic("brown")), "darkred"=expression(italic("darkred")), parse=TRUE)) +
+  scale_x_discrete(labels=c("sienna3"=expression(bold("sienna3")), "plum1"=expression(bold("plum1")), "darkgrey"=expression(italic("darkgrey")), "darkorange2"=expression(italic("darkorange2")), "floralwhite"=expression(italic("floralwhite")), "royalblue"=expression(italic("royalblue")), "salmon4"=expression(italic("salmon4")), parse=TRUE)) +
   labs(color = 'P-Value', size = 'Gene Rank')
 
 # view plot
@@ -176,7 +184,7 @@ facetLevel <- factor(plotSubset$Level, levels = c('BP', 'CC', 'MF'))
 #facetEffect <- factor(plotSubset$effect, levels = c('Treatment', 'Tolerance', 'Interaction'))
 
 # create dot plot of significant GO terms
-dotplot <- ggplot(data = plotSubset, aes(x = x_axis_order, y = Term, size = Significant, color = as.numeric(weightFisher))) + 
+dotplot <- ggplot(data = plotSubset, aes(x = x_axis_order, y = Term, size = as.numeric(Significant), color = as.numeric(weightFisher))) + 
   #facet_grid(rows = facetLevel, space = 'free_y', scales = 'free') +
   #facet_grid(. ~ Level + effect, scales = "free_x", space = "free") +
   #facet_grid(Level + effect ~ ., scales = "free_y", space = "free") +
@@ -190,7 +198,7 @@ dotplot <- ggplot(data = plotSubset, aes(x = x_axis_order, y = Term, size = Sign
   #geom_text(position = position_dodge(width = 1), aes(x=effect, y=0)) +
   xlab('Color') +
   ylab('GO Term') + 
-  scale_x_discrete(labels=c("steelblue"=expression(bold("steelblue")), "darkmagenta"=expression(italic("darkmagenta")), "floralwhite"=expression(italic("floralwhite")), "darkslateblue"=expression(italic("darkslateblue")), parse=TRUE)) +
+  scale_x_discrete(labels=c("sienna3"=expression(bold("sienna3")), "plum1"=expression(bold("plum1")), "darkgrey"=expression(italic("darkgrey")), "darkorange2"=expression(italic("darkorange2")), "floralwhite"=expression(italic("floralwhite")), "royalblue"=expression(italic("royalblue")), "salmon4"=expression(italic("salmon4")), parse=TRUE)) +
   labs(color = 'P-Value', size = 'Gene Rank')
 
 # view plot
