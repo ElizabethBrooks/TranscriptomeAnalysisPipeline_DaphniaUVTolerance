@@ -4,13 +4,13 @@ Description: Full genome sequence for NCBI Daphnia pulex KAP4 strain
 Version: 1.0.0
 organism: Daphnia pulex
 common_name: D. pulex
-genome: Dmagna.pulex
+genome: Dpulex.KAP4
 provider: NCBI
 provider_version: pulex
 release_date: 2021/12
 source_url: https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_021134715.1/
 organism_biocview: Daphnia_pulex
 BSgenomeObjname: Dpulex
-seqnames: c("sNC_060017.1", "NC_060018.1", "NC_060019.1", "NC_060020.1", "NC_060021.1", "NC_060022.1", "NC_060023.1", "NC_060024.1", "NC_060025.1", "NC_060026.1", "NC_060027.1", "NC_060028.1", "NC_000844.1")
+seqnames: c("NC_060017.1", "NC_060018.1", "NC_060019.1", "NC_060020.1", "NC_060021.1", "NC_060022.1", "NC_060023.1", "NC_060024.1", "NC_060025.1", "NC_060026.1", "NC_060027.1", "NC_060028.1", "NC_000844.1")
 seqs_srcdir: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/seqs
 circ_seqs: character(0)
