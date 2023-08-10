@@ -41,22 +41,41 @@ sTrack <- SequenceTrack(Dpulex, chromosome = geneLoc)
 #plotTracks(sTrack, chromosome = geneLoc, from = geneStart, to = geneEnd)
 #plotTracks(sTrack, from = geneStart, to = geneEnd)
 
+#Retrieve input bam files
+inputBamE05 = "/Volumes/My Passport/OLYM_dMelUV/alignments/E05/filteredMapQ_readGroups.bam"
+inputBamR2 = "/Volumes/My Passport/OLYM_dMelUV/alignments/R2/filteredMapQ_readGroups.bam"
+inputBamY05 = "/Volumes/My Passport/OLYM_dMelUV/alignments/Y05/filteredMapQ_readGroups.bam"
+inputBamY023 = "/Volumes/My Passport/OLYM_dMelUV/alignments/Y023/filteredMapQ_readGroups.bam"
+
+#Index input bam files, if they have not already been indexed
+#indexBam(inputBamE05)
+#indexBam(inputBamR2)
+#indexBam(inputBamY05)
+#indexBam(inputBamY023)
+
+#Create the alignment tracks
+#fill = "transparent"
+alTrE05 <- AlignmentsTrack(inputBamE05, isPaired = TRUE, name = "E05", type = "coverage", col = plotColors[5], fill = plotColors[11])
+alTrR2 <- AlignmentsTrack(inputBamR2, isPaired = TRUE, name = "R2", type = "coverage", col = plotColors[5], fill = plotColors[11])
+alTrY05 <- AlignmentsTrack(inputBamY05, isPaired = TRUE, name = "Y05", type = "coverage", col = plotColors[5], fill = plotColors[11])
+alTrY023 <- AlignmentsTrack(inputBamY023, isPaired = TRUE, name = "Y023", type = "coverage", col = plotColors[5], fill = plotColors[11])
+
 # set gene region name and coordinates
 # photolyase (LOC124188748) NC_060018.1:363588-367123
-#geneLoc = "NC_060018.1"
-#geneName = "LOC124188748"
-#geneStart = 363588
-#geneEnd = 367123
+geneLoc = "NC_060018.1"
+geneName = "LOC124188748"
+geneStart = 363588
+geneEnd = 367123
 # NFKB (LOC124190117) NC_060019.1:3336006-3343487
 #geneLoc = "NC_060019.1"
 #geneName = "LOC124190117"
 #geneStart = 3336006
 #geneEnd = 3343487
 # adrenodoxin (LOC124193197) NC_060020.1:3488210-3489206
-geneLoc = "NC_060020.1"
-geneName = "LOC124193197"
-geneStart = 3488210
-geneEnd = 3489206
+#geneLoc = "NC_060020.1"
+#geneName = "LOC124193197"
+#geneStart = 3488210
+#geneEnd = 3489206
 # mucin2 (LOC124202665) NC_060025.1:8795802-8799903
 #geneLoc = "NC_060025.1"
 #geneName = "LOC124202665"
@@ -89,25 +108,6 @@ geneTr <- GeneRegionTrack(geneDB,
 #head(transcript(geneTr))
 #head(exon(geneTr))
 #head(symbol(geneTr))
-
-#Retrieve input bam files
-inputBamE05 = "/Volumes/My Passport/OLYM_dMelUV/alignments/E05/filteredMapQ_readGroups.bam"
-inputBamR2 = "/Volumes/My Passport/OLYM_dMelUV/alignments/R2/filteredMapQ_readGroups.bam"
-inputBamY05 = "/Volumes/My Passport/OLYM_dMelUV/alignments/Y05/filteredMapQ_readGroups.bam"
-inputBamY023 = "/Volumes/My Passport/OLYM_dMelUV/alignments/Y023/filteredMapQ_readGroups.bam"
-
-#Index input bam files, if they have not already been indexed
-#indexBam(inputBamE05)
-#indexBam(inputBamR2)
-#indexBam(inputBamY05)
-#indexBam(inputBamY023)
-
-#Create the alignment tracks
-#fill = "transparent"
-alTrE05 <- AlignmentsTrack(inputBamE05, isPaired = TRUE, name = "E05", type = "coverage", col = plotColors[5], fill = plotColors[11])
-alTrR2 <- AlignmentsTrack(inputBamR2, isPaired = TRUE, name = "R2", type = "coverage", col = plotColors[5], fill = plotColors[11])
-alTrY05 <- AlignmentsTrack(inputBamY05, isPaired = TRUE, name = "Y05", type = "coverage", col = plotColors[5], fill = plotColors[11])
-alTrY023 <- AlignmentsTrack(inputBamY023, isPaired = TRUE, name = "Y023", type = "coverage", col = plotColors[5], fill = plotColors[11])
 
 #Generate track overlay
 #ot <- OverlayTrack(trackList = list(alTrE05, alTrR2, alTrY05, alTrY023))
