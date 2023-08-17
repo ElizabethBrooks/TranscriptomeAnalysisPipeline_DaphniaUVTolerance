@@ -133,6 +133,20 @@ annotationTable <- read.delim(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP
 geneID <- row.names(annotationTable)
 annotationTable <- cbind(geneID,annotationTable)
 
+# add gene- tag to each ID
+annotationTable$geneID <- paste("gene", annotationTable$geneID, sep="-")
+
+
+# import potentially locally adapted UV responsive gene pathway associates
+pathwayTable <- read.delim(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/dMelUV_UVResponseGenes_pathways_16Aug2023.tsv", row.names="Gene")
+
+# add geneID column
+geneID <- row.names(pathwayTable)
+pathwayTable <- cbind(geneID,pathwayTable)
+
+# add gene- tag to each ID
+pathwayTable$geneID <- paste("gene", pathwayTable$geneID, sep="-")
+
 
 # merging data frames
 # https://sparkbyexamples.com/r-programming/r-join-data-frames-with-examples/#full-outer-join
@@ -144,21 +158,56 @@ effectTable <- rbind(interactionSubset, treatmentSubset, genotypesSubset)
 fullTable <- merge(x = resultsTable, y = effectTable, 
                    by = "geneID", all=TRUE)
 
+# full outer join
+fullTable <- merge(x = fullTable, y = annotationTable, 
+                   by = "geneID", all=TRUE)
+
+# full outer join
+fullTable <- merge(x = fullTable, y = pathwayTable, 
+                   by = "geneID", all=TRUE)
+
 
 # force scientific notation
-formatC(x, format = "e", digits = 2) 
+fullTable$logFC <- formatC(fullTable$logFC, format = "e", digits = 2) 
+fullTable$FDR <- formatC(fullTable$FDR, format = "e", digits = 2) 
 
 # convert columns to character type
-fullTable$logFC <- as.character(fullTable$logFC)
-fullTable$FDR <- as.character(fullTable$FDR)
+fullTable$start <- as.character(fullTable$start)
+fullTable$end <- as.character(fullTable$end)
 
 # set tags for NAs
 fullTable$Effect <- fullTable$Effect %>% replace_na('None')
-fullTable$logFC <- fullTable$logFC %>% replace_na('None')
-fullTable$FDR <- fullTable$FDR %>% replace_na('None')
+fullTable$AssociatedPathways <- fullTable$AssociatedPathways %>% replace_na('None')
+fullTable$FDR[fullTable$FDR == ' NA'] <- 'None'
+fullTable$logFC[fullTable$logFC == ' NA'] <- 'None'
+fullTable$chr. <- fullTable$chr. %>% replace_na('None')
+fullTable$strand <- fullTable$strand %>% replace_na('None')
+fullTable$description1 <- fullTable$description1 %>% replace_na('None')
+fullTable$description2 <- fullTable$description2 %>% replace_na('None')
+fullTable$GO.terms <- fullTable$GO.terms %>% replace_na('None')
+fullTable$X <- fullTable$X %>% replace_na('None')
+fullTable$start <- fullTable$start %>% replace_na('None')
+fullTable$end <- fullTable$end %>% replace_na('None')
 
 # remove NAs
-#plotTable <- na.omit(plotTable)
+fullTable <- na.omit(fullTable)
+
+# fill empty rows
+fullTable[fullTable$description2 == "",] <- 'None'
+fullTable[fullTable$GO.terms == "",] <- 'None'
+fullTable[fullTable$X == "",] <- 'None'
 
 
+# subset genes associated with interesting pathways or under positive selection
+subsetTable <- c[fullTable$AssociatedPathways != "None" | fullTable$Selection == "Positive",]
+
+# write table to tsv file
+write.table(subsetTable, file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/dMelUV_UVResponseGenes_networkModules_16Aug2023.tsv", sep = "\t")
+
+
+# select specific columns
+subsetColumns <- subsetTable[,c("geneID","AssociatedPathways","color","number","logFC","FDR","Effect","dN","dS","dNdS","Selection","description1","description2","GO.terms","X")]
+
+# write table to tsv file
+write.table(subsetColumns, file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/dMelUV_UVResponseGenes_networkModules_16Aug2023_subset.tsv", sep = "\t")
 
