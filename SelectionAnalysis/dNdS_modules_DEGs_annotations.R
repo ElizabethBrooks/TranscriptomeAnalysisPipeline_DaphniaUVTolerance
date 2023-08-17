@@ -190,16 +190,16 @@ fullTable$start <- fullTable$start %>% replace_na('None')
 fullTable$end <- fullTable$end %>% replace_na('None')
 
 # remove NAs
-fullTable <- na.omit(fullTable)
+cleanTable <- na.omit(fullTable)
 
 # fill empty rows
-fullTable[fullTable$description2 == "",] <- 'None'
-fullTable[fullTable$GO.terms == "",] <- 'None'
-fullTable[fullTable$X == "",] <- 'None'
+cleanTable$description2 <- sub("^$", "None", cleanTable$description2)
+cleanTable$GO.terms <- sub("^$", "None", cleanTable$GO.terms)
+cleanTable$X <- sub("^$", "None", cleanTable$X)
 
 
 # subset genes associated with interesting pathways or under positive selection
-subsetTable <- fullTable[fullTable$AssociatedPathways != "None" | fullTable$Selection == "Positive",]
+subsetTable <- cleanTable[cleanTable$AssociatedPathways != "None" | cleanTable$Selection == "Positive",]
 
 # write table to tsv file
 write.table(subsetTable, file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/dMelUV_UVResponseGenes_networkModules_16Aug2023.tsv", sep = "\t")
