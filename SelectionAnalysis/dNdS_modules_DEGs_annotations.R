@@ -199,7 +199,7 @@ fullTable[fullTable$X == "",] <- 'None'
 
 
 # subset genes associated with interesting pathways or under positive selection
-subsetTable <- c[fullTable$AssociatedPathways != "None" | fullTable$Selection == "Positive",]
+subsetTable <- fullTable[fullTable$AssociatedPathways != "None" | fullTable$Selection == "Positive",]
 
 # write table to tsv file
 write.table(subsetTable, file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/ncbi_dataset/data/GCF_021134715.1/dMelUV_UVResponseGenes_networkModules_16Aug2023.tsv", sep = "\t")
