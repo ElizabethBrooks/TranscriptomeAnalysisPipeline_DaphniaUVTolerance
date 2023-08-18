@@ -126,15 +126,22 @@ genotypesSubset <- genotypesSig[,c("geneID","logFC","FDR","Effect")]
 interactionSubset <- interactionSig[,c("geneID","logFC","FDR","Effect")]
 
 
-# import annotation data
-annotationTable <- read.delim(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/KAP4_NCBI_functional_annotation.txt", row.names="Gene_locus")
+# import annotation data (emailed from ZQ)
+#annotationTable <- read.delim(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/KAP4_NCBI_functional_annotation.txt", row.names="Gene_locus")
 
 # add geneID column
-geneID <- row.names(annotationTable)
-annotationTable <- cbind(geneID,annotationTable)
+#geneID <- row.names(annotationTable)
+#annotationTable <- cbind(geneID,annotationTable)
 
 # add gene- tag to each ID
-annotationTable$geneID <- paste("gene", annotationTable$geneID, sep="-")
+#annotationTable$geneID <- paste("gene", annotationTable$geneID, sep="-")
+
+# https://ncbiinsights.ncbi.nlm.nih.gov/2022/02/24/gene-ontology-refseq/
+# https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/data-packages/genome/#:~:text=Schema%3A%20Genome%20GFF3-,Genome%20GBFF,features%20annotated%20on%20each%20genome.
+# https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/file-formats/annotation-files/about-ncbi-gbff/
+# https://www.ncbi.nlm.nih.gov/genbank/samplerecord/
+# import annotation data (NCBI gbff)
+annotationTable <- read.delim(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/KAP4_NCBI_functional_annotation.txt", row.names="Gene_locus")
 
 
 # import potentially locally adapted UV responsive gene pathway associates
