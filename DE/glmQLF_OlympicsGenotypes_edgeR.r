@@ -99,8 +99,10 @@ points <- c(0,1,2,3,15,16,17,18)
 colors <- rep(c(plotColors[4], plotColors[5], plotColors[6], plotColors[11]), 2)
 #Write plot with legend to file
 jpeg("glmQLF_plotMDS.jpg")
+par(mar=c(5.1, 4.1, 4.1, 11.1), xpd=TRUE)
 plotMDS(list, col=colors[group], pch=points[group])
-legend("topleft", legend=levels(group), pch=points, col=colors, ncol=2)
+legend("topright", inset=c(-0.8,0), legend=levels(group), pch=points, col=colors, ncol=2)
+#legend("topleft", legend=levels(group), pch=points, col=colors, ncol=2)
 dev.off()
 #Write plot without legend to file
 jpeg("glmQLF_plotMDS_noLegend.jpg")
@@ -109,8 +111,10 @@ dev.off()
 
 # Create a PCA plot with a legend
 jpeg("glmQLF_plotPCA.jpg")
+par(mar=c(5.1, 4.1, 4.1, 11.1), xpd=TRUE)
 plotMDS(list, col=colors[group], pch=points[group], gene.selection="common")
-legend("topleft", legend=levels(group), pch=points, col=colors, ncol=2)
+legend("topright", inset=c(-0.8,0), legend=levels(group), pch=points, col=colors, ncol=2)
+#legend("topleft", legend=levels(group), pch=points, col=colors, ncol=2)
 dev.off()
 
 # Create a PCA plot without a legend
