@@ -20,31 +20,31 @@ options(scipen = 999)
 args = commandArgs(trailingOnly=TRUE)
 
 # retrieve working directory
-workingDir <- args[1]
-#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30"
+#workingDir <- args[1]
+workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30"
 
 # set working directory
 setwd(workingDir)
 
 # retrieve subset tag
-set <- args[2]
-#set <- "OLYM"
+#set <- args[2]
+set <- "OLYM"
 
 # set the minimum module size
 #minModSize <- args[3]
 minModSize <- "30"
 
 # retrieve WGCNA directory
-inDir <- args[4]
-#inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes"
+#inDir <- args[4]
+inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes"
 
 # import positively selected gene set p-values
-positiveTable <- read.csv(file=args[5], row.names="color")
-#positiveTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/Genotypes/fisherTest_positiveSelection_modules.csv", row.names="color")
+#positiveTable <- read.csv(file=args[5], row.names="color")
+positiveTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/Genotypes/fisherTest_positiveSelection_modules.csv", row.names="color")
 
 # import effect ANOVA p-values
-effectTable <- read.csv(file=args[6], row.names="module")
-#effectTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/DEGsANOVA_OLYM_30/aov_summary_pValues.csv", row.names="module")
+#effectTable <- read.csv(file=args[6], row.names="module")
+effectTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/DEGsANOVA_OLYM_30/aov_summary_pValues.csv", row.names="module")
 
 # set the full subset tag name
 tag <- paste(set, minModSize, sep="_")
@@ -163,7 +163,7 @@ dotplot <- ggplot(data = plotTable, aes(x = x_axis_order, y = Term, size = as.nu
   #geom_text(position = position_dodge(width = 1), aes(x=effect, y=0)) +
   xlab('Color') +
   ylab('GO Term') + 
-  scale_x_discrete(labels=c("sienna3"=expression(bold("sienna3")), "plum1"=expression(bold("plum1")), "darkgrey"=expression(italic("darkgrey")), "darkorange2"=expression(italic("darkorange2")), "floralwhite"=expression(italic("floralwhite")), "royalblue"=expression(italic("royalblue")), "salmon4"=expression(italic("salmon4")), parse=TRUE)) +
+  #scale_x_discrete(labels=c("sienna3"=expression(bold("sienna3")), "plum1"=expression(bold("plum1")), "darkgrey"=expression(italic("darkgrey")), "darkorange2"=expression(italic("darkorange2")), "floralwhite"=expression(italic("floralwhite")), "royalblue"=expression(italic("royalblue")), "salmon4"=expression(italic("salmon4")), parse=TRUE)) +
   labs(color = 'P-Value', size = 'Gene Rank')
 
 # view plot
@@ -206,3 +206,61 @@ dotplot
 
 # save the plot to a PDF file
 ggsave('dotplotModule_sigGO_faceted.pdf', plot = dotplot, device = 'pdf')
+
+
+# select the salmon4 module
+plotModules <- plotTable[plotTable$Color %in% c("lightyellow","salmon4","floralwhite","skyblue","sienna3"),]
+
+# setup facet groups
+x_axis_order <- factor(plotModules$Color, levels = color_list)
+facetLevel <- factor(plotModules$Level, levels = c('BP', 'CC', 'MF'))
+
+# create dot plot of significant GO terms
+dotplot <- ggplot(data = plotModules, aes(x = x_axis_order, y = Term, size = as.numeric(Significant), color = as.numeric(weightFisher))) + 
+  facet_grid(rows = facetLevel, space = 'free_y', scales = 'free') +
+  geom_point() +
+  #scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
+  scale_color_gradientn(colors = plotColorSubset) +
+  theme_bw()+
+  #theme(axis.text.x = element_text(angle = 90, color = plotModules$selection)) +
+  theme(axis.text.x = element_text(angle = 90)) +
+  #geom_text(position = position_dodge(width = 1), aes(x=effect, y=0)) +
+  xlab('Color') +
+  ylab('GO Term') + 
+  #scale_x_discrete(labels=c("sienna3"=expression(bold("sienna3")), "floralwhite"=expression(italic("floralwhite")), "salmon4"=expression(italic("salmon4")), parse=TRUE)) +
+  labs(color = 'P-Value', size = 'Gene Rank')
+
+# view plot
+dotplot
+
+# save the plot to a PDF file
+ggsave('dotplotModule_sigGO_selected.pdf', plot = dotplot, device = 'pdf')
+
+
+# select the salmon4 module
+plotResponsive <- plotTable[plotTable$Color %in% c("salmon4","skyblue"),]
+
+# setup facet groups
+x_axis_order <- factor(plotResponsive$Color, levels = color_list)
+facetLevel <- factor(plotResponsive$Level, levels = c('BP', 'CC', 'MF'))
+
+# create dot plot of significant GO terms
+dotplot <- ggplot(data = plotResponsive, aes(x = x_axis_order, y = Term, size = as.numeric(Significant), color = as.numeric(weightFisher))) + 
+  facet_grid(rows = facetLevel, space = 'free_y', scales = 'free') +
+  geom_point() +
+  #scale_color_gradientn(colors = heat.colors(10), limits=c(0, 0.05)) + 
+  scale_color_gradientn(colors = plotColorSubset) +
+  theme_bw()+
+  #theme(axis.text.x = element_text(angle = 90, color = plotResponsive$selection)) +
+  theme(axis.text.x = element_text(angle = 90)) +
+  #geom_text(position = position_dodge(width = 1), aes(x=effect, y=0)) +
+  xlab('Color') +
+  ylab('GO Term') + 
+  #scale_x_discrete(labels=c("sienna3"=expression(bold("sienna3")), "floralwhite"=expression(italic("floralwhite")), "salmon4"=expression(italic("salmon4")), parse=TRUE)) +
+  labs(color = 'P-Value', size = 'Gene Rank')
+
+# view plot
+dotplot
+
+# save the plot to a PDF file
+ggsave('dotplotModule_sigGO_responsive.pdf', plot = dotplot, device = 'pdf')

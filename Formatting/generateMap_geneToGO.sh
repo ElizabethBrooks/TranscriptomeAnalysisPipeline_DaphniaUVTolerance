@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# script to run Rscripts that perform DE analysis of gene count tables using glm in edgeR
+# script to map gene IDs with GO annotations
 # usage: bash generateMap_geneToGO.sh
 
 # retrieve functional annotations

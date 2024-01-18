@@ -29,12 +29,12 @@ plotColorSubset <- c(plotColors[4], plotColors[5], plotColors[6])
 options(scipen = 999)
 
 # set the working directory
-workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/AnnotationAnalysis"
+workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/AnnotationAnalysis/Genotypes"
 setwd(workingDir)
 
 # import module analysis results
-anovaTable <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/ANOVA_OLYM_30/aov_summary_pValues.csv")
-positiveTable <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/fisherTest_positiveSelection_modules.csv")
+anovaTable <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/DEGsANOVA_OLYM_30/aov_summary_pValues.csv")
+positiveTable <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/Genotypes/fisherTest_positiveSelection_modules.csv")
 
 # update anova module and column names
 anovaTable$module <- gsub("ME", "", anovaTable$module)
@@ -140,7 +140,7 @@ moduleCombinedTable <- merge(x = moduleCombinedTable, y = positiveTable,
                              by = "color", all=TRUE)
 
 # export module info
-outDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance"
+outDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes"
 exportFile <- paste(tag, "moduleInfo_size_anova_positive.csv", sep="-")
 exportFile <- paste(outDir, exportFile, sep="/")
 write.csv(file=exportFile, moduleCombinedTable, row.names=FALSE)
@@ -158,7 +158,8 @@ glm_list_venn <- list(treatment = geneSet_treatment,
 # create venn diagram
 jpeg("DEGs_venn.jpg")
 ggVennDiagram(glm_list_venn, label_alpha=0.25, category.names = c("Treatment","Tolerance","Interaction")) +
-  scale_colour_discrete(type = plotColorSubset)
+  scale_colour_discrete(type = plotColorSubset) +
+  scale_fill_distiller(palette = "Spectral")
 dev.off()
 
 
@@ -194,21 +195,38 @@ positiveSet_list <- list(Positive = geneSet_positive,
 # create venn diagram
 jpeg("positive_DEGs_modules_venn.jpg")
 ggVennDiagram(positiveSet_list, label_alpha=0.25, category.names = c("Positive","DEGs","Modules")) +
-  scale_colour_discrete(type = plotColorSubset)
+  scale_colour_discrete(type = plotColorSubset) +
+  scale_fill_distiller(palette = "Spectral")
 dev.off()
 
 
 # combined
 
 # create combined list of gene sets
-combinedSet_list <- list(KAP4 = geneSet_KAP4,
+combinedSet_list <- list(Treatment = geneSet_treatment, 
+                         Tolerance = geneSet_tolerance,
+                         Interaction = geneSet_interaction,
+                         Modules = geneSet_Modules)
+
+# create venn diagram
+jpeg("allDEGs_modules_venn.jpg")
+ggVennDiagram(combinedSet_list, label_alpha=0.25, category.names = c("Treatment","Tolerance","Interaction","Modules")) +
+  scale_colour_discrete(type = c(plotColorSubset, plotColors[10])) +
+  scale_fill_distiller(palette = "Blues", direction = 1)
+dev.off()
+
+
+# combined with GO
+
+# create combined list of gene sets
+combinedGOSet_list <- list(KAP4 = geneSet_KAP4,
                         Positive = geneSet_positive, 
                         DEGs = geneSet_DEGs,
                         Modules = geneSet_Modules)
 
 # create venn diagram
 jpeg("annotatedGO_positive_DEGs_modules_venn.jpg")
-ggVennDiagram(combinedSet_list, label_alpha=0.25, category.names = c("GO","Positive","DE","Modules")) +
+ggVennDiagram(combinedGOSet_list, label_alpha=0.25, category.names = c("GO","Positive","DE","Modules")) +
   scale_colour_discrete(type = c(plotColorSubset, plotColors[10]))
 dev.off()
 
