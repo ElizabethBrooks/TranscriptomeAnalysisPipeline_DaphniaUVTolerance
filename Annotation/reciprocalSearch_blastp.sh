@@ -18,16 +18,16 @@ module load bio/2.0
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
-elif [ $# -eq 1 ]; then # use PA42 protein seqs
+elif [ $# -eq 2 ]; then # use PA42 protein seqs
 	# Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
 	#Retrieve database absolute path for querying
-	reciprocalPath="$1"
-elif [ $# -eq 2 ]; then # expect two paths to protein seqs
-	# Retrieve genome reference absolute path for querying
-	inputsPath="$1"
-	#Retrieve database absolute path for querying
 	reciprocalPath="$2"
+elif [ $# -eq 3 ]; then # expect two paths to protein seqs
+	# Retrieve genome reference absolute path for querying
+	inputsPath="$2"
+	#Retrieve database absolute path for querying
+	reciprocalPath="$3"
 fi
 
 # set outputs path
