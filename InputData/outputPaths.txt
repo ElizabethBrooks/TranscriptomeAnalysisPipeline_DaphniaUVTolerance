@@ -1,5 +1,5 @@
 mergedFASTA: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
-qc: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
+qc: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI
 trimming: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 assemblingFree: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI
 assemblingGenome: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI

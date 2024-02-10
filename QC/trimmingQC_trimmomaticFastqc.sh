@@ -10,7 +10,7 @@
 #Usage Ex: qsub trimmingQC_trimmomaticFastqc.sh
 
 #Required modules for ND CRC servers
-module load bio
+module load bio/2.0
 #module load bio/trimmomatic/0.32
 
 #Prepare for adapter trimming and quality control
@@ -77,7 +77,7 @@ for f1 in "$readPath"/*1.fq.gz; do
 	echo $curSampleNoPath >> $inputOutFile
 	echo trimmomatic PE -threads 8 -phred"$score" $f1 "$curSample"2.fq.gz "$trimOut"/"$curSampleNoPath"pForward.fq.gz "$trimOut"/"$curSampleNoPath"uForward.fq.gz "$trimOut"/"$curSampleNoPath"pReverse.fq.gz "$trimOut"/"$curSampleNoPath"uReverse.fq.gz ILLUMINACLIP:"$adapterPath" LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 >> $inputOutFile
 	#Final quality control check using fastqc on the first trimmed paired read file
-	if [ qcCountEnd = 0 ]; then
+	#if [ qcCountEnd = 0 ]; then
 		#QC paired forward read
 		#...in progress...
 		fastqc "$trimOut"/"$curSampleNoPath"pForward.fq.gz --extract
@@ -85,9 +85,9 @@ for f1 in "$readPath"/*1.fq.gz; do
 			grep -iF "WARN" "$trimOut"/"$curSampleNoPath"pForward_fastqc/summary.txt > "$trimOut"/"$curSampleNoPath"fastqc_report.txt
 		fi
 		if grep -iF "FAIL" "$trimOut"/"$curSampleNoPath"pForward_fastqc/summary.txt; then
-			grep -iF "FAIL" "$trimOut"/"$curSampleNoPath"pForward_fastqc/summary.txt > "$trimOut"/"$curSampleNoPath"fastqc_report.txt
+			grep -iF "FAIL" "$trimOut"/"$curSampleNoPath"pForward_fastqc/summary.txt >> "$trimOut"/"$curSampleNoPath"fastqc_report.txt
 		fi
 		#Only QC one file
-		qcCountEnd=1
-	fi
+		#qcCountEnd=1
+	#fi
 done
