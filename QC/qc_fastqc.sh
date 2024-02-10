@@ -22,7 +22,7 @@ if [[ "$1" == "raw" ]]; then # raw data
 	readPath=$(grep "pairedReads:" ../InputData/inputPaths.txt | tr -d " " | sed "s/pairedReads://g")
 	# Make outputs directory
 	outputFolder=$outputsPath"/qc_"$1
-elif [[ "$1" == "trimmed" ]]; then # trimmed data
+elif [[ "$1" == "trimmed"* ]]; then # trimmed data
 	readPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
 	readPath=$readPath"/"$1
 	# Make outputs directory
