@@ -8,24 +8,26 @@
 # Script to perform fastqc quality control of paired end reads
 # Usage: qsub qc_fastqc.sh dataStage
 # Usage ex: qsub qc_fastqc.sh raw
-# Usage ex: qsub qc_fastqc.sh trimmed
+# Usage ex: qsub qc_fastqc.sh trimmed_run1
 
 # Required modules for ND CRC servers
 module load bio/2.0
+
+# Retrieve qc outputs absolute path
+outputsPath=$(grep "qc:" ../InputData/outputPaths.txt | tr -d " " | sed "s/qc://g")
 
 # Retrieve paired reads absolute path for alignment
 # TO DO: Double check read folder format for input
 if [[ "$1" == "raw" ]]; then # raw data
 	readPath=$(grep "pairedReads:" ../InputData/inputPaths.txt | tr -d " " | sed "s/pairedReads://g")
+	# Make outputs directory
+	outputFolder=$outputsPath"/qc_"$1
 elif [[ "$1" == "trimmed" ]]; then # trimmed data
 	readPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
+	readPath=$readPath"/"$1
+	# Make outputs directory
+	outputFolder=$outputsPath"/qc_"$1
 fi
-
-# Retrieve qc outputs absolute path
-outputsPath=$(grep "qc:" ../InputData/outputPaths.txt | tr -d " " | sed "s/qc://g")
-
-# Make outputs directory
-outputFolder=$outputsPath"/qc_fastqc_"$1
 
 #Make output directory
 mkdir "$outputFolder"
