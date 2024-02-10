@@ -3,8 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N reciprocalSearch_blastp_jobOutput
-#$ -pe smp 4
-#$ -q debug
+#$ -pe smp 8
 
 # Script to use blastp to translate the nucleotide sequences of a reference genome
 # for searching a protein database
@@ -78,13 +77,13 @@ fi
 # and output with outfmt6 header:
 #qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
 echo "Beginning blastp database search..."
-blastp -query "$inputsPath" -db "$reciprocalPath" -outfmt 6 -evalue 0.01 -num_threads 4 > "$outputFolder"/blastp.outfmt6
+blastp -query "$inputsPath" -db "$reciprocalPath" -outfmt 6 -evalue 0.01 -num_threads 8 > "$outputFolder"/blastp.outfmt6
 echo "Finished blastp database search!"
 #Output run commands to summary file
 echo "blastp -query $inputsPath -db $reciprocalPath  -outfmt 6 -evalue 0.01 -num_threads 8 >" "$outputFolder"/"blastp.outfmt6" >> "$inputOutFile"
 #Switch query and search paths for reciprocal search
 echo "Beginning reciprocal blastp database search..."
-blastp -query "$reciprocalPath" -db "$inputsPath" -outfmt 6 -evalue 0.01 -num_threads 4 > "$outputFolder"/blastp_reciprocal.outfmt6
+blastp -query "$reciprocalPath" -db "$inputsPath" -outfmt 6 -evalue 0.01 -num_threads 8 > "$outputFolder"/blastp_reciprocal.outfmt6
 echo "Finished reciprocal blastp database search!"
 #Output run commands to summary file
 echo "blastp -query $reciprocalPath -db $inputsPath -outfmt 6 -evalue 0.01 -num_threads 8 >" "$outputFolder"/"blastp_reciprocal.outfmt6" >> "$inputOutFile"
