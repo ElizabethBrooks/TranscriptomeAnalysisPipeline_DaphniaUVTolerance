@@ -8,9 +8,9 @@
 
 # Script to use blastp to translate the nucleotide sequences of a reference genome
 # for searching a protein database
-#Usage 1: qsub reciprocalSearch_blastp.sh proteomeFastaQuery
-#Usage 2: qsub reciprocalSearch_blastp.sh proteomeFastaDB proteomeFastaQuery
-#Usage ex: qsub reciprocalSearch_blastp.sh /afs/crc.nd.edu/group/pfrenderlab/mendel/OutgroupGenomes/ncbi_dataset_Drosophila_melanogaster/ncbi_dataset/data/GCF_000001215.4/protein.faa
+#Usage 1: qsub reciprocalSearch_blastp.sh searchTag proteomeFastaQuery
+#Usage 2: qsub reciprocalSearch_blastp.sh searchTag proteomeFastaDB proteomeFastaQuery
+#Usage ex: qsub reciprocalSearch_blastp.sh Dpulex_Dmelanogaster /afs/crc.nd.edu/group/pfrenderlab/mendel/OutgroupGenomes/ncbi_dataset_Drosophila_melanogaster/ncbi_dataset/data/GCF_000001215.4/protein.faa
 
 # Load necessary modules for ND CRC servers
 module load bio/2.0
@@ -35,9 +35,8 @@ fi
 outputFolder=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
 
 # set outputs absolute folder name
-dbTag=$(basename "$inputsPath")
-qTag=$(basename "$reciprocalPath")
-outputFolder=$outputFolder"/reciprocalSearched_blastp_"$dbTag"_"$qTag
+searchTag="$1"
+outputFolder=$outputFolder"/reciprocalSearched_blastp_"$searchTag
 #Name output file of inputs
 inputOutFile=$outputFolder"/reciprocalSearched_blastp_summary.txt"
 
