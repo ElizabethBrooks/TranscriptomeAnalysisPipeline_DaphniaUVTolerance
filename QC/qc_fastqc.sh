@@ -13,10 +13,6 @@
 # Required modules for ND CRC servers
 module load bio/2.0
 
-# Prepare for adapter trimming and quality control
-dirFlag=0
-runNum=1
-
 # Retrieve paired reads absolute path for alignment
 # TO DO: Double check read folder format for input
 if [[ "$1" == "raw" ]]; then # raw data
@@ -43,21 +39,21 @@ cd "$outputFolder"
 
 #Loop through all forward and reverse reads and run fastqc on each pair
 #TO DO: Double check read folder format for input
-for f1 in "$readPath"/*1.fq.gz; do
+for f1 in "$readPath"/*.fq.gz; do
 	#Trim extension from current file name
-	curSample=$(echo $f1 | sed 's/.\.fq\.gz//')
+	#curSample=$(echo $f1 | sed 's/.\.fq\.gz//')
 	#Trim file path from current file name
-	curSampleNoPath=$(basename $f1)
-	curSampleNoPath=$(echo $curSampleNoPath | sed 's/.\.fq\.gz//')
+	#curSampleNoPath=$(basename $f1)
+	#curSampleNoPath=$(echo $curSampleNoPath | sed 's/.\.fq\.gz//')
 	#Quality control check using fastqc
 	# and grep to search for warnings and fails
 	#QC paired forward read
 	#...in progress...
-	fastqc "$outputFolder"/"$curSampleNoPath"pForward.fq.gz --extract
-	if grep -iF "WARN" "$outputFolder"/"$curSampleNoPath"pForward_fastqc/summary.txt; then
-		grep -iF "WARN" "$outputFolder"/"$curSampleNoPath"pForward_fastqc/summary.txt > "$outputFolder"/"$curSampleNoPath"fastqc_report.txt
-	fi
-	if grep -iF "FAIL" "$outputFolder"/"$curSampleNoPath"pForward_fastqc/summary.txt; then
-		grep -iF "FAIL" "$outputFolder"/"$curSampleNoPath"pForward_fastqc/summary.txt >> "$outputFolder"/"$curSampleNoPath"fastqc_report.txt
-	fi
+	fastqc -o "$outputFolder" $f1  --extract
+	#if grep -iF "WARN" "$outputFolder"/"$curSampleNoPath"pForward_fastqc/summary.txt; then
+	#	grep -iF "WARN" "$outputFolder"/"$curSampleNoPath"pForward_fastqc/summary.txt > "$outputFolder"/"$curSampleNoPath"fastqc_report.txt
+	#fi
+	#if grep -iF "FAIL" "$outputFolder"/"$curSampleNoPath"pForward_fastqc/summary.txt; then
+	#	grep -iF "FAIL" "$outputFolder"/"$curSampleNoPath"pForward_fastqc/summary.txt >> "$outputFolder"/"$curSampleNoPath"fastqc_report.txt
+	#fi
 done
