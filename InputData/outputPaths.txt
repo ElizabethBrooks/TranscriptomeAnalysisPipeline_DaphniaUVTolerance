@@ -10,7 +10,7 @@ DEAnalysis: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/B
 translation: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI
 proteinSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
 transcriptSearch: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq
-reciprocalSearch: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq
+reciprocalSearch: /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI
 orthoFinder: /scratch365/ebrooks5/rnaseq
 GSEA: /home/mae/Documents/RNASeq_Workshop_ND/GSEA_Results
 alignmentAnalysis: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq

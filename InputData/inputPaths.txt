@@ -13,3 +13,4 @@ functionalAnnotations: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/KAP4_
 geneAnnotations: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/GeneAnnotations
 annotations: /afs/crc.nd.edu/group/pfrenderlab/mendel/ebrooks/rnaseq/AnnotationAnalysis
 geneSets: /Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GSEA
+outgroupGenomes: /afs/crc.nd.edu/group/pfrenderlab/mendel/OutgroupGenomes
