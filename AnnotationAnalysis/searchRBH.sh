@@ -7,7 +7,7 @@
 
 # script to filter reciprocal blast results for best hits
 # Usage: qsub searchRBH.sh searchTag
-# Usage ex: qsub reciprocalSearch_blastp.sh Dpulex_Dmelanogaster
+# Usage ex: qsub searchRBH.sh Dpulex_Dmelanogaster
 
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
@@ -15,7 +15,7 @@ if [ $# -eq 0 ]; then
 fi
 
 # retrieve inputs absolute path
-inputsPath=$(grep "reciprocalSearch:" ../InputData/inputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
+inputsPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
 
 # set inputs and outputs absolute folder name
 searchTag="$1"
