@@ -36,6 +36,7 @@ outputFolder=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " "
 # set outputs absolute folder name
 searchTag="$1"
 outputFolder=$outputFolder"/reciprocalSearched_blastp_"$searchTag
+
 #Name output file of inputs
 inputOutFile=$outputFolder"/reciprocalSearched_blastp_summary.txt"
 
@@ -46,6 +47,7 @@ if [ $? -ne 0 ]; then
 	echo "The $outputFolder directory already exsists... please remove before proceeding."
 	exit 1
 fi
+
 #Move to output folder
 cd "$outputFolder"
 

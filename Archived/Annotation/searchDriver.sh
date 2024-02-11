@@ -1,43 +1,46 @@
 #!/bin/bash
 #Script to perform sequence searches using a selected program for an input transcript data set
 #Usage: bash searchDriver.sh method PA42Target assembledFolder sampleList
+#Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins trimmed_run1/clusteredNucleotides_cdhit_0.98 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash searchDriver.sh consensus PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash searchDriver.sh plot PA42_v3.0_proteins trimmed_run1
+#Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins sortedCoordinate_samtoolsHisat2_run2 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins dnaDamageResponse/Dmel_Svetec_2016 Dmel
+#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins uvResponsive/Tcast_Guo_2019 Tcast
+#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins uvResponsive/Dmel_Svetec_2016 Dmel
+#Usage Ex: bash searchDriver.sh RBH dnaDamageResponse/Dmel_Svetec_2016 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_v4.1_proteins
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "ERROR: No folder name(s) supplied... exiting"
    	exit 1
 fi
-
-# set outputs path
-outputFolder=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
-
-# set outputs absolute folder name
-searchTag="$1"
-outputFolder=$outputFolder"/reciprocalSearched_blastp_"$searchTag
-
+#set output summary file path
+outPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
 #Set merged summary file name and header
 if [[ "$1" == RBH ]]; then
 	#Set output file name
 	inputTag=$(echo $3 | sed 's/\//_/g')
 	dbTag=$(echo $2 | sed 's/\//_/g')
-	outFile="$outputFolder"/RBHB/"$inputTag"_"$dbTag"_blastp_summary.txt
+	outFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_summary.txt
 	#Add header to output summary file
 	echo "query,db,queryHits,dbHits,bestHits" > "$outFile"
 elif [[ "$1" == consensus* ]]; then
 	#Set output file names
 	inputTag=$(echo $3 | sed 's/\//_/g')
 	dbTag=$(echo $2 | sed 's/\//_/g')
-	outFile="$outputFolder"/RBHB/"$inputTag"_"$dbTag"_blastp_consensusSummary.txt
+	outFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_consensusSummary.txt
 	#Add header to output summary file
 	echo "query,db,consensus,queryRBH,dbRBH,consensusRBH" > "$outFile"
 else
 	echo "Invalid analysis method entered... exiting!"
 	exit 1
 fi
-
 #Initialize variables
 counter=0
-inputOutFile="$outputFolder"/RBHB/"$inputTag"_"$dbTag"_inputsSummary.txt
+inputOutFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_inputsSummary.txt
 #Loop through all input sets of treatments and perform t-test analsysis
 for i in "$@"; do
 	#Determine what type of data folder was input
@@ -98,13 +101,12 @@ for i in "$@"; do
 	fi
 	counter=$(($counter+1))
 done
-
 #Check if plotting was selected
 if [ "$1" == plot ]; then
 	#Load necessary modules
 	module load R
 	#Retrieve output file name
-	outFile="$outputFolder"/reciprocalSearched_blastp/"$inputTag"_"$dbTag"_blastp_summary.txt
+	outFile="$outPath"/reciprocalSearched_blastp/"$inputTag"_"$dbTag"_blastp_summary.txt
 	#Usage: Rscript blastpStats_barPlots.r title blastpSummaryFile
 	echo "Plotting blastp results for $3 and $2..."
 	Rscript blastpStats_barPlots.r "$3" "$outFile"
