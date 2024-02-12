@@ -43,7 +43,7 @@ bestHitsRDB="$outputFolder"/"blastp_bestHits_reciprocal.outfmt6"
 awk '!seen[$1]++' $inputDBPath > $bestHitsDB
 awk '!seen[$1]++' $inputRDBPath > $bestHitsRDB
 
-#Pre-clean up
+# add header
 echo "queryHit,dbHit,db" > $outFileRBH
 
 #Loop over first set of annotations
@@ -56,9 +56,9 @@ do
 done < $bestHitsDB
 
 #Check number of lines
-#echo "Recodring number of entries..."
-#echo "query,db,queryHits,dbHits,bestHits,similarity" > "$outFileResults"
+echo "Recodring number of entries..."
+echo "db_query,queryHits,dbHits,bestHits" > "$outFile"
 queryHits=$(wc -l "$bestHitsDB" | cut -d ' ' -f 1)
 dbHits=$(wc -l "$bestHitsRDB" | cut -d ' ' -f 1)
 bestHits=$(($(wc -l "$outFileRBH" | cut -d ' ' -f 1)-1))
-echo "$2","$3","$queryHits","$dbHits","$bestHits" >> "$outFile"
+echo "$1","$queryHits","$dbHits","$bestHits" >> "$outFile"

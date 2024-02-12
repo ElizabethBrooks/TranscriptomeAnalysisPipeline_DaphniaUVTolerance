@@ -7,9 +7,10 @@
 
 # Script to use blastp to translate the nucleotide sequences of a reference genome
 # for searching a protein database
-#Usage 1: qsub reciprocalSearch_blastp.sh searchTag proteomeFastaQuery
-#Usage 2: qsub reciprocalSearch_blastp.sh searchTag proteomeFastaDB proteomeFastaQuery
+#Usage 1: qsub reciprocalSearch_blastp.sh db_query proteomeFastaQuery
+#Usage 2: qsub reciprocalSearch_blastp.sh db_query proteomeFastaDB proteomeFastaQuery
 #Usage ex: qsub reciprocalSearch_blastp.sh Dpulex_Dmelanogaster /afs/crc.nd.edu/group/pfrenderlab/mendel/OutgroupGenomes/ncbi_dataset_Drosophila_melanogaster/ncbi_dataset/data/GCF_000001215.4/protein.faa
+#Usage ex: qsub reciprocalSearch_blastp.sh Dpulex_Dmelanica /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/variantsConsensus/filteredMapQ_consensus.fa
 
 # Load necessary modules for ND CRC servers
 module load bio/2.0
@@ -21,12 +22,12 @@ if [ $# -eq 0 ]; then
 elif [ $# -eq 2 ]; then # use PA42 protein seqs
 	# Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
-	#Retrieve database absolute path for querying
+	# Retrieve database absolute path for querying
 	reciprocalPath="$2"
 elif [ $# -eq 3 ]; then # expect two paths to protein seqs
 	# Retrieve genome reference absolute path for querying
 	inputsPath="$2"
-	#Retrieve database absolute path for querying
+	# Retrieve database absolute path for querying
 	reciprocalPath="$3"
 fi
 
