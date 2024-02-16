@@ -51,15 +51,15 @@ while read line; do
 		cat $workingDir"/tmpHeader.csv" > $workingDir"/"$counter"_tmpMod.csv"
 		echo "$line" >> $workingDir"/"$counter"_tmpMod.csv"
 		# calcluate ANOVA for treatment and $analysisType effects
-		Rscript "DEGsANOVA_OLYM"$analysisType"_aov.R" $workingDir $workingDir"/"$counter"_tmpMod.csv" $designFile
+		echo Rscript "DEGsANOVA_OLYM"$analysisType"_aov.R" $workingDir $workingDir"/"$counter"_tmpMod.csv" $designFile
 		# clean up
-		rm $workingDir"/"$counter"_tmpMod.csv"
+		#rm $workingDir"/"$counter"_tmpMod.csv"
 	fi
 	let "counter=counter+1"
 done < $expData
 
 # clean up
-rm $workingDir"/tmpHeader.csv"
+#rm $workingDir"/tmpHeader.csv"
 
 # summarize the ANOVA results
 bash "DEGsANOVA_OLYM"$analysisType"_summarize.sh" $workingDir $analysisType $set $minModSize

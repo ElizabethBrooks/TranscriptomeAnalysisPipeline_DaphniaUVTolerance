@@ -30,16 +30,19 @@ args = commandArgs(trailingOnly=TRUE)
 
 # set working directory
 workingDir = args[1];
+#workingDir = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/DEGsANOVA_OLYM_30/"
 setwd(workingDir)
 
 # import expression data
 inputTable <- read.csv(args[2], row.names="gene")
+#inputTable <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/DEGsANOVA_OLYM_30/2_tmpMod.csv", row.names="gene")
 
 # transpose expression data
 inputTable <- as.data.frame(t(inputTable))
 
 # import grouping factor
 targets <- read.csv(file=args[3], row.names="sample")
+#targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsFullDesign.csv", row.names="sample")
 
 # setup data frame
 expData <- merge(targets, inputTable, by = 'row.names') 
