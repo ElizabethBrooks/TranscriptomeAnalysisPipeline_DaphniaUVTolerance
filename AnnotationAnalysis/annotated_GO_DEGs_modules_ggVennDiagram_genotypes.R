@@ -189,32 +189,32 @@ get_interesting_DE_genes <- function(geneUniverse){
 
 # create named list of all genes (gene universe) and p-values
 # the gene universe is set to be the list of all genes contained in the gene2GO list of annotated genes
+list_genes_treatment <- as.numeric(treatmentTable$FDR)
+list_genes_treatment <- setNames(list_genes_treatment, rownames(treatmentTable))
+list_genes_treatment_filtered <- list_genes_treatment[names(list_genes_treatment) %in% names(GOmaps)]
+list_genes_tolerance <- as.numeric(toleranceTable$FDR)
+list_genes_tolerance <- setNames(list_genes_tolerance, rownames(toleranceTable))
+list_genes_tolerance_filtered <- list_genes_tolerance[names(list_genes_tolerance) %in% names(GOmaps)]
 list_genes_interaction <- as.numeric(interactionTable$FDR)
 list_genes_interaction <- setNames(list_genes_interaction, rownames(interactionTable))
 list_genes_interaction_filtered <- list_genes_interaction[names(list_genes_interaction) %in% names(GOmaps)]
-list_genes_treatment <- as.numeric(interactionTable$FDR)
-list_genes_treatment <- setNames(list_genes_treatment, rownames(interactionTable))
-list_genes_treatment_filtered <- list_genes_treatment[names(list_genes_treatment) %in% names(GOmaps)]
-list_genes_tolerance <- as.numeric(interactionTable$FDR)
-list_genes_tolerance <- setNames(list_genes_tolerance, rownames(interactionTable))
-list_genes_tolerance_filtered <- list_genes_tolerance[names(list_genes_tolerance) %in% names(GOmaps)]
 
 # create topGOdata objects for enrichment analysis
-BP_GO_data_interaction <- new('topGOdata', ontology = 'BP', allGenes = list_genes_interaction_filtered, 
-                  geneSel = get_interesting_DE_genes, nodeSize = 10, annot = annFUN.gene2GO, 
-                  gene2GO = GOmaps)
 BP_GO_data_treatment <- new('topGOdata', ontology = 'BP', allGenes = list_genes_treatment_filtered, 
-                  geneSel = get_interesting_DE_genes, nodeSize = 10, annot = annFUN.gene2GO, 
-                  gene2GO = GOmaps)
+                            geneSel = get_interesting_DE_genes, nodeSize = 10, annot = annFUN.gene2GO, 
+                            gene2GO = GOmaps)
 BP_GO_data_tolerance <- new('topGOdata', ontology = 'BP', allGenes = list_genes_tolerance_filtered, 
-                  geneSel = get_interesting_DE_genes, nodeSize = 10, annot = annFUN.gene2GO, 
-                  gene2GO = GOmaps)
+                            geneSel = get_interesting_DE_genes, nodeSize = 10, annot = annFUN.gene2GO, 
+                            gene2GO = GOmaps)
+BP_GO_data_interaction <- new('topGOdata', ontology = 'BP', allGenes = list_genes_interaction_filtered, 
+                              geneSel = get_interesting_DE_genes, nodeSize = 10, annot = annFUN.gene2GO, 
+                              gene2GO = GOmaps)
 
 # retrieve geneIDs associated with all GO terms
 # https://support.bioconductor.org/p/29775/
-allGO_interaction = genesInTerm(BP_GO_data_interaction)
 allGO_treatment = genesInTerm(BP_GO_data_treatment)
 allGO_tolerance = genesInTerm(BP_GO_data_tolerance)
+allGO_interaction = genesInTerm(BP_GO_data_interaction)
 
 # combine GO lists
 allGO <- modifyList(allGO_interaction, allGO_treatment)
