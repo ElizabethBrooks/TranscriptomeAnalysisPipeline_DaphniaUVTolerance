@@ -220,69 +220,6 @@ allGO_interaction = genesInTerm(BP_GO_data_interaction)
 allGO <- modifyList(allGO_interaction, allGO_treatment)
 allGO <- modifyList(allGO, allGO_tolerance)
 
-# treatment significant BP terms
-#GO.ID,Term,Annotated,Significant,Expected,weightFisher
-#GO:0055085,transmembrane transport,615,33,21.07,0.0000089
-#GO:0006783,heme biosynthetic process,13,4,0.45,0.00075
-#GO:0042886,amide transport,19,4,0.65,0.00346
-#GO:0034620,cellular response to unfolded protein,45,3,1.54,0.00672
-#GO:0006821,chloride transport,53,5,1.82,0.00831
-#GO:0006811,monoatomic ion transport,369,17,12.64,0.01066
-#GO:0016311,dephosphorylation,136,7,4.66,0.01685
-#GO:0006744,ubiquinone biosynthetic process,17,3,0.58,0.01891
-#GO:0034599,cellular response to oxidative stress,19,3,0.65,0.02563
-#GO:0098869,cellular oxidant detoxification,67,6,2.3,0.02653
-#GO:1901607,alpha-amino acid biosynthetic process,35,4,1.2,0.03057
-#GO:0006820,monoatomic anion transport,73,7,2.5,0.03507
-#GO:0006796,phosphate-containing compound metabolic ...,788,23,26.99,0.03775
-#GO:0006936,muscle contraction,10,2,0.34,0.04386
-#GO:0000096,sulfur amino acid metabolic process,10,2,0.34,0.04386
-#GO:0001654,eye development,10,2,0.34,0.04386
-#GO:0019637,organophosphate metabolic process,304,10,10.41,0.04461
-#GO:0006749,glutathione metabolic process,40,4,1.37,0.04680
-# tolerance significant BP terms
-#GO.ID,Term,Annotated,Significant,Expected,weightFisher
-#GO:0015074,DNA integration,22,7,0.6,0.0000011
-#GO:0006508,proteolysis,720,31,19.49,0.00043
-#GO:0003341,cilium movement,16,4,0.43,0.00073
-#GO:0036158,outer dynein arm assembly,10,3,0.27,0.00204
-#GO:0048477,oogenesis,37,4,1,0.01711
-#GO:0021556,central nervous system formation,23,3,0.62,0.02322
-#GO:0090502,RNA phosphodiester bond hydrolysis, endo...,82,6,2.22,0.02324
-#GO:0008152,metabolic process,4443,118,120.3,0.02594
-#GO:0008592,regulation of Toll signaling pathway,25,3,0.68,0.02899
-#GO:0031507,heterochromatin formation,11,2,0.3,0.03415
-#GO:0097194,execution phase of apoptosis,29,4,0.79,0.04602
-# interaction significant BP terms
-#GO.ID,Term,Annotated,Significant,Expected,weightFisher
-#GO:0055085,transmembrane transport,615,52,38.73,0.00003
-#GO:0015074,DNA integration,22,7,1.39,0.00028
-#GO:0006082,organic acid metabolic process,286,34,18.01,0.00150
-#GO:0006508,proteolysis,720,59,45.34,0.00151
-#GO:0006805,xenobiotic metabolic process,16,5,1.01,0.00237
-#GO:0006783,heme biosynthetic process,13,4,0.82,0.00703
-#GO:0048477,oogenesis,37,7,2.33,0.00740
-#GO:0006749,glutathione metabolic process,40,7,2.52,0.01139
-#GO:0034645,cellular macromolecule biosynthetic proc...,562,28,35.39,0.01191
-#GO:0003341,cilium movement,16,4,1.01,0.01539
-#GO:0007166,cell surface receptor signaling pathway,285,25,17.95,0.01629
-#GO:0046474,glycerophospholipid biosynthetic process,69,5,4.35,0.01950
-#GO:0000096,sulfur amino acid metabolic process,10,3,0.63,0.02134
-#GO:0034620,cellular response to unfolded protein,45,7,2.83,0.02156
-#GO:0019637,organophosphate metabolic process,304,19,19.14,0.02169
-#GO:0051923,sulfation,18,4,1.13,0.02343
-#GO:0098869,cellular oxidant detoxification,67,9,4.22,0.02364
-#GO:0006418,tRNA aminoacylation for protein translat...,37,6,2.33,0.02651
-#GO:0098656,monoatomic anion transmembrane transport,40,4,2.52,0.02814
-#GO:1901135,carbohydrate derivative metabolic proces...,420,22,26.45,0.02926
-#GO:0016311,dephosphorylation,136,9,8.56,0.03188
-#GO:0006520,amino acid metabolic process,149,20,9.38,0.03344
-#GO:0006979,response to oxidative stress,85,11,5.35,0.03498
-#GO:0006950,response to stress,515,40,32.43,0.04266
-#GO:0051453,regulation of intracellular pH,13,3,0.82,0.04420
-#GO:0071902,positive regulation of protein serine/th...,13,3,0.82,0.04420
-#GO:1901607,alpha-amino acid biosynthetic process,35,5,2.2,0.04590
-
 # geneIDs with repair or other interesting GO terms
 # The repair pathway GO terms we specifically explored in the analysis were DNA repair (GO:0006281), mismatch repair (MMR; GO:0006298), base excision repair (BER; GO:0006284), homologous recombination (HR; GO:0035825), nucleotide excision repair (NER; GO:0006289), intrastrand crosslink repair (ICL repair; GO:0036297), double strand break repair (DSBR; GO:0006302), single strand break repair (SSBR; GO:0000012).
 DNAR <- unlist(allGO["GO:0006281"]) # not sig

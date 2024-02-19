@@ -66,8 +66,9 @@ glm_list_venn <- list(Treatment = geneSet_treatment,
 # DE euler diagram
 euler_plot <- euler(glm_list_venn)
 jpeg("sigDEGS_euler.jpg")
-plot(euler_plot, fills = plotColorSubset, quantities = list(type = c("percent", "counts")))
+plot(euler_plot, fills = plotColorSubset, quantities = list(type = "counts"))
 dev.off()
+
 
 # GO annotations
 
@@ -181,8 +182,8 @@ SSBR <- unlist(allGO["GO:0000012"]) # not sig
 # response to X-ray (GO:0010165), positive regulation of cellular response to gamma radiation	(GO:1905845), negative regulation of cellular response to gamma radiation (GO:1905844), cellular response to X-ray (GO:0071481), regulation of cellular response to X-ray (GO:2000683), negative regulation of cellular response to X-ray (GO:2000684), positive regulation of cellular response to X-ray (GO:2000685), 
 # phototransduction UV (GO:0007604), response to UV (GO:0009411), response to UV-A (GO:0070141), detection of UV (GO:0009589), cellular response to UV (GO:0034644), cellular response to UV-A (GO:0071492), response to UV-B	4 (GO:0010224), cellular response to UV-B (GO:0071493), response to UV-C (GO:0010225), 
 # regulation of mRNA stability involved in cellular response to UV (GO:1902629), cellular response to UV-C (GO:0071494), regulation of translation involved in cellular response to UV (GO:1904803).
-radiation <- unlist(allGO["GO:0009314"]) # not sig
-cell <- unlist(allGO["GO:0071478"]) # not sig
+#radiation <- unlist(allGO["GO:0009314"]) # not sig
+#cell <- unlist(allGO["GO:0071478"]) # not sig
 # The stress terms included response to stress (GO:0006950), response to oxidative stress (GO:0006979), cellular response to oxidative stress (GO:0034599), 
 # positive regulation of translation in response to oxidative stress (GO:0032939), cellular response to reactive oxygen (GO:0034614), negative regulation of cellular response to oxidative stress (GO:1900408), positive regulation of cellular response to oxidative stress (GO:1900409), 
 # negative regulation of translation in response to oxidative stress (GO:0032938), regulation of translation in response to oxidative stress (GO:0043556), Mcs4 RR-MAPKKK complex (GO:1990315), cellular response to hydroperoxide (GO:0071447), 
@@ -190,7 +191,7 @@ cell <- unlist(allGO["GO:0071478"]) # not sig
 stress <- unlist(allGO["GO:0006950"]) # interaction sig
 oxidative <- unlist(allGO["GO:0006979"]) # interaction sig
 cellOxidative <- unlist(allGO["GO:0034599"]) # treatment sig
-cellReactiveOxy <- unlist(allGO["GO:0034614"]) # not sig
+#cellReactiveOxy <- unlist(allGO["GO:0034614"]) # not sig
 
 # euler diagram with interesting repair GO terms
 glm_list_venn_repairGO <-list(tolerance = geneSet_tolerance,
@@ -219,5 +220,5 @@ glm_list_venn_stressGO <-list(tolerance = geneSet_tolerance,
 #cellReactiveOxy = cellReactiveOxy)
 euler_plot_stressGO <- euler(glm_list_venn_stressGO)#, shape = "ellipse")
 jpeg("GOAnalysis/sigBP_stress_euler.jpg")
-plot(euler_plot_stressGO)#, fills = plotColors[1:6])
+plot(euler_plot_stressGO, quantities = list(type = c("counts")))#, fills = plotColors[1:6])
 dev.off()
