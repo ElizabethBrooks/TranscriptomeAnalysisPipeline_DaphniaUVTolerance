@@ -4,6 +4,9 @@
 
 #install.packages("eulerr")
 
+# load librarys
+library(stringr)
+
 # turn off scientific notation
 options(scipen = 999)
 
@@ -11,12 +14,23 @@ options(scipen = 999)
 workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes"
 setwd(workingDir)
 
+# read in BP GO term enrichment results
+treatmentGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis/treatment_BP_sigGO_terms.csv")
+toleranceGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis/tolerance_BP_sigGO_terms.csv")
+interactionGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis/interaction_BP_sigGO_terms.csv")
+
 # import modules GO data
-modulesNames <- list.files(path="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30/", pattern = "_BP_sigGO_terms.csv$")
-modulesNames <- str_remove(modulesNames, "_BP_sigGO_terms.csv")
-modulesFiles <- list.files(path="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30/", pattern = "_BP_sigGO_terms.csv$", full.names = TRUE)
+modulesNames <- list.files(path="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30/", pattern = "_BP_sigGO_terms.csv.flt$")
+modulesNames <- str_remove(modulesNames, "_BP_sigGO_terms.csv.flt")
+modulesFiles <- list.files(path="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30/", pattern = "_BP_sigGO_terms.csv.flt$", full.names = TRUE)
 modulesGO <- lapply(modulesFiles, read.csv)
 names(modulesGO) <- modulesNames
+
+# combine GO data
+combinedGO <- modulesGO
+combinedGO[["Treatment"]] <- data.frame(GO.ID = treatmentGO$GO.ID)
+combinedGO[["Tolerance"]] <- data.frame(GO.ID = toleranceGO$GO.ID)
+combinedGO[["Interaction"]] <- data.frame(GO.ID = interactionGO$GO.ID)
 
 # geneIDs with repair or other interesting GO terms
 # The repair pathway GO terms we specifically explored in the analysis were DNA repair (GO:0006281), mismatch repair (MMR; GO:0006298), base excision repair (BER; GO:0006284), homologous recombination (HR; GO:0035825), nucleotide excision repair (NER; GO:0006289), intrastrand crosslink repair (ICL repair; GO:0036297), double strand break repair (DSBR; GO:0006302), single strand break repair (SSBR; GO:0000012).
@@ -27,7 +41,9 @@ repairTerms <- list(DNAR = "GO:0006281",
                     NER = "GO:0006289",
                     ICLR = "GO:0036297",
                     DSBR = "GO:0006302",
-                    SSBR = "GO:0000012"
+                    SSBR = "GO:0000012",
+                    PR = "GO:0000719",
+                    PA = "GO:0003904"
 )
 
 # The radiation response terms included response to radiation (GO:0009314), cellular response to radiation (GO:0071478), phototransduction UV (GO:0007604),
@@ -77,12 +93,11 @@ stressTerms <- list(stress = "GO:0006950",
 # loop over each repair term
 print("REPAIR")
 # loop over each module
-for(i in 1:length(modulesGO)){
+for(i in 1:length(combinedGO)){
   for(j in 1:length(repairTerms)){
-    test <- modulesGO[[i]][["GO.ID"]]
+    test <- combinedGO[[i]][["GO.ID"]]
     if (repairTerms[[j]] %in% test) {
-      print(names(modulesGO)[i])
-      print(test[test == repairTerms[[j]]])
+      print(paste(names(combinedGO)[i], test[test == repairTerms[[j]]], names(repairTerms[j])), quote = FALSE)
     }
   }
 }
@@ -90,12 +105,11 @@ for(i in 1:length(modulesGO)){
 # loop over each radiation term
 print("RADIATION")
 # loop over each module
-for(i in 1:length(modulesGO)){
+for(i in 1:length(combinedGO)){
   for(j in 1:length(radiationTerms)){
-    test <- modulesGO[[i]][["GO.ID"]]
+    test <- combinedGO[[i]][["GO.ID"]]
     if (radiationTerms[[j]] %in% test) {
-      print(names(modulesGO)[i])
-      print(test[test == radiationTerms[[j]]])
+      print(paste(names(combinedGO)[i], test[test == radiationTerms[[j]]], names(radiationTerms[j])), quote = FALSE)
     }
   }
 }
@@ -103,12 +117,11 @@ for(i in 1:length(modulesGO)){
 # loop over each stress term
 print("STRESS")
 # loop over each module
-for(i in 1:length(modulesGO)){
+for(i in 1:length(combinedGO)){
   for(j in 1:length(stressTerms)){
-    test <- modulesGO[[i]][["GO.ID"]]
+    test <- combinedGO[[i]][["GO.ID"]]
     if (stressTerms[[j]] %in% test) {
-      print(names(modulesGO)[i])
-      print(test[test == stressTerms[[j]]])
+      print(paste(names(combinedGO)[i], test[test == stressTerms[[j]]], names(stressTerms[j])), quote = FALSE)
     }
   }
 }

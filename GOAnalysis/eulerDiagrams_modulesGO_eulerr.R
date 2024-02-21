@@ -8,7 +8,7 @@
 options(scipen = 999)
 
 # set the working directory
-workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes"
+workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30"
 setwd(workingDir)
 
 # load librarys
@@ -16,6 +16,7 @@ library(topGO)
 library(eulerr)
 library(rcartocolor)
 library(stringr)
+library(tidyr)
 
 # Plotting Palettes
 # https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
@@ -63,16 +64,17 @@ glm_list_venn <- list(Treatment = geneSet_treatment,
                       Tolerance = geneSet_tolerance,
                       Interaction = geneSet_interaction)
 
+## PUB
 # DE euler diagram
 euler_plot <- euler(glm_list_venn)
-#jpeg("sigDEGS_euler.jpg")
-plot(euler_plot, fills = plotColorSubset, quantities = list(type = c("percent", "counts")))
-#dev.off()
+jpeg("sigDEGS_euler.jpg")
+plot(euler_plot, fills = plotColorSubset, quantities = list(type = "counts"))
+dev.off()
 
 # import modules GO data
-modulesNames <- list.files(path="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30/", pattern = "_BP_sigGO_terms.csv$")
-modulesNames <- str_remove(modulesNames, "_BP_sigGO_terms.csv")
-modulesFiles <- list.files(path="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30/", pattern = "_BP_sigGO_terms.csv$", full.names = TRUE)
+modulesNames <- list.files(path="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30/", pattern = "_BP_sigGO_terms.csv.flt$")
+modulesNames <- str_remove(modulesNames, "_BP_sigGO_terms.csv.flt")
+modulesFiles <- list.files(path="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30/", pattern = "_BP_sigGO_terms.csv.flt$", full.names = TRUE)
 modulesGO <- lapply(modulesFiles, read.csv)
 names(modulesGO) <- modulesNames
 
@@ -137,6 +139,43 @@ for(i in 1:numMods){
   modSizes <-rbind(modSizes, moduleData)
 }
 
+# retrieve dN dS values
+#dNdSTable <- read.csv(file = args[6], row.names="geneID")
+dNdSTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Pulex_Olympics_kaksResults.csv", row.names="geneID")
+
+# remove NAs
+dNdSSubset <- na.omit(dNdSTable)
+
+# subset dN dS values to remove outliers
+#dNdSSubset <- dNdSSubset[dNdSSubset$dNdS < 99,]
+
+
+# merging data frames
+# https://sparkbyexamples.com/r-programming/r-join-data-frames-with-examples/#full-outer-join
+
+# add geneID column
+geneID <- row.names(dNdSSubset)
+dNdSSubset <- cbind(geneID,dNdSSubset)
+colnames(resultsTable)[1] ="geneID"
+
+# full outer join data frames
+resultsTable <- merge(x = resultsTable, y = dNdSSubset, 
+                      by = "geneID", all=TRUE)
+
+# set color and numner tags for NAs
+resultsTable$color <- resultsTable$color %>% replace_na('None')
+resultsTable$number <- resultsTable$number %>% replace_na('0')
+
+# remove NAs
+resultsTable <- na.omit(resultsTable)
+
+# update the number of modules
+numMods <- numMods + 1
+
+# update the table of module colors
+colorTable[nrow(colorTable) + 1,] <- c("None","0")
+
+
 # read in GO mappings
 GOmaps <- readMappings(file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/geneToGO_tagged_map.txt")
 
@@ -150,6 +189,38 @@ list_genes_filtered <- list_genes[names(list_genes) %in% names(GOmaps)]
 #steelblueGenes <- resultsTable[resultsTable$color == "steelblue",]$gene
 #floralwhiteGenes <- resultsTable[resultsTable$color == "floralwhite",]$gene
 #salmon4Genes <- resultsTable[resultsTable$color == "salmon4",]$gene
+
+# combine all tables
+effectTable <- rbind(interactionSig, treatmentSig, toleranceSig)
+
+# add geneID column
+effectTable$geneID <- row.names(effectTable)
+
+# setup gene sets
+geneSet_positive <- row.names(dNdSSubset)
+geneSet_DEGs <- effectTable$geneID
+geneSet_Modules <- resultsTable$gene
+
+## PUB
+# euler diagram of modules, DEGs, and positively selected genes
+positiveSet_list <- list(Positive = geneSet_positive,
+                         DEGs = geneSet_DEGs,
+                         Modules = geneSet_Modules)
+euler_plot_modulesDEGsPositive <- euler(positiveSet_list)
+jpeg(filename = "positive_DEGs_modules_euler.jpg")
+plot(euler_plot_modulesDEGsPositive, fills = plotColors[6:8], quantities = list(type = "counts"))
+dev.off()
+
+# euler diagram of modules, separate DEGs, and positively selected genes
+separateSet_list <- list(tolerance = geneSet_tolerance,
+                         treatment = geneSet_treatment, 
+                         interaction = geneSet_interaction,
+                         Positive = geneSet_positive,
+                         Modules = geneSet_Modules)
+euler_plot_modulesSeparateDEGsPositive <- euler(separateSet_list)
+jpeg(filename = "positive_separateDEGs_modules_euler.jpg")
+plot(euler_plot_modulesSeparateDEGsPositive, fills = plotColors, quantities = list(type = "counts"))
+dev.off()
 
 # GO annotations
 
@@ -274,7 +345,6 @@ for(j in 1:1){
   # euler diagram with interesting repair modules GO terms
   euler_plot_repairModulesGO <- euler(repairModulesGO)
   fileOut <- paste(colorTable[j,1], "repair_euler.jpg", sep = "_")
-  fileOut <- paste("GOAnalysis_OLYM_30", fileOut, sep = "/")
   jpeg(filename = fileOut)
   plot(euler_plot_repairModulesGO)
   dev.off()
@@ -289,7 +359,6 @@ for(j in 1:1){
   # euler diagram with interesting repair modules GO terms
   euler_plot_radiationModulesGO <- euler(radiationModulesGO)
   fileOut <- paste(colorTable[j,1], "radiation_euler.jpg", sep = "_")
-  fileOut <- paste("GOAnalysis_OLYM_30", fileOut, sep = "/")
   jpeg(filename = fileOut)
   plot(euler_plot_radiationModulesGO)
   dev.off()
@@ -304,8 +373,180 @@ for(j in 1:1){
   # euler diagram with interesting repair modules GO terms
   euler_plot_stressModulesGO <- euler(stressModulesGO)
   fileOut <- paste(colorTable[j,1], "stress_euler.jpg", sep = "_")
-  fileOut <- paste("GOAnalysis_OLYM_30", fileOut, sep = "/")
   jpeg(filename = fileOut)
   plot(euler_plot_stressModulesGO)
   dev.off()
 }
+
+# significant repair modules diagrams
+DDR <- unlist(allGO["GO:0006974"]) # DNA damage response
+DNAR <- unlist(allGO["GO:0006281"])
+MMR <- unlist(allGO["GO:0006298"])
+ICLR <- unlist(allGO["GO:0036297"])
+BER <- unlist(allGO["GO:0006284"])
+NER <- unlist(allGO["GO:0006289"])
+# "None" "GO:0006281" 
+#noneModulesGO <- c(resultsTable[resultsTable$color == "None",]$gene)
+#names(noneModulesGO) <- rep("None", length(noneModulesGO))
+# euler diagram with interesting repair GO terms
+#noneModule_repair_euler <-list(#tolerance = geneSet_tolerance,
+                            #treatment = geneSet_treatment, 
+                            #interaction = geneSet_interaction,
+                            #none = noneModulesGO,
+                            #"GO:0006281" = DNAR)
+#noneModule_repair_euler_plot <- euler(noneModule_repair_euler)
+#jpeg("sigModulesGO_none_repair_euler.jpg")
+#plot(noneModule_repair_euler_plot, fills = c(plotColors[1:4], plotColors[6]))
+#dev.off()
+# "salmon4" "GO:0006298" 
+salmon4ModulesGO <- c(resultsTable[resultsTable$color == "salmon4",]$gene)
+names(salmon4ModulesGO) <- rep("salmon4", length(salmon4ModulesGO))
+# "steelblue" "GO:0036297"
+steelblueModulesGO <- c(resultsTable[resultsTable$color == "steelblue",]$gene)
+names(steelblueModulesGO) <- rep("steelblue", length(steelblueModulesGO))
+# "floralwhite" "GO:0006284"
+# "floralwhite" "GO:0006289"
+floralwhiteModulesGO <- c(resultsTable[resultsTable$color == "floralwhite",]$gene)
+names(floralwhiteModulesGO) <- rep("floralwhite", length(floralwhiteModulesGO))
+# euler diagram with interesting repair GO terms
+modules_repair_euler <-list(#Tolerance = geneSet_tolerance,
+                            #Treatment = geneSet_treatment, 
+                            #Interaction = geneSet_interaction,
+                            salmon4 = salmon4ModulesGO,
+                            steelblue = steelblueModulesGO,
+                            floralwhite = floralwhiteModulesGO,
+                            #"GO:0006281" = DNAR,
+                            "GO:0006298" = MMR,
+                            "GO:0036297" = ICLR,
+                            "GO:0006284" = BER, 
+                            "GO:0006289" = NER)
+modules_repair_euler_plot <- euler(modules_repair_euler)
+jpeg("sigModules_GO_salmon4_steelblue_repair_euler.jpg")
+plot(modules_repair_euler_plot, fills = plotColors)
+dev.off()
+
+# euler diagram with interesting repair GO terms for salmon4
+modules_repair_salmon4_euler <-list(#tolerance = geneSet_tolerance,
+                            treatment = geneSet_treatment, 
+                            #interaction = geneSet_interaction,
+                            salmon4 = salmon4ModulesGO,
+                            #"GO:0006281" = DNAR,
+                            "GO:0006298" = MMR)
+modules_repair_salmon4_euler_plot <- euler(modules_repair_salmon4_euler)
+jpeg("sigModules_GO_salmon4_repair_euler.jpg")
+plot(modules_repair_salmon4_euler_plot, fills = plotColors, quantities = list(type = "counts"))
+dev.off()
+
+# euler diagram with interesting repair GO terms for salmon4
+modules_repair_DEGs_salmon4_euler <-list(tolerance = geneSet_tolerance,
+                                    treatment = geneSet_treatment, 
+                                    interaction = geneSet_interaction,
+                                    salmon4 = salmon4ModulesGO,
+                                    "GO:0006281" = DNAR,
+                                    "GO:0006298" = MMR)
+modules_repair_DEGs_salmon4_euler_plot <- euler(modules_repair_DEGs_salmon4_euler)
+jpeg("sigModules_GO_DEGs_salmon4_repair_euler.jpg")
+plot(modules_repair_DEGs_salmon4_euler_plot, fills = plotColors, quantities = list(type = "counts"))
+dev.off()
+
+# significant radiation module diagram
+radiation <- unlist(allGO["GO:0009314"])
+cell <- unlist(allGO["GO:0071478"])
+# "purple" "GO:0071478"
+purpleModulesGO <- c(resultsTable[resultsTable$color == "steelblue",]$gene)
+names(purpleModulesGO) <- rep("steelblue", length(purpleModulesGO))
+# euler diagram with interesting repair GO terms
+modules_radiation_euler <-list(purple = purpleModulesGO,
+                            "GO:0071478" = cell,
+                            "GO:0009314" = radiation)
+modules_radiation_euler_plot <- euler(modules_radiation_euler)
+jpeg("sigModules_GO_purple_radiation_euler.jpg")
+plot(modules_radiation_euler_plot, fills = plotColors[1:2])
+dev.off()
+
+# significant stress modules diagram
+stress <- unlist(allGO["GO:0006950"]) # interaction sig
+oxidative <- unlist(allGO["GO:0006979"]) # interaction sig
+cellOxidative <- unlist(allGO["GO:0034599"]) # treatment sig
+cellReactiveOxy <- unlist(allGO["GO:0034614"])
+# "darkolivegreen" "GO:0034614" 
+darkolivegreenblueModulesGO <- c(resultsTable[resultsTable$color == "darkolivegreen",]$gene)
+names(darkolivegreenblueModulesGO) <- rep("darkolivegreen", length(darkolivegreenblueModulesGO))
+# "salmon4" "GO:0034599"
+# euler diagram with interesting repair GO terms
+modules_stress_euler <-list(#tolerance = geneSet_tolerance,
+                            #treatment = geneSet_treatment, 
+                            #interaction = geneSet_interaction,
+                            salmon4 = salmon4ModulesGO,
+                            darkolivegreen = darkolivegreenblueModulesGO,
+                            "GO:0034614" = cellReactiveOxy,
+                            "GO:0034599" = cellOxidative,
+                            "GO:0006950" = stress,
+                            "GO:0006979" = oxidative)
+modules_stress_euler_plot <- euler(modules_stress_euler)
+jpeg("sigModules_GO_salmon4_darkolivegreen_stress_euler.jpg")
+plot(modules_stress_euler_plot, fills = plotColors)
+dev.off()
+
+# salmon4 and DEGs
+salmon4_euler <-list(salmon4 = salmon4ModulesGO,
+                     treatment = geneSet_treatment,
+                     Positive = geneSet_positive)
+salmon4_euler_plot <- euler(salmon4_euler)
+jpeg("sigModules_GO_DEGs_salmon4_euler.jpg")
+plot(salmon4_euler_plot, fills = plotColors[2:4], quantities = list(type = "counts"))
+dev.off()
+
+# PUB?
+# salmon4 and DEGs and GO and positive
+salmon4_GO_euler <-list(treatment = geneSet_treatment, 
+                        salmon4 = salmon4ModulesGO,
+                        "GO:0006298" = MMR,
+                        "GO:0034599" = cellOxidative)
+                        #Positive = geneSet_positive)
+salmon4_GO_euler_plot <- euler(salmon4_GO_euler)
+jpeg("sigModules_GO_DEGs_GO_positive_salmon4_euler.jpg")
+#plot(salmon4_GO_euler_plot, fills = c(plotColors[1:4], plotColors[6]), quantities = list(type = "counts"))
+plot(salmon4_GO_euler_plot, fills = c(plotColors[1:4]), quantities = list(type = "counts"))
+dev.off()
+
+## PUB?
+# potentially locally adapted and UVR responsive modules with DEGs
+sienna3ModulesGO <- c(resultsTable[resultsTable$color == "sienna3",]$gene)
+names(sienna3ModulesGO) <- rep("sienna3", length(sienna3ModulesGO))
+skyblueModulesGO <- c(resultsTable[resultsTable$color == "skyblue",]$gene)
+names(skyblueModulesGO) <- rep("skyblue", length(skyblueModulesGO))
+salmon4_skyblue_sienna3_DEGs_euler <-list(skyblue = skyblueModulesGO,
+                             salmon4 = salmon4ModulesGO,
+                             sienna3 = sienna3ModulesGO,
+                             Treatment = geneSet_treatment)
+                             #Positive = geneSet_positive)
+salmon4_skyblue_sienna3_DEGs_euler_plot <- euler(salmon4_skyblue_sienna3_DEGs_euler)
+jpeg("sigModules_treatment_salmon4_skyblue_sienna3_euler.jpg")
+plot(salmon4_skyblue_sienna3_DEGs_euler_plot, fills = c(plotColors[1:3], plotColors[6]), quantities = list(type = "counts"))
+dev.off()
+
+# potentially locally adapted and UVR responsive modules with DEGs
+salmon4_skyblue_sienna3_euler <-list(Tolerance = geneSet_tolerance,
+                             Treatment = geneSet_treatment, 
+                             Interaction = geneSet_interaction,
+                             salmon4 = salmon4ModulesGO,
+                             skyblue = skyblueModulesGO,
+                             sienna3 = sienna3ModulesGO)
+#Positive = geneSet_positive)
+salmon4_skyblue_sienna3_euler_plot <- euler(salmon4_skyblue_sienna3_euler)
+jpeg("sigModules_DEGs_salmon4_skyblue_sienna3_euler.jpg")
+plot(salmon4_skyblue_sienna3_euler_plot, fills = plotColors, quantities = list(type = "counts"))
+dev.off()
+
+# salmon4 and skyblue and DEGs
+salmon4_skyblue_GO_euler <-list(Treatment = geneSet_treatment, 
+                                salmon4 = salmon4ModulesGO,
+                                skyblue = skyblueModulesGO,
+                                "GO:0006298" = MMR,
+                                "GO:0034599" = cellOxidative)
+                                #Positive = geneSet_positive)
+salmon4_skyblue_GO_euler_plot <- euler(salmon4_skyblue_GO_euler)
+jpeg("sigModules_GO_DEGs_salmon4_skyblue_euler.jpg")
+plot(salmon4_skyblue_GO_euler_plot, fills = plotColors, quantities = list(type = "counts"))
+dev.off()

@@ -37,22 +37,22 @@ plotColorSubset <- c(plotColors[4], plotColors[5], plotColors[6])
 args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
-#workingDir = args[1]
-workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes"
+workingDir = args[1]
+#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes"
 #workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCNA_DEGenotypes"
 setwd(workingDir)
 
 #Import gene count data
-#inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
-inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GeneCountsAnalyzed/Formatted/cleaned.csv", row.names="gene")[ ,1:24]
+inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
+#inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GeneCountsAnalyzed/Formatted/cleaned.csv", row.names="gene")[ ,1:24]
 #inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCN_OLYM_WGCNA/OLYM_60_eigengeneExpression.csv", row.names="gene")[ ,1:24]
 
 #Trim the data table
 countsTable <- head(inputTable, - 5)
 
 #Import grouping factor
-#targets <- read.csv(file=args[5], row.names="sample")
-targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsGenotypes.csv", row.names="sample")
+targets <- read.csv(file=args[5], row.names="sample")
+#targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsGenotypes.csv", row.names="sample")
 
 #Retrieve input FDR cutoff
 #fdrCut=as.numeric(args[6])
@@ -299,4 +299,50 @@ glm_list_venn <- list(treatment = geneSet_treatment,
 jpeg("glmQLF_2WayANOVA_venn_LFC1.2.jpg")
 ggVennDiagram(glm_list_venn, label_alpha=0.25, category.names = c("Treatment","Tolerance","Interaction")) +
   scale_colour_discrete(type = plotColorSubset)
+dev.off()
+
+
+# heatmaps
+# heatmap data
+logcounts = cpm(list, log=TRUE)
+# view DGE genes
+# subset counts table by DE gene set
+DGESubset_treatment <- tagsTblANOVATreatment[!grepl("NA", tagsTblANOVATreatment$topDE),]
+logcountsSubset_treatment <- subset(logcounts,
+                          grepl(
+                            paste0(rownames(DGESubset_treatment), collapse = "|"),
+                            rownames(logcounts),
+                            ignore.case = TRUE
+                          )
+)
+jpeg("glmQLF_treatment_heatmap.jpg")
+heatmap(logcountsSubset_treatment, main= "Heatmap of Treatment Effect DGE", margins = c(8, 1))
+dev.off()
+
+# view tolerance DGE genes
+# subset counts table by DE gene set
+DGESubset_tolerance <- tagsTblANOVATolerance[!grepl("NA", tagsTblANOVATolerance$topDE),]
+logcountsSubset_tolerance <- subset(logcounts,
+                          grepl(
+                            paste0(rownames(DGESubset_tolerance), collapse = "|"),
+                            rownames(logcounts),
+                            ignore.case = TRUE
+                          )
+)
+jpeg("glmQLF_tolerance_heatmap.jpg")
+heatmap(logcountsSubset_tolerance, main= "Heatmap of Tolerance Effect DGE", margins = c(8, 1))
+dev.off()
+
+# view interaction DGE genes
+# subset counts table by DE gene set
+DGESubset_interaction <- tagsTblANOVAInter[!grepl("NA", tagsTblANOVAInter$topDE),]
+logcountsSubset_interaction <- subset(logcounts,
+                          grepl(
+                            paste0(rownames(DGESubset_interaction), collapse = "|"),
+                            rownames(logcounts),
+                            ignore.case = TRUE
+                          )
+)
+jpeg("glmQLF_interaction_heatmap.jpg")
+heatmap(logcountsSubset_interaction, main= "Heatmap of Interaction Effect DGE", margins = c(8, 1))
 dev.off()
