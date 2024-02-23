@@ -17,6 +17,9 @@ library(eulerr)
 library(rcartocolor)
 library(stringr)
 
+# euler settings
+eulerr_options(labels = list (fontsize = 30), quantities = list (fontsize = 30))
+
 # Plotting Palettes
 # https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
 # https://github.com/Nowosad/rcartocolor

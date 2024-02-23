@@ -34,16 +34,15 @@ combinedGO[["Interaction"]] <- data.frame(GO.ID = interactionGO$GO.ID)
 
 # geneIDs with repair or other interesting GO terms
 # The repair pathway GO terms we specifically explored in the analysis were DNA repair (GO:0006281), mismatch repair (MMR; GO:0006298), base excision repair (BER; GO:0006284), homologous recombination (HR; GO:0035825), nucleotide excision repair (NER; GO:0006289), intrastrand crosslink repair (ICL repair; GO:0036297), double strand break repair (DSBR; GO:0006302), single strand break repair (SSBR; GO:0000012).
-repairTerms <- list(DNAR = "GO:0006281",
-                    MMR = "GO:0006298",
+repairTerms <- list(MMR = "GO:0006298",
                     BER = "GO:0006284",
                     HR = "GO:0035825",
                     NER = "GO:0006289",
                     ICLR = "GO:0036297",
                     DSBR = "GO:0006302",
                     SSBR = "GO:0000012",
-                    PR = "GO:0000719",
-                    PA = "GO:0003904"
+                    PDR = "GO:0006290",
+                    PR = "GO:0000719"
 )
 
 # The radiation response terms included response to radiation (GO:0009314), cellular response to radiation (GO:0071478), phototransduction UV (GO:0007604),
@@ -75,8 +74,9 @@ radiationTerms <- list(radiation = "GO:0009314",
                        transCellUV = "GO:1904803"
 )
 
-# The stress terms included response to stress (GO:0006950), response to oxidative stress (GO:0006979), cellular response to oxidative stress (GO:0034599), 
-# cellular response to reactive oxygen (GO:0034614), regulation of translation in response to oxidative stress (GO:0043556), regulation of cellular response to oxidative stress (GO:1900407).
+# The stress response terms included response to stress (GO:0006950), response to oxidative stress (GO:0006979), cellular response to oxidative stress (GO:0034599), 
+# response to photooxidative stress (GO:0080183), detection of oxidative stress (GO:0070994), response to reactive oxygen species (GO:0000302), 
+# cellular response to reactive oxygen (GO:0034614), response to hydroperoxide (GO:0033194).
 stressTerms <- list(stress = "GO:0006950",
                     oxidative = "GO:0006979",
                     cellOxidative = "GO:0034599",
@@ -86,7 +86,58 @@ stressTerms <- list(stress = "GO:0006950",
                     hydroperoxide = "GO:0071447",
                     senescence = "GO:0090403",
                     symbiont = "GO:0052164",
-                    regCellOxidative = "GO:1900407"
+                    regCellOxidative = "GO:1900407",
+                    photoOx = "GO:0080183",
+                    detectOx = "GO:0070994",
+                    ROS = "GO:0000302",
+                    responseHyper = "GO:0033194"
+)
+
+# geneIDs with DNA damage response GO terms
+# GO:0006974 DNA damage response
+# GO:0008630 intrinsic apoptotic signaling pathway in response to DNA damage,  GO:0140861 DNA repair-dependent chromatin remodeling, GO:0141112 broken chromosome clustering
+# GO:0009432 SOS response, GO:0006281 DNA repair, GO:0042770 signal transduction in response to DNA damage, GO:0043247 telomere maintenance in response to DNA damage
+damageTerms <- list(DNADR = "GO:0006974",
+                    intrinsic = "GO:0008630",
+                    signal = "GO:0042770",
+                    SOS = "GO:0009432",
+                    telomere = "GO:0043247"
+)
+
+# geneIDs with DNA damage response GO terms
+# GO:0006281 DNA repair
+# GO:0036297 interstrand cross-link repair, GO:0006290 pyrimidine dimer repair, GO:0097196 Shu complex, GO:0009380 excinuclease repair complex
+# GO:0006282 regulation of DNA repair, GO:0006284 base-excision repair, GO:0006289 nucleotide-excision repair, GO:0010213 non-photoreactive DNA repair
+# GO:0006298 mismatch repair, GO:0006307 DNA dealkylation involved in DNA repair, GO:0045739 positive regulation of DNA repair
+# GO:0000012 single strand break repair, GO:0000725 recombinational repair, GO:0046787 viral DNA repair, GO:0006302 double-strand break repair
+# GO:0070914 UV-damage excision repair, GO:0000731 DNA synthesis involved in DNA repair, GO:0051103 DNA ligation involved in DNA repair
+# GO:0043504 mitochondrial DNA repair, GO:0106300 protein-DNA covalent cross-linking repair, GO:0045004 DNA replication proofreading
+# GO:0045738 negative regulation of DNA repair, GO:1990391 DNA repair complex, GO:0006301 postreplication repair
+repairTerms_all <- list(DNAR = "GO:0006281",
+                    ICLR = "GO:0036297",
+                    PDR = "GO:0006290",
+                    SC = "GO:0097196",
+                    ERC = "GO:0009380",
+                    RDNAR = "GO:0006282",
+                    BER = "GO:0006284",
+                    NER = "GO:0006289",
+                    nonPhoto = "GO:0010213",
+                    MMR = "GO:0006298",
+                    dealkylation = "GO:0006307",
+                    posRDNAR = "GO:0045739",
+                    SSBR = "GO:0000012",
+                    RR = "GO:0000725",
+                    viralDNAR = "GO:0046787",
+                    DSBR = "GO:0006302",
+                    UVER = "GO:0070914",
+                    synthesis = "GO:0000731",
+                    ligation = "GO:0051103",
+                    mito = "GO:0043504",
+                    CLR = "GO:0106300",
+                    proofreading = "GO:0045004",
+                    negRDNAR = "GO:0045738",
+                    DNARC = "GO:1990391",
+                    postreplication = "GO:0006301"
 )
 
 
@@ -125,3 +176,29 @@ for(i in 1:length(combinedGO)){
     }
   }
 }
+
+# loop over each stress term
+print("DAMAGE")
+# loop over each module
+for(i in 1:length(combinedGO)){
+  for(j in 1:length(damageTerms)){
+    test <- combinedGO[[i]][["GO.ID"]]
+    if (damageTerms[[j]] %in% test) {
+      print(paste(names(combinedGO)[i], test[test == damageTerms[[j]]], names(damageTerms[j])), quote = FALSE)
+    }
+  }
+}
+
+# loop over each stress term
+print("ALL REPAIR")
+# loop over each module
+for(i in 1:length(combinedGO)){
+  for(j in 1:length(repairTerms_all)){
+    test <- combinedGO[[i]][["GO.ID"]]
+    if (repairTerms_all[[j]] %in% test) {
+      print(paste(names(combinedGO)[i], test[test == repairTerms_all[[j]]], names(repairTerms_all[j])), quote = FALSE)
+    }
+  }
+}
+
+
