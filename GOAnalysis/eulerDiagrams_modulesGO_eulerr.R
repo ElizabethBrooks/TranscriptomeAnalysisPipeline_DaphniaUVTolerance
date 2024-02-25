@@ -549,24 +549,75 @@ salmon4_skyblue_sienna3_euler_plot <- euler(salmon4_skyblue_sienna3_euler)
 plot(salmon4_skyblue_sienna3_euler_plot, fills = plotColors, quantities = list(type = "counts"))
 #dev.off()
 
+# PUB?
+# salmon4 and skyblue and lightyellow and DEGs
+salmon4_skyblue_lightyellow_euler <-list(skyblue = skyblueModulesGO,
+                             salmon4 = salmon4ModulesGO,
+                             lightyellow = lightyellowModulesGO,
+                             Treatment = geneSet_treatment,
+                             Tolerance = geneSet_tolerance,
+                             Interaction = geneSet_interaction)
+#Positive = geneSet_positive)
+salmon4_skyblue_lightyellow_DEGs_euler_plot <- euler(salmon4_skyblue_lightyellow_euler)
+#jpeg("sigModules_DEGs_salmon4_skyblue_lightyellow_euler.jpg")
+plot(salmon4_skyblue_lightyellow_DEGs_euler_plot, fills = plotColors, quantities = list(type = "counts"), labels = NULL, legend = list(labels = c("skyblue", "salmon4", "lightyellow", "Treatment", "Tolerance", "Interaction")))
+#dev.off()
+
+# PUB?
 # salmon4 and skyblue and DEGs
-salmon4_skyblue_GO_euler <-list(Treatment = geneSet_treatment, 
-                                salmon4 = salmon4ModulesGO,
+salmon4_skyblue_euler <-list(skyblue = skyblueModulesGO,
+                             salmon4 = salmon4ModulesGO,
+                             Treatment = geneSet_treatment,
+                             Tolerance = geneSet_tolerance,
+                             Interaction = geneSet_interaction)
+#Positive = geneSet_positive)
+salmon4_skyblue_DEGs_euler_plot <- euler(salmon4_skyblue_euler)
+#jpeg("sigModules_DEGs_salmon4_skyblue_euler.jpg")
+plot(salmon4_skyblue_DEGs_euler_plot, fills = plotColors, quantities = list(type = "counts"), labels = NULL, legend = list(labels = c("skyblue", "salmon4", "Treatment", "Tolerance", "Interaction")))
+#dev.off()
+
+# PUB?
+# skyblue and DEGs
+skyblue_euler <-list(skyblue = skyblueModulesGO,
+                     Treatment = geneSet_treatment,
+                     Tolerance = geneSet_tolerance,
+                     Interaction = geneSet_interaction)
+#Positive = geneSet_positive)
+skyblue_DEGs_euler_plot <- euler(skyblue_euler)
+#jpeg("sigModules_DEGs_skyblue_euler.jpg")
+plot(skyblue_DEGs_euler_plot, fills = plotColors, quantities = list(type = "counts"), labels = NULL, legend = list(labels = c("skyblue", "Treatment", "Tolerance", "Interaction")))
+#dev.off()
+
+# PUB?
+# salmon4 and skyblue and positive
+salmon4_skyblue_euler <-list(#Treatment = geneSet_treatment, 
+                                #DEGs = geneSet_DEGs,
                                 skyblue = skyblueModulesGO,
-                                "GO:0006298" = MMR,
-                                "GO:0034599" = cellOxidative)
-                                #Positive = geneSet_positive)
-salmon4_skyblue_GO_euler_plot <- euler(salmon4_skyblue_GO_euler)
-#jpeg("sigModules_GO_DEGs_salmon4_skyblue_euler.jpg")
-plot(salmon4_skyblue_GO_euler_plot, fills = plotColors, quantities = list(type = "counts"))
+                                salmon4 = salmon4ModulesGO,
+                                #"GO:0006298" = MMR,
+                                #"GO:0034599" = cellOxidative,
+                                lightyellow = lightyellowModulesGO,
+                                Positive = geneSet_positive)
+salmon4_skyblue_euler_plot <- euler(salmon4_skyblue_euler)
+#jpeg("sigModules_positive_salmon4_skyblue_euler.jpg")
+plot(salmon4_skyblue_euler_plot, fills = plotColors, quantities = list(type = "counts"), labels = NULL, legend = list(labels = c("skyblue", "salmon4", "lightyellow", "Positive")))
+#dev.off()
+
+# PUB?
+# lightyellow and GO
+PRR <- unlist(data.frame(unlist(allGO["GO:0006301"])), use.names = FALSE)
+lightyellowModulesGO <- c(resultsTable[resultsTable$color == "lightyellow",]$gene)
+names(lightyellowModulesGO) <- rep("lightyellow", length(lightyellowModulesGO))
+lightyellow_GO_euler <-list(lightyellow = lightyellowModulesGO,
+                            "GO:0006301" = PRR)
+lightyellow_GO_euler_plot <- euler(lightyellow_GO_euler)
+#jpeg("sigModules_GO_lightyellow_euler.jpg")
+plot(lightyellow_GO_euler_plot, fills = plotColors, quantities = list(type = "counts"), labels = NULL, legend = list(labels = c("lightyellow", "GO:0006301")))
 #dev.off()
 
 # PUB
 # lightyellow and DEGs
-PRR <- unlist(data.frame(unlist(allGO["GO:0006301"])), use.names = FALSE)
-lightyellowModulesGO <- c(resultsTable[resultsTable$color == "lightyellow",]$gene)
-names(lightyellowModulesGO) <- rep("lightyellow", length(lightyellowModulesGO))
-lightyellow_GO_euler <-list(Tolerance = geneSet_tolerance,
+lightyellow_GO_DEGs_euler <-list(Tolerance = geneSet_tolerance,
                                     Treatment = geneSet_treatment, 
                                     Interaction = geneSet_interaction,
                                     #salmon4 = salmon4ModulesGO,
@@ -575,7 +626,9 @@ lightyellow_GO_euler <-list(Tolerance = geneSet_tolerance,
                                     #"GO:0034599" = cellOxidative)
                                     #"GO:0006301" = PRR)
                                     #Positive = geneSet_positive)
-lightyellow_GO_euler_plot <- euler(lightyellow_GO_euler)
+lightyellow_GO_DEGs_euler_plot <- euler(lightyellow_GO_DEGs_euler)
 #jpeg("sigModules_GO_DEGs_lightyellow_euler.jpg")
-plot(lightyellow_GO_euler_plot, fills = plotColors, quantities = list(type = "counts"), labels = NULL, legend = list(labels = c("Tolerance", "Treatment", "Interaction", "lightyellow")))
+plot(lightyellow_GO_DEGs_euler_plot, fills = plotColors, quantities = list(type = "counts"), labels = NULL, legend = list(labels = c("Tolerance", "Treatment", "Interaction", "lightyellow")))
 #dev.off()
+
+

@@ -69,12 +69,12 @@ geneTr <- GeneRegionTrack(geneDB,
 
 #Create the alignment tracks
 #fill = "transparent"
-alTrUV1 <- AlignmentsTrack(inputBamUV1, isPaired = TRUE, name = "Coverage", type = "coverage", col = "blue", fill = "blue")
-alTrUV2 <- AlignmentsTrack(inputBamUV2, isPaired = TRUE, name = "Coverage", type = "coverage", col = "blue", fill = "blue")
-alTrUV3 <- AlignmentsTrack(inputBamUV3, isPaired = TRUE, name = "Coverage", type = "coverage", col = "blue", fill = "blue")
-alTrVIS1 <- AlignmentsTrack(inputBamVIS1, isPaired = TRUE, name = "Coverage", type = "coverage", col = "blue", fill = "blue")
-alTrVIS2 <- AlignmentsTrack(inputBamVIS2, isPaired = TRUE, name = "Coverage", type = "coverage", col = "blue", fill = "blue")
-alTrVIS3 <- AlignmentsTrack(inputBamVIS3, isPaired = TRUE, name = "Coverage", type = "coverage", col = "blue", fill = "blue")
+alTrUV1 <- AlignmentsTrack(inputBamUV1, isPaired = TRUE, name = "Coverage", type = "coverage")#, col = "blue", fill = "blue")
+alTrUV2 <- AlignmentsTrack(inputBamUV2, isPaired = TRUE, name = "Coverage", type = "coverage")#, col = "blue", fill = "blue")
+alTrUV3 <- AlignmentsTrack(inputBamUV3, isPaired = TRUE, name = "Coverage", type = "coverage")#, col = "blue", fill = "blue")
+alTrVIS1 <- AlignmentsTrack(inputBamVIS1, isPaired = TRUE, name = "Coverage", type = "coverage")#, col = "blue", fill = "blue")
+alTrVIS2 <- AlignmentsTrack(inputBamVIS2, isPaired = TRUE, name = "Coverage", type = "coverage")#, col = "blue", fill = "blue")
+alTrVIS3 <- AlignmentsTrack(inputBamVIS3, isPaired = TRUE, name = "Coverage", type = "coverage")#, col = "blue", fill = "blue")
 
 #Generate track overlay
 ot <- OverlayTrack(trackList = list(alTrUV1, alTrUV2, alTrUV3, alTrVIS1, alTrVIS2, alTrVIS3))

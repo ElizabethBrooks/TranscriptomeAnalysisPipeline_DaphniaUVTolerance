@@ -191,10 +191,13 @@ vennList <- gplots::venn(glm_list_venn, show.plot = FALSE)
 listAtt <- attributes(vennList)$intersections
 listAtt
 
+
 # heatmaps
 # heatmap data
 logcounts = cpm(list, log=TRUE)
-# view DGE genes
+
+# PUB
+# view treatmentDGE genes
 # subset counts and annotations tables by DE gene set
 DGESubset_treatment <- tagsTblANOVATreatment.filtered[!grepl("NA", tagsTblANOVATreatment.filtered$topDE),]
 annotationsList_treatment <- subset(annotations,
@@ -211,9 +214,9 @@ logcountsSubset_treatment <- subset(logcounts,
                             ignore.case = TRUE
                           )
 )
-##jpeg("glmQLF_treatment_heatmap.jpg")
+#jpeg("glmQLF_treatment_heatmap.jpg")
 heatmap(logcountsSubset_treatment, main= "Heatmap of Treatment Effect DGE", margins = c(8, 8), labRow = annotationsList_treatment$annotation)
-##dev.off()
+#dev.off()
 
 # view tolerance DGE genes
 # subset counts table by DE gene set
@@ -439,6 +442,7 @@ names(salmon4ModulesGO) <- rep("salmon4", length(salmon4ModulesGO))
 lightyellowModulesGO <- c(resultsTable[resultsTable$color == "lightyellow",]$gene)
 names(lightyellowModulesGO) <- rep("lightyellow", length(lightyellowModulesGO))
 
+# PUB
 # Heatmap of GO:0006298 DGE
 # subset counts table by DE gene set
 DGESubset_MMR <- tagsTblANOVATreatment[rownames(tagsTblANOVATreatment) %in% MMR,]
@@ -457,9 +461,10 @@ logcountsSubset_MMR <- subset(logcounts,
                                                   )
 )
 #jpeg("glmQLF_MMR_heatmap.jpg")
-heatmap(logcountsSubset_MMR, main= "Heatmap of GO:0006298 DGE", margins = c(8, 8), labRow = annotationsList_MMR$annotation)
+heatmap(logcountsSubset_MMR, main= "Heatmap of GO:0006298 DGE", margins = c(13, 13), labRow = annotationsList_MMR$annotation, cexRow = 1.5, cexCol = 1.5)
 #dev.off()
 
+# PUB
 # Heatmap of GO:0034599 DGE
 # subset counts table by DE gene set
 DGESubset_cellOxidative <- tagsTblANOVATreatment[rownames(tagsTblANOVATreatment) %in% cellOxidative,]
@@ -478,7 +483,7 @@ logcountsSubset_cellOxidative <- subset(logcounts,
                                         )
 )
 #jpeg("glmQLF_cellOxidative_heatmap.jpg")
-heatmap(logcountsSubset_cellOxidative, main= "Heatmap of GO:0034599 DGE", margins = c(8, 8), labRow = annotationsList_cellOxidative$annotation)
+heatmap(logcountsSubset_cellOxidative, main= "Heatmap of GO:0034599 DGE", margins = c(14, 14), labRow = annotationsList_cellOxidative$annotation, cexRow = 1.5, cexCol = 1.5)
 #dev.off()
 
 # Heatmap of GO:0000719 DGE
@@ -509,6 +514,7 @@ heatmap(logcountsSubset_cellOxidative, main= "Heatmap of GO:0034599 DGE", margin
 #heatmap(logcountsSubset_PDR, main= "Heatmap of GO:0006290 DGE", margins = c(8, 1))
 ##dev.off()
 
+# PUB
 # Heatmap of GO:0006301 DGE
 # subset counts table by DE gene set
 DGESubset_PRR <- tagsTblANOVATreatment[rownames(tagsTblANOVATreatment) %in% PRR,]
@@ -527,11 +533,12 @@ logcountsSubset_PRR <- subset(logcounts,
                                         )
 )
 #jpeg("glmQLF_PRR_heatmap.jpg")
-heatmap(logcountsSubset_PRR, main= "Heatmap of GO:0006301 DGE", margins = c(8, 8), labRow = annotationsList_PRR$annotation)
+heatmap(logcountsSubset_PRR, main= "Heatmap of GO:0006301 DGE", margins = c(12, 12), labRow = annotationsList_PRR$annotation, cexRow = 1.5, cexCol = 1.5)
 #dev.off()
 
+# PUB
 # Heatmap of Salmon4 Module Genes DGE
-#resultsTable_salmon4 <- resultsTable[grepl("salmon4", resultsTable$color),]
+resultsTable_salmon4 <- resultsTable[grepl("salmon4", resultsTable$color),]
 # subset counts table by DE gene set
 DGESubset_salmon4 <- tagsTblANOVATreatment[rownames(tagsTblANOVATreatment) %in% resultsTable_salmon4$gene,]
 annotationsList_salmon4 <- subset(annotations,
@@ -552,6 +559,7 @@ logcountsSubset_salmon4 <- subset(logcounts,
 heatmap(logcountsSubset_salmon4, main= "Heatmap of Salmon4 Module Genes DGE", margins = c(8, 8), labRow = annotationsList_salmon4$annotation)
 #dev.off()
 
+# PUB
 # Heatmap of Lightyellow Module Genes DGE
 resultsTable_lightyellow <- resultsTable[grepl("lightyellow", resultsTable$color),]
 # subset counts table by DE gene set
@@ -571,11 +579,34 @@ logcountsSubset_lightyellow <- subset(logcounts,
                                       )
 )
 #jpeg("glmQLF_lightyellow_heatmap.jpg")
-heatmap(logcountsSubset_lightyellow, main= "Heatmap of Lightyellow Module Genes DGE", margins = c(8,8), labRow = annotationsList_lightyellow$annotation)
+heatmap(logcountsSubset_lightyellow, main= "Heatmap of lightyellow Module Genes DGE", margins = c(8,8), labRow = annotationsList_lightyellow$annotation)
+#dev.off()
+
+# PUB
+# Heatmap of skyblue Module Genes DGE
+resultsTable_skyblue <- resultsTable[grepl("skyblue", resultsTable$color),]
+# subset counts table by DE gene set
+DGESubset_skyblue <- tagsTblANOVATreatment[rownames(tagsTblANOVATreatment) %in% resultsTable_skyblue$gene,]
+annotationsList_skyblue <- subset(annotations,
+                                      grepl(
+                                        paste0(rownames(DGESubset_skyblue), collapse = "|"),
+                                        rownames(annotations),
+                                        ignore.case = TRUE
+                                      )
+)
+logcountsSubset_skyblue <- subset(logcounts,
+                                      grepl(
+                                        paste0(rownames(DGESubset_skyblue), collapse = "|"),
+                                        rownames(logcounts),
+                                        ignore.case = TRUE
+                                      )
+)
+#jpeg("glmQLF_skyblue_heatmap.jpg")
+heatmap(logcountsSubset_skyblue, main= "Heatmap of skyblue Module Genes DGE", margins = c(8,8), labRow = annotationsList_skyblue$annotation)
 #dev.off()
 
 # Heatmap of salmon4 & Treatment Effect DGE
-resultsTable_salmon4 <- resultsTable[grepl("salmon4", resultsTable$color),]
+#resultsTable_salmon4 <- resultsTable[grepl("salmon4", resultsTable$color),]
 # subset counts table by DE gene set
 DGESubset_treatment_salmon4 <- tagsTblANOVATreatment.filtered[rownames(tagsTblANOVATreatment.filtered) %in% resultsTable_salmon4$gene,]
 annotationsList_treatment_salmon4 <- subset(annotations,
