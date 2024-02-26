@@ -520,6 +520,12 @@ salmon4_GO_euler_plot <- euler(salmon4_GO_euler)
 plot(salmon4_GO_euler_plot, fills = c(plotColors[1:4]), quantities = list(type = "counts"), labels = NULL, legend = list(labels = c("Treatment", "salmon4", "GO:0006298", "GO:0034599")))
 #dev.off()
 
+# create venn lists
+vennList <- gplots::venn(salmon4_GO_euler, show.plot = FALSE)
+# retrieve intersections
+listAtt <- attributes(vennList)$intersections
+listAtt
+
 ## PUB?
 # potentially locally adapted and UVR responsive modules with DEGs
 sienna3ModulesGO <- c(resultsTable[resultsTable$color == "sienna3",]$gene)
@@ -550,6 +556,8 @@ plot(salmon4_skyblue_sienna3_euler_plot, fills = plotColors, quantities = list(t
 #dev.off()
 
 # PUB?
+lightyellowModulesGO <- c(resultsTable[resultsTable$color == "lightyellow",]$gene)
+names(lightyellowModulesGO) <- rep("lightyellow", length(lightyellowModulesGO))
 # salmon4 and skyblue and lightyellow and DEGs
 salmon4_skyblue_lightyellow_euler <-list(skyblue = skyblueModulesGO,
                              salmon4 = salmon4ModulesGO,
@@ -603,11 +611,9 @@ salmon4_skyblue_euler_plot <- euler(salmon4_skyblue_euler)
 plot(salmon4_skyblue_euler_plot, fills = plotColors, quantities = list(type = "counts"), labels = NULL, legend = list(labels = c("skyblue", "salmon4", "lightyellow", "Positive")))
 #dev.off()
 
-# PUB?
+# PUB
 # lightyellow and GO
 PRR <- unlist(data.frame(unlist(allGO["GO:0006301"])), use.names = FALSE)
-lightyellowModulesGO <- c(resultsTable[resultsTable$color == "lightyellow",]$gene)
-names(lightyellowModulesGO) <- rep("lightyellow", length(lightyellowModulesGO))
 lightyellow_GO_euler <-list(lightyellow = lightyellowModulesGO,
                             "GO:0006301" = PRR)
 lightyellow_GO_euler_plot <- euler(lightyellow_GO_euler)
@@ -615,7 +621,13 @@ lightyellow_GO_euler_plot <- euler(lightyellow_GO_euler)
 plot(lightyellow_GO_euler_plot, fills = plotColors, quantities = list(type = "counts"), labels = NULL, legend = list(labels = c("lightyellow", "GO:0006301")))
 #dev.off()
 
-# PUB
+# create venn lists
+vennList <- gplots::venn(lightyellow_GO_euler, show.plot = FALSE)
+# retrieve intersections
+listAtt <- attributes(vennList)$intersections
+listAtt
+
+# PUB?
 # lightyellow and DEGs
 lightyellow_GO_DEGs_euler <-list(Tolerance = geneSet_tolerance,
                                     Treatment = geneSet_treatment, 

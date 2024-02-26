@@ -28,6 +28,7 @@ library(eulerr)
 library(stringr)
 library(tidyr)
 library(gplots)
+library(ggpubr)
 
 # plotting palettes
 # https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
@@ -190,6 +191,32 @@ vennList <- gplots::venn(glm_list_venn, show.plot = FALSE)
 # retrieve intersections
 listAtt <- attributes(vennList)$intersections
 listAtt
+
+
+
+# box plots
+# box plot data
+logcounts = cpm(list, log=TRUE)
+plotColorSubset <- c(plotColors[11], plotColors[6], plotColors[4], plotColors[5])
+# box plot of PHR expression
+expData_PHR <- data.frame(expression = logcounts[rownames(logcounts) == "gene-LOC124188748",],
+                          treatment = c(rep("VIS", 3), rep("UV", 3), rep("VIS", 3), rep("UV", 3), rep("VIS", 3), rep("UV", 3), rep("VIS", 3), rep("UV", 3)),
+                          genotype = c(rep("Y05", 6),  rep("Y023", 6), rep("E05", 6), rep("R2", 6)))
+# create a colored box plot
+png(file="expression_PHR_coloredBoxPlot.png")
+ggboxplot(data=expData_PHR, x="treatment", y="expression", color="genotype",
+          palette = plotColorSubset)
+dev.off()
+
+# box plot of PHR6-4 expression
+expData_PHR64 <- data.frame(expression = logcounts[rownames(logcounts) == "gene-LOC124207238",],
+                            treatment = c(rep("VIS", 3), rep("UV", 3), rep("VIS", 3), rep("UV", 3), rep("VIS", 3), rep("UV", 3), rep("VIS", 3), rep("UV", 3)),
+                            genotype = c(rep("Y05", 6),  rep("Y023", 6), rep("E05", 6), rep("R2", 6)))
+# create a colored box plot
+png(file="expression_PHR64_coloredBoxPlot.png")
+ggboxplot(data=expData_PHR64, x="treatment", y="expression", color="genotype",
+          palette = plotColorSubset)
+dev.off()
 
 
 # heatmaps
@@ -682,4 +709,6 @@ logcountsSubset_MMR_salmon4 <- subset(logcounts,
 ##jpeg("glmQLF_MMR_salmon4_heatmap.jpg")
 heatmap(logcountsSubset_MMR_salmon4, main= "Heatmap of GO:0006298 DGE in salmon4", margins = c(8, 1))
 ##dev.off()
+
+
 
