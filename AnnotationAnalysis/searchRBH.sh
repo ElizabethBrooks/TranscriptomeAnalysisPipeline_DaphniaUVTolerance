@@ -8,6 +8,7 @@
 # script to filter reciprocal blast results for best hits
 # Usage: qsub searchRBH.sh searchTag
 # Usage ex: qsub searchRBH.sh Dpulex_Dmelanogaster
+# Usage ex: qsub searchRBH.sh Dpulex_Dmelanica
 
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
