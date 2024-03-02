@@ -29,6 +29,8 @@ library(stringr)
 library(tidyr)
 library(gplots)
 library(ggpubr)
+library(pheatmap)
+library(ggplotify)
 
 # plotting palettes
 # https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
@@ -41,6 +43,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 # set working directory
 workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes"
+setwd(workingDir)
 
 # import gene count data
 inputTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/GeneCountsAnalyzed/Formatted/cleaned.csv", row.names="gene")[ ,1:24]
@@ -111,12 +114,15 @@ con.all.nest <- makeContrasts(treatment = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
                               levels=design)
 # treatment
 treat.anov.treatment <- glmTreat(fit, contrast=con.all.nest[,"treatment"], lfc=log2(1.2))
+#treat.anov.treatment <- glmTreat(fit, contrast=con.all.nest[,"treatment"], lfc=1)
 summary(decideTests(treat.anov.treatment))
 # tolerance
 treat.anov.tolerance <- glmTreat(fit, contrast=con.all.nest[,"tolerance"], lfc=log2(1.2))
+#treat.anov.tolerance <- glmTreat(fit, contrast=con.all.nest[,"tolerance"], lfc=1)
 summary(decideTests(treat.anov.tolerance))
 # interaction
 treat.anov.Inter <- glmTreat(fit, contrast=c(con.all.nest[,"treatment"]-con.all.nest[,"tolerance"]), lfc=log2(1.2))
+#treat.anov.Inter <- glmTreat(fit, contrast=c(con.all.nest[,"treatment"]-con.all.nest[,"tolerance"]), lfc=1)
 summary(decideTests(treat.anov.Inter))
 
 
@@ -131,40 +137,98 @@ tagsTblANOVATolerance <- topTags(treat.anov.tolerance, n=nrow(treat.anov.toleran
 tagsTblANOVAInter <- topTags(treat.anov.Inter, n=nrow(treat.anov.Inter$table), adjust.method="fdr")$table
 
 
+# Volcano plots
 # add column for identifying direction of DE gene expression
 tagsTblANOVATreatment$topDE <- "NA"
 # identify significantly up DE genes
-tagsTblANOVATreatment$topDE[tagsTblANOVATreatment$logFC > 1 & tagsTblANOVATreatment$FDR < 0.05] <- "UP"
+#tagsTblANOVATreatment$topDE[tagsTblANOVATreatment$logFC > 1 & tagsTblANOVATreatment$FDR < 0.05] <- "UP"
+tagsTblANOVATreatment$topDE[sign(tagsTblANOVATreatment$logFC) == 1 & tagsTblANOVATreatment$FDR < 0.05] <- "UP"
 # identify significantly down DE genes
-tagsTblANOVATreatment$topDE[tagsTblANOVATreatment$logFC < -1 & tagsTblANOVATreatment$FDR < 0.05] <- "DOWN"
+#tagsTblANOVATreatment$topDE[tagsTblANOVATreatment$logFC < -1 & tagsTblANOVATreatment$FDR < 0.05] <- "DOWN"
+tagsTblANOVATreatment$topDE[sign(tagsTblANOVATreatment$logFC) == -1 & tagsTblANOVATreatment$FDR < 0.05] <- "DOWN"
+# create volcano plot
+jpeg("glmQLF_2WayANOVA_treatment_volcano_LFC1.2.jpg")
+ggplot(data=tagsTblANOVATreatment, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+  geom_point() +
+  theme_minimal() +
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down")) +
+  xlab("LFC")
+dev.off()
 # create volcano plot with labels
-labelSetTreatment <- tagsTblANOVATreatment[tagsTblANOVATreatment$topDE == "UP" | tagsTblANOVATreatment$topDE == "DOWN",]
+#labelSetTreatment <- tagsTblANOVATreatment[tagsTblANOVATreatment$topDE == "UP" | tagsTblANOVATreatment$topDE == "DOWN",]
+jpeg("glmQLF_2WayANOVA_treatment_volcanoLabeled_LFC1.2.jpg")
+#ggplot(data=tagsTblANOVATreatment, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+#  geom_point() +
+#  ggrepel::geom_text_repel(data = labelSetTreatment, aes(label = row.names(labelSetTreatment))) +
+#  theme_minimal() +
+#  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down")) +
+#  xlab("LFC")
+dev.off()
+
+# add column for identifying direction of DE gene expression
+tagsTblANOVATolerance$topDE <- "NA"
+# identify significantly up DE genes
+#tagsTblANOVATolerance$topDE[tagsTblANOVATolerance$logFC > 1 & tagsTblANOVATolerance$FDR < 0.05] <- "UP"
+tagsTblANOVATolerance$topDE[sign(tagsTblANOVATolerance$logFC) == 1 & tagsTblANOVATolerance$FDR < 0.05] <- "UP"
+# identify significantly down DE genes
+#tagsTblANOVATolerance$topDE[sign(tagsTblANOVATolerance$logFC) == -1 & tagsTblANOVATolerance$FDR < 0.05] <- "DOWN"
+tagsTblANOVATolerance$topDE[sign(tagsTblANOVATolerance$logFC) == -1 & tagsTblANOVATolerance$FDR < 0.05] <- "DOWN"
+# create volcano plot
+jpeg("glmQLF_2WayANOVA_tolerance_volcano_LFC1.2.jpg")
+ggplot(data=tagsTblANOVATolerance, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+  geom_point() +
+  theme_minimal() +
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down")) +
+  xlab("LFC")
+dev.off()
+# create volcano plot with labels
+#labelSetTolerance <- tagsTblANOVATolerance[tagsTblANOVATolerance$topDE == "UP" | tagsTblANOVATolerance$topDE == "DOWN",]
+jpeg("glmQLF_2WayANOVA_tolerance_volcanoLabeled_LFC1.2.jpg")
+#ggplot(data=tagsTblANOVATolerance, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+#  geom_point() +
+#  ggrepel::geom_text_repel(data = labelSetTolerance, aes(label = row.names(labelSetTolerance)), max.overlaps=20) +
+#  theme_minimal() +
+#  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down")) +
+#  xlab("LFC")
+dev.off()
+
+# add column for identifying direction of DE gene expression
+tagsTblANOVAInter$topDE <- "NA"
+# identify significantly up DE genes
+#tagsTblANOVAInter$topDE[tagsTblANOVAInter$logFC > 1 & tagsTblANOVAInter$FDR < 0.05] <- "UP"
+tagsTblANOVAInter$topDE[sign(tagsTblANOVAInter$logFC) == 1 & tagsTblANOVAInter$FDR < 0.05] <- "UP"
+# identify significantly down DE genes
+#tagsTblANOVAInter$topDE[tagsTblANOVAInter$logFC < -1 & tagsTblANOVAInter$FDR < 0.05] <- "DOWN"
+tagsTblANOVAInter$topDE[sign(tagsTblANOVAInter$logFC) == -1 & tagsTblANOVAInter$FDR < 0.05] <- "DOWN"
+# create volcano plot
+jpeg("glmQLF_2WayANOVA_interaction_volcano_LFC1.2.jpg")
+ggplot(data=tagsTblANOVAInter, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+  geom_point() +
+  theme_minimal() +
+  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down")) +
+  xlab("LFC")
+dev.off()
+# create volcano plot with labels
+#labelSetInteraction <- tagsTblANOVAInter[tagsTblANOVAInter$topDE == "UP" | tagsTblANOVAInter$topDE == "DOWN",]
+jpeg("glmQLF_2WayANOVA_interaction_volcanoLabeled_LFC1.2.jpg")
+#ggplot(data=tagsTblANOVAInter, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+#  geom_point() +
+#  ggrepel::geom_text_repel(data = labelSetInteraction, aes(label = row.names(labelSetInteraction)), max.overlaps=100) +
+#  theme_minimal() +
+#  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down")) +
+#  xlab("LFC")
+dev.off()
+
 # identify significantly DE genes by FDR
 tagsTblANOVATreatment.glm_keep <- tagsTblANOVATreatment$FDR < 0.05
 # create filtered results table of DE genes
 tagsTblANOVATreatment.filtered <- tagsTblANOVATreatment[tagsTblANOVATreatment.glm_keep,]
 
-# add column for identifying direction of DE gene expression
-tagsTblANOVATolerance$topDE <- "NA"
-# identify significantly up DE genes
-tagsTblANOVATolerance$topDE[tagsTblANOVATolerance$logFC > 1 & tagsTblANOVATolerance$FDR < 0.05] <- "UP"
-# identify significantly down DE genes
-tagsTblANOVATolerance$topDE[tagsTblANOVATolerance$logFC < -1 & tagsTblANOVATolerance$FDR < 0.05] <- "DOWN"
-# create volcano plot with labels
-labelSetTolerance <- tagsTblANOVATolerance[tagsTblANOVATolerance$topDE == "UP" | tagsTblANOVATolerance$topDE == "DOWN",]
 # identify significantly DE genes by FDR
 tagsTblANOVATolerance.glm_keep <- tagsTblANOVATolerance$FDR < 0.05
 # create filtered results table of DE genes
 tagsTblANOVATolerance.filtered <- tagsTblANOVATolerance[tagsTblANOVATolerance.glm_keep,]
 
-# add column for identifying direction of DE gene expression
-tagsTblANOVAInter$topDE <- "NA"
-# identify significantly up DE genes
-tagsTblANOVAInter$topDE[tagsTblANOVAInter$logFC > 1 & tagsTblANOVAInter$FDR < 0.05] <- "UP"
-# identify significantly down DE genes
-tagsTblANOVAInter$topDE[tagsTblANOVAInter$logFC < -1 & tagsTblANOVAInter$FDR < 0.05] <- "DOWN"
-# create volcano plot with labels
-labelSetInteraction <- tagsTblANOVAInter[tagsTblANOVAInter$topDE == "UP" | tagsTblANOVAInter$topDE == "DOWN",]
 # identify significantly DE genes by FDR
 tagsTblANOVAInter.glm_keep <- tagsTblANOVAInter$FDR < 0.05
 # create filtered results table of DE genes
@@ -182,16 +246,15 @@ glm_list_venn <- list(Treatment = c(geneSet_treatment),
                       Tolerance = c(geneSet_tolerance),
                       Interaction = c(geneSet_interaction))
 # create venn diagram
-##jpeg("glmQLF_2WayANOVA_venn_LFC1.2.jpg")
+#jpeg("glmQLF_2WayANOVA_venn_LFC1.2.jpg")
 ggVennDiagram(glm_list_venn, label_alpha=0.25, category.names = c("Treatment","Tolerance","Interaction")) +
   scale_colour_discrete(type = plotColorSubset)
-##dev.off()
+#dev.off()
 # create venn lists
 vennList <- gplots::venn(glm_list_venn, show.plot = FALSE)
 # retrieve intersections
 listAtt <- attributes(vennList)$intersections
 listAtt
-
 
 
 # box plots
@@ -241,9 +304,28 @@ logcountsSubset_treatment <- subset(logcounts,
                             ignore.case = TRUE
                           )
 )
-#jpeg("glmQLF_treatment_heatmap.jpg")
-heatmap(logcountsSubset_treatment, main= "Heatmap of Treatment Effect DGE", margins = c(8, 8), labRow = annotationsList_treatment$annotation)
-#dev.off()
+jpeg("glmQLF_treatment_heatmap.jpg")
+heatmap(logcountsSubset_treatment, margins = c(8, 1), labRow = FALSE)#, labRow = annotationsList_treatment$annotation)
+dev.off()
+
+#Create data frame with the experimental design layout
+exp_factor_treatment <- data.frame(Sample = c(paste(targets$treatment,targets$genotype,sep=".")))
+rownames(exp_factor_treatment) <- colnames(logcountsSubset_treatment)
+#Create heatmap for Treatment Effect
+as.ggplot(
+  pheatmap(logcountsSubset_treatment, scale="row", annotation_col = exp_factor_treatment,
+           main="Heatmap of Treatment Effect DE Genes", show_rownames = FALSE, fontsize = 12,
+           color = colorRampPalette(c(plotColors[5], "white", plotColors[6]))(100),
+           annotation_colors = list(Sample = c(UV.Y05 = plotColors[1],
+                                               UV.Y023 = plotColors[2],
+                                               UV.E05 = plotColors[3],
+                                               UV.R2 = plotColors[7],
+                                               VIS.Y05 = plotColors[11],
+                                               VIS.Y023 = plotColors[9],
+                                               VIS.E05 = plotColors[8],
+                                               VIS.R2 = plotColors[4])))
+)
+ggsave("glmQLF_treatment_pheatmap.png", bg = "white")
 
 # view tolerance DGE genes
 # subset counts table by DE gene set
@@ -262,9 +344,28 @@ logcountsSubset_tolerance <- subset(logcounts,
                             ignore.case = TRUE
                           )
 )
-#jpeg("glmQLF_tolerance_heatmap.jpg")
-heatmap(logcountsSubset_tolerance, main= "Heatmap of Tolerance Effect DGE", margins = c(8, 8), labRow = annotationsList_tolerance$annotation)
-#dev.off()
+jpeg("glmQLF_tolerance_heatmap.jpg")
+heatmap(logcountsSubset_tolerance, margins = c(8, 1), labRow = FALSE)
+dev.off()
+
+#Create data frame with the experimental design layout
+exp_factor_tolerance <- data.frame(Sample = c(paste(targets$treatment,targets$genotype,sep=".")))
+rownames(exp_factor_tolerance) <- colnames(logcountsSubset_tolerance)
+#Create heatmap for Tolerance Effect
+as.ggplot(
+  pheatmap(logcountsSubset_tolerance, scale="row", annotation_col = exp_factor_tolerance,
+           main="Heatmap of Tolerance Effect DE Genes", show_rownames = FALSE, fontsize = 12,
+           color = colorRampPalette(c(plotColors[5], "white", plotColors[6]))(100),
+           annotation_colors = list(Sample = c(UV.Y05 = plotColors[1],
+                                               UV.Y023 = plotColors[2],
+                                               UV.E05 = plotColors[3],
+                                               UV.R2 = plotColors[7],
+                                               VIS.Y05 = plotColors[11],
+                                               VIS.Y023 = plotColors[9],
+                                               VIS.E05 = plotColors[8],
+                                               VIS.R2 = plotColors[4])))
+)
+ggsave("glmQLF_tolerance_pheatmap.png", bg = "white")
 
 # view interaction DGE genes
 # subset counts table by DE gene set
@@ -283,10 +384,30 @@ logcountsSubset_interaction <- subset(logcounts,
                             ignore.case = TRUE
                           )
 )
-#jpeg("glmQLF_interaction_heatmap.jpg")
-heatmap(logcountsSubset_interaction, main= "Heatmap of Interaction Effect DGE", margins = c(8, 8), labRow = annotationsList_interaction$annotation)
-#dev.off()
+jpeg("glmQLF_interaction_heatmap.jpg")
+heatmap(logcountsSubset_interaction, margins = c(8, 1), labRow = FALSE)
+dev.off()
 
+#Create data frame with the experimental design layout
+exp_factor_interaction <- data.frame(Sample = c(paste(targets$treatment,targets$genotype,sep=".")))
+rownames(exp_factor_interaction) <- colnames(logcountsSubset_interaction)
+#Create heatmap for Interaction Effect
+as.ggplot(
+  pheatmap(logcountsSubset_interaction, scale="row", annotation_col = exp_factor_interaction,
+           main="Heatmap of Interaction Effect DE Genes", show_rownames = FALSE, fontsize = 12,
+           color = colorRampPalette(c(plotColors[5], "white", plotColors[6]))(100),
+           annotation_colors = list(Sample = c(UV.Y05 = plotColors[1],
+                                               UV.Y023 = plotColors[2],
+                                               UV.E05 = plotColors[3],
+                                               UV.R2 = plotColors[7],
+                                               VIS.Y05 = plotColors[11],
+                                               VIS.Y023 = plotColors[9],
+                                               VIS.E05 = plotColors[8],
+                                               VIS.R2 = plotColors[4])))
+)
+ggsave("glmQLF_interaction_pheatmap.png", bg = "white")
+
+# PUB?
 # view intersection DGE genes
 # $`Treatment:Tolerance:Interaction`
 # [1] "gene-LOC124205968" "gene-LOC124208098" "gene-LOC124193441" "gene-LOC124204390" "gene-LOC124210001"
@@ -296,6 +417,13 @@ heatmap(logcountsSubset_interaction, main= "Heatmap of Interaction Effect DGE", 
 DGESubset_intersection <- c("gene-LOC124205968", "gene-LOC124208098", "gene-LOC124193441", "gene-LOC124204390", "gene-LOC124210001",
                            "gene-LOC124198796", "gene-LOC124204460", "gene-LOC124208917", "gene-LOC124196372", "gene-LOC124203684",
                            "gene-LOC124200027", "gene-LOC124209663", "gene-LOC124190261", "gene-LOC124204974")
+annotationsList_intersection <- subset(annotations,
+                                    grepl(
+                                      paste0(DGESubset_intersection, collapse = "|"),
+                                      rownames(annotations),
+                                      ignore.case = TRUE
+                                    )
+)
 logcountsSubset_intersection <- subset(logcounts,
                                       grepl(
                                         paste0(DGESubset_intersection, collapse = "|"),
@@ -303,9 +431,28 @@ logcountsSubset_intersection <- subset(logcounts,
                                         ignore.case = TRUE
                                       )
 )
-##jpeg("glmQLF_intersection_heatmap.jpg")
-heatmap(logcountsSubset_intersection, main= "Heatmap of Intersection of Effects DGE", margins = c(8, 1))
-##dev.off()
+#jpeg("glmQLF_intersection_heatmap.jpg")
+heatmap(logcountsSubset_intersection, margins = c(8, 1), labRow = annotationsList_intersection$annotation)
+#dev.off()
+
+#Create data frame with the experimental design layout
+exp_factor_intersection <- data.frame(Sample = c(paste(targets$treatment,targets$genotype,sep=".")))
+rownames(exp_factor_intersection) <- colnames(logcountsSubset_intersection)
+#Create heatmap for Interaction Effect
+as.ggplot(
+  pheatmap(logcountsSubset_intersection, scale="row", annotation_col = exp_factor_intersection, 
+           main="Heatmap of Intersection DE Genes", labels_row = annotationsList_intersection$annotation, fontsize = 12,
+           color = colorRampPalette(c(plotColors[5], "white", plotColors[6]))(100),
+           annotation_colors = list(Sample = c(UV.Y05 = plotColors[1],
+                                               UV.Y023 = plotColors[2],
+                                               UV.E05 = plotColors[3],
+                                               UV.R2 = plotColors[7],
+                                               VIS.Y05 = plotColors[11],
+                                               VIS.Y023 = plotColors[9],
+                                               VIS.E05 = plotColors[8],
+                                               VIS.R2 = plotColors[4])))
+)
+ggsave("glmQLF_intersection_pheatmap.png", bg = "white")
 
 
 # interesting GO
@@ -487,9 +634,28 @@ logcountsSubset_MMR <- subset(logcounts,
                                                     ignore.case = TRUE
                                                   )
 )
-#jpeg("glmQLF_MMR_heatmap.jpg")
+jpeg("glmQLF_MMR_heatmap.jpg")
 heatmap(logcountsSubset_MMR, main= "Heatmap of GO:0006298 DGE", margins = c(13, 13), labRow = annotationsList_MMR$annotation, cexRow = 1.5, cexCol = 1.5)
-#dev.off()
+dev.off()
+
+#Create data frame with the experimental design layout
+exp_factor_MMR <- data.frame(Sample = c(paste(targets$treatment,targets$genotype,sep=".")))
+rownames(exp_factor_MMR) <- colnames(logcountsSubset_MMR)
+#Create heatmap for Interaction Effect
+as.ggplot(
+  pheatmap(logcountsSubset_MMR, scale="row", annotation_col = exp_factor_MMR, 
+           main="Heatmap of GO:0006298 Genes", labels_row = annotationsList_MMR$annotation, fontsize = 12,
+           color = colorRampPalette(c(plotColors[5], "white", plotColors[6]))(100),
+           annotation_colors = list(Sample = c(UV.Y05 = plotColors[1],
+                                               UV.Y023 = plotColors[2],
+                                               UV.E05 = plotColors[3],
+                                               UV.R2 = plotColors[7],
+                                               VIS.Y05 = plotColors[11],
+                                               VIS.Y023 = plotColors[9],
+                                               VIS.E05 = plotColors[8],
+                                               VIS.R2 = plotColors[4])))
+)
+ggsave("glmQLF_MMR_pheatmap.png", bg = "white")
 
 # PUB
 # Heatmap of GO:0034599 DGE
@@ -509,9 +675,28 @@ logcountsSubset_cellOxidative <- subset(logcounts,
                                           ignore.case = TRUE
                                         )
 )
-#jpeg("glmQLF_cellOxidative_heatmap.jpg")
+jpeg("glmQLF_cellOxidative_heatmap.jpg")
 heatmap(logcountsSubset_cellOxidative, main= "Heatmap of GO:0034599 DGE", margins = c(14, 14), labRow = annotationsList_cellOxidative$annotation, cexRow = 1.5, cexCol = 1.5)
-#dev.off()
+dev.off()
+
+#Create data frame with the experimental design layout
+exp_factor_cellOxidative <- data.frame(Sample = c(paste(targets$treatment,targets$genotype,sep=".")))
+rownames(exp_factor_cellOxidative) <- colnames(logcountsSubset_cellOxidative)
+#Create heatmap for Interaction Effect
+as.ggplot(
+  pheatmap(logcountsSubset_cellOxidative, scale="row", annotation_col = exp_factor_cellOxidative, 
+           main="Heatmap of GO:0034599 Genes", labels_row = annotationsList_cellOxidative$annotation, fontsize = 12,
+           color = colorRampPalette(c(plotColors[5], "white", plotColors[6]))(100),
+           annotation_colors = list(Sample = c(UV.Y05 = plotColors[1],
+                                               UV.Y023 = plotColors[2],
+                                               UV.E05 = plotColors[3],
+                                               UV.R2 = plotColors[7],
+                                               VIS.Y05 = plotColors[11],
+                                               VIS.Y023 = plotColors[9],
+                                               VIS.E05 = plotColors[8],
+                                               VIS.R2 = plotColors[4])))
+)
+ggsave("glmQLF_cellOxidative_pheatmap.png", bg = "white")
 
 # Heatmap of GO:0000719 DGE
 # subset counts table by DE gene set
@@ -523,9 +708,9 @@ heatmap(logcountsSubset_cellOxidative, main= "Heatmap of GO:0034599 DGE", margin
 #                                          ignore.case = TRUE
 #                                        )
 #)
-##jpeg("glmQLF_PR_heatmap.jpg")
+#jpeg("glmQLF_PR_heatmap.jpg")
 #heatmap(logcountsSubset_PR, main= "Heatmap of GO:0000719 DGE", margins = c(8, 1))
-##dev.off()
+#dev.off()
 
 # Heatmap of GO:0006290 DGE
 # subset counts table by DE gene set
@@ -537,9 +722,9 @@ heatmap(logcountsSubset_cellOxidative, main= "Heatmap of GO:0034599 DGE", margin
 #                                          ignore.case = TRUE
 #                                        )
 #)
-##jpeg("glmQLF_PDR_heatmap.jpg")
+#jpeg("glmQLF_PDR_heatmap.jpg")
 #heatmap(logcountsSubset_PDR, main= "Heatmap of GO:0006290 DGE", margins = c(8, 1))
-##dev.off()
+#dev.off()
 
 # PUB
 # Heatmap of GO:0006301 DGE
@@ -559,9 +744,28 @@ logcountsSubset_PRR <- subset(logcounts,
                                           ignore.case = TRUE
                                         )
 )
-#jpeg("glmQLF_PRR_heatmap.jpg")
+jpeg("glmQLF_PRR_heatmap.jpg")
 heatmap(logcountsSubset_PRR, main= "Heatmap of GO:0006301 DGE", margins = c(12, 12), labRow = annotationsList_PRR$annotation, cexRow = 1.5, cexCol = 1.5)
-#dev.off()
+dev.off()
+
+#Create data frame with the experimental design layout
+exp_factor_PRR <- data.frame(Sample = c(paste(targets$treatment,targets$genotype,sep=".")))
+rownames(exp_factor_PRR) <- colnames(logcountsSubset_PRR)
+#Create heatmap for Interaction Effect
+as.ggplot(
+  pheatmap(logcountsSubset_PRR, scale="row", annotation_col = exp_factor_PRR, 
+           main="Heatmap of GO:0006301 Genes", labels_row = annotationsList_PRR$annotation, fontsize = 12,
+           color = colorRampPalette(c(plotColors[5], "white", plotColors[6]))(100),
+           annotation_colors = list(Sample = c(UV.Y05 = plotColors[1],
+                                               UV.Y023 = plotColors[2],
+                                               UV.E05 = plotColors[3],
+                                               UV.R2 = plotColors[7],
+                                               VIS.Y05 = plotColors[11],
+                                               VIS.Y023 = plotColors[9],
+                                               VIS.E05 = plotColors[8],
+                                               VIS.R2 = plotColors[4])))
+)
+ggsave("glmQLF_PRR_pheatmap.png", bg = "white")
 
 # PUB
 # Heatmap of Salmon4 Module Genes DGE
@@ -582,9 +786,28 @@ logcountsSubset_salmon4 <- subset(logcounts,
                                     ignore.case = TRUE
                                   )
 )
-#jpeg("glmQLF_salmon4_heatmap.jpg")
+jpeg("glmQLF_salmon4_heatmap.jpg")
 heatmap(logcountsSubset_salmon4, main= "Heatmap of Salmon4 Module Genes DGE", margins = c(8, 8), labRow = annotationsList_salmon4$annotation)
-#dev.off()
+dev.off()
+
+#Create data frame with the experimental design layout
+exp_factor_salmon4 <- data.frame(Sample = c(paste(targets$treatment,targets$genotype,sep=".")))
+rownames(exp_factor_salmon4) <- colnames(logcountsSubset_salmon4)
+#Create heatmap for Interaction Effect
+as.ggplot(
+  pheatmap(logcountsSubset_salmon4, scale="row", annotation_col = exp_factor_salmon4, 
+           main="Heatmap of Salmon4 Module Genes", show_rownames = FALSE, fontsize = 12,
+           color = colorRampPalette(c(plotColors[5], "white", plotColors[6]))(100),
+           annotation_colors = list(Sample = c(UV.Y05 = plotColors[1],
+                                               UV.Y023 = plotColors[2],
+                                               UV.E05 = plotColors[3],
+                                               UV.R2 = plotColors[7],
+                                               VIS.Y05 = plotColors[11],
+                                               VIS.Y023 = plotColors[9],
+                                               VIS.E05 = plotColors[8],
+                                               VIS.R2 = plotColors[4])))
+)
+ggsave("glmQLF_salmon4_pheatmap.png", bg = "white")
 
 # PUB
 # Heatmap of Lightyellow Module Genes DGE
@@ -605,9 +828,28 @@ logcountsSubset_lightyellow <- subset(logcounts,
                                         ignore.case = TRUE
                                       )
 )
-#jpeg("glmQLF_lightyellow_heatmap.jpg")
+jpeg("glmQLF_lightyellow_heatmap.jpg")
 heatmap(logcountsSubset_lightyellow, main= "Heatmap of lightyellow Module Genes DGE", margins = c(8,8), labRow = annotationsList_lightyellow$annotation)
-#dev.off()
+dev.off()
+
+#Create data frame with the experimental design layout
+exp_factor_lightyellow <- data.frame(Sample = c(paste(targets$treatment,targets$genotype,sep=".")))
+rownames(exp_factor_lightyellow) <- colnames(logcountsSubset_lightyellow)
+#Create heatmap for Interaction Effect
+as.ggplot(
+  pheatmap(logcountsSubset_lightyellow, scale="row", annotation_col = exp_factor_lightyellow, 
+           main="Heatmap of Lightyellow Module Genes", show_rownames = FALSE, fontsize = 12,
+           color = colorRampPalette(c(plotColors[5], "white", plotColors[6]))(100),
+           annotation_colors = list(Sample = c(UV.Y05 = plotColors[1],
+                                               UV.Y023 = plotColors[2],
+                                               UV.E05 = plotColors[3],
+                                               UV.R2 = plotColors[7],
+                                               VIS.Y05 = plotColors[11],
+                                               VIS.Y023 = plotColors[9],
+                                               VIS.E05 = plotColors[8],
+                                               VIS.R2 = plotColors[4])))
+)
+ggsave("glmQLF_lightyellow_pheatmap.png", bg = "white")
 
 # PUB
 # Heatmap of skyblue Module Genes DGE
@@ -628,9 +870,27 @@ logcountsSubset_skyblue <- subset(logcounts,
                                         ignore.case = TRUE
                                       )
 )
-#jpeg("glmQLF_skyblue_heatmap.jpg")
+jpeg("glmQLF_skyblue_heatmap.jpg")
 heatmap(logcountsSubset_skyblue, main= "Heatmap of skyblue Module Genes DGE", margins = c(8,8), labRow = annotationsList_skyblue$annotation)
-#dev.off()
+dev.off()
+
+#Create data frame with the experimental design layout
+exp_factor_skyblue <- data.frame(Sample = c(paste(targets$treatment,targets$genotype,sep=".")))
+rownames(exp_factor_skyblue) <- colnames(logcountsSubset_skyblue)
+#Create heatmap for Interaction Effect
+as.ggplot(
+  pheatmap(logcountsSubset_skyblue, scale="row", annotation_col = exp_factor_skyblue, 
+           main="Heatmap of Skyblue Module Genes", show_rownames = FALSE, fontsize = 12,
+           annotation_colors = list(Sample = c(UV.Y05 = plotColors[1],
+                                               UV.Y023 = plotColors[2],
+                                               UV.E05 = plotColors[3],
+                                               UV.R2 = plotColors[7],
+                                               VIS.Y05 = plotColors[11],
+                                               VIS.Y023 = plotColors[9],
+                                               VIS.E05 = plotColors[8],
+                                               VIS.R2 = plotColors[4])))
+)
+ggsave("glmQLF_skyblue_pheatmap.png", bg = "white")
 
 # Heatmap of salmon4 & Treatment Effect DGE
 #resultsTable_salmon4 <- resultsTable[grepl("salmon4", resultsTable$color),]
@@ -650,9 +910,9 @@ logcountsSubset_treatment_salmon4 <- subset(logcounts,
                                       ignore.case = TRUE
                                     )
 )
-#jpeg("glmQLF_treatment_salmon4_heatmap.jpg")
+jpeg("glmQLF_treatment_salmon4_heatmap.jpg")
 heatmap(logcountsSubset_treatment_salmon4, main= "Heatmap of salmon4 & Treatment Effect DGE", margins = c(8, 8), labRow = annotationsList_treatment_salmon4$annotation)
-#dev.off()
+dev.off()
 
 # Heatmap of GO:0034599 DGE in salmon4 & Treatment Effect
 # subset counts table by DE gene set
@@ -664,9 +924,9 @@ logcountsSubset_cellOxidative_treatment_salmon4 <- subset(logcounts,
                                               ignore.case = TRUE
                                             )
 )
-##jpeg("glmQLF_cellOxidative_treatment_salmon4_heatmap.jpg")
+#jpeg("glmQLF_cellOxidative_treatment_salmon4_heatmap.jpg")
 heatmap(logcountsSubset_cellOxidative_treatment_salmon4, main= "Heatmap of GO:0034599 DGE in the salmon4 & Treatment Effect", margins = c(8, 1))
-##dev.off()
+#dev.off()
 
 # Heatmap of GO:0034599 DGE in the Treatment Effect
 # subset counts table by DE gene set
@@ -678,9 +938,9 @@ logcountsSubset_cellOxidative_treatment <- subset(logcounts,
                                                             ignore.case = TRUE
                                                           )
 )
-##jpeg("glmQLF_cellOxidative_treatment_heatmap.jpg")
+#jpeg("glmQLF_cellOxidative_treatment_heatmap.jpg")
 heatmap(logcountsSubset_cellOxidative_treatment, main= "Heatmap of GO:0034599 DGE in the Treatment Effect", margins = c(8, 1))
-##dev.off()
+#dev.off()
 
 # Heatmap of GO:0034599 DGE in salmon4
 # subset counts table by DE gene set
@@ -692,9 +952,9 @@ logcountsSubset_cellOxidative_salmon4 <- subset(logcounts,
                                                             ignore.case = TRUE
                                                           )
 )
-##jpeg("glmQLF_cellOxidative_salmon4_heatmap.jpg")
+#jpeg("glmQLF_cellOxidative_salmon4_heatmap.jpg")
 heatmap(logcountsSubset_cellOxidative_salmon4, main= "Heatmap of GO:0034599 DGE in salmon4", margins = c(8, 1))
-##dev.off()
+#dev.off()
 
 # Heatmap of GO:0006298 DGE in salmon4 & Treatment Effect
 # subset counts table by DE gene set
@@ -706,9 +966,9 @@ logcountsSubset_MMR_salmon4 <- subset(logcounts,
                                                   ignore.case = TRUE
                                                 )
 )
-##jpeg("glmQLF_MMR_salmon4_heatmap.jpg")
+#jpeg("glmQLF_MMR_salmon4_heatmap.jpg")
 heatmap(logcountsSubset_MMR_salmon4, main= "Heatmap of GO:0006298 DGE in salmon4", margins = c(8, 1))
-##dev.off()
+#dev.off()
 
 
 
