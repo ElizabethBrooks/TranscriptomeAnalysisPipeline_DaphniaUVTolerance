@@ -21,7 +21,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 # retrieve working directory
 workingDir <- args[1]
-#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/GOAnalysis_OLYM_30"
+#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Tolerance/GOAnalysis_ks_OLYM_30"
 
 # set working directory
 setwd(workingDir)
@@ -46,6 +46,9 @@ GOmaps <- readMappings(file = args[5])
 dNdSTable <- read.csv(file = args[6], row.names="geneID")
 #dNdSTable <- read.csv(file="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Pulex_Olympics_kaksResults.csv", row.names="geneID")
 
+# retrieve test type
+testType <- args[7]
+#testType <- "ks"
 
 # set the full subset tag name
 tag <- paste(set, minModSize, sep="_")

@@ -40,7 +40,7 @@ args = commandArgs(trailingOnly=TRUE)
 #workingDir = args[1]
 workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes"
 #workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCNA_DEGenotypes"
-#setwd(workingDir)
+setwd(workingDir)
 
 #Import gene count data
 #inputTable <- read.csv(file=args[2], row.names="gene")[ ,args[3]:args[4]]
@@ -55,12 +55,12 @@ countsTable <- head(inputTable, - 5)
 targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsGenotypes.csv", row.names="sample")
 
 # set input FDR cutoff
-#fdrCut <- as.numeric(args[6])
-fdrCut <- 0.05
+#cutFDR <- as.numeric(args[6])
+cutFDR <- 0.05
 
 # set LFC cut
-#lfcCut <- as.numeric(args[7])
-lfcCut <- log2(1.2)
+#cutLFC <- as.numeric(args[7])
+cutLFC <- log2(1.2)
 
 #Setup a design matrix
 group <- factor(paste(targets$treatment,targets$genotype,sep="."))
@@ -162,13 +162,13 @@ con.all.nest <- makeContrasts(treatment = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
                               - (UV.E05 + UV.R2 + VIS.E05 + VIS.R2)/4,
                               levels=design)
 # treatment
-treat.anov.treatment <- glmTreat(fit, contrast=con.all.nest[,"treatment"], lfc=lfcCut)
+treat.anov.treatment <- glmTreat(fit, contrast=con.all.nest[,"treatment"], lfc=cutLFC)
 summary(decideTests(treat.anov.treatment))
 # tolerance
-treat.anov.tolerance <- glmTreat(fit, contrast=con.all.nest[,"tolerance"], lfc=lfcCut)
+treat.anov.tolerance <- glmTreat(fit, contrast=con.all.nest[,"tolerance"], lfc=cutLFC)
 summary(decideTests(treat.anov.tolerance))
 # interaction
-treat.anov.Inter <- glmTreat(fit, contrast=c(con.all.nest[,"treatment"]-con.all.nest[,"tolerance"]), lfc=lfcCut)
+treat.anov.Inter <- glmTreat(fit, contrast=c(con.all.nest[,"treatment"]-con.all.nest[,"tolerance"]), lfc=cutLFC)
 summary(decideTests(treat.anov.Inter))
 
 
@@ -190,43 +190,49 @@ write.table(tagsTblANOVAInter, file="glmQLF_2WayANOVA_interaction_topTags.csv", 
 #Write plot to file
 jpeg("glmQLF_2WayANOVA_treatment_plotMD.jpg")
 plotMD(treat.anov.treatment)
-abline(h=c((-1*lfcCut), lfcCut), col="blue")
+abline(h=c((-1*cutLFC), cutLFC), col="blue")
 dev.off()
 
 #Write plot to file
 jpeg("glmQLF_2WayANOVA_tolerance_plotMD.jpg")
 plotMD(treat.anov.tolerance)
-abline(h=c((-1*lfcCut), lfcCut), col="blue")
+abline(h=c((-1*cutLFC), cutLFC), col="blue")
 dev.off()
 
 #Write plot to file
 jpeg("glmQLF_2WayANOVA_interaction_plotMD.jpg")
 plotMD(treat.anov.Inter)
-abline(h=c((-1*lfcCut), lfcCut), col="blue")
+abline(h=c((-1*cutLFC), cutLFC), col="blue")
 dev.off()
 
 
 # Volcano plots
 # add column for identifying direction of DE gene expression
-tagsTblANOVATreatment$topDE <- "NA"
+tagsTblANOVATreatment$colorDE <- plotColors[5]
+tagsTblANOVATreatment$alphaDE <- 0.75
 # identify significantly up DE genes
-#tagsTblANOVATreatment$topDE[tagsTblANOVATreatment$logFC > 1 & tagsTblANOVATreatment$FDR < fdrCut] <- "UP"
-tagsTblANOVATreatment$topDE[sign(tagsTblANOVATreatment$logFC) == 1 & tagsTblANOVATreatment$FDR < fdrCut] <- "UP"
+tagsTblANOVATreatment$colorDE[tagsTblANOVATreatment$logFC > cutLFC & tagsTblANOVATreatment$FDR < cutFDR] <- plotColors[4]
+tagsTblANOVATreatment$alphaDE[tagsTblANOVATreatment$logFC > cutLFC & tagsTblANOVATreatment$FDR < cutFDR] <- 1
+#tagsTblANOVATreatment$colorDE[sign(tagsTblANOVATreatment$logFC) == 1 & tagsTblANOVATreatment$FDR < cutFDR] <- "Up"
 # identify significantly down DE genes
-#tagsTblANOVATreatment$topDE[tagsTblANOVATreatment$logFC < -1 & tagsTblANOVATreatment$FDR < fdrCut] <- "DOWN"
-tagsTblANOVATreatment$topDE[sign(tagsTblANOVATreatment$logFC) == -1 & tagsTblANOVATreatment$FDR < fdrCut] <- "DOWN"
+tagsTblANOVATreatment$colorDE[tagsTblANOVATreatment$logFC < (-1*cutLFC) & tagsTblANOVATreatment$FDR < cutFDR] <- plotColors[6]
+tagsTblANOVATreatment$alphaDE[tagsTblANOVATreatment$logFC < (-1*cutLFC) & tagsTblANOVATreatment$FDR < cutFDR] <- 1
+#tagsTblANOVATreatment$colorDE[sign(tagsTblANOVATreatment$logFC) == -1 & tagsTblANOVATreatment$FDR < cutFDR] <- "Down"
+# add column with -log10(FDR) values
+tagsTblANOVATreatment$negLog10FDR <- -log10(tagsTblANOVATreatment$FDR)
 # create volcano plot
 jpeg("glmQLF_2WayANOVA_treatment_volcano.jpg")
-ggplot(data=tagsTblANOVATreatment, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+ggplot(data=tagsTblANOVATreatment, aes(x=logFC, y=negLog10FDR, color = colorDE, alpha = alphaDE)) + 
   geom_point() +
   theme_minimal() +
-  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down")) +
+  scale_color_identity() +
+  scale_alpha(guide = 'none') +
   xlab("LFC")
 dev.off()
 # create volcano plot with labels
-#labelSetTreatment <- tagsTblANOVATreatment[tagsTblANOVATreatment$topDE == "UP" | tagsTblANOVATreatment$topDE == "DOWN",]
+#labelSetTreatment <- tagsTblANOVATreatment[tagsTblANOVATreatment$colorDE == "UP" | tagsTblANOVATreatment$colorDE == "DOWN",]
 #jpeg("glmQLF_2WayANOVA_treatment_volcanoLabeled.jpg")
-#ggplot(data=tagsTblANOVATreatment, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+#ggplot(data=tagsTblANOVATreatment, aes(x=logFC, y=-log10(FDR), color = colorDE)) + 
 #  geom_point() +
 #  ggrepel::geom_text_repel(data = labelSetTreatment, aes(label = row.names(labelSetTreatment))) +
 #  theme_minimal() +
@@ -235,25 +241,31 @@ dev.off()
 #dev.off()
 
 # add column for identifying direction of DE gene expression
-tagsTblANOVATolerance$topDE <- "NA"
+tagsTblANOVATolerance$colorDE <- plotColors[5]
+tagsTblANOVATolerance$alphaDE <- 0.75
 # identify significantly up DE genes
-#tagsTblANOVATolerance$topDE[tagsTblANOVATolerance$logFC > 1 & tagsTblANOVATolerance$FDR < fdrCut] <- "UP"
-tagsTblANOVATolerance$topDE[sign(tagsTblANOVATolerance$logFC) == 1 & tagsTblANOVATolerance$FDR < fdrCut] <- "UP"
+tagsTblANOVATolerance$colorDE[tagsTblANOVATolerance$logFC > cutLFC & tagsTblANOVATolerance$FDR < cutFDR] <- plotColors[4]
+tagsTblANOVATolerance$alphaDE[tagsTblANOVATolerance$logFC > cutLFC & tagsTblANOVATolerance$FDR < cutFDR] <- 1
+#tagsTblANOVATolerance$colorDE[sign(tagsTblANOVATolerance$logFC) == 1 & tagsTblANOVATolerance$FDR < cutFDR] <- "Up"
 # identify significantly down DE genes
-#tagsTblANOVATolerance$topDE[sign(tagsTblANOVATolerance$logFC) == -1 & tagsTblANOVATolerance$FDR < fdrCut] <- "DOWN"
-tagsTblANOVATolerance$topDE[sign(tagsTblANOVATolerance$logFC) == -1 & tagsTblANOVATolerance$FDR < fdrCut] <- "DOWN"
+tagsTblANOVATolerance$colorDE[tagsTblANOVATolerance$logFC < (-1*cutLFC) & tagsTblANOVATolerance$FDR < cutFDR] <- plotColors[6]
+tagsTblANOVATolerance$alphaDE[tagsTblANOVATolerance$logFC < (-1*cutLFC) & tagsTblANOVATolerance$FDR < cutFDR] <- 1
+#tagsTblANOVATolerance$colorDE[sign(tagsTblANOVATolerance$logFC) == -1 & tagsTblANOVATolerance$FDR < cutFDR] <- "Down"
+# add column with -log10(FDR) values
+tagsTblANOVATolerance$negLog10FDR <- -log10(tagsTblANOVATolerance$FDR)
 # create volcano plot
 jpeg("glmQLF_2WayANOVA_tolerance_volcano.jpg")
-ggplot(data=tagsTblANOVATolerance, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+ggplot(data=tagsTblANOVATolerance, aes(x=logFC, y=negLog10FDR, color = colorDE, alpha = alphaDE)) + 
   geom_point() +
   theme_minimal() +
-  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down")) +
+  scale_color_identity() +
+  scale_alpha(guide = 'none') +
   xlab("LFC")
 dev.off()
 # create volcano plot with labels
-#labelSetTolerance <- tagsTblANOVATolerance[tagsTblANOVATolerance$topDE == "UP" | tagsTblANOVATolerance$topDE == "DOWN",]
+#labelSetTolerance <- tagsTblANOVATolerance[tagsTblANOVATolerance$colorDE == "UP" | tagsTblANOVATolerance$colorDE == "DOWN",]
 #jpeg("glmQLF_2WayANOVA_tolerance_volcanoLabeled.jpg")
-#ggplot(data=tagsTblANOVATolerance, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+#ggplot(data=tagsTblANOVATolerance, aes(x=logFC, y=-log10(FDR), color = colorDE)) + 
 #  geom_point() +
 #  ggrepel::geom_text_repel(data = labelSetTolerance, aes(label = row.names(labelSetTolerance)), max.overlaps=20) +
 #  theme_minimal() +
@@ -262,25 +274,31 @@ dev.off()
 #dev.off()
 
 # add column for identifying direction of DE gene expression
-tagsTblANOVAInter$topDE <- "NA"
+tagsTblANOVAInter$colorDE <- plotColors[5]
+tagsTblANOVAInter$alphaDE <- 0.75
 # identify significantly up DE genes
-#tagsTblANOVAInter$topDE[tagsTblANOVAInter$logFC > 1 & tagsTblANOVAInter$FDR < fdrCut] <- "UP"
-tagsTblANOVAInter$topDE[sign(tagsTblANOVAInter$logFC) == 1 & tagsTblANOVAInter$FDR < fdrCut] <- "UP"
+tagsTblANOVAInter$colorDE[tagsTblANOVAInter$logFC > cutLFC & tagsTblANOVAInter$FDR < cutFDR] <- plotColors[4]
+tagsTblANOVAInter$alphaDE[tagsTblANOVAInter$logFC > cutLFC & tagsTblANOVAInter$FDR < cutFDR] <- 1
+#tagsTblANOVAInter$colorDE[sign(tagsTblANOVAInter$logFC) == 1 & tagsTblANOVAInter$FDR < cutFDR] <- "Up"
 # identify significantly down DE genes
-#tagsTblANOVAInter$topDE[tagsTblANOVAInter$logFC < -1 & tagsTblANOVAInter$FDR < fdrCut] <- "DOWN"
-tagsTblANOVAInter$topDE[sign(tagsTblANOVAInter$logFC) == -1 & tagsTblANOVAInter$FDR < fdrCut] <- "DOWN"
+tagsTblANOVAInter$colorDE[tagsTblANOVAInter$logFC < (-1*cutLFC) & tagsTblANOVAInter$FDR < cutFDR] <- plotColors[6]
+tagsTblANOVAInter$alphaDE[tagsTblANOVAInter$logFC < (-1*cutLFC) & tagsTblANOVAInter$FDR < cutFDR] <- 1
+#tagsTblANOVAInter$colorDE[sign(tagsTblANOVAInter$logFC) == -1 & tagsTblANOVAInter$FDR < cutFDR] <- "Down"
+# add column with -log10(FDR) values
+tagsTblANOVAInter$negLog10FDR <- -log10(tagsTblANOVAInter$FDR)
 # create volcano plot
 jpeg("glmQLF_2WayANOVA_interaction_volcano.jpg")
-ggplot(data=tagsTblANOVAInter, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+ggplot(data=tagsTblANOVAInter, aes(x=logFC, y=negLog10FDR, color = colorDE, alpha = alphaDE)) + 
   geom_point() +
   theme_minimal() +
-  scale_colour_discrete(type = plotColorSubset, breaks = c("Up", "Down")) +
+  scale_color_identity() +
+  scale_alpha(guide = 'none') +
   xlab("LFC")
 dev.off()
 # create volcano plot with labels
-#labelSetInteraction <- tagsTblANOVAInter[tagsTblANOVAInter$topDE == "UP" | tagsTblANOVAInter$topDE == "DOWN",]
+#labelSetInteraction <- tagsTblANOVAInter[tagsTblANOVAInter$colorDE == "UP" | tagsTblANOVAInter$colorDE == "DOWN",]
 #jpeg("glmQLF_2WayANOVA_interaction_volcanoLabeled.jpg")
-#ggplot(data=tagsTblANOVAInter, aes(x=logFC, y=-log10(FDR), color = topDE)) + 
+#ggplot(data=tagsTblANOVAInter, aes(x=logFC, y=-log10(FDR), color = colorDE)) + 
 #  geom_point() +
 #  ggrepel::geom_text_repel(data = labelSetInteraction, aes(label = row.names(labelSetInteraction)), max.overlaps=100) +
 #  theme_minimal() +
@@ -291,15 +309,15 @@ dev.off()
 
 # venn diagram
 # identify significantly DE genes by FDR
-tagsTblANOVATreatment.glm_keep <- tagsTblANOVATreatment$FDR < fdrCut
+tagsTblANOVATreatment.glm_keep <- tagsTblANOVATreatment$FDR < cutFDR
 # create filtered results table of DE genes
 tagsTblANOVATreatment.filtered <- tagsTblANOVATreatment[tagsTblANOVATreatment.glm_keep,]
 # identify significantly DE genes by FDR
-tagsTblANOVATolerance.glm_keep <- tagsTblANOVATolerance$FDR < fdrCut
+tagsTblANOVATolerance.glm_keep <- tagsTblANOVATolerance$FDR < cutFDR
 # create filtered results table of DE genes
 tagsTblANOVATolerance.filtered <- tagsTblANOVATolerance[tagsTblANOVATolerance.glm_keep,]
 # identify significantly DE genes by FDR
-tagsTblANOVAInter.glm_keep <- tagsTblANOVAInter$FDR < fdrCut
+tagsTblANOVAInter.glm_keep <- tagsTblANOVAInter$FDR < cutFDR
 # create filtered results table of DE genes
 tagsTblANOVAInter.filtered <- tagsTblANOVAInter[tagsTblANOVAInter.glm_keep,]
 # retrieve set of DE gene names for hours contrast
@@ -328,14 +346,16 @@ dev.off()
 logcounts = cpm(list, log=TRUE)
 # view DGE genes
 # subset counts table by DE gene set
-DGESubset_treatment <- tagsTblANOVATreatment.filtered[!grepl("NA", tagsTblANOVATreatment.filtered$topDE),]
-logcountsSubset_treatment <- subset(logcounts,
-                          grepl(
-                            paste0(rownames(DGESubset_treatment), collapse = "|"),
-                            rownames(logcounts),
-                            ignore.case = TRUE
-                          )
-)
+DGESubset_treatment <- tagsTblANOVATreatment.filtered[!grepl(plotColors[5], tagsTblANOVATreatment.filtered$colorDE),]
+# logcountsSubset_treatment <- subset(logcounts,
+#                           grepl(
+#                             paste0(rownames(DGESubset_treatment), collapse = "|"),
+#                             rownames(logcounts),
+#                             ignore.case = TRUE
+#                           )
+# )
+DGESubset_treatment.keep <- rownames(logcounts) %in% rownames(DGESubset_treatment)
+logcountsSubset_treatment <- logcounts[DGESubset_treatment.keep, ]
 jpeg("glmQLF_treatment_heatmap.jpg")
 heatmap(logcountsSubset_treatment, margins = c(8, 1), labRow = FALSE)
 dev.off()
@@ -343,28 +363,32 @@ dev.off()
 
 # view tolerance DGE genes
 # subset counts table by DE gene set
-DGESubset_tolerance <- tagsTblANOVATolerance.filtered[!grepl("NA", tagsTblANOVATolerance.filtered$topDE),]
-logcountsSubset_tolerance <- subset(logcounts,
-                          grepl(
-                            paste0(rownames(DGESubset_tolerance), collapse = "|"),
-                            rownames(logcounts),
-                            ignore.case = TRUE
-                          )
-)
+DGESubset_tolerance <- tagsTblANOVATolerance.filtered[!grepl(plotColors[5], tagsTblANOVATolerance.filtered$colorDE),]
+# logcountsSubset_tolerance <- subset(logcounts,
+#                           grepl(
+#                             paste0(rownames(DGESubset_tolerance), collapse = "|"),
+#                             rownames(logcounts),
+#                             ignore.case = TRUE
+#                           )
+# )
+DGESubset_tolerance.keep <- rownames(logcounts) %in% rownames(DGESubset_tolerance)
+logcountsSubset_tolerance <- logcounts[DGESubset_tolerance.keep, ]
 jpeg("glmQLF_tolerance_heatmap.jpg")
 heatmap(logcountsSubset_tolerance, margins = c(8, 1), labRow = FALSE)
 dev.off()
 
 # view interaction DGE genes
 # subset counts table by DE gene set
-DGESubset_interaction <- tagsTblANOVAInter.filtered[!grepl("NA", tagsTblANOVAInter.filtered$topDE),]
-logcountsSubset_interaction <- subset(logcounts,
-                          grepl(
-                            paste0(rownames(DGESubset_interaction), collapse = "|"),
-                            rownames(logcounts),
-                            ignore.case = TRUE
-                          )
-)
+DGESubset_interaction <- tagsTblANOVAInter.filtered[!grepl(plotColors[5], tagsTblANOVAInter.filtered$colorDE),]
+# logcountsSubset_interaction <- subset(logcounts,
+#                           grepl(
+#                             paste0(rownames(DGESubset_interaction), collapse = "|"),
+#                             rownames(logcounts),
+#                             ignore.case = TRUE
+#                           )
+# )
+DGESubset_interaction.keep <- rownames(logcounts) %in% rownames(DGESubset_interaction)
+logcountsSubset_interaction <- logcounts[DGESubset_interaction.keep, ]
 jpeg("glmQLF_interaction_heatmap.jpg")
 heatmap(logcountsSubset_interaction, margins = c(8, 1), labRow = FALSE)
 dev.off()

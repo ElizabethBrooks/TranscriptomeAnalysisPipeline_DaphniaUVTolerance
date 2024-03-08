@@ -26,8 +26,11 @@ set=$2
 # minimum module size
 minModSize=30
 
+# retrieve test type
+testType="ks"
+
 # name outputs directory
-outDir=$inDir"/GOAnalysis_"$set"_"$minModSize
+outDir=$inDir"/GOAnalysis_"$testType"_"$set"_"$minModSize
 
 # retrieve table of dNdS results
 dNdSTable="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Pulex_Olympics_kaksResults.csv"
@@ -36,4 +39,4 @@ dNdSTable="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Bi
 mkdir $outDir
 
 # determine the direction of expression for each module and effect set
-Rscript enrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps $dNdSTable
+Rscript enrichModule_topGO.R $outDir $set $minModSize $inDir $GOmaps $dNdSTable $testType

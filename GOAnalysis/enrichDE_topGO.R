@@ -22,23 +22,27 @@ options(stringsAsFactors = FALSE)
 args = commandArgs(trailingOnly=TRUE)
 
 # retrieve working directory
-workingDir <- args[1]
-#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/GOAnalysis"
+#workingDir <- args[1]
+workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis_ks"
 
 # set working directory
-setwd(workingDir);
+setwd(workingDir)
 
 # retrieve set tag
-set <- args[2]
-#set <- "interaction"
+#set <- args[2]
+set <- "treatment"
 
 # retrieve inputs directory
-inDir <- args[3]
-#inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Tolerance/"
+#inDir <- args[3]
+inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/"
 
 # retrieve gene to GO map
-GOmaps <- readMappings(file = args[4])
-#GOmaps <- readMappings(file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/geneToGO_tagged_map.txt")
+#GOmaps <- readMappings(file = args[4])
+GOmaps <- readMappings(file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/geneToGO_tagged_map.txt")
+
+# retrieve test type
+#testType <- args[5]
+testType <- "ks"
 
 # retrieve input DE results
 importFile <- paste("glmQLF_2WayANOVA", set, sep="_")
@@ -85,10 +89,10 @@ CC_GO_data <- new('topGOdata', ontology = 'CC', allGenes = list_genes_filtered,
 #numGenes(CC_GO_data)
 #length(sigGenes(CC_GO_data))
 
-# performGO enrichment using the topGOdata objects
-BP_GO_results <- runTest(BP_GO_data, statistic = 'Fisher')
-MF_GO_results <- runTest(MF_GO_data, statistic = 'Fisher')
-CC_GO_results <- runTest(CC_GO_data, statistic = 'Fisher')
+# performGO functional analysis using the topGOdata objects
+BP_GO_results <- runTest(BP_GO_data, statistic = testType)
+MF_GO_results <- runTest(MF_GO_data, statistic = testType)
+CC_GO_results <- runTest(CC_GO_data, statistic = testType)
 
 # check the names of GO terms
 #head(names(BP_GO_results@score))

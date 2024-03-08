@@ -18,16 +18,19 @@ GOmaps=$(grep "functionalAnnotations:" ../InputData/inputPaths.txt | tr -d " " |
 GOmaps=$(dirname $GOmaps)
 GOmaps=$GOmaps"/geneToGO_tagged_map.txt"
 
+# retrieve test type
+testType="ks"
+
 # set outputs directory
-outDir=$inDir"/GOAnalysis"
+outDir=$inDir"/GOAnalysis_"$testType
 
 # create outputs directory
 mkdir $outDir
 
 # determine the direction of expression for each module and effect set
 # interaction
-Rscript enrichDE_topGO.R $outDir "interaction" $inDir $GOmaps
+Rscript enrichDE_topGO.R $outDir "interaction" $inDir $GOmaps $testType
 # treatment
-Rscript enrichDE_topGO.R $outDir "treatment" $inDir $GOmaps
+Rscript enrichDE_topGO.R $outDir "treatment" $inDir $GOmaps $testType
 # tolerance
-Rscript enrichDE_topGO.R $outDir "tolerance" $inDir $GOmaps
+Rscript enrichDE_topGO.R $outDir "tolerance" $inDir $GOmaps $testType
