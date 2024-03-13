@@ -18,7 +18,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 # retrieve working directory
 workingDir <- args[1]
-#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis"
+#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis_ks"
 
 # set working directory
 setwd(workingDir)

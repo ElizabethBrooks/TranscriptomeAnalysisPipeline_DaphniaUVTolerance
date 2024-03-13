@@ -8,7 +8,7 @@
 options(scipen = 999)
 
 # set the working directory
-workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30"
+workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_ks_OLYM_30"
 setwd(workingDir)
 
 # load librarys
@@ -28,9 +28,9 @@ plotColors <- carto_pal(12, "Safe")
 plotColorSubset <- c(plotColors[3], plotColors[2], plotColors[1])
 
 # read in BP GO term enrichment results
-treatmentGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis/treatment_BP_GO_terms.csv")
-toleranceGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis/tolerance_BP_GO_terms.csv")
-interactionGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis/interaction_BP_GO_terms.csv")
+treatmentGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis_ks/treatment_BP_GO_terms.csv")
+toleranceGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis_ks/tolerance_BP_GO_terms.csv")
+interactionGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis_ks/interaction_BP_GO_terms.csv")
 
 # keep only sig
 treatmentGOSig <- na.omit(treatmentGO[treatmentGO$weightFisher < 0.001,])
@@ -75,9 +75,9 @@ plot(euler_plot, fills = plotColorSubset, quantities = list(type = "counts"), la
 #dev.off()
 
 # import modules GO data
-modulesNames <- list.files(path="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30/", pattern = "_BP_sigGO_terms.csv.flt$")
+modulesNames <- list.files(path="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_ks_OLYM_30/", pattern = "_BP_sigGO_terms.csv.flt$")
 modulesNames <- str_remove(modulesNames, "_BP_sigGO_terms.csv.flt")
-modulesFiles <- list.files(path="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_OLYM_30/", pattern = "_BP_sigGO_terms.csv.flt$", full.names = TRUE)
+modulesFiles <- list.files(path="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/WGCNA/Genotypes/GOAnalysis_ks_OLYM_30/", pattern = "_BP_sigGO_terms.csv.flt$", full.names = TRUE)
 modulesGO <- lapply(modulesFiles, read.csv)
 names(modulesGO) <- modulesNames
 

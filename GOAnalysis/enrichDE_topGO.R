@@ -22,27 +22,27 @@ options(stringsAsFactors = FALSE)
 args = commandArgs(trailingOnly=TRUE)
 
 # retrieve working directory
-#workingDir <- args[1]
-workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis_ks"
+workingDir <- args[1]
+#workingDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis_ks"
 
 # set working directory
 setwd(workingDir)
 
 # retrieve set tag
-#set <- args[2]
-set <- "treatment"
+set <- args[2]
+#set <- "treatment"
 
 # retrieve inputs directory
-#inDir <- args[3]
-inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/"
+inDir <- args[3]
+#inDir <- "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/"
 
 # retrieve gene to GO map
-#GOmaps <- readMappings(file = args[4])
-GOmaps <- readMappings(file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/geneToGO_tagged_map.txt")
+GOmaps <- readMappings(file = args[4])
+#GOmaps <- readMappings(file = "/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/email/geneToGO_tagged_map.txt")
 
 # retrieve test type
-#testType <- args[5]
-testType <- "ks"
+testType <- args[5]
+#testType <- "ks"
 
 # retrieve input DE results
 importFile <- paste("glmQLF_2WayANOVA", set, sep="_")

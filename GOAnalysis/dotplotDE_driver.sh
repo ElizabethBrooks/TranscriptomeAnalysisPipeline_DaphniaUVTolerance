@@ -13,11 +13,11 @@ analysisType=$1
 inDir=$(grep "DEAnalysis:" ../InputData/outputPaths.txt | tr -d " " | sed "s/DEAnalysis://g")
 inDir=$inDir"/"$analysisType
 
-# set outputs directory
-outDir=$inDir"/GOAnalysis"
+# retrieve test type
+testType="ks"
 
-# create outputs directory
-mkdir $outDir
+# set outputs directory
+outDir=$inDir"/GOAnalysis_"$testType
 
 # set input paths
 positiveTable="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/"$analysisType"/fisherTest_positiveSelection_modules.csv"

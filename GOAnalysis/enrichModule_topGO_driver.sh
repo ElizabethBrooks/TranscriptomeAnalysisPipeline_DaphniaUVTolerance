@@ -20,6 +20,9 @@ GOmaps=$(grep "functionalAnnotations:" ../InputData/inputPaths.txt | tr -d " " |
 GOmaps=$(dirname $GOmaps)
 GOmaps=$GOmaps"/geneToGO_tagged_map.txt"
 
+# retrieve table of dNdS results
+dNdSTable="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Pulex_Olympics_kaksResults.csv"
+
 # retrieve set
 set=$2
 
@@ -31,9 +34,6 @@ testType="ks"
 
 # name outputs directory
 outDir=$inDir"/GOAnalysis_"$testType"_"$set"_"$minModSize
-
-# retrieve table of dNdS results
-dNdSTable="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/SelectionTests/Pulex_Olympics_kaksResults.csv"
 
 # create outputs directory
 mkdir $outDir

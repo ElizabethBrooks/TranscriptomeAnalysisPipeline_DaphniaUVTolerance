@@ -27,9 +27,9 @@ plotColors <- carto_pal(12, "Safe")
 plotColorSubset <- c(plotColors[3], plotColors[2], plotColors[1])
 
 # read in BP GO term enrichment results
-treatmentGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis/treatment_BP_GO_terms.csv")
-toleranceGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis/tolerance_BP_GO_terms.csv")
-interactionGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis/interaction_BP_GO_terms.csv")
+treatmentGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis_ks/treatment_BP_GO_terms.csv")
+toleranceGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis_ks/tolerance_BP_GO_terms.csv")
+interactionGO <- read.csv("/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes/GOAnalysis_ks/interaction_BP_GO_terms.csv")
 
 # keep only sig
 treatmentGOSig <- na.omit(treatmentGO[treatmentGO$weightFisher < 0.001,])
@@ -133,7 +133,7 @@ for(i in 1:length(treatmentGOSmall)){
 names(treatmentTermList) <- treatmentGOSmall$GO.ID
 treatmentTermList <- modifyList(glm_list_venn, treatmentTermList)
 euler_plot_treatmentGO <- euler(treatmentTermList)
-jpeg("GOAnalysis/sigBP_treatment_euler.jpg")
+jpeg("GOAnalysis_ks/sigBP_treatment_euler.jpg")
 plot(euler_plot_treatmentGO)
 dev.off()
 # tolerance
@@ -144,7 +144,7 @@ for(i in 1:length(toleranceGOSmall)){
 names(toleranceTermList) <- toleranceGOSmall$GO.ID
 toleranceTermList <- modifyList(glm_list_venn, toleranceTermList)
 euler_plot_toleranceGO <- euler(toleranceTermList)
-jpeg("GOAnalysis/sigBP_tolerance_euler.jpg")
+jpeg("GOAnalysis_ks/sigBP_tolerance_euler.jpg")
 plot(euler_plot_toleranceGO)
 dev.off()
 # interaction
@@ -155,7 +155,7 @@ for(i in 1:length(interactionGOSmall)){
 names(interactionTermList) <- interactionGOSmall$GO.ID
 interactionTermList <- modifyList(glm_list_venn, interactionTermList)
 euler_plot_interactionGO <- euler(interactionTermList)
-jpeg("GOAnalysis/sigBP_interaction_euler.jpg")
+jpeg("GOAnalysis_ks/sigBP_interaction_euler.jpg")
 plot(euler_plot_interactionGO)
 dev.off()
 # combined
@@ -163,7 +163,7 @@ termList <- modifyList(glm_list_venn, toleranceTermList)
 termList <- modifyList(treatmentTermList, termList)
 termList <- modifyList(interactionTermList, termList)
 euler_plot_combinedGO <- euler(termList)
-jpeg("GOAnalysis/sigBP_combined_euler.jpg")
+jpeg("GOAnalysis_ks/sigBP_combined_euler.jpg")
 plot(euler_plot_combinedGO)
 dev.off()
 
@@ -209,7 +209,7 @@ glm_list_venn_repairGO <-list(tolerance = geneSet_tolerance,
                               DSBR = DSBR)
 #SSBR = SSBR)
 euler_plot_repairGO <- euler(glm_list_venn_repairGO)
-jpeg("GOAnalysis/notSigGO_DNARepair_euler.jpg")
+jpeg("GOAnalysis_ks/notSigGO_DNARepair_euler.jpg")
 plot(euler_plot_repairGO)
 dev.off()
 
@@ -222,6 +222,6 @@ glm_list_venn_stressGO <-list(tolerance = geneSet_tolerance,
                               "GO:0034599" = cellOxidative)
 #cellReactiveOxy = cellReactiveOxy)
 euler_plot_stressGO <- euler(glm_list_venn_stressGO)#, shape = "ellipse")
-jpeg("GOAnalysis/sigBP_stress_euler.jpg")
+jpeg("GOAnalysis_ks/sigBP_stress_euler.jpg")
 plot(euler_plot_stressGO, quantities = list(type = c("counts")))#, fills = plotColors[1:6])
 dev.off()

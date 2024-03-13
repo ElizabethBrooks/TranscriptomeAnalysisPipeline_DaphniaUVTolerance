@@ -21,11 +21,11 @@ set=$2
 # minimum module size
 minModSize=30
 
-# name outputs directory
-outDir=$inDir"/GOAnalysis_"$set"_"$minModSize
+# retrieve test type
+testType="ks"
 
-# create outputs directory
-#mkdir $outDir
+# name outputs directory
+outDir=$inDir"/GOAnalysis_"$testType"_"$set"_"$minModSize
 
 # set input paths
 positiveTable="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/selectionTests/"$analysisType"/fisherTest_positiveSelection_modules.csv"
