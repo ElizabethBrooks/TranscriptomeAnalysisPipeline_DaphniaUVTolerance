@@ -8,9 +8,10 @@
 #Script to generate a hisat2 genome refernce build folder
 #Usage: qsub building_hisat2.sh trimmedFolder
 #Usage ex: qsub building_hisat2.sh trimmed
+#Usage ex: qsub building_hisat2.sh trimmed_run1
 
 #Required modules for ND CRC servers
-module load bio
+module load bio/2.0
 #module load bio/hisat2/2.1.0
 
 #Retrieve genome reference absolute path for alignment
