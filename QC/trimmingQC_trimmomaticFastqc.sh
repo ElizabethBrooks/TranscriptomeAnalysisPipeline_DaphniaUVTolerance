@@ -70,9 +70,8 @@ for f1 in "$readPath"/*1.fq.gz; do
 	inputOutFile="$trimOut"/"$trimOut"_summary.txt
 	#Perform adapter trimming on paired reads
 	#using 8 threads
-	#added HEADCROP:10
-	trimmomatic PE -threads 8 -phred"$score" $f1 "$curSample"2.fq.gz "$trimOut"/"$curSampleNoPath"pForward.fq.gz "$trimOut"/"$curSampleNoPath"uForward.fq.gz "$trimOut"/"$curSampleNoPath"pReverse.fq.gz "$trimOut"/"$curSampleNoPath"uReverse.fq.gz ILLUMINACLIP:"$adapterPath" LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:10
+	trimmomatic PE -threads 8 -phred"$score" $f1 "$curSample"2.fq.gz "$trimOut"/"$curSampleNoPath"pForward.fq.gz "$trimOut"/"$curSampleNoPath"uForward.fq.gz "$trimOut"/"$curSampleNoPath"pReverse.fq.gz "$trimOut"/"$curSampleNoPath"uReverse.fq.gz ILLUMINACLIP:"$adapterPath" LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:60 HEADCROP:10
 	#Add run inputs to output summary file
 	echo $curSampleNoPath >> $inputOutFile
-	echo trimmomatic PE -threads 8 -phred"$score" $f1 "$curSample"2.fq.gz "$trimOut"/"$curSampleNoPath"pForward.fq.gz "$trimOut"/"$curSampleNoPath"uForward.fq.gz "$trimOut"/"$curSampleNoPath"pReverse.fq.gz "$trimOut"/"$curSampleNoPath"uReverse.fq.gz ILLUMINACLIP:"$adapterPath" LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:10 >> $inputOutFile
+	echo trimmomatic PE -threads 8 -phred"$score" $f1 "$curSample"2.fq.gz "$trimOut"/"$curSampleNoPath"pForward.fq.gz "$trimOut"/"$curSampleNoPath"uForward.fq.gz "$trimOut"/"$curSampleNoPath"pReverse.fq.gz "$trimOut"/"$curSampleNoPath"uReverse.fq.gz ILLUMINACLIP:"$adapterPath" LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:60 HEADCROP:10 >> $inputOutFile
 done
