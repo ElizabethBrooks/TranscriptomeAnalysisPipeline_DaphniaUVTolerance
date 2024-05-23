@@ -10,7 +10,8 @@
 # Note that a hisat2 genome refernce build folder needs to be generated first
 # usage: qsub alignment_hisat2.sh trimmedFolder
 # usage Ex: qsub alignment_hisat2.sh trimmed
-# usage Ex: qsub alignment_hisat2.sh trimmed_run1
+# usage Ex: qsub alignment_hisat2.sh trimmed run1
+# usage Ex: qsub alignment_hisat2.sh trimmed run2
 
 #Required modules for ND CRC servers
 module load bio/2.0
@@ -30,12 +31,12 @@ outputsPath=$(grep "aligningGenome:" ../InputData/outputPaths.txt | tr -d " " | 
 
 #Retrieve reads input absolute path
 inputsPath=$(grep "trimming:" ../InputData/outputPaths.txt | tr -d " " | sed "s/trimming://g")
-trimmedFolder="$1"
+trimmedFolder=$1"_"$2
 #Move to outputs directory
 cd "$outputsPath"
 
 #Hisat output directory name
-outputFolder="aligned_hisat2"
+outputFolder="aligned_hisat2_"$2
 mkdir "$outputFolder"
 # check if the folder already exists
 if [ $? -ne 0 ]; then

@@ -29,6 +29,7 @@ cd "$outputsPath"
 #Make a new directory for the trimming run
 trimOut="trimmed"
 mkdir $trimOut
+# TO-DO: add run numbers
 # check if the folder already exists
 if [ $? -ne 0 ]; then
 	echo "The $trimOut directory already exsists... please remove before proceeding."

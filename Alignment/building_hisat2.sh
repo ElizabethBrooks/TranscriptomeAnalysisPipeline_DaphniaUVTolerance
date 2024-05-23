@@ -6,9 +6,7 @@
 #$ -pe smp 4
 
 #Script to generate a hisat2 genome refernce build folder
-#Usage: qsub building_hisat2.sh trimmedFolder
-#Usage ex: qsub building_hisat2.sh trimmed
-#Usage ex: qsub building_hisat2.sh trimmed_run1
+#Usage: qsub building_hisat2.sh
 
 #Required modules for ND CRC servers
 module load bio/2.0
