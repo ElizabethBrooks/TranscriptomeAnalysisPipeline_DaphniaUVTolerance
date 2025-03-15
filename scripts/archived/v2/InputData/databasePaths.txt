@@ -1,0 +1,8 @@
+trinotateSwissprot: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/trinotate/uniprot_sprot.pep
+trinotatePfam: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/trinotate/Pfam-A.hmm
+trinotateSqlite: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/trinotate/Trinotate.sqlite
+proteome: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/proteome/proteomeDB_taxonID.fasta
+ncbi: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/ncbi/nr
+uniprot: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/uniprot/uniref100.fasta
+pfam: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/pfam/Pfam-A.hmm
+panther: /afs/crc.nd.edu/group/pfrenderlab/bateson/ebrooks/rnaseq/databases/panther/PANTHER14.1_hmmscoring

@@ -1,0 +1,9 @@
+transdecoderPackage: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/TransDecoder-master
+trinotatePackage: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/Trinotate-Trinotate-v3.2.1
+cdhitPackage: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/cdhit-master
+sanspanzPackage: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/SANSPANZ.3
+orthoFinder: /e/eBrooks/eBrooks_RNASeq/dmelUV/OrthoFinder
+GSEA: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/GSEA_Linux_4.1.0
+stringtie: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/stringtie
+pal2nal: /afs/crc.nd.edu/group/hoth/eBrooks/eBrooks_RNASeq/dmelUV/pal2nal.v14
+interproscan: /afs/crc.nd.edu/user/e/ebrooks5/my_interproscan/interproscan-5.59-91.0
