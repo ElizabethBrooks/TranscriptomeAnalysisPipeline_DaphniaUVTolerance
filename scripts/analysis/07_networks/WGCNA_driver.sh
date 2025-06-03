@@ -44,7 +44,6 @@ mkdir $outPath
 mkdir $outDir
 
 # WGCNA data input
-Rscript "dataInput_consensus"$analysisType"_WGCNA.R" $outDir $inputCounts 1 24 $expDesign $analysisType
 Rscript dataInput_set_WGCNA.R $outDir $inputCounts 1 24 OLYM $expDesign
 Rscript dataInput_set_WGCNA.R $outDir $inputCounts 1 12 Tol $expDesign
 Rscript dataInput_set_WGCNA.R $outDir $inputCounts 13 24 NTol $expDesign
@@ -54,7 +53,6 @@ Rscript dataInput_set_WGCNA.R $outDir $inputCounts 13 24 NTol $expDesign
 #Rscript dataInput_set_WGCNA.R $outDir $inputCounts 19 24 R2 $expDesign
 
 # WGCNA soft power picking
-Rscript pickSoftPower_consensus_WGCNA.R $outDir $analysisType
 Rscript pickSoftPower_set_WGCNA.R $outDir OLYM
 Rscript pickSoftPower_set_WGCNA.R $outDir Tol
 Rscript pickSoftPower_set_WGCNA.R $outDir NTol
@@ -64,7 +62,6 @@ Rscript pickSoftPower_set_WGCNA.R $outDir NTol
 #Rscript pickSoftPower_set_WGCNA.R $outDir R2
 
 # WGCNA network construction
-Rscript "networkConstruction_consensus"$analysisType"_WGCNA.R" $outDir $softThresh $minModSize
 Rscript networkConstruction_set_WGCNA.R $outDir OLYM 8 $minModSize
 Rscript networkConstruction_set_WGCNA.R $outDir Tol 14 $minModSize
 Rscript networkConstruction_set_WGCNA.R $outDir NTol 14 $minModSize
@@ -72,18 +69,6 @@ Rscript networkConstruction_set_WGCNA.R $outDir NTol 14 $minModSize
 #Rscript networkConstruction_set_WGCNA.R $outDir Y023 12 $minModSize
 #Rscript networkConstruction_set_WGCNA.R $outDir E05 14 $minModSize
 #Rscript networkConstruction_set_WGCNA.R $outDir R2 9 $minModSize
-
-# WGCNA consensus network analsysis
-Rscript networkAnalysis_consensus_WGCNA.R $outDir OLYM $minModSize $analysisType
-Rscript networkAnalysis_consensus_WGCNA.R $outDir Tol $minModSize $analysisType
-Rscript networkAnalysis_consensus_WGCNA.R $outDir NTol $minModSize $analysisType
-#Rscript networkAnalysis_consensus_WGCNA.R $outDir Y05 $minModSize $analysisType
-#Rscript networkAnalysis_consensus_WGCNA.R $outDir Y023 $minModSize $analysisType
-#Rscript networkAnalysis_consensus_WGCNA.R $outDir E05 $minModSize $analysisType
-#Rscript networkAnalysis_consensus_WGCNA.R $outDir R2 $minModSize $analysisType
-
-# WGCNA compare consensus eigengene networks
-Rscript "eigengeneNetworks_consensus"$analysisType"_WGCNA.R" $outDir $minModSize
 
 # WGCNA export eigengene expression values
 Rscript eigengeneExpression_set_WGCNA.R $outDir OLYM $minModSize

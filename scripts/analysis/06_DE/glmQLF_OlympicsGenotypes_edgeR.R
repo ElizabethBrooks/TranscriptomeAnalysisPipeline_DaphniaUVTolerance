@@ -26,6 +26,7 @@ library(ggplot2)
 library(ggrepel)
 library(ggVennDiagram)
 library(rcartocolor)
+library(tibble)
 
 # Plotting Palettes
 # https://stackoverflow.com/questions/57153428/r-plot-color-combinations-that-are-colorblind-accessible
@@ -38,8 +39,10 @@ args = commandArgs(trailingOnly=TRUE)
 
 #Set working directory
 #workingDir = args[1]
-workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes"
+#workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis/Genotypes"
+workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/NCBI/GCF_021134715.1/Biostatistics/DEAnalysis_28May2025/Genotypes"
 #workingDir="/Users/bamflappy/PfrenderLab/OLYM_dMelUV/KAP4/WGCNA_DEGenotypes"
+dir.create(workingDir)
 setwd(workingDir)
 
 #Import gene count data
@@ -52,7 +55,8 @@ countsTable <- head(inputTable, - 5)
 
 #Import grouping factor
 #targets <- read.csv(file=args[5], row.names="sample")
-targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsGenotypes.csv", row.names="sample")
+#targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/InputData/expDesign_OlympicsGenotypes.csv", row.names="sample")
+targets <- read.csv(file="/Users/bamflappy/Repos/TranscriptomeAnalysisPipeline_DaphniaUVTolerance/inputs/expDesign_OlympicsGenotypes_IDs.csv", row.names="sample")
 
 # set input FDR cutoff
 #cutFDR <- as.numeric(args[6])
@@ -63,10 +67,10 @@ cutFDR <- 0.05
 cutLFC <- log2(1.2)
 
 #Setup a design matrix
-group <- factor(paste(targets$treatment,targets$genotype,sep="."))
-#cbind(targets,Group=group)
+sample_group <- factor(paste(targets$treatment,targets$genotype,sep="."))
+#cbind(targets,Group=sample_group)
 #Create DGE list object
-list <- DGEList(counts=countsTable,group=group)
+list <- DGEList(counts=countsTable,group=sample_group)
 colnames(list) <- rownames(targets)
 
 #Plot the library sizes before normalization
@@ -85,11 +89,14 @@ list <- calcNormFactors(list)
 #list$samples
 #Write normalized counts to file
 normList <- cpm(list, normalized.lib.sizes=TRUE)
-write.table(normList, file="glmQLF_normalizedCounts.csv", sep=",", row.names=TRUE, quote=FALSE)
+# add gene row name tag
+normList <- as_tibble(normList, rownames = "gene")
+write.table(normList, file="glmQLF_normalizedCounts.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 #Write log transformed normalized counts to file
 normListLog <- cpm(list, normalized.lib.sizes=TRUE, log=TRUE)
-write.table(normListLog, file="glmQLF_normalizedCounts_logTransformed.csv", sep=",", row.names=TRUE, quote=FALSE)
+normListLog <- as_tibble(normListLog, rownames = "gene")
+write.table(normListLog, file="glmQLF_normalizedCounts_logTransformed.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 #Verify TMM normalization using a MD plot
 #Write plot to file
@@ -101,37 +108,38 @@ dev.off()
 #Use a MDS plot to visualizes the differences
 # between the expression profiles of different samples
 points <- c(0,1,2,3,15,16,17,18)
-colors <- rep(c(plotColors[4], plotColors[5], plotColors[6], plotColors[11]), 2)
+#colors <- rep(c(plotColors[4], plotColors[5], plotColors[6], plotColors[11]), 2)
+colors <-  rep(c("#D55E00", plotColors[6], plotColors[4], plotColors[5]), 2)
 #Write plot with legend to file
 jpeg("glmQLF_plotMDS.jpg")
 par(mar=c(5.1, 4.1, 4.1, 11.1), xpd=TRUE)
-plotMDS(list, col=colors[group], pch=points[group])
-legend("topright", inset=c(-0.8,0), legend=levels(group), pch=points, col=colors, ncol=2)
-#legend("topleft", legend=levels(group), pch=points, col=colors, ncol=2)
+plotMDS(list, col=colors[sample_group], pch=points[sample_group])
+legend("topright", inset=c(-0.8,0), legend=levels(sample_group), pch=points, col=colors, ncol=2)
+#legend("topleft", legend=levels(sample_group), pch=points, col=colors, ncol=2)
 dev.off()
 #Write plot without legend to file
 jpeg("glmQLF_plotMDS_noLegend.jpg")
-plotMDS(list, col=colors[group], pch=points[group])
+plotMDS(list, col=colors[sample_group], pch=points[sample_group])
 dev.off()
 
 # Create a PCA plot with a legend
-jpeg("glmQLF_plotPCA.jpg")
-par(mar=c(5.1, 4.1, 4.1, 11.1), xpd=TRUE)
-plotMDS(list, col=colors[group], pch=points[group], gene.selection="common")
-legend("topright", inset=c(-0.8,0), legend=levels(group), pch=points, col=colors, ncol=2)
-#legend("topleft", legend=levels(group), pch=points, col=colors, ncol=2)
+png("glmQLF_plotPCA.png", units="in", width=5, height=4, res=300)
+par(mar=c(4.1, 4.1, 5.1, 0.1), xpd=TRUE)
+plotMDS(list, col=colors[sample_group], pch=points[sample_group], gene.selection="common")
+legend("top", inset=c(0,-0.5), legend=levels(sample_group), pch=points, col=colors, ncol=2)
+#legend("topleft", legend=levels(sample_group), pch=points, col=colors, ncol=2)
 dev.off()
 
 # Create a PCA plot without a legend
-jpeg("glmQLF_plotPCA_noLegend.jpg")
-plotMDS(list, col=colors[group], pch=points[group], gene.selection="common")
+png("glmQLF_plotPCA_noLegend.png", units="in", width=5, height=4, res=300)
+plotMDS(list, col=colors[sample_group], pch=points[sample_group], gene.selection="common")
 dev.off()
 
 ##
 #The experimental design is parametrized with a one-way layout, 
 # where one coefficient is assigned to each group
-design <- model.matrix(~ 0 + group)
-colnames(design) <- levels(group)
+design <- model.matrix(~ 0 + sample_group)
+colnames(design) <- levels(sample_group)
 #design
 
 #Next, the NB dispersion is estimated
@@ -156,10 +164,10 @@ colnames(fit)
 
 
 # testing explicit nested contrasts
-con.all.nest <- makeContrasts(treatment = (UV.E05 + UV.R2 + UV.Y023 + UV.Y05)/4
-                              - (VIS.E05 + VIS.R2 + VIS.Y023 + VIS.Y05)/4,
-                              tolerance = (UV.Y023 + UV.Y05 + VIS.Y023 + VIS.Y05)/4
-                              - (UV.E05 + UV.R2 + VIS.E05 + VIS.R2)/4,
+con.all.nest <- makeContrasts(treatment = (UV.LT1 + UV.HT2 + UV.HT2 + UV.HT1)/4
+                              - (VIS.LT1 + VIS.HT2 + VIS.HT2 + VIS.HT1)/4,
+                              tolerance = (UV.HT2 + UV.HT1 + VIS.HT2 + VIS.HT1)/4
+                              - (UV.LT1 + UV.HT2 + VIS.LT1 + VIS.HT2)/4,
                               levels=design)
 # treatment
 treat.anov.treatment <- glmTreat(fit, contrast=con.all.nest[,"treatment"], lfc=cutLFC)
@@ -175,15 +183,18 @@ summary(decideTests(treat.anov.Inter))
 # export tables of DE genes
 #Write tags table of DE genes to file
 tagsTblANOVATreatment <- topTags(treat.anov.treatment, n=nrow(treat.anov.treatment$table), adjust.method="fdr")$table
-write.table(tagsTblANOVATreatment, file="glmQLF_2WayANOVA_treatment_topTags.csv", sep=",", row.names=TRUE, quote=FALSE)
+tagsTblANOVATreatment <- as_tibble(tagsTblANOVATreatment, rownames = "gene")
+write.table(tagsTblANOVATreatment, file="glmQLF_2WayANOVA_treatment_topTags.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 #Write tags table of DE genes to file
 tagsTblANOVATolerance <- topTags(treat.anov.tolerance, n=nrow(treat.anov.tolerance$table), adjust.method="fdr")$table
-write.table(tagsTblANOVATolerance, file="glmQLF_2WayANOVA_tolerance_topTags.csv", sep=",", row.names=TRUE, quote=FALSE)
+tagsTblANOVATolerance <- as_tibble(tagsTblANOVATolerance, rownames = "gene")
+write.table(tagsTblANOVATolerance, file="glmQLF_2WayANOVA_tolerance_topTags.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 #Generate table of DE genes
 tagsTblANOVAInter <- topTags(treat.anov.Inter, n=nrow(treat.anov.Inter$table), adjust.method="fdr")$table
-write.table(tagsTblANOVAInter, file="glmQLF_2WayANOVA_interaction_topTags.csv", sep=",", row.names=TRUE, quote=FALSE)
+tagsTblANOVAInter <- as_tibble(tagsTblANOVAInter, rownames = "gene")
+write.table(tagsTblANOVAInter, file="glmQLF_2WayANOVA_interaction_topTags.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
 # MD plots
@@ -354,7 +365,7 @@ DGESubset_treatment <- tagsTblANOVATreatment.filtered[!grepl(plotColors[5], tags
 #                             ignore.case = TRUE
 #                           )
 # )
-DGESubset_treatment.keep <- rownames(logcounts) %in% rownames(DGESubset_treatment)
+DGESubset_treatment.keep <- rownames(logcounts) %in% DGESubset_treatment$gene
 logcountsSubset_treatment <- logcounts[DGESubset_treatment.keep, ]
 jpeg("glmQLF_treatment_heatmap.jpg")
 heatmap(logcountsSubset_treatment, margins = c(8, 1), labRow = FALSE)
@@ -371,7 +382,7 @@ DGESubset_tolerance <- tagsTblANOVATolerance.filtered[!grepl(plotColors[5], tags
 #                             ignore.case = TRUE
 #                           )
 # )
-DGESubset_tolerance.keep <- rownames(logcounts) %in% rownames(DGESubset_tolerance)
+DGESubset_tolerance.keep <- rownames(logcounts) %in% DGESubset_tolerance$gene
 logcountsSubset_tolerance <- logcounts[DGESubset_tolerance.keep, ]
 jpeg("glmQLF_tolerance_heatmap.jpg")
 heatmap(logcountsSubset_tolerance, margins = c(8, 1), labRow = FALSE)
@@ -387,7 +398,7 @@ DGESubset_interaction <- tagsTblANOVAInter.filtered[!grepl(plotColors[5], tagsTb
 #                             ignore.case = TRUE
 #                           )
 # )
-DGESubset_interaction.keep <- rownames(logcounts) %in% rownames(DGESubset_interaction)
+DGESubset_interaction.keep <- rownames(logcounts) %in% DGESubset_interaction$gene
 logcountsSubset_interaction <- logcounts[DGESubset_interaction.keep, ]
 jpeg("glmQLF_interaction_heatmap.jpg")
 heatmap(logcountsSubset_interaction, margins = c(8, 1), labRow = FALSE)

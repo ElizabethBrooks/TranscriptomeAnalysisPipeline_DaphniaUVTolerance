@@ -4,76 +4,55 @@
 #$ -r n
 #$ -N reciprocalSearch_blastp_jobOutput
 #$ -pe smp 8
-#$ -q debug
-#Script to use blastp to translate the nucleotide sequences of a reference genome
-# for searching a protein database
-#Usage: qsub reciprocalSearch_blastp.sh proteomeFastaDB proteomeFastaQuery
-#Usage ex: qsub reciprocalSearch_blastp.sh PA42_v4.1_proteins PA42_v4.1_proteins
-#Usage ex: qsub reciprocalSearch_blastp.sh PA42_v4.1_proteins PA42_v4.1_cds
-#Usage ex: qsub reciprocalSearch_blastp.sh PA42_v4.1_proteins PA42_v4.1_transcripts
-#Usage ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity/clusteredNucleotides_cdhit_0.98 PA42_v4.1_proteins
-#Usage ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_cds
-#Usage ex: qsub reciprocalSearch_blastp.sh trimmed_run1E05_assemblyTrinity PA42_v4.1_transcripts
-#Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity PA42_v4.1_proteins
-#Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run2E05_assemblyPA42_v3.0Trinity/clusteredNucleotides_cdhit_0.98 PA42_v3.0_proteins
-#Usage ex: qsub reciprocalSearch_blastp.sh dnaDamageResponse/Dmel_Svetec_2016/FlyBase_dnaDamageResponse_Dmel_proteins.fasta PA42_v4.1_proteins
-#Usage ex: qsub reciprocalSearch_blastp.sh uvResponsive/Tcast_Guo_2019/DEGs_UVBvsCntrl_Tcast_proteins.fasta PA42_v4.1_proteins
-#Usage ex: qsub reciprocalSearch_blastp.sh sortedCoordinate_samtoolsHisat2_run1E05_assemblyPA42_v4.1Trinity dnaDamageResponse/Dmel_Svetec_2016/FlyBase_dnaDamageResponse_Dmel_proteins.fasta
-#Usage ex: qsub reciprocalSearch_blastp.sh uvResponsive/Tcast_Guo_2019/DEGs_UVBvsCntrl_Tcast_proteins.fasta dnaDamageResponse/Dmel_Svetec_2016/FlyBase_dnaDamageResponse_Dmel_proteins.fasta
 
-#Load necessary modules for ND CRC servers
-module load bio
-#Check for input arguments of folder names
+# Script to use blastp to translate the nucleotide sequences of a reference genome
+# for searching a protein database
+#Usage 1: qsub reciprocalSearch_blastp.sh db_query proteomeFastaQuery
+#Usage 2: qsub reciprocalSearch_blastp.sh db_query proteomeFastaDB proteomeFastaQuery
+#Usage ex: qsub reciprocalSearch_blastp.sh Dpulex_Dmelanogaster /afs/crc.nd.edu/group/pfrenderlab/mendel/OutgroupGenomes/ncbi_dataset_Drosophila_melanogaster/ncbi_dataset/data/GCF_000001215.4/protein.faa
+#Usage ex: qsub reciprocalSearch_blastp.sh Dpulex_Dmelanica /scratch365/ebrooks5/OLYM_dMelUV_analysis/KAP4_NCBI/variantsCalled_samtoolsBcftools/variantsConsensus/filteredMapQ_consensus.fa
+
+# Load necessary modules for ND CRC servers
+module load bio/2.0
+
+# Check for input arguments of folder names
 if [ $# -eq 0 ]; then
    	echo "No folder name(s) supplied... exiting"
    	exit 1
-fi
-#Determine input database for blastp
-if [[ "$1" == *assemblyTrinity* || "$1" == *assemblyStringtie* ]]; then
-	#Retrieve reads input absolute path
-	inputsPath=$(grep "assemblingFree:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingFree://g")
-	outputFolder="$inputsPath"/"$1"
-	#Determine input file type
-	if [[ "$1" == */clusteredNucleotide* ]]; then
-		inputsPath="$outputFolder"/decoded_transdecoder/cdhitEst.transdecoder.pep
-	elif [[ "$1" == */clusteredProtein* ]]; then
-		inputsPath="$outputFolder"/decoded_transdecoder/cdhit.transdecoder.pep
-	else 
-		inputsPath=$(echo "$outputFolder"/decoded_transdecoder/*.transdecoder.pep)
-	fi
-elif [[ "$1" == *assembly*Trinity* || "$1" == *assembly*Stringtie* ]]; then
-	#Retrieve reads input absolute path
-	inputsPath=$(grep "assemblingGenome:" ../InputData/outputPaths.txt | tr -d " " | sed "s/assemblingGenome://g")
-	outputFolder="$inputsPath"/"$1"
-	#Determine input file type
-	if [[ "$1" == */clusteredNucleotide* ]]; then
-		inputsPath="$outputFolder"/decoded_transdecoder/cdhitEst.transdecoder.pep
-	elif [[ "$1" == */clusteredProtein* ]]; then
-		inputsPath="$outputFolder"/decoded_transdecoder/cdhit.transdecoder.pep
-	else 
-		inputsPath=$(echo "$outputFolder"/decoded_transdecoder/*.transdecoder.pep)
-	fi
-elif [[ "$1" == *proteins ]]; then
-	#Retrieve genome reference absolute path for querying
+elif [ $# -eq 2 ]; then # use PA42 protein seqs
+	# Retrieve genome reference absolute path for querying
 	inputsPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
-	outputFolder=$(dirname "$inputsPath")
-elif [[ "$1" == *cds ]]; then
-	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
-	outputFolder=$(dirname "$inputsPath")
-	inputsPath=$(echo "$outputPath"/decoded_transdecoder/*transdecoder.pep)
-elif [[ "$1" == *transcripts ]]; then
-	#Retrieve genome reference absolute path for querying
-	inputsPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
-	outputFolder=$(dirname "$inputsPath")
-	inputsPath=$(echo "$outputPath"/decoded_transdecoder/*transdecoder.pep)
-else
-	#Retrieve database absolute path for querying
-	inputsPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
-	inputsPath="$inputsPath"/"$1"
-	outputFolder=$(dirname "$inputsPath")
+	# Retrieve database absolute path for querying
+	reciprocalPath="$2"
+elif [ $# -eq 3 ]; then # expect two paths to protein seqs
+	# Retrieve genome reference absolute path for querying
+	inputsPath="$2"
+	# Retrieve database absolute path for querying
+	reciprocalPath="$3"
 fi
-#Check if DB of transcriptome exsists
+
+# set outputs path
+outputFolder=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
+
+# set outputs absolute folder name
+searchTag="$1"
+outputFolder=$outputFolder"/reciprocalSearched_blastp_"$searchTag
+
+#Name output file of inputs
+inputOutFile=$outputFolder"/reciprocalSearched_blastp_summary.txt"
+
+#Make output directory
+mkdir "$outputFolder"
+#Check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputFolder directory already exsists... please remove before proceeding."
+	exit 1
+fi
+
+#Move to output folder
+cd "$outputFolder"
+
+# Check if first DB of seqs exsists
 inputDB=$(dirname "$inputsPath")
 if [ -f "$inputsPath".phr ]; then
 	echo "Using exsisting "$inputsPath".phr DB..."
@@ -86,51 +65,17 @@ else #Make blastable DB of transcriptome
 	#Move back to script location
 	cd $currLoc
 fi
-#Determine which genome transcript set to use
-if [[ "$2" == *proteins ]]; then
-	#Retrieve genome reference absolute path for querying
-	reciprocalPath=$(grep "proteinSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/proteinSequences://g")
-	dbTag="$2"
-elif [[ "$2" == *cds ]]; then
-	#Retrieve genome reference absolute path for querying
-	reciprocalPath=$(grep "codingSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/codingSequences://g")
-	reciprocalPath=$(dirname "$reciprocalPath")
-	reciprocalPath=$(echo "$reciprocalPath"/decoded_transdecoder/*.transdecoder.pep)
-	dbTag="$2"
-elif [[ "$2" == *transcripts ]]; then
-	#Retrieve genome reference absolute path for querying
-	reciprocalPath=$(grep "transcriptSequences:" ../InputData/inputPaths.txt | tr -d " " | sed "s/transcriptSequences://g")
-	reciprocalPath=$(dirname "$reciprocalPath")
-	reciprocalPath=$(echo "$reciprocalPath"/decoded_transdecoder/*.transdecoder.pep)
-	dbTag="$2"
-else
-	#Retrieve database absolute path for querying
-	reciprocalPath=$(grep "databases:" ../InputData/inputPaths.txt | tr -d " " | sed "s/databases://g")
-	reciprocalPath="$reciprocalPath"/"$2"
-	dbTag=$(dirname "$2" | sed 's/\//_/g')
-fi
-#Check if DB of transcriptome exsists
+
+# Check if second DB of seqs exsists
 reciprocalDB=$(dirname "$reciprocalPath")
 if [ -f "$reciprocalPath".phr ]; then
 	echo "Using exsisting "$reciprocalPath".phr DB..."
-else #Make blastable DB of transcriptome
+else #Make blastable DB of seqs
 	#Move to DB directory
 	cd $reciprocalDB
 	makeblastdb -in $reciprocalPath -dbtype prot
 fi
-#Set outputs absolute path
-outputFolder="$outputFolder"/reciprocalSearched_blastp_"$dbTag"
-#Name output file of inputs
-inputOutFile="$outputFolder"/reciprocalSearched_blastp_summary.txt
-#Make output directory
-mkdir "$outputFolder"
-#Check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outputFolder directory already exsists... please remove before proceeding."
-	exit 1
-fi
-#Move to output folder
-cd "$outputFolder"
+
 #Use blastp to search a database
 # and output with outfmt6 header:
 #qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore

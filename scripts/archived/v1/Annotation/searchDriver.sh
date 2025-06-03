@@ -1,16 +1,9 @@
 #!/bin/bash
 #Script to perform sequence searches using a selected program for an input transcript data set
-#Usage: bash searchDriver.sh method PA42Target assembledFolder sampleList
-#Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins trimmed_run1/clusteredNucleotides_cdhit_0.98 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash searchDriver.sh consensus PA42_v3.0_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash searchDriver.sh plot PA42_v3.0_proteins trimmed_run1
-#Usage Ex: bash searchDriver.sh RBH PA42_v3.0_proteins sortedCoordinate_samtoolsHisat2_run2 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra
-#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins dnaDamageResponse/Dmel_Svetec_2016 Dmel
-#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins uvResponsive/Tcast_Guo_2019 Tcast
-#Usage Ex: bash searchDriver.sh RBH PA42_v4.1_proteins uvResponsive/Dmel_Svetec_2016 Dmel
-#Usage Ex: bash searchDriver.sh RBH dnaDamageResponse/Dmel_Svetec_2016 sortedCoordinate_samtoolsHisat2_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_v4.1_proteins
+#Usage: bash search_driver.sh method PA42Target assembledFolder sampleList
+#Usage Ex: bash search_driver.sh blastp PA42_proteins trimmed_run1 swissprot Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh hmmscan PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra
+#Usage Ex: bash search_driver.sh reciprocal PA42_proteins trimmed_run1 Y05 Y023_5 E05 R2 PA Sierra PA42_cds PA42_transcripts PA42_proteins
 
 #Check for input arguments of folder names
 if [ $# -eq 0 ]; then
@@ -19,49 +12,12 @@ if [ $# -eq 0 ]; then
 fi
 #set output summary file path
 outPath=$(grep "reciprocalSearch:" ../InputData/outputPaths.txt | tr -d " " | sed "s/reciprocalSearch://g")
-#Set merged summary file name and header
-if [[ "$1" == RBH ]]; then
-	#Set output file name
-	inputTag=$(echo $3 | sed 's/\//_/g')
-	dbTag=$(echo $2 | sed 's/\//_/g')
-	outFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_summary.txt
-	#Add header to output summary file
-	echo "query,db,queryHits,dbHits,bestHits" > "$outFile"
-elif [[ "$1" == consensus* ]]; then
-	#Set output file names
-	inputTag=$(echo $3 | sed 's/\//_/g')
-	dbTag=$(echo $2 | sed 's/\//_/g')
-	outFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_blastp_consensusSummary.txt
-	#Add header to output summary file
-	echo "query,db,consensus,queryRBH,dbRBH,consensusRBH" > "$outFile"
-else
-	echo "Invalid analysis method entered... exiting!"
-	exit 1
-fi
 #Initialize variables
 counter=0
-inputOutFile="$outPath"/RBHB/"$inputTag"_"$dbTag"_inputsSummary.txt
-#Loop through all input sets of treatments and perform t-test analsysis
+#Loop through all input sets of treatments
 for i in "$@"; do
 	#Determine what type of data folder was input
-	if [[ "$3" == trimmed*/clustered* ]]; then
-		if [[ "$i" == PA42* ]]; then
-			inputFolder="$i"
-		else
-			assemblyDir=$(echo $3 | cut -d '/' -f1)
-			clusteredDir=$(echo $3 | cut -d '/' -f2)
-			inputFolder=$(echo "$assemblyDir""$i"_assemblyTrinity/"$clusteredDir")
-		fi
-	elif [[ "$3" == sorted*/clustered* ]]; then
-		if [[ "$i" == PA42* ]]; then
-			inputFolder="$i"
-		else
-			assemblyDir=$(echo $3 | cut -d '/' -f1)
-			clusteredDir=$(echo $3 | cut -d '/' -f2)
-			genomeTag=$(echo $2 | sed 's/_c.*//g' | sed 's/_p.*//g' | sed 's/_t.*//g')
-			inputFolder=$(echo "$assemblyDir""$i"_assembly"$genomeTag"Trinity/"$clusteredDir")
-		fi
-	elif [[ "$3" == trimmed* ]]; then
+	if [[ "$3" == trimmed* ]]; then
 		if [[ "$i" == PA42* ]]; then
 			inputFolder="$i"
 		else
@@ -71,46 +27,31 @@ for i in "$@"; do
 		if [[ "$i" == PA42* ]]; then
 			inputFolder="$i"
 		else
-			genomeTag=$(echo $2 | sed 's/_c.*//g' | sed 's/_p.*//g' | sed 's/_t.*//g')
-			inputFolder=$(echo "$3""$i"_assembly"$genomeTag"Trinity)
+			inputFolder=$(echo "$3""$i"_assemblyGenomeTrinity)
 		fi
 	else
-		if [[ "$i" == PA42* ]]; then
-			inputFolder="$i"
-		else
-			inputFolder="$3"
-		fi
+		echo "ERROR: Input folder for analysis is not a valid option... exiting!"
+		exit 1
 	fi
 	#Check input option
-	if [[ "$1" == RBH ]]; then #Skip first three arguments
+	if [[ "$1" == reciprocal ]]; then #Skip first three arguments 
 		if [ $counter -ge 3 ]; then
-			#Usage: bash searchRBH_blastp.sh transcriptomeFastaFolder
-			echo "Merging $i blastp results for $3 and $2..."
-			qsub searchRBH.sh "$inputFolder" "$i" "$2" "$outFile"
-			#Write inputs to summary file
-			echo "qsub searchRBH.sh "$inputFolder" "$i" "$2" "$outFile >> $inputOutFile
+			#Usage: qsub reciprocalSearch_blastp.sh transcriptomeFastaFolder
+			echo "Searching $i transcriptome with blastp for $3 and $2..."
+			qsub reciprocalSearch_blastp.sh "$inputFolder" "$2"
 		fi
-	elif [[ "$1" == consensus ]]; then #Skip first three arguments
+	elif [[ "$1" == hmmscan ]]; then #Skip first three arguments 
 		if [ $counter -ge 3 ]; then
-			#Usage: qsub consensusRBH_blastp.sh transcriptomeFastaFolder
-			echo "Generating consensus RBH of $i blastp results for $3 and $2..."
-			qsub consensusRBH.sh "$inputFolder" "$i" "$2" "$outFile"
-			#Write inputs to summary file
-			echo "qsub consensusRBH.sh "$inputFolder" "$i" "$2" "$outFile >> $inputOutFile
+			#Usage: qsub search_hmmscan.sh transcriptomeFastaFolder
+			echo "Searching $i transcriptome with hmmscan for $3 and $2..."
+			qsub search_hmmscan.sh "$inputFolder" "$2"
+		fi
+	elif [[ "$1" == blastp ]]; then #Skip first three arguments
+		if [ $counter -ge 3 ]; then
+			#Usage: qsub search_blastp.sh transcriptomeFastaFolder proteinDB
+			echo "Searching $i transcriptome with blastp using $2..."
+			qsub search_blastp.sh "$inputFolder" "$2"
 		fi
 	fi
 	counter=$(($counter+1))
 done
-#Check if plotting was selected
-if [ "$1" == plot ]; then
-	#Load necessary modules
-	module load R
-	#Retrieve output file name
-	outFile="$outPath"/reciprocalSearched_blastp/"$inputTag"_"$dbTag"_blastp_summary.txt
-	#Usage: Rscript blastpStats_barPlots.r title blastpSummaryFile
-	echo "Plotting blastp results for $3 and $2..."
-	Rscript blastpStats_barPlots.r "$3" "$outFile"
-	echo "Blastp results for $3 and $2 have been plotted!"
-	#Write inputs to summary file
-	echo "Rscript blastpStats_barPlots.r "$3" "$outFile >> $inputOutFile
-fi
